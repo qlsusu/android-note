@@ -1,0 +1,14 @@
+参见：
+android:exported 属性详解
+	http://blog.csdn.net/watermusicyes/article/details/46460347
+	
+表示：
+当前组件是否可以被另一个App中的组件启动：true允许被启动；false不允许被启动
+
+默认值
+exported的默认值根据 当前组件中是否有intent filter 来定，有则为true，无则为false
+没有任何的filter意味着这个这个组件只有在详细的描述了他的component name后才能被唤醒 .
+这意味着该组件只能在应用内部使用，因为其它application并不知道这个class的存在，则其他app中无法启动该组件
+
+对于contentprovider情况特殊
+参见：上述参见

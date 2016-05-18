@@ -1,4 +1,6 @@
-参见：file:///Users/qlong/_study/android/android-sdk-macosx/docs/guide/topics/resources/providing-resources.html
+参见：
+file:///Users/qlong/_study/android/android-sdk-macosx/docs/guide/topics/resources/providing-resources.html
+https://developer.android.com/guide/topics/resources/accessing-resources.html
 
 可以在res/下放置什么
 	Resource directories supported inside project res/ directory.
@@ -6,3 +8,8 @@
 	Configuration qualifier names.
 		包含了国家码：Language and region
 
+引用语法：
+@[<package_name>:]<resource_type>/<resource_name>
+	<package_name> is the name of the package in which the resource is located (not required when referencing resources from the same package)
+	<resource_type> is the R subclass for the resource type
+	<resource_name> is either the resource filename without the extension or the android:name attribute value in the XML element (for simple values).
