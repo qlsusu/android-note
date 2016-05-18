@@ -1,0 +1,95 @@
+参见：
+my/touch
+http://blog.csdn.net/qlsusu/article/details/14446391
+
+-------------------------------------------------事件的下发传递 和 处理传递
+事件的下发传递：
+activity.dispatchTouchEvent, 
+	viewgroup.dispatchTouchEvent, 
+		viewgroup.onInterceptTouchEvent, 
+		view.dispatchTouchEvent
+		
+事件的处理传递：
+		view.onTouchEvent
+	viewgroup.onTouchEvent
+activity.onTouchEvent
+
+说明：
+activity.dispatchTouchEvent的源码参见：b21.p144
+
+------------
+
+view不再参与到 事件下发传递 的原因：
+	本次，针对于down事件，view.onTouchEvent返回false（代表，其对后续事件不再感兴趣），且，之下的view均不再参与到 事件下发传递（否则，为了能将后续事件传递到 之下view，其还必须参与到 后续事件的下发传递）
+	view.dispatchTouchEvent返回false，或
+	viewgroup.onInterceptTouchEvent返回true，或
+	上层的view没有参与到 事件下发传递
+
+view不再参与到 事件处理传递 的原因：
+	view没有参与到 事件下发传递，或
+	上层的view的 ontouch返回true
+
+-------------------------------------------------father.onInterceptTouchEvent
+当father.onintercept返回false时，
+	意味着：拦截后放行，拦截的事件（如：down） 将传递给 child.ontouch
+	如果child.ontouch返回false，
+		则child不再参与 后续事件的下发传递，则导致father.onintercept不再参与（因为：child对后续事件不感兴趣，不用再考虑 拦截放行）
+	如果child.ontouch返回true，
+		则child继续参与 后续事件的下发传递，则导致father.onintercept也继续参与（因为：child对后续事件感兴趣，仍然要考虑 拦截放行）
+当father.onintercept返回true时，
+	意味着：拦截后不放行。father.onintercept不再参与 后续事件的下发传递（因为：child无法对后续事件感兴趣，则，不用再考虑 拦截放行）
+	若事件
+		类型为down，则child不再参与该事件下发传递
+		类型为move，则child参与该事件下发传递，但是事件类型变为cancel（同up类似），且，child不再参与后续事件的下发传递
+
+-------------------------------------------------onTouchEvent vs OnTouchListener.ontouch
+返回值代表：是否对 该事件以及后续事件 感兴趣
+如果针对于 非down(如move或up)事件，返回false，等同于：返回true，只是，activity.onTouchEvent还接着被调用（也只有activity.onTouchEvent）
+
+如果view参与到事件的处理传递，view的事件处理传递 顺序为：
+OnTouchListener
+	onTouchEvent
+如果OnTouchListener返回true，处理将不再继续往下传递
+如果OnTouchListener返回false，但onTouchEvent返回true，将等同于OnTouchListener返回true
+	因为：view可处理该事件，而view的处理方式是：OnTouchListener和onTouchEvent
+
+默认的onTouchEvent的返回值：
+view的，返回true
+viewgroup的，返回false
+
+-------------------------------------------------OnClickListener
+需要调用performClick()，才可激活OnClickListener
+会自动设置clickable为true
+
+-------------------------------------------------OnLongClickListener
+需要调用performLongClick()，才可激活OnLongClickListener
+会自动设置longclickable为true
+
+onLongClick的返回的true/false代表什么意思:
+为true时，代表对longclick感兴趣，执行完用户逻辑后，将执行系统逻辑（如：震动一下等）
+
+-------------------------------------------------requestDisallowInterceptTouchEvent
+在view在处理down事件后（无论其对后续事件是否感兴趣），可以调用requestDisallowInterceptTouchEvent
+	否则，即使调用了，也没有效果
+其导致，father.onInterceptTouchEvent不再参与后续事件的下发流程，同样father.father.onInterceptTouchEvent也不再参与（文档上要求如此）
+
+-------------------------------------------------clickable和longclickable
+view不可点击（ontouchxxx方法不执行）的条件：clickable和longclickable都为false
+
+view的longclickable默认返回false
+
+--------------------------------------------------------------------------以前的内容
+
+-------------------------------------------------view.ontouch
+当view.ontouch返回false时，
+	意味着，后续事件（move和up事件），将不再被传递进来（view对后续事件不感兴趣）
+	事件（如：down） 将传递给帮手
+	若ontouch在消费了 某一个后续事件后，又返回false，则，后续事件 继续被传递进来（忽略 false（不感兴趣）），相当于返回true
+	--
+	当为view设置ontouch, onlongclick, onclick
+	当ontouch返回false时，当长时间 touch move，会触发onlongclick
+		当onlongclick返回true，会震动，当手指抬起时，会触发ontouch
+		当onlongclick返回false，不会震动，当手指抬起时，会触发ontouch，后触发onclick
+当view.ontouch返回true时，
+	意味着，后续事件（move和up事件），将被传递进来（view对后续事件感兴趣）
+	事件（如：down） 将不传递给帮手

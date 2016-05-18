@@ -1,0 +1,30 @@
+参见：http://blog.csdn.net/aigestudio/article/details/41447349
+
+canvas.drawtext中的xy坐标，是在指定baseline的左端点的坐标
+
+在屏幕中心绘制一个字符串时的baseline的左端点坐标：
+// 计算Baseline绘制的起点X轴坐标  
+baseX = (int) (canvas.getWidth() / 2 - textPaint.measureText(TEXT) / 2);  
+// 计算Baseline绘制的Y坐标  
+baseY = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));  
+
+使用自定义字体
+// 获取字体并设置画笔字体  
+TextPaint paint = mTextView.getPaint(); 
+Typeface typeface = Typeface.createFromAsset(context.getAssets(), "kt.ttf");  
+textPaint.setTypeface(typeface);  
+
+TextAlign
+当我们确定了baseline的左端点的坐标，那么设置该点为 要绘制文本的中间、左端、右端（CENTER, LEFT和RIGHT)
+
+有一个很长的文本，如何实现自动换行
+@Override  
+protected void onDraw(Canvas canvas) {  
+	super.onDraw(canvas);  
+	mStaticLayout = new StaticLayout(TEXT, mTextPaint, canvas.getWidth(), Alignment.ALIGN_NORMAL, 1.0F, 0.0F, false);  
+	mStaticLayout.draw(canvas);  
+	canvas.restore();  
+}  
+
+测量文本宽度
+measureText(String text)等

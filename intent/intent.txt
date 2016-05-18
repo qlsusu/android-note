@@ -1,0 +1,12 @@
+是否存在activity可以响应这个intent
+PackageManager packageManager = getPackageManager();
+List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+boolean isIntentSafe = activities.size() > 0;
+
+createChooser
+例子：
+Intent sendIntent = new Intent();
+sendIntent.setAction(Intent.ACTION_SEND);
+sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+sendIntent.setType("text/plain");
+startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to));

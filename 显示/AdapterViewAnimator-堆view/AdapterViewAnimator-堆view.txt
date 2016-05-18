@@ -1,0 +1,6 @@
+AdapterViewAnimator（堆View），是一系列View的集合，这些View叠加一起，并且View之间可以进行切换，并且在多个View切换过程体现渐隐渐现的动画效果
+通过AdapterViewAnimator.setAdapter()方法设置一组要显示的View，
+通过AdapterViewAnimator.showPrevious()方法移动到前一个View,
+通过AdapterViewAnimator.showNext()移动到下一个View
+
+已知子类有AdapterViewFlipper, StackView

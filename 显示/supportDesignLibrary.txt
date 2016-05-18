@@ -1,0 +1,2 @@
+通过/Users/qlong/_study/android/android-sdk-macosx/extras/android/support/design来构建eclipse工程
+依赖库：appCompat_v7工程

@@ -1,0 +1,539 @@
+<html>
+<head>
+<title> Local and Global References </title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="fldmeth.html">Prev</a> | <a href="exceptions.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="27422"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 5 chapter</font>
+</h1>
+</div>
+<a name="27423"></a>
+<h1>Local and Global References </h1>
+<hr><p>
+
+<p>
+  <a name="27424"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">T</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">he</font> JNI exposes instance and array types (such as <code>jobject</code>, <code>jclass</code>, <code>jstring</code>, and <code>jarray</code>) as opaque references. Native code never directly inspects the contents of an opaque reference pointer. Instead it uses JNI functions to access the data structure pointed to by an opaque reference. By only dealing with opaque references, you need not worry about internal object layout that is dependent upon a particular Java virtual machine implementation. You do, however, need to learn more about different kinds of references in the JNI:</font>
+</p>
+
+<a name="27426"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>The JNI supports three kinds of opaque references: local references, global references, and weak global references.</font><a name="27427"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Local and global references have different lifetimes. Local references are automatically freed, whereas global and weak global references remain valid until they are freed by the programmer.</font><a name="27428"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>A local or global reference keeps the referenced object from being garbage collected. A weak global reference, on the other hand, allows the referenced object to be garbage collected.</font><a name="27429"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Not all references can be used in all contexts. It is illegal, for example, to use a local reference after the native method that created the reference returns.</font>
+</ul>
+<p>
+  <a name="27430"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In this chapter, we will discuss these issues in detail. Managing JNI references properly is crucial to writing reliable and space-efficient code.</font>
+</p>
+
+<a name="27431"></a>
+<h2>5.1    Local and Global References</h2>
+
+<p>
+  <a name="27432"> </a><font face="Arial, Verdana, Helvetica, sans-serif">What are local and global references, and how are they different? We will use a series of examples to illustrate local and global references.</font>
+</p>
+
+<a name="27433"></a>
+<h3>5.1.1    Local References</h3>
+
+<p>
+  <a name="27434"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Most JNI functions create local references. For example, the JNI function <code>New-Object</code> creates a new instance and returns a local reference to that instance.</font>
+</p>
+
+
+<p>
+  <a name="33323"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A local reference is valid only within the dynamic context of the native method that creates it, and only within that one invocation of the native method. All local references created during the execution of a native method will be freed once the native method returns.</font>
+</p>
+
+
+<p>
+  <a name="27435"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You must not write native methods that store a local reference in a static variable and expect to use the same reference in subsequent invocations. For example, the following program, which is a modified version of the <code>MyNewString</code> function in Section <a href="fldmeth.html#26390">4.4.1</a>, uses local references incorrectly. </font>
+</p>
+
+<pre>
+<a name="27436"> </a>/* This code is illegal */
+<a name="27437"> </a>jstring
+<a name="27438"> </a>MyNewString(JNIEnv *env, jchar *chars, jint len)
+<a name="27439"> </a>{
+<a name="27440"> </a>    static jclass stringClass = NULL;
+<a name="29998"> </a>    jmethodID cid;
+<a name="27441"> </a>    jcharArray elemArr;
+<a name="27443"> </a>    jstring result;
+<a name="27444"> </a>
+<a name="27445"> </a>    if (stringClass == NULL) {
+<a name="27446"> </a>        stringClass = (*env)-&gt;FindClass(env,
+<a name="27447"> </a>                                        "java/lang/String");
+<a name="27448"> </a>        if (stringClass == NULL) {
+<a name="33340"> </a>            return NULL; /* exception thrown */
+<a name="27451"> </a>        }
+<a name="30056"> </a>    }
+<a name="27452"> </a>    /* It is wrong to use the cached stringClass here,
+<a name="30064"> </a>       because it may be invalid. */
+<a name="27453"> </a>    cid = (*env)-&gt;GetMethodID(env, <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">stringClass</font>,
+<a name="27454"> </a>                              "&lt;init&gt;", "([C)V");
+<a name="30063"> </a>    ...
+<a name="30110"> </a>    elemArr = (*env)-&gt;NewCharArray(env, len);
+<a name="30111"> </a>    ...
+<a name="30158"> </a>    result = (*env)-&gt;NewObject(env, stringClass, cid, elemArr);
+<a name="30125"> </a>    (*env)-&gt;DeleteLocalRef(env, elemArr);
+<a name="30108"> </a>    return result;
+<a name="30129"> </a>}
+</pre>
+
+<p>
+  <a name="30141"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We have elided the lines that are not directly relevant to our discussion here. The goal for caching <code>stringClass</code> in a static variable might have been to eliminate the overhead of repeatedly making the following function call:</font>
+</p>
+
+<pre>
+<a name="27477"> </a> FindClass(env, "java/lang/String");
+</pre>
+
+<p>
+  <a name="27479"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This is not the right approach because <code>FindClass</code> returns a local reference to the <code>java.lang.String</code> class object. To see why this is a problem, suppose that the native method implementation of <code>C.f</code> calls <code>MyNewString</code>:</font>
+</p>
+
+<pre>
+<a name="30082"> </a>JNIEXPORT jstring JNICALL
+<a name="30090"> </a>Java_C_f(JNIEnv *env, jobject this)
+<a name="30091"> </a>{
+<a name="30094"> </a>    char *c_str = ...;
+<a name="30095"> </a>    ...
+<a name="30083"> </a>    return MyNewString(c_str);
+<a name="27486"> </a>}
+</pre>
+
+<p>
+  <a name="27487"> </a><font face="Arial, Verdana, Helvetica, sans-serif">After the native method <code>C.f</code> returns, the virtual machine frees all local references created during the execution of <code>Java_C_f</code>. These freed local references include the local reference to the class object stored in the <code>stringClass</code> variable. Future <code>MyNewString</code> calls will then attempt to use an invalid local reference, which could lead to memory corruption or system crashes. A code segment such as the following, for example, makes two consecutive calls to <code>C.f</code> and causes <code>MyNewString</code> to encounter the invalid local reference:</font>
+</p>
+
+<pre>
+<a name="30096"> </a>...
+<a name="30097"> </a>... = C.f(); // The first call is perhaps OK.
+<a name="30099"> </a>... = C.f(); // This would use an invalid local reference.
+<a name="30098"> </a>...
+</pre>
+
+<p>
+  <a name="27488"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are two ways to invalidate a local reference. As explained before, the virtual machine automatically frees all local references created during the execution of a native method after the native method returns. In addition, programmers may explicitly manage the lifetime of local references using JNI functions such as <code>DeleteLocalRef</code>.</font>
+</p>
+
+
+<p>
+  <a name="27489"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Why do you want to delete local references explicitly if the virtual machine automatically frees them after native methods return? A local reference keeps the referenced object from being garbage collected until the local reference is invalidated. The <code>DeleteLocalRef</code> call in <code>MyNewString</code>, for example, allows the intermediate array object, <code>elemArr</code>, to be garbage collected immediately. Otherwise the virtual machine will only be able to free the <code>elemArr</code> object after the native method that calls <code>MyNewString</code> (such as <code>C.f</code> above) returns.</font>
+</p>
+
+
+<p>
+  <a name="27490"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A local reference may be passed through multiple native functions before it is destroyed. For example, <code>MyNewString</code> returns the string reference created by <code>NewObject</code>. It will then be up to the caller of <code>MyNewString</code> to determine whether to free the local reference returned by <code>MyNewString</code>. In the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Java_C_f</font> example, <code>C.f</code> in turn returns the result of <code>MyNewString</code> as the result of the native method call. After the virtual machine receives the local reference from the <code>Java_C_f</code> function, it passes the underlying string object to the caller of <code>C.f</code> and then destroys the local reference that was originally created by the JNI function <code>NewObject</code>. </font>
+</p>
+
+
+<p>
+  <a name="27491"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Local references are also only valid in the thread that creates them. A local reference that is created in one thread cannot be used in another thread. It is a programming error for a native method to store a local reference in a global variable and expect another thread to use the local reference.</font>
+</p>
+
+<a name="27492"></a>
+<h3>5.1.2    Global References</h3>
+
+<p>
+  <a name="27493"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can use a global reference across multiple invocations of a native method. A global reference can be used across multiple threads and remains valid until it is freed by the programmer. Like a local reference, a global reference ensures that the referenced object will not be garbage collected.</font>
+</p>
+
+
+<p>
+  <a name="27494"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Unlike local references, which are created by most JNI functions, global references are created by just one JNI function, <code>NewGlobalRef</code>. The following version of <code>MyNewString</code> illustrates how to use a global reference. We highlight the differences between the code below and the code that mistakenly cached a local reference in the last section:</font>
+</p>
+
+<pre>
+<a name="27495"> </a>/* This code is OK */
+<a name="27496"> </a>jstring
+<a name="27497"> </a>MyNewString(JNIEnv *env, jchar *chars, jint len)
+<a name="27498"> </a>{
+<a name="27499"> </a>    static jclass stringClass = NULL;
+<a name="27500"> </a>    ...
+<a name="30313"> </a>    if (stringClass == NULL) {
+<a name="30314"> </a>        jclass localRefCls =
+<a name="47949"> </a>            (*env)-&gt;FindClass(env, "java/lang/String");
+<a name="30316"> </a>        if (localRefCls == NULL) {
+<a name="33401"> </a>            return NULL; /* exception thrown */
+<a name="27508"> </a>        }
+<a name="27509"> </a>        /* Create a global reference */
+<a name="27510"> </a>        stringClass = (*env)-&gt;NewGlobalRef(env, localRefCls);
+<a name="27512"> </a>
+<a name="27513"> </a>        /* The local reference is no longer useful */
+<a name="27514"> </a>        (*env)-&gt;DeleteLocalRef(env, localRefCls);
+<a name="27515"> </a>
+<a name="27516"> </a>        /* Is the global reference created successfully? */
+<a name="27521"> </a>        if (stringClass == NULL) {
+<a name="33409"> </a>            return NULL; /* out of memory exception thrown */
+<a name="27524"> </a>        }
+<a name="27526"> </a>    }
+<a name="27527"> </a>    ...
+<a name="27528"> </a>}
+</pre>
+
+<p>
+  <a name="27529"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The modified version passes the local reference returned from <code>FindClass</code> to <code>NewGlobalRef</code>, which creates a global reference to the <code>java.lang.String</code> class object. We check whether the <code>NewGlobalRef</code> has successfully created <code>stringClass</code> after deleting <code>localRefCls</code> because the local reference <code>localRefCls</code> needs to be deleted in either case.</font>
+</p>
+
+<a name="27531"></a>
+<h3>5.1.3    Weak Global References</h3>
+
+<p>
+  <a name="27532"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Weak global references are new in Java 2 SDK release 1.2. They are created using <code>NewGlobalWeakRef</code> and freed using <code>DeleteGlobalWeakRef</code>. Like global references, weak global references remain valid across native method calls and across different threads. Unlike global references, weak global references do not keep the underlying object from being garbage collected. </font>
+</p>
+
+
+<p>
+  <a name="27533"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>MyNewString</code> example has shown how to cache a global reference to the <code>java.lang.String</code> class. The <code>MyNewString</code> example could alternatively use a weak global reference to store the cached <code>java.lang.String</code> class. It does not matter whether we use a global reference or a weak global reference because <code>java.lang.String</code> is a system class and will never be garbage collected.</font>
+</p>
+
+
+<p>
+  <a name="27534"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Weak global references become more useful when a reference cached by the native code must not keep the underlying object from being garbage collected. Suppose, for example, a native method <code>mypkg.MyCls.f</code> needs to cache a reference to the class <code>mypkg.MyCls2</code>. Caching the class in a weak global reference allows the <code>mypkg.MyCls2</code> class to still be unloaded:</font>
+</p>
+
+<pre>
+<a name="27535"> </a>JNIEXPORT void JNICALL
+<a name="27536"> </a>Java_mypkg_MyCls_f(JNIEnv *env, jobject self)
+<a name="27537"> </a>{
+<a name="27538"> </a>    static jclass myCls2 = NULL;
+<a name="27539"> </a>    if (myCls2 == NULL) {
+<a name="27540"> </a>        jclass myCls2Local =
+<a name="27667"> </a>            (*env)-&gt;FindClass(env, "mypkg/MyCls2");
+<a name="27542"> </a>        if (myCls2Local == NULL) {
+<a name="27543"> </a>            return; /* can&#39;t find class */
+<a name="27544"> </a>        }
+<a name="27545"> </a>        myCls2 = NewWeakGlobalRef(env, myCls2Local);
+<a name="27546"> </a>        if (myCls2 == NULL) {
+<a name="27547"> </a>            return; /* out of memory */
+<a name="27548"> </a>        }
+<a name="27549"> </a>    }
+<a name="27550"> </a>    ... /* use myCls2 */
+<a name="27551"> </a>}
+</pre>
+
+<p>
+  <a name="27552"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We assume that <code>MyCls</code> and <code>MyCls2</code> have the same lifetime. (For example, they may be loaded by the same class loader.) Thus we do not consider the case when <code>MyCls2</code> is unloaded and later reloaded while <code>MyCls</code> and its native method implementation <code>Java_mypkg_MyCls</code> remain to be in use. If that could happen, we would have to check whether the cached weak reference still points to a live class object or points to a class object that has already been garbage collected. The next section will explain how to perform such checks on weak global references.</font>
+</p>
+
+<a name="27553"></a>
+<h3>5.1.4    Comparing References</h3>
+
+<p>
+  <a name="27554"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Given two local, global, or weak global references, you can check whether they refer to the same object using the <code>IsSameObject</code> function. For example:</font>
+</p>
+
+<pre>
+<a name="27555"> </a>(*env)-&gt;IsSameObject(env, obj1, obj2)
+</pre>
+
+<p>
+  <a name="27556"> </a><font face="Arial, Verdana, Helvetica, sans-serif">returns <code>JNI_TRUE</code> (or <code>1</code>) if <code>obj1</code> and <code>obj2</code> refer to the same object, and returns <code>JNI_FALSE</code> (or <code>0</code>) otherwise.</font>
+</p>
+
+
+<p>
+  <a name="27557"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A <code>NULL</code> reference in JNI refers to the <code>null</code> object in the Java virtual machine. If <code>obj</code> is a local or a global reference, you may use either</font>
+</p>
+
+<pre>
+<a name="27558"> </a>(*env)-&gt;IsSameObject(env, obj, NULL)
+</pre>
+
+<p>
+  <a name="27559"> </a><font face="Arial, Verdana, Helvetica, sans-serif">or</font>
+</p>
+
+<pre>
+<a name="27560"> </a>obj == NULL
+</pre>
+
+<p>
+  <a name="27561"> </a><font face="Arial, Verdana, Helvetica, sans-serif">to determine if <code>obj</code> refers to the <code>null</code> object.</font>
+</p>
+
+
+<p>
+  <a name="27563"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The rules for weak global references are somewhat different. <code>NULL</code> weak references refer to the <code>null</code> object. <code>IsSameObject</code>, however, has special uses for weak global references. You can use <code>IsSameObject</code> to determine whether a non-<code>NULL</code> weak global reference still points to a live object. Suppose <code>wobj</code> is a non-<code>NULL</code> weak global reference. The following call:</font>
+</p>
+
+<pre>
+<a name="27564"> </a>(*env)-&gt;IsSameObject(env, wobj, NULL)
+</pre>
+
+<p>
+  <a name="27565"> </a><font face="Arial, Verdana, Helvetica, sans-serif">returns <code>JNI_TRUE</code> if <code>wobj</code> refers to an object that has already been collected, and returns <code>JNI_FALSE</code> if <code>wobj</code> still refers to a live object.</font>
+</p>
+
+<a name="27567"></a>
+<h2>5.2    Freeing References</h2>
+
+<p>
+  <a name="27568"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Each JNI reference consumes a certain amount of memory by itself, in addition to the memory taken by the referred object. As a JNI programmer, you should be aware of the number of references that your program will use at a given time. In particular, you should be aware of the upper bound of the number of local references your program can create at any point during its execution, even though these local references will eventually be freed automatically by the virtual machine. Excessive reference creation, however transient, can lead to memory exhaustion.</font>
+</p>
+
+<a name="27570"></a>
+<h3>5.2.1    Freeing Local References</h3>
+
+<p>
+  <a name="27571"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In most cases, you do not have to worry about freeing local references when implementing a native method. The Java virtual machine frees them for you when the native method returns to the caller. However, there are times when you, the JNI programmer, should explicitly free local references in order to avoid excessive memory usage. Consider the following situations:</font>
+</p>
+
+<a name="54722"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>You need to create a large number of local references in a single native method invocation. This may result in an overflow of the internal JNI local reference table. It is a good idea to delete promptly those local references that will not be needed. For example, in the following program segment the native code iterates through a potentially large array of strings. After each iteration, the native code should explicitly free the local reference to the string element as follows:</font><pre>
+<a name="27573"> </a>for (i = 0; i &lt; len; i++) {
+<a name="27574"> </a>    jstring jstr = (*env)-&gt;GetObjectArrayElement(env, arr, i);
+<a name="27575"> </a>    ... /* process jstr */
+<a name="27576"> </a>    (*env)-&gt;DeleteLocalRef(env, jstr);
+<a name="33512"> </a>}
+</pre>
+<a name="33513"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>You want to write a utility function that is called from unknown contexts. The <code>MyNewString</code> example shown in Section <a href="fldmeth.html#26254">4.3</a> illustrates the use of <code>Delete-LocalRef</code> to delete promptly local references in a utility function. Otherwise there will be two local references that remains allocated after each call to the <code>MyNewString</code> function.</font><a name="27579"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Your native method does not return at all. For example, a native method may enter an infinite event dispatch loop. It is crucial to release local references created inside the loop so that they do not accumulate indefinitely, resulting in a memory leak.</font><a name="27580"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Your native method accesses a large object, thereby creating a local reference to the object. The native method then performs additional computation before returning to the caller. The local reference to the large object will prevent the object from being garbage collected until the native method returns, even if the object is no longer used in the remainder of the native method. For example, in the following program segment, because there is an explicit call to <code>DeleteLocalRef</code> beforehand, the garbage collector may be able to free the object referred to by <code>lref</code> when the execution is inside the function <code>lengthy-Computation</code>:</font><pre>
+<a name="27581"> </a>/* A native method implementation */
+<a name="27582"> </a>JNIEXPORT void JNICALL
+<a name="58097"> </a>Java_pkg_Cls_func(JNIEnv *env, jobject this)
+<a name="27583"> </a>{
+<a name="27584"> </a>    lref = ...              /* a large Java object */
+<a name="27585"> </a>    ...                     /* last use of lref */
+<a name="27586"> </a>    (*env)-&gt;DeleteLocalRef(env, lref);
+<a name="27587"> </a>
+<a name="27588"> </a>    lengthyComputation();   /* may take some time */
+<a name="27589"> </a>    return;                 /* all local refs are freed */
+<a name="27590"> </a>}
+</pre>
+<a name="27592"></a>
+<h3>5.2.2    Managing Local References in Java 2 SDK Release 1.2</h3>
+
+<p>
+  <a name="27593"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Java 2 SDK release 1.2 provides an additional set of functions for managing the lifetime of local references. These functions are <code>EnsureLocalCapacity</code>, <code>New-LocalRef</code>, <code>PushLocalFrame</code>, and <code>PopLocalFrame</code>.</font>
+</p>
+
+
+<p>
+  <a name="27594"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI specification dictates that the virtual machine automatically ensures that each native method can create at least 16 local references. Experience shows that this provides enough capacity for the majority of native methods that do not contain complex interactions with objects in the Java virtual machine. If, however, there is a need to create additional local references, a native method may issue an <code>EnsureLocalCapacity</code> call to make sure that space for a sufficient number of local references is available. For example, a slight variation of a previous example above reserves enough capacity for all local references created during the loop execution if sufficient memory is available:</font>
+</p>
+
+<pre>
+<a name="27595"> </a>/* The number of local references to be created is equal to
+<a name="27596"> </a>   the length of the array. */ 
+<a name="27598"> </a>if ((*env)-&gt;EnsureLocalCapacity(env, len)) &lt; 0) {
+<a name="27599"> </a>    ... /* out of memory */
+<a name="27600"> </a>}
+<a name="27601"> </a>for (i = 0; i &lt; len; i++) {
+<a name="27602"> </a>    jstring jstr = (*env)-&gt;GetObjectArrayElement(env, arr, i);
+<a name="27603"> </a>    ... /* process jstr */
+<a name="27604"> </a>    /* DeleteLocalRef is no longer necessary */
+<a name="27605"> </a>}
+</pre>
+
+<p>
+  <a name="27606"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Of course, the above version is likely to consume more memory that the previous version which promptly deletes local references.</font>
+</p>
+
+
+<p>
+  <a name="33547"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Alternatively, the <code>Push/PopLocalFrame</code> functions allow programmers to create nested scopes of local references. For example, we may also rewrite the same example as follows:</font>
+</p>
+
+<pre>
+<a name="27607"> </a>#define N_REFS ... /* the maximum number of local references
+<a name="33558"> </a>                      used in each iteration */
+<a name="33559"> </a>for (i = 0; i &lt; len; i++) {
+<a name="27608"> </a>    if ((*env)-&gt;PushLocalFrame(env, N_REFS) &lt; 0) {
+<a name="27609"> </a>        ... /* out of memory */
+<a name="27610"> </a>    }
+<a name="27611"> </a>    jstr = (*env)-&gt;GetObjectArrayElement(env, arr, i);
+<a name="27612"> </a>    ... /* process jstr */
+<a name="27613"> </a>    (*env)-&gt;PopLocalFrame(env, NULL);
+<a name="27614"> </a>}
+</pre>
+
+<p>
+  <a name="27615"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>PushLocalFrame</code> creates a new scope for specific number of local references. <code>PopLocalFrame</code> destroys the topmost scope, freeing all local references in that scope. </font>
+</p>
+
+
+<p>
+  <a name="27616"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The advantage of using the <code>Push/PopLocalFrame</code> functions is that they make it possible to manage the lifetime of local references without having to worry about every single local reference that might be created during execution. In the above example, if the computation that processes <code>jstr</code> creates additional local references, these local references will be freed after <code>PopLocalFrame</code> returns.</font>
+</p>
+
+
+<p>
+  <a name="27617"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>NewLocalRef</code> function is useful when you write utility functions that are expected to return a local reference. We will demonstrate the use of the <code>New-LocalRef</code> function in Section <a href="refs.html#27623">5.3</a>.</font>
+</p>
+
+
+<p>
+  <a name="27618"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The native code may create local references beyond the default capacity of 16 or the capacity reserved in a <code>PushLocalFrame</code> or <code>EnsureLocalCapacity</code> call. The virtual machine implementation will try to allocate the memory needed for the local reference. There is no guarantee, however, that memory will be available.  The virtual machine exits if it fails to allocate the memory. You should reserve enough memory for local references and free local references promptly to avoid such unexpected virtual machine exits.</font>
+</p>
+
+
+<p>
+  <a name="33651"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Java 2 SDK release 1.2 supports a command-line option <code>-verbose:jni</code>. When this option is enabled, the virtual machine implementation reports excessive local reference creation beyond the reserved capacity.</font>
+</p>
+
+<a name="27619"></a>
+<h3>5.2.3    Freeing Global References</h3>
+
+<p>
+  <a name="27620"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You should call <code>DeleteGlobalRef</code> when your native code no longer needs access to a global reference. If you fail to call this function the Java virtual machine will not garbage collect the corresponding object, even when the object is no longer used anywhere else in the system.</font>
+</p>
+
+
+<p>
+  <a name="27621"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You should call <code>DeleteWeakGlobalRef</code> when your native code no longer needs access to a weak global reference. If you fail to call this function the Java virtual machine will still be able to garbage collect the underlying object, but will not be able to reclaim the memory consumed by the weak global reference itself.</font>
+</p>
+
+<a name="27623"></a>
+<h2>5.3    Rules for Managing References</h2>
+
+<p>
+  <a name="27624"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We are now ready to go through the rules for managing JNI references in native code, based on what we have covered in previous sections. The objective is to eliminate unnecessary memory usage and object retention.</font>
+</p>
+
+
+<p>
+  <a name="27625"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are, in general, two kinds of native code: functions that directly implement native methods and utility functions that are used in arbitrary contexts.</font>
+</p>
+
+
+<p>
+  <a name="27626"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When writing functions that directly implement native methods, you need to be careful about excessive local reference creation in loops and unnecessary local reference creation caused by native methods that do not return. It is acceptable to leave up to 16 local references in use for the virtual machine to delete after the native method returns. Native method calls must not cause global or weak global references to accumulate because global and weak global references are not freed automatically after native methods return.</font>
+</p>
+
+
+<p>
+  <a name="27627"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><em>When writing native utility functions you must be careful not to leak any local references on any execution path throughout the function</em>. Because a utility function may be called repeatedly from an unanticipated context, any unnecessary reference creation may cause memory overflow. </font>
+</p>
+
+<a name="27692"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>When a utility function that returns a primitive type is called, it must not have the side effect of accumulating additional local, global, or weak global references.</font><a name="27693"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>When a utility function that returns a reference type is called, it must not accumulate extra local, global, or weak global references, other than the reference it returns as result. </font>
+</ul>
+<p>
+  <a name="27694"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It is acceptable for a utility function to create some global or weak global references for the purpose of caching because only the very first call creates these references.</font>
+</p>
+
+
+<p>
+  <a name="27628"> </a><font face="Arial, Verdana, Helvetica, sans-serif">If a utility function returns a reference, you should make the kind of returned reference part of the function specification. It should not return a local reference some of the time and a global reference at other times. The caller needs to know the type of the reference returned by a utility function in order to manage its own JNI references correctly. For example, the following code calls a utility function <code>GetInfoString</code> repeatedly. We need to know the type of reference returned by <code>GetInfoString</code> to be able to free the returned JNI reference properly after each iteration.</font>
+</p>
+
+<pre>
+<a name="27629"> </a>while (JNI_TRUE) {
+<a name="27630"> </a>    jstring infoString = GetInfoString(info);
+<a name="27631"> </a>    ... /* process infoString */
+<a name="27632"> </a>    
+<a name="27633"> </a>    ??? /* we need to call DeleteLocalRef, DeleteGlobalRef,
+<a name="27634"> </a>           or DeleteWeakGlobalRef depending on the type of 
+<a name="27635"> </a>           reference returned by GetInfoString. */
+<a name="27637"> </a>}
+</pre>
+
+<p>
+  <a name="27638"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In Java 2 SDK release 1.2, the <code>NewLocalRef</code> function sometimes is useful to ensure that a utility function always returns a local reference. To illustrate, let us make another (somewhat contrived) change to the <code>MyNewString</code> function. The following version caches a frequently requested string (say, <code>"CommonString"</code>) in a global reference:</font>
+</p>
+
+<pre>
+<a name="27639"> </a>jstring
+<a name="27640"> </a>MyNewString(JNIEnv *env, jchar *chars, jint len)
+<a name="27641"> </a>{
+<a name="27642"> </a>    static jstring result;
+<a name="27643"> </a>
+<a name="27644"> </a>    /* wstrncmp compares two Unicode strings */
+<a name="27645"> </a>    if (wstrncmp("CommonString", chars, len) == 0) {
+<a name="27646"> </a>        /* refers to the global ref caching "CommonString" */
+<a name="27647"> </a>        static jstring cachedString = NULL;
+<a name="27648"> </a>        if (cachedString == NULL) {
+<a name="27649"> </a>            /* create cachedString for the first time */
+<a name="27650"> </a>            jstring cachedStringLocal = ... ;
+            /* cache the result in a global reference */
+<a name="27651"> </a>            cachedString = 
+<a name="27652"> </a>                (*env)-&gt;NewGlobalRef(env, cachedStringLocal);
+<a name="27653"> </a>        }
+<a name="27654"> </a>        return (*env)-&gt;NewLocalRef(env, cachedString);
+<a name="27655"> </a>    }
+<a name="27656"> </a>
+<a name="27657"> </a>    ... /* create the string as a local reference and store in
+<a name="27658"> </a>           result as a local reference */
+<a name="27660"> </a>    return result;
+<a name="27661"> </a>}
+</pre>
+
+<p>
+  <a name="27662"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The normal path returns a string as a local reference. As explained before, we must store the cached string in a global reference so that it can be accessed in multiple native method invocations and from multiple threads. The highlighted line creates a new local reference that refers to the same object as the cached global reference. As part of the contract with its callers, <code>MyNewString</code> always returns a local reference.</font>
+</p>
+
+
+<p>
+  <a name="30182"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>Push/PopLocalFrame</code> functions are especially convenient for managing the lifetime of local references. If you called <code>PushLocalFrame</code> on entry to a native function, calling <code>PopLocalFrame</code> before the native function returns ensures that all local references created during native function execution will be freed. The <code>Push/PopLocalFrame</code> functions are efficient. You are strongly encouraged to use them.</font>
+</p>
+
+
+<p>
+  <a name="30188"> </a><font face="Arial, Verdana, Helvetica, sans-serif">If you call <code>PushLocalFrame</code> on function entry, remember to call <code>Pop-LocalFrame</code> in all function exit paths. For example, the following function has one call to <code>PushLocalFrame</code> but needs multiple calls to <code>PopLocalFrame</code>:</font>
+</p>
+
+<pre>
+<a name="30204"> </a>jobject f(JNIEnv *env, ...)
+<a name="30205"> </a>{
+<a name="30206"> </a>    jobject result;
+<a name="47963"> </a>    if ((*env)-&gt;PushLocalFrame(env, 10) &lt; 0) {
+<a name="33705"> </a>        /* frame not pushed, no PopLocalFrame needed */
+<a name="33691"> </a>        return NULL; 
+<a name="33702"> </a>    }
+<a name="30209"> </a>    ...
+<a name="47964"> </a>    result = ...;
+<a name="30210"> </a>    if (...) {
+<a name="30215"> </a>        /* remember to pop local frame before return */
+<a name="30213"> </a>        result = (*env)-&gt;PopLocalFrame(env, result);
+<a name="30212"> </a>        return result;
+<a name="30216"> </a>    }
+<a name="30217"> </a>    ...
+<a name="30218"> </a>    result = (*env)-&gt;PopLocalFrame(env, result);
+<a name="30279"> </a>    /* normal return */
+<a name="30219"> </a>    return result;
+<a name="30220"> </a>}
+</pre>
+
+<p>
+  <a name="30274"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Failing to place <code>PopLocalFrame</code> calls properly would lead to undefined behavior, such as virtual machine crashes.</font>
+</p>
+
+
+<p>
+  <a name="47985"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The above example also illustrates why it is sometimes useful to specify the second argument to <code>PopLocalFrame</code>. The <code>result</code> local reference is initially created in the new frame constructed by <code>PushLocalFrame</code>. <code>PopLocalFrame</code> converts its second argument, <code>result</code>, to a new local reference in the previous frame before popping the topmost frame.</font>
+</p>
+
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="fldmeth.html">Prev</a> | <a href="exceptions.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

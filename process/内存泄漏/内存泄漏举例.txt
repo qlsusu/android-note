@@ -1,0 +1,102 @@
+---------------------------------问题举例：
+public class MainActivity extends AppCompatActivity {
+    private static TestResource mResource = null;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if(mResource == null){
+            mResource = new TestResource();
+        }
+        //...
+    }
+    class TestResource {
+    //...
+    }
+}
+
+有什么问题：
+mResource虽然被声明成了静态，但是它本质上是new TestResource()，而这个对象是非静态内部类TestResource的对象，那么该对象一定会持有mainactivity对象的引用，那么activity这个对象将一直不能被垃圾回收
+
+---------------------------------问题举例（handler）：
+
+为什么会泄漏的原因：
+当Android应用首次启动时，framework会在应用的UI线程创建一个Looper对象。Looper实现了一个简单的消息队列并且一个接一个的处理队列中的消息。
+应用的所有事件(比如Activity生命周期回调方法，按钮点击等等)都会被当做一个消息对象放入到Looper的消息队列中，然后再被逐一执行。
+UI线程的Looper存在于整个应用的生命周期内。
+当在UI线程中创建Handler对象时，它就会和UI线程中Looper的消息队列进行关联。发送到这个消息队列中的消息会持有这个Handler的引用，这样当Looper最终处理这个消息的时候framework就会调用Handler#handleMessage(Message)方法来处理具体的逻辑。
+--
+当activity被finish的时候，延迟发送的消息仍然会存活在UI线程的消息队列中，直到10分钟后它被处理掉（诸如delaypost等情况）。
+这个消息持有activity的Handler的引用，Handler又隐式的持有它的外部类(这里就是SampleActivity)的引用。这个引用会一直存在直到这个消息被处理，所以垃圾回收机制就没法回收这个activity，内存泄露就发生了。
+
+public class MainActivity extends AppCompatActivity {
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+		//...
+		}
+	};
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        loadData();
+    }
+    private void loadData(){
+        //...request
+        Message message = Message.obtain();
+        mHandler.sendMessage(message);
+    }
+}
+
+有什么问题：
+mHandler是一个 内部匿名类的对象，那么该对象肯定拥有activity的引用，
+那么当activity退出时，而mhandler还有message要处理，那么activity不会被释放
+	此刻的引用关系链是：Looper -> MessageQueue -> Message -> Handler -> Activity
+
+该怎么解决：
+	handler不要持有activity的强引用（如：使用弱引用）
+	activity在ondestroy的时候，将handler要处理的 message和callback给清除掉
+public class MainActivity extends AppCompatActivity {
+    private MyHandler mHandler = new MyHandler(this);
+    private TextView mTextView ;
+    private static class MyHandler extends Handler {
+        private WeakReference<Context> reference;
+        public MyHandler(Context context) {
+        	reference = new WeakReference<>(context);
+        }
+        
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = (MainActivity) reference.get();
+            if(activity != null){
+				activity.mTextView.setText("");
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mTextView = (TextView)findViewById(R.id.textview);
+        loadData();
+    }
+
+    private void loadData() {
+        //...request
+        Message message = Message.obtain();
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+}
+说明：
+不要让mhandler拥有activity的引用，那么myhandler类应该是静态的，
+虽然mhandler的确是需要activity来完成一些功能，如activity.mTextView.setText("")，那么也不直接引用activity，而是使用弱引用（这样activity也有可能被当成垃圾而被清理）
+当activity退出时，清空mhandler队列

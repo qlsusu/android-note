@@ -1,0 +1,16 @@
+http://hi.baidu.com/justin8335/blog/item/8976de1d009e35f91ad5762e.html
+	讲述了集成eclipse和cdt
+	
+http://hi.baidu.com/wentaokou/blog/item/8150c54db8a1fcf6d62afc0c.html
+	8步教你打开Android之门 NDK入门教程
+	
+http://www.cnblogs.com/ginoz/archive/2010/06/30/1768443.html
+	另外一个安装教程，讲述了cygwin中应该安装哪些东西
+	
+
+
+http://www.pyfun.com/ziliao/201009/1634.html
+	提到了makeapp
+http://hi.baidu.com/tmy13/blog/item/3f6c29294991bbf799250a85.html/cmtid/3870828f8ca523f4513d92af
+http://blog.csdn.net/hzhxxx/archive/2010/07/21/5752627.aspx
+http://www.cnblogs.com/halzhang/archive/2010/08/03/1791405.html

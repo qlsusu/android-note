@@ -1,0 +1,94 @@
+----------------------------------------------------------------------------资料合集
+!!!___!!!泡在网上的日子-安卓
+	http://www.jcodecraeer.com/plus/list.php?tid=18
+
+!!!___!!!codekk中的文章
+http://b.codekk.com/
+	
+!!!___!!!开发周报
+	http://androidweekly.net/issues/
+	http://www.androidweekly.cn/
+!!!___!!!开发周报（中文版）
+	http://www.jcodecraeer.com/a/androidweekly/
+http://www.jcodecraeer.com
+infoq的周报
+	http://www.infoq.com/cn/android-weekly/
+
+!!!___!!!伯乐在线-安卓
+	http://android.jobbole.com/all-posts/
+
+!!!___!!!开发技术前线
+http://www.devtf.cn/
+
+！！！___！！！sample:
+sdk中的sample
+先查看legacy目录，再查看其他目录。其中 对笔记 进行补充（记录例子的位置）
+说明：https://developer.android.com/samples
+--
+google sample中的android部分
+	https://github.com/googlesamples?utf8=%E2%9C%93&query=android
+https://developer.xamarin.com/samples-all
+--
+使用studio来进行导入（http://www.eoeandroid.com/thread-553690-1-1.html）
+	
+！！！android最佳实践
+http://www.lightskystreet.com/categories/Android%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/
+
+阿里的android论坛
+	https://yq.aliyun.com/articles/tag_31/?spm=5176.100239.yqblog2.30.2O25S2
+
+Google Android官方培训课程中文版
+http://hukai.me/android-training-course-in-chinese/index.html
+http://developer.android.com/training/index.html
+其中的sample
+	https://github.com/android/platform_development/tree/master/samples
+	http://developer.android.com/samples/index.html
+--
+http://developer.android.com/guide/index.html
+	
+开发者博客
+http://android-developers.blogspot.com/
+
+！！！http://www.open-open.com/code/?sort=active&lang=1&catalog=8
+	代码库
+
+码农周刊
+	http://weekly.manong.io/issues/
+
+---------------	
+
+包含了完整的android的教程，但是可能部分内容有些错误
+	https://guides.codepath.com/android/
+
+简书-android进阶
+	http://www.jianshu.com/collection/eabd59e64a0f
+
+android周报(很多地方都引用了 该周报)
+http://androidweekly.net/
+http://androidweekly.net/archive	
+
+http://www.infoq.com/cn/android/news
+	infoq出的android周报
+
+https://github.com/bboyfeiyu/android-tech-frontier
+	infoq上的开发周报中，有多次引入它
+	一些翻译的教程
+！！！https://github.com/bboyfeiyu/android-tech-frontier/wiki
+	已经完成了哪些文章翻译
+
+
+http://www.zhihu.com/question/32037895	
+	Android 开发有哪些新技术出现
+	
+https://github.com/trending?l=java&since=monthly
+	git上面，java的trend，大部分android相关
+	
+http://www.androiddevtools.cn
+	sdk等一些工具，包含了sdk manager的地址
+	也包含一些其他的资料
+		
+http://www.open-open.com/lib/list/177
+	开发经验库
+	
+Android学习路线指南
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/1105/3659.html

@@ -1,0 +1,17 @@
+------------------------VelocityTracker
+用于得到滑动的速度(一段时间内，滑过的px的数目)，
+	如，在up抬起时，y方向上的速度>600，则认为用户在快速的滑动
+
+原理：
+构建对象（必要时）
+	VelocityTracker.obtain();
+被提供motionevent（可以在view.ontouch中）
+	addMovement(event)
+获得滑动速度
+	velocityTracker.computeCurrentVelocity
+	velocityTracker.getX/YVelocity()
+回收（如在view.ontouch的 action_up/action_cancel中）
+	velocityTracker.clear()
+	velocityTracker.recycle();
+
+参见：VerticalLinearLayout

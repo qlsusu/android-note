@@ -1,0 +1,6 @@
+通过eclipse的adt工具，可以下载较新的源码，其会放入sources文件夹内（而非platform/android-版本号/sources文件夹下）
+通过在build class path中为制定的jar（如android-2.1.jar）attach source code来查看源码
+
+--旧的方式
+将源码解压并放入
+	\android-sdk-windows-1.5_r2\platforms\android-1.5\sources

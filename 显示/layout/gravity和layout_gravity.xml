@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<!--
+		android:gravity不是layout属性，其用来说明怎么布置自己。对于button，如下例，在说明，我应该怎么布置我的文字
+	-->
+	<Button android:text="@+id/Button01" android:id="@+id/Button01"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:gravity="center_horizontal" android:layout_weight="1"></Button>
+
+	<Button android:text="@+id/Button02" android:id="@+id/Button02"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:gravity="bottom" android:layout_weight="1"></Button>
+
+	<!--
+		android:gravity不是layout属性，其用来说明怎么布置自己。对于layout，如下例，在说明，我应该怎么布置我的孩子；
+		而android:layout_gravity是layout属性，其告诉parent：请按照你的规则，并尽量满足我的要求
+	-->
+	<!--
+		对于纵向的line来说，孩子在y方向上不允许有任何要求，如，
+		android:layout_gravity="center_vertical"；同理对于横向的line
+	-->
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_weight="1" android:orientation="vertical"
+		android:layout_gravity="center_horizontal" android:gravity="center_vertical|center_horizontal">
+
+		<Button android:text="@+id/Button03" android:id="@+id/Button03"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+
+</LinearLayout>

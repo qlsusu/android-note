@@ -1,0 +1,4 @@
+在eclipse中，最高使用版本:
+/Users/qlong/_study/android/android-sdk-macosx/extras/android/m2repository/com/android/support/recyclerview-v7/22.1.1/recyclerview-v7-22.1.1.aar.zip Folder中的classes.jar
+适配的support-v4：22.2.1
+适配的support-v7：22.2.1

@@ -1,0 +1,26 @@
+SweepGradient可以用来创建360度颜色旋转渐变效果
+
+SweepGradient(float cx, float cy, int color0, int color1)
+SweepGradient(float cx, float cy, int[] colors, float[] positions)
+
+例子1：
+int canvasWidth = canvas.getWidth();
+int canvasHeight = canvas.getHeight();
+float centerX = canvasWidth / 2f;
+float centerY = canvasHeight / 2f;
+float radius = canvasWidth / 4f;
+SweepGradient sweepGradient = new SweepGradient(centerX, centerY, Color.GREEN, Color.BLUE);
+paint.setShader(sweepGradient);
+canvas.drawCircle(centerX, centerY, radius, paint);
+
+例子2：
+int canvasWidth = canvas.getWidth();
+int canvasHeight = canvas.getHeight();
+float centerX = canvasWidth / 2f;
+float centerY = canvasHeight / 2f;
+float radius = canvasWidth / 4f;
+int[] colors = {Color.RED, Color.GREEN, Color.BLUE};
+float[] positions = {0f, 0.5f, 0f};
+SweepGradient sweepGradient = new SweepGradient(centerX, centerY, colors, positions);
+paint.setShader(sweepGradient);
+canvas.drawCircle(centerX, centerY, radius, paint);

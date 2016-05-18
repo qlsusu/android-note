@@ -1,0 +1,106 @@
+参见：my/launchMode2
+	调整其中的跳转逻辑 来测试
+
+taskAffinity
+如果被设置了，值就是被设置的那个
+否则，为<application>中的taskAffinity
+	如果它也没被设置，则为包名
+--
+原文为：
+Values for the task as a whole are set in the root activity, that value is read from the affinity set for the task's root activity.
+	If this attribute is NOT set, the activity inherits the affinity set for the application(<application> element's taskAffinity attribute). 
+		The name of the default affinity for an application is the package name set by the <manifest> element. 
+
+start activity：
+该activity一定要被放入到一个task中
+	该task将呈现在面前，且栈顶是该activity
+	哪一个task：
+		为activity.taskaffinity的条件：
+			intent包含了flag_activity_new_task 或 
+			被启动者为singletask 或
+			启动方为singleinstance时，
+		标识为：activity的完全类名。条件:
+			被启动者为singleinstance时
+			因为：singleinstance activity所在的task 只能有 该activity 这一个activity
+		否则，启动方activity 的task中
+该activity是否要被创建（考虑被启动者的launch mode）
+	standard：一定被创建
+	singletop：目标task的top为该activity的实例
+	singletask：目标task中存在该activity的实例
+		启动后，目标task的该activity之上的 其他activity将会被清除
+	singleinstance：目标task中存在该activity的实例
+
+back按键
+	会把一个个activity从task中移出
+	会一个个移除task
+
+多任务列表中，
+项 对应于 taskaffinity
+	一种说明：可能有其他activityA 和 singleinstance的activityB的taskaffinity相同，
+		但是他们位于不同的task
+		但是两个task对应于 多任务列表中的同一项
+		点击该项时，上一次最晚出现的task 将被呈现
+隐藏项
+	一个 拥有对应的taskaffinity的 activity上设置：android:excludeFromRecents="true"
+	说明：注意是隐藏task，而不是隐藏 task的某个activity
+当点击其中一项时，将呈现该项的taskaffinity对应的 最近的task（可能多个task对应同一个taskaffinity）
+	一个例子：设栈顶的activity是dialog风格，那么将展示该activity，以及 同在该task中的 背景activity
+		如果不想展示背景activity，那么栈顶的launchmode应该为singleinstance（因为 整个task这有它一个activity）
+	
+taskaffinity
+如果在mainifest.xml中，仅仅用字母表示，会出错
+一个建议，以:开头
+
+taskid：
+activity.gettaskid()
+
+-----------------------------------------------------------------------之下为老的内容
+
+如果要被放入到task
+	如果放入到 一个new task（intent拥有new task flag，或者，activity的launch mode为singletask/singleinstance）
+		则根据 待启动activity 的task affinity
+			如果，已经存在了一个task 和该affinity相同，那么，它被直接放入到该task
+			否则，创建一个task 来放入它
+	否则，放入到 启动者所在的task
+否则，执行相关逻辑
+
+standard：
+是否要被自动放入到new task：否
+启动时，永远被重新创建
+--
+例子：
+Activity的默认加载方法，即使某个Activity在Task栈中已经存在，另一个activity通过Intent跳转到该activity，同样会新创建一个实例压入栈中。
+例如：现在栈的情况为：A B C D，在D这个Activity中通过Intent跳转到D，那么现在的栈情况为： A B C D D 。此时如果栈顶的D通过Intent跳转到B，则栈情况为：A B C D D B。此时如果依次按返回键，D  D C B A将会依次弹出栈而显示在界面上。
+
+singleTop：
+是否要被自动放入到new task：否
+启动时，不被重新创建的条件：已在task.top
+特例：如果task1中启动了该activity，而又要再启动它时，将不会再有可能 放置它到其他task
+	解释（猜测）：back按键，将会从上到下销毁task中的activity，也会从后往前销毁task。在销毁的过程中，依次看到两个singleton，有点奇怪
+		或者，系统的bug
+--
+例子：
+如果某个Activity的Launch mode设置成singleTop，那么当该Activity位于栈顶的时候，再通过Intent跳转到本身这个Activity，则将不会创建一个新的实例压入栈中。
+例如：现在栈的情况为：A B C D。D的Launch mode设置成了singleTop，那么在D中启动Intent跳转到D，那么将不会新创建一个D的实例压入栈中，此时栈的情况依然为：A B C D。
+但是如果此时B的模式也是singleTop，D跳转到B，那么则会新建一个B的实例压入栈中，因为此时B不是位于栈顶，此时栈的情况就变成了：A B C D B。
+
+singleTask：
+是否要被自动放入到new task：是
+启动时，不被重新创建的条件：已在task中
+	并且清除：该task中，该对象之上的所有activity
+--
+例子：
+如果某个Activity是singleTask模式，那么Task栈中将会只有一个该Activity的实例。
+例如：现在栈的情况为：A B C D。B的Launch mode为singleTask，此时D通过Intent跳转到B，则栈的情况变成了：A B，而C和D被弹出销毁了，也就是说位于B之上的实例都被销毁了。
+
+singleInstance:
+是否要被自动放入到new task：是
+启动时，不被重新创建的条件：已在task中，
+	该task中，只允许存在 它 一个元素
+		即便 系统中，已经存在了一个task 和它的affinity相同（即是：该task中已经存在了其他activity），那么，也新建一个
+		它启动activity2时，activity2要被自动放入了new task（无论activity2的launch mode）
+--
+例子：
+将Activity压入一个新建的任务栈中。例如：Task栈1的情况为：A B C。C通过Intent跳转到D，而D的Launch mode为singleInstance，则将会新建一个Task栈2。
+此时Task栈1的情况还是为：A B C。Task栈2的情况为：D。此时屏幕界面显示D的内容，如果这时D又通过Intent跳转到D，则Task栈2中也不会新建一个D的实例，所以两个栈的情况也不会变化。
+而如果D跳转到C，则栈1的情况变成了：A B C C，因为C的Launch mode为standard，此时如果再按返回键，则栈1变成：A B C。也就是说现在界面还显示C的内容，不是D。

@@ -1,0 +1,77 @@
+系列教程：Gradle for Android
+	https://segmentfault.com/a/1190000004237922
+	
+Android Gradle Plugin指南
+ 	http://blog.csdn.net/qinxiandiqi/article/category/2394347
+-----------------------
+
+Gradle是一种依赖管理工具，Gradle构建脚本使用DSL(Domain Specific Language)来描述
+构建逻辑基于Groovy语言，面向Java应用为主
+
+http://tools.android-studio.org/
+http://gradle.org/gradle-download/
+
+Mac上会默认下载到 /Users/<用户名>/.gradle/wrapper/dists 目录
+Win平台会默认下载到 C:\Documents and Settings\<用户名>\.gradle\wrapper\dists 目录
+
+
+--
+如何当前android支持的版本：
+     http://mvnrepository.com/artifact/com.android.tools.build/gradle
+
+打包：
+build菜单-build apk
+	在app/build/outputs/apk/中产生
+或者，执行gradlew build
+
+当一个工程被移动到了其他地方，并被as打开，需要clean并且rebuild（因为index变了）
+
+
+-----------------------
+
+编译
+gradlew assembleDebug
+
+-----------------------
+
+
+
+Android应用开发编译框架流程与IDE及Gradle概要
+	http://blog.csdn.net/yanbober/article/details/49408489
+Android Studio入门到精通
+	http://blog.csdn.net/yanbober/article/details/45306483
+Groovy脚本基础全攻略
+	http://blog.csdn.net/yanbober/article/details/49047515
+Gradle脚本基础全攻略
+	http://blog.csdn.net/yanbober/article/details/49314255
+
+gradle入门
+http://stormzhang.com/
+http://segmentfault.com/a/1190000002439306
+
+gradle基础
+     http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/
+
+
+
+为什么编译那么慢：
+     https://www.v2ex.com/t/226387
+     http://blog.isming.me/2015/03/18/android-build-speed-up/index.html
+     ！！！！使用okbuck来进行构建(facebook)
+          https://github.com/Piasy/OkBuck/blob/master/README-zh.md
+          测试，具体的效果如何
+
+
+
+
+http://blog.jobbole.com/71999/
+
+
+学习的：
+http://gmariotti.blogspot.com/2013/07/actionbarcompat-and-navigationdrawer.html
+
+！！！！gradlew的命令补充
+
+sdk离线下载：
+     https://www.caoqq.net/android-sdk-offine-download.html
+     http://zhuanlan.zhihu.com/internet-thinking/19969422

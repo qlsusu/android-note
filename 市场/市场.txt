@@ -1,0 +1,15 @@
+Android市场的一个小对比和推荐总结[zz]
+	http://doandroid.info/android%E5%B8%82%E5%9C%BA%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%AF%B9%E6%AF%94%E5%92%8C%E6%8E%A8%E8%8D%90%E6%80%BB%E7%BB%93zz/
+主流安卓市场（Android Market）整体评价
+	http://blog.donews.com/tianzc/archive/2012/03/12/32.aspx
+发者注册Android Market收取费用
+	http://abitno.me/how-to-earn-money-in-android-market-as-a-chinese#more_191
+Google Play 開發人員專區（Starting today, Android Market, Google Music and the Google eBookstore will become part of Google Play）
+	http://support.google.com/googleplay/android-developer/?hl=zh-Hant
+
+google play投诉
+	http://support.google.com/googleplay/android-developer/bin/request.py?contact_type=dev_registration
+	
+Google Play应用商店开发者账号注册教程
+	http://www.eoeandroid.com/forum.php?mod=viewthread&tid=170776
+		天杀的google play：等待了20天左右注册成功，大家可以更耐心点的等待审核哦！

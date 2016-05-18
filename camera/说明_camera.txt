@@ -1,0 +1,6 @@
+参见：my/talkingface中 com.oooo3d.lib.util.CameraTool
+参数的设置，参见：my/zxingdemo
+自动对焦：
+	http://www.pocketdigi.com/20110909/465.html
+变焦
+	http://blog.csdn.net/fuuckwtu/article/details/7068072

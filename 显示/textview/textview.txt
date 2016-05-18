@@ -1,0 +1,19 @@
+text1.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);  //添加下划线
+text2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);  //添加删除线
+
+加粗
+xml中
+	android:textStyle="bold"
+代码中
+	TextView tv = (TextView)findViewById(R.id.tv);   
+	TextPaint tp = tv.getPaint();   
+	tp.setFakeBoldText(true);  
+
+计算textview的高度（当已经被赋予了text文本，且textview设置的MaxLines小于实际的行数时）
+在计算之前，先mTv.setMaxLines(Integer.MAX_VALUE);
+int textHeight = textView.getLayout().getLineTop(textView.getLineCount());
+int padding = textView.getCompoundPaddingTop() + textView.getCompoundPaddingBottom();
+return textHeight + padding;
+
+当动态改变了textview的maxline后，还要设置下maxheight
+

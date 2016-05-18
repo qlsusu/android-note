@@ -1,0 +1,10 @@
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@drawable/image_expand">
+  <item android:drawable="@drawable/image_collapse">
+</transition>
+
+Resources res = mContext.getResources();
+TransitionDrawable transition = (TransitionDrawable) res.getDrawable(R.drawable.expand_collapse);
+ImageView image = (ImageView) findViewById(R.id.toggle_image);
+image.setImageDrawable(transition);
+transition.startTransition(1000);

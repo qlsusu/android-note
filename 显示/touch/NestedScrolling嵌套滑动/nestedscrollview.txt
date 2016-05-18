@@ -1,0 +1,14 @@
+包含了scrollview的特性
+唯一的区别是：实现了nestedscrollingchild接口，可以通知nestedscrollingparent scroll事件
+
+例子：
+<android.support.v4.widget.NestedScrollView  
+	android:layout_width="match_parent"  
+	android:layout_height="wrap_content"  >  
+
+	<LinearLayout  
+		android:layout_width="match_parent"  
+		android:layout_height="wrap_content"  
+		android:orientation="vertical" >  
+	</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,6 @@
+参见：http://blog.csdn.net/iispring/article/details/50500106
+
+Shader就是着色器的意思。
+Canvas中的各种drawXXX方法定义了图形的形状，画笔中的Shader则定义了图形的着色、外观。二者结合到一起就决定了最终Canvas绘制的被色彩填充的图形的样子。
+
+类android.graphics.Shader有五个子类，分别是：BitmapShader、LinearGradient、RadialGradient、SweepGradient和ComposeShader

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html><head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<title>Android图片处理：颜色矩阵和坐标变换矩阵 - CodeLogic</title>
+	<!--meta name="copyright" content="design by wopus.org" /-->
+	<link rel="stylesheet" href="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/style.css" type="text/css" media="screen">
+	<link rel="alternate" type="application/rss+xml" title="CodeLogic RSS Feed" href="http://www.icodelogic.com/?feed=rss2">
+	<link rel="pingback" href="http://www.icodelogic.com/xmlrpc.php">
+		<script type="text/javascript" src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/jquery.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$('.menu li').hover(function() {
+				$('ul', this).slideDown(300)
+			},
+			function() {
+				$('ul', this).slideUp(300)
+			});
+		});
+	</script>
+	<link rel="alternate" type="application/rss+xml" title="CodeLogic 下一页 » Android图片处理：颜色矩阵和坐标变换矩阵 订阅评论" href="http://www.icodelogic.com/?feed=rss2&amp;p=559">
+<link rel="stylesheet" id="wp-pagenavi-css" href="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/pagenavi-css.css" type="text/css" media="all">
+<script type="text/javascript" src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/l10n.js"></script>
+<script type="text/javascript" src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/comment-reply.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.icodelogic.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.icodelogic.com/wp-includes/wlwmanifest.xml"> 
+<link rel="index" title="CodeLogic" href="http://www.icodelogic.com/">
+<link rel="start" title="博客终于正式开通啦！" href="http://www.icodelogic.com/?p=5">
+<link rel="prev" title="Android如何使用NDK进行JNI开发" href="http://www.icodelogic.com/?p=551">
+<link rel="next" title="图像滤镜处理算法：灰度、黑白、底片、浮雕" href="http://www.icodelogic.com/?p=575">
+<meta name="generator" content="WordPress 3.2.1">
+<link rel="canonical" href="http://www.icodelogic.com/?p=559">
+
+<link rel="stylesheet" href="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/wp-syntax.css" type="text/css" media="screen">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body>
+<div id="page">
+	<div id="header">
+		<h1><a href="http://www.icodelogic.com/">CodeLogic</a></h1>
+		<div id="search">
+			<form id="searchform" method="get" action="http://www.icodelogic.com">
+				<input class="s-text" name="s" id="s" size="20" type="text">
+				<input class="s-submit" value="" type="submit">
+			</form>
+		</div>
+		<div id="nav">
+			<div id="rss"><a id="rss_icon" title="订阅CodeLogic日志" href="http://www.icodelogic.com/?feed=rss2"></a></div>
+			<div class="menu-%e9%a6%96%e9%a1%b5-container"><ul id="menu-%e9%a6%96%e9%a1%b5" class="menu"><li id="menu-item-164" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-164"><a href="http://icodelogic.com/">首页</a></li>
+<li id="menu-item-440" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-440"><a href="http://www.icodelogic.com/?cat=6">Emacs</a></li>
+<li id="menu-item-439" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-439"><a href="http://www.icodelogic.com/?cat=48">WP7</a></li>
+<li id="menu-item-509" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-509"><a href="http://www.icodelogic.com/?cat=84">Python</a></li>
+<li id="menu-item-172" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-172"><a href="http://www.icodelogic.com/?cat=3">C/C++</a></li>
+<li id="menu-item-176" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-176"><a href="http://www.icodelogic.com/?cat=4">OpenGL</a></li>
+<li id="menu-item-179" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-179"><a href="http://www.icodelogic.com/?page_id=2">关于</a></li>
+</ul></div>		</div>
+	</div><div id="main">
+			<div class="post-559 post type-post status-publish format-standard hentry category-android-2 category-uncategorized tag-android tag-109 tag-111 tag-110" id="post-559">
+		<h2>
+<div class="time">已阅读：330 次</div>
+<a href="http://www.icodelogic.com/?p=559" rel="bookmark">Android图片处理：颜色矩阵和坐标变换矩阵</a>
+<br>
+<div class="time">ian | <a href="http://www.icodelogic.com/?cat=80" title="显示Android的所有日志" rel="category">Android</a>,<a href="http://www.icodelogic.com/?cat=1" title="显示其他的所有日志" rel="category">其他</a> | 2012/04/13</div>
+                  </h2>
+<br>
+			<p>UI开发过程中，我们经常需要对图片进行处理，常见的如贴图，复杂一些的还有位置变换、旋转、滤镜特效等，下面简单介绍一下关于图片处理的一些基本知识和原理。</p>
+<p><strong>1 基本概念</strong><br>
+对于图片的处理，最常使用到的数据结构是Bitmap，它包含了一张图片所有的数据，这些数据数据包括那些内容呢？简单说来就是由点阵和颜色值组成的，所
+谓点阵就是一个在概念上是Width * 
+Height的矩阵，每一个元素对应着图片的一个像素，也就是说，点阵保存着图片的空间位置信息；而颜色值即ARGB，分别对应透明度、红、绿、蓝这四个
+通道分量，每个通道用8比特定义，所以一个颜色值就是一个int整型，可以表示256*256*256种颜色值。</p>
+<p>Android中我们常用到这么几个常量：ARGB_8888、ARGB_4444、RGB_565。这几个常量其实就是告诉系统如何对图片的颜色
+值进行处理，例如ARGB_8888是告诉系统透明度、R、G、B在颜色值中分别用8bit表示，这时颜色值为32bit，这样的定义能够表示最多的颜色
+值，图片质量也是最好的；ARGB_4444则是每个通道用4bit表示，这样颜色值只用16bit，节省了空间，但是却只能表示16*16*16种颜
+色，也就是说图片很失去很多彩色信息；RGB_565类型的颜色值同样是16bit，但是它丢弃了透明度信息，可以表示32*64*32种颜色值。</p>
+<p><strong>2 颜色矩阵</strong><br>
+颜色矩阵是一个5*4的矩阵，用来对图片颜色值进行处理。定义颜色矩阵和颜色值如下如下：</p>
+<p><a href="http://www.icodelogic.com/wp-content/uploads/2012/04/11.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/11.jpg" alt="" title="1" class="alignnone size-full wp-image-569" height="169" width="467"></a><br>
+进行如下矩阵运算：<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/2.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/2.jpg" alt="" title="2" class="alignnone size-full wp-image-561" height="149" width="171"></a><br>
+结果R为4*1的矩阵，这个矩阵就是新的颜色值，R中每个通道的值分别如下：<br>
+R’ = a*R + b*G + c*B + d*A + e;<br>
+G’ = f*R + g*G + h*B + i*A + j;<br>
+B’ = k*R + l*G + m*B + n*A + o;<br>
+A’ = p*R + q*G + r*B + s*A + t;</p>
+<p>这样看起来或许很抽象，很难理解颜色矩阵和结果R直接的关系，我们假设颜色矩阵值如下所示：</p>
+<p><a href="http://www.icodelogic.com/wp-content/uploads/2012/04/3.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/3.jpg" alt="" title="3" class="alignnone size-full wp-image-562" height="104" width="160"></a></p>
+<p>那么结果为：<br>
+R’ = R;<br>
+G’ = G;<br>
+B’ = B;<br>
+A’ = A;<br>
+也就是说，新的颜色值跟原先的一样！再看一个例子，颜色矩阵取值为：<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/4.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/4.jpg" alt="" title="4" class="alignnone size-full wp-image-563" height="105" width="176"></a><br>
+结果为：<br>
+R’ = R + 100;<br>
+G’ = G + 100;<br>
+B’ = B;<br>
+A’ = A;<br>
+新的颜色值中，红色通道值和绿色通道值分别增加了100，此时图片会泛黄(因为R + G = Yellow)。</p>
+<p>从上面的几个例子我们很容易就能明白颜色矩阵中的每个分量(每一列)的意义：<br>
+第一行决定红色，<br>
+第二行决定绿色，<br>
+第三行决定蓝色，<br>
+第四行决定了透明度，<br>
+第五列是颜色的偏移量。<br>
+至此我们应该能理解如何通过颜色矩阵来改变颜色值的各个分量了。</p>
+<p>下面是用于Android的一段代码，用于将图片处理成泛黄的效果：</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="code"><pre class="java" style="font-family:monospace;">    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Bitmap testBitmap<span style="color: #009900;">(</span>Bitmap bitmap<span style="color: #009900;">)</span>
+    <span style="color: #009900;">{</span>
+        Bitmap output <span style="color: #339933;">=</span> Bitmap.<span style="color: #006633;">createBitmap</span><span style="color: #009900;">(</span>bitmap.<span style="color: #006633;">getWidth</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>,
+                bitmap.<span style="color: #006633;">getHeight</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>, Config.<span style="color: #006633;">RGB_565</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #003399;">Canvas</span> canvas <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <span style="color: #003399;">Canvas</span><span style="color: #009900;">(</span>output<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #003399;">Paint</span> paint <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <span style="color: #003399;">Paint</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>        
+        ColorMatrix cm <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> ColorMatrix<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">[</span><span style="color: #009900;">]</span> array <span style="color: #339933;">=</span> <span style="color: #009900;">{</span><span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">100</span>,
+                <span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">100</span>,
+                <span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,
+                <span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">0</span><span style="color: #009900;">}</span><span style="color: #339933;">;</span>
+        cm.<span style="color: #006633;">set</span><span style="color: #009900;">(</span>array<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        paint.<span style="color: #006633;">setColorFilter</span><span style="color: #009900;">(</span><span style="color: #000000; font-weight: bold;">new</span> ColorMatrixColorFilter<span style="color: #009900;">(</span>cm<span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        canvas.<span style="color: #006633;">drawBitmap</span><span style="color: #009900;">(</span>bitmap, <span style="color: #cc66cc;">0</span>, <span style="color: #cc66cc;">0</span>, paint<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> output<span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p><strong>3 坐标变换矩阵</strong><br>
+对图片的操作除了颜色值的处理外，最常用的就是空间坐标的变换了，常见的效果有平移、旋转、拉伸等，这其实也是通过一个矩阵来完成的。坐标变换矩阵是一个
+3*3的矩阵，通过与一个类似(X,Y,1)的坐标值的矩阵乘法运算，能够将这个坐标值转换成一个新的坐标值，计算过程如下：<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/51.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/51.jpg" alt="" title="5" class="alignnone size-full wp-image-571" height="98" width="432"></a><br>
+结果为：<br>
+x’=a*x+b*y+c<br>
+y’=d*x+e*y+f<br>
+同颜色矩阵一样，如果坐标变换矩阵如下，则新的坐标值X、Y增加50，也就是说图片的每一点都平移了(50,50)的距离，即图片整体平移到了(50,50)坐标处。<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/6.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/6.jpg" alt="" title="6" class="alignnone size-full wp-image-565" height="121" width="155"></a><br>
+如果坐标变换矩阵如下，则所有的X、Y坐标都增大两倍，也就是说图片被放大了两倍，其他缩放效果原理类似。<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/7.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/7.jpg" alt="" title="7" class="alignnone size-full wp-image-566" height="118" width="166"></a><br>
+更复杂一点的还有旋转效果，一个旋转变换矩阵如下：<br>
+<a href="http://www.icodelogic.com/wp-content/uploads/2012/04/8.jpg"><img src="Android%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%EF%BC%9A%E9%A2%9C%E8%89%B2%E7%9F%A9%E9%98%B5%E5%92%8C%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5_files/8.jpg" alt="" title="8" class="alignnone size-full wp-image-567" height="100" width="221"></a><br>
+结果为x’ = xcosθ – ysinθ 与 y’ = xsinθ + ycosθ，这个结果的效果是绕原点逆时针旋转θ度角。</p>
+<p>下面是用于Android的一段示例代码，用于将图片平移，也就是裁剪的效果，其他效果可以参照对应坐标变换矩阵修改即可：</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="code"><pre class="java" style="font-family:monospace;">    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Bitmap test1Bitmap<span style="color: #009900;">(</span>Bitmap bitmap<span style="color: #009900;">)</span>
+    <span style="color: #009900;">{</span>
+        Bitmap output <span style="color: #339933;">=</span> Bitmap.<span style="color: #006633;">createBitmap</span><span style="color: #009900;">(</span>bitmap.<span style="color: #006633;">getWidth</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>,
+                bitmap.<span style="color: #006633;">getHeight</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>, Config.<span style="color: #006633;">RGB_565</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #003399;">Canvas</span> canvas <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <span style="color: #003399;">Canvas</span><span style="color: #009900;">(</span>output<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #003399;">Paint</span> paint <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <span style="color: #003399;">Paint</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>        
+        Matrix cm <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Matrix<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">[</span><span style="color: #009900;">]</span> array <span style="color: #339933;">=</span> <span style="color: #009900;">{</span><span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">50</span>,
+                <span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">50</span>,
+                <span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">0</span>,<span style="color: #cc66cc;">1</span><span style="color: #009900;">}</span><span style="color: #339933;">;</span>
+        cm.<span style="color: #006633;">setValues</span><span style="color: #009900;">(</span>array<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        canvas.<span style="color: #006633;">drawBitmap</span><span style="color: #009900;">(</span>bitmap, cm, paint<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> output<span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+					<div class="meta">
+<p>原创文章,转载请注明：<strong>转载自<a href="http://www.icodelogic.com/%E2%80%9DCodeLogic%E2%80%9D">CodeLogic</a></strong>[<a href="http://www.icodelogic.com/">http://www.icodelogic.com</a>]<br>
+本文链接地址: <a href="http://www.icodelogic.com/?p=559" title="”Android图片处理：颜色矩阵和坐标变换矩阵”">http://www.icodelogic.com/?p=559</a></p>
+<p class="alignleft">tags: <a href="http://www.icodelogic.com/?tag=android" rel="tag">android</a>、<a href="http://www.icodelogic.com/?tag=%e5%9b%be%e5%83%8f%e5%a4%84%e7%90%86" rel="tag">图像处理</a>、<a href="http://www.icodelogic.com/?tag=%e5%9d%90%e6%a0%87%e5%8f%98%e6%8d%a2%e7%9f%a9%e9%98%b5" rel="tag">坐标变换矩阵</a>、<a href="http://www.icodelogic.com/?tag=%e9%a2%9c%e8%89%b2%e7%9f%a9%e9%98%b5" rel="tag">颜色矩阵</a></p>
+</div>
+		</div>
+
+		<div class="post_nav"><div class="meta">
+			<span class="alignleft">« <a href="http://www.icodelogic.com/?p=551" rel="prev">Android如何使用NDK进行JNI开发</a></span>
+			<span class="alignright"><a href="http://www.icodelogic.com/?p=575" rel="next">图像滤镜处理算法：灰度、黑白、底片、浮雕</a> »</span></div>
+		</div>
+		<h3>没有评论<small><a href="#postcomment" title="发表评论">▼</a></small></h3>
+	<div id="respond">
+		<h3 id="post_comment"><div id="cancel_comment_reply"><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.icodelogic.com/?p=559#respond" style="display:none;">点击这里取消回复。</a></div>发表评论</h3>
+				<form action="http://www.icodelogic.com/wp-comments-post.php" method="post" id="commentform" name="commentform">
+			<p><textarea name="comment" id="comment" rows="5" tabindex="4"></textarea></p>
+						<p><input name="author" id="author" size="22" tabindex="1" type="text">
+			<label for="author">名称 （必填）</label></p>
+			<p><input name="email" id="email" size="22" tabindex="2" type="text">
+			<label for="email">邮箱（不会被公开） （必填）</label></p>
+			<p><input name="url" id="url" size="22" tabindex="3" type="text">
+			<label for="url">网址</label></p>
+						<p><input id="submit" tabindex="5" value="发表评论(Ctrl+Enter)" type="submit"></p>
+			<input name="comment_post_ID" value="559" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+					</form>
+				<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+			var commenttextarea = document.getElementById('comment');
+			commenttextarea.onkeydown = function quickSubmit(e) {
+			if (!e) var e = window.event;
+			if (e.ctrlKey && e.keyCode == 13){
+			document.getElementById('submit').click();
+			}
+			};
+			//--><!]]>
+		</script>
+	</div>
+			</div>
+<div id="sidebar">
+	<ul>
+		<li id="categories-3" class="widget widget_categories"><h4>分类</h4>		<ul>
+	<li class="cat-item cat-item-80"><a href="http://www.icodelogic.com/?cat=80" title="查看Android下的所有日志">Android</a> (13)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.icodelogic.com/?cat=3" title="C/C++">C/C++</a> (4)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://www.icodelogic.com/?cat=6" title="Emacs">Emacs</a> (8)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.icodelogic.com/?cat=7" title="Flex/AS">Flex/AS</a> (1)
+</li>
+	<li class="cat-item cat-item-71"><a href="http://www.icodelogic.com/?cat=71" title="查看HTML下的所有日志">HTML</a> (3)
+</li>
+	<li class="cat-item cat-item-20"><a href="http://www.icodelogic.com/?cat=20" title="查看Linux下的所有日志">Linux</a> (2)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.icodelogic.com/?cat=4" title="OpenGL">OpenGL</a> (3)
+</li>
+	<li class="cat-item cat-item-84"><a href="http://www.icodelogic.com/?cat=84" title="查看Python下的所有日志">Python</a> (9)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://www.icodelogic.com/?cat=5" title="QT">QT</a> (3)
+</li>
+	<li class="cat-item cat-item-48"><a href="http://www.icodelogic.com/?cat=48" title="Windows Phone 7">WP7</a> (9)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://www.icodelogic.com/?cat=1" title="查看其他下的所有日志">其他</a> (8)
+</li>
+	<li class="cat-item cat-item-98"><a href="http://www.icodelogic.com/?cat=98" title="查看创意黑板报下的所有日志">创意黑板报</a> (1)
+</li>
+	<li class="cat-item cat-item-72"><a href="http://www.icodelogic.com/?cat=72" title="查看新技术研讨下的所有日志">新技术研讨</a> (7)
+</li>
+		</ul>
+</li><li id="recent-comments-3" class="widget widget_recent_comments"><h4>最新评论</h4><ul id="recentcomments"><li class="recentcomments"><a href="http://www.androidlearner.net/android-use-gesture-detector.html" rel="external nofollow" class="url">android 使用手势 | Android同路人</a> - <a href="http://www.icodelogic.com/?p=601#comment-199">Android手势：单指...</a><br>[...] 手势其实应用得很多，像...</li><li class="recentcomments">jk888 - <a href="http://www.icodelogic.com/?p=264#comment-187">Windows Phone 7 ...</a><br>很好很强大 以后跟你学习了</li><li class="recentcomments">jk888 - <a href="http://www.icodelogic.com/?p=309#comment-186">Windows Phone 7网...</a><br>c.aesar@qq.com(1323443795)你...</li><li class="recentcomments">ian - <a href="http://www.icodelogic.com/?p=309#comment-185">Windows Phone 7网...</a><br>从Server拉取可下载文件列表，...</li><li class="recentcomments">jk888 - <a href="http://www.icodelogic.com/?p=309#comment-184">Windows Phone 7网...</a><br>我运行的时候有错误 能加你下qq...</li><li class="recentcomments">ian - <a href="http://www.icodelogic.com/?p=309#comment-183">Windows Phone 7网...</a><br>文章最下面有提供下载的呀亲</li><li class="recentcomments">ian - <a href="http://www.icodelogic.com/?p=616#comment-182">Android自定义Anim...</a><br>不好意思这是一个大项目里面的...</li><li class="recentcomments">jk888 - <a href="http://www.icodelogic.com/?p=309#comment-181">Windows Phone 7网...</a><br>能不能也给我发一份邮件 C.aesa...</li><li class="recentcomments">jk888 - <a href="http://www.icodelogic.com/?p=309#comment-180">Windows Phone 7网...</a><br>for (int i = 0; i &lt; blocks...</li><li class="recentcomments">albert - <a href="http://www.icodelogic.com/?p=616#comment-179">Android自定义Anim...</a><br>請問這個有工程包可以參考一下嗎??</li></ul></li><li id="linkcat-26" class="widget widget_links"><h4>链接</h4>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.vimer.cn/" rel="acquaintance co-worker" title="Vimer的程序世界" target="_blank">Vimer</a></li>
+<li><a href="http://1mima.com/" rel="acquaintance" target="_blank">一米马</a></li>
+<li><a href="http://www.favormy.com/" title="惠买购物比价网" target="_blank">惠买–购物省钱助手</a></li>
+
+	</ul>
+</li>
+<li id="tag_cloud-3" class="widget widget_tag_cloud"><h4>标签</h4><div class="tagcloud"><a href="http://www.icodelogic.com/?tag=actionscript" class="tag-link-9" title="1 个主题" style="font-size: 8pt;">ActionScript</a>
+<a href="http://www.icodelogic.com/?tag=android" class="tag-link-76" title="15 个主题" style="font-size: 22pt;">android</a>
+<a href="http://www.icodelogic.com/?tag=c" class="tag-link-11" title="3 个主题" style="font-size: 12.6666666667pt;">C++</a>
+<a href="http://www.icodelogic.com/?tag=chooser" class="tag-link-65" title="2 个主题" style="font-size: 10.8pt;">Chooser</a>
+<a href="http://www.icodelogic.com/?tag=django" class="tag-link-99" title="1 个主题" style="font-size: 8pt;">Django</a>
+<a href="http://www.icodelogic.com/?tag=emacs" class="tag-link-6" title="8 个主题" style="font-size: 18.1111111111pt;">Emacs</a>
+<a href="http://www.icodelogic.com/?tag=emacs%e6%95%99%e7%a8%8b" class="tag-link-22" title="8 个主题" style="font-size: 18.1111111111pt;">Emacs教程</a>
+<a href="http://www.icodelogic.com/?tag=flex" class="tag-link-8" title="1 个主题" style="font-size: 8pt;">Flex</a>
+<a href="http://www.icodelogic.com/?tag=gdi" class="tag-link-38" title="3 个主题" style="font-size: 12.6666666667pt;">GDI</a>
+<a href="http://www.icodelogic.com/?tag=glut" class="tag-link-28" title="2 个主题" style="font-size: 10.8pt;">GLUT</a>
+<a href="http://www.icodelogic.com/?tag=http" class="tag-link-63" title="3 个主题" style="font-size: 12.6666666667pt;">HTTP</a>
+<a href="http://www.icodelogic.com/?tag=jni" class="tag-link-108" title="4 个主题" style="font-size: 14.2222222222pt;">jni</a>
+<a href="http://www.icodelogic.com/?tag=linux" class="tag-link-20" title="2 个主题" style="font-size: 10.8pt;">Linux</a>
+<a href="http://www.icodelogic.com/?tag=ndk" class="tag-link-107" title="2 个主题" style="font-size: 10.8pt;">NDK</a>
+<a href="http://www.icodelogic.com/?tag=opengl" class="tag-link-4" title="3 个主题" style="font-size: 12.6666666667pt;">OpenGL</a>
+<a href="http://www.icodelogic.com/?tag=phonegap" class="tag-link-73" title="3 个主题" style="font-size: 12.6666666667pt;">PhoneGap</a>
+<a href="http://www.icodelogic.com/?tag=python" class="tag-link-84" title="9 个主题" style="font-size: 18.8888888889pt;">Python</a>
+<a href="http://www.icodelogic.com/?tag=qml" class="tag-link-16" title="1 个主题" style="font-size: 8pt;">QML</a>
+<a href="http://www.icodelogic.com/?tag=qt" class="tag-link-5" title="3 个主题" style="font-size: 12.6666666667pt;">QT</a>
+<a href="http://www.icodelogic.com/?tag=qthread" class="tag-link-14" title="1 个主题" style="font-size: 8pt;">QThread</a>
+<a href="http://www.icodelogic.com/?tag=scrapy" class="tag-link-85" title="4 个主题" style="font-size: 14.2222222222pt;">Scrapy</a>
+<a href="http://www.icodelogic.com/?tag=shell" class="tag-link-19" title="1 个主题" style="font-size: 8pt;">Shell</a>
+<a href="http://www.icodelogic.com/?tag=window-phone-7" class="tag-link-49" title="3 个主题" style="font-size: 12.6666666667pt;">Window Phone 7</a>
+<a href="http://www.icodelogic.com/?tag=windows" class="tag-link-23" title="3 个主题" style="font-size: 12.6666666667pt;">Windows</a>
+<a href="http://www.icodelogic.com/?tag=windows%e7%bc%96%e7%a8%8b" class="tag-link-35" title="3 个主题" style="font-size: 12.6666666667pt;">windows编程</a>
+<a href="http://www.icodelogic.com/?tag=wp7" class="tag-link-55" title="9 个主题" style="font-size: 18.8888888889pt;">WP7</a>
+<a href="http://www.icodelogic.com/?tag=windows-phone-7" class="tag-link-48" title="5 个主题" style="font-size: 15.4666666667pt;">WP7</a>
+<a href="http://www.icodelogic.com/?tag=%e4%b8%8d%e5%ae%9a%e5%8f%82%e6%95%b0" class="tag-link-15" title="1 个主题" style="font-size: 8pt;">不定参数</a>
+<a href="http://www.icodelogic.com/?tag=%e4%bc%91%e7%9c%a0" class="tag-link-59" title="2 个主题" style="font-size: 10.8pt;">休眠</a>
+<a href="http://www.icodelogic.com/?tag=%e5%90%8e%e5%8f%b0%e4%bb%bb%e5%8a%a1" class="tag-link-58" title="2 个主题" style="font-size: 10.8pt;">后台任务</a>
+<a href="http://www.icodelogic.com/?tag=%e5%9b%be%e5%83%8f%e5%a4%84%e7%90%86" class="tag-link-109" title="3 个主题" style="font-size: 12.6666666667pt;">图像处理</a>
+<a href="http://www.icodelogic.com/?tag=%e5%a2%93%e7%a2%91" class="tag-link-57" title="2 个主题" style="font-size: 10.8pt;">墓碑</a>
+<a href="http://www.icodelogic.com/?tag=%e5%a4%9a%e4%bb%bb%e5%8a%a1" class="tag-link-56" title="2 个主题" style="font-size: 10.8pt;">多任务</a>
+<a href="http://www.icodelogic.com/?tag=%e5%a4%9a%e7%ba%bf%e7%a8%8b" class="tag-link-13" title="1 个主题" style="font-size: 8pt;">多线程</a>
+<a href="http://www.icodelogic.com/?tag=%e5%ae%9a%e4%bd%8d%e7%ac%a6" class="tag-link-12" title="1 个主题" style="font-size: 8pt;">定位符</a>
+<a href="http://www.icodelogic.com/?tag=%e6%8e%a7%e4%bb%b6" class="tag-link-37" title="3 个主题" style="font-size: 12.6666666667pt;">控件</a>
+<a href="http://www.icodelogic.com/?tag=%e6%b5%81%e9%94%99%e8%af%af" class="tag-link-10" title="1 个主题" style="font-size: 8pt;">流错误</a>
+<a href="http://www.icodelogic.com/?tag=%e6%b7%b7%e5%90%88%e7%bc%96%e7%a8%8b" class="tag-link-17" title="1 个主题" style="font-size: 8pt;">混合编程</a>
+<a href="http://www.icodelogic.com/?tag=%e6%b8%b2%e6%9f%93" class="tag-link-39" title="3 个主题" style="font-size: 12.6666666667pt;">渲染</a>
+<a href="http://www.icodelogic.com/?tag=%e6%bb%a4%e9%95%9c" class="tag-link-112" title="2 个主题" style="font-size: 10.8pt;">滤镜</a>
+<a href="http://www.icodelogic.com/?tag=%e7%88%ac%e8%99%ab" class="tag-link-86" title="4 个主题" style="font-size: 14.2222222222pt;">爬虫</a>
+<a href="http://www.icodelogic.com/?tag=%e7%95%8c%e9%9d%a2%e5%bc%80%e5%8f%91" class="tag-link-34" title="3 个主题" style="font-size: 12.6666666667pt;">界面开发</a>
+<a href="http://www.icodelogic.com/?tag=%e7%ae%a1%e9%81%93" class="tag-link-21" title="1 个主题" style="font-size: 8pt;">管道</a>
+<a href="http://www.icodelogic.com/?tag=%e8%a7%86%e5%9b%be" class="tag-link-36" title="3 个主题" style="font-size: 12.6666666667pt;">视图</a>
+<a href="http://www.icodelogic.com/?tag=%e8%b7%a8%e5%b9%b3%e5%8f%b0" class="tag-link-78" title="3 个主题" style="font-size: 12.6666666667pt;">跨平台</a></div>
+</li><li id="meta-3" class="widget widget_meta"><h4>功能</h4>			<ul>
+						<li><a href="http://www.icodelogic.com/wp-login.php">登录</a></li>
+			<li><a href="http://www.icodelogic.com/?feed=rss2" title="订阅本站 RSS 2.0">日志 <abbr title="RSS">RSS</abbr></a></li>
+			<li><a href="http://www.icodelogic.com/?feed=comments-rss2" title="所有日志的评论 RSS">评论 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<!--li><a href="http://wordpress.org/" title="基于 WordPress，完美的个人信息发布平台。">WordPress.org</a></li-->
+						</ul>
+</li>	</ul>
+
+</div>	<div id="footer">CodeLogic © 2011.|Powered by <a href="http://wordpress.org/" target="_blank">WordPress</a>.</div>
+	</div>
+
+</body></html>

@@ -1,0 +1,19 @@
+一个例子
+<android.support.design.widget.CoordinatorLayout
+	android:id="@+id/rootLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fabBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+		android:layout_marginBottom="@dimen/fab_margin_bottom"
+		android:layout_marginRight="@dimen/fab_margin_right"
+		android:src="@drawable/ic_plus"
+		app:fabSize="normal" />
+</android.support.design.widget.CoordinatorLayout>
+
+效果：
+当为rootLayout指定了snackbar时，snackbar出现时，fab在snackbar的上面，并随着snackbar的消失而调整y

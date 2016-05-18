@@ -1,0 +1,9 @@
+﻿参考官方demo来进行开发
+开发过程中的异常
+	com.alipay.sdk.pay.demo.SignUtils.sign(String, String)中，使用：KeyFactory keyf = KeyFactory.getInstance(ALGORITHM,"BC");
+	too long
+		http://www.ithao123.cn/content-730511.html		
+key不要放在客户端，而是将sign的动作，放到服务器，并且sign=后面的东西要进行urlencode（参见支付宝demo）
+--
+https://software.intel.com/zh-cn/blogs/2015/03/05/android-android
+http://blog.csdn.net/lilidejing/article/details/19483717

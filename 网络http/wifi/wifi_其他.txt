@@ -1,0 +1,17 @@
+参见：http://smallwoniu.blog.51cto.com/3911954/1338618
+工作原理：http://yk8900.blog.163.com/blog/static/123183544201287105755572/
+
+wifilock
+为什么要使用lock：
+	在手机屏幕关闭之后，并且其他的应用程序没有在使用wifi的时候，系统大概在两分钟之后，会关闭wifi，使得wifi处于睡眠状态。这样的做法，有利于电源能量的节省和延长电池寿命等。
+	android为wifi提供了一种叫WifiLock的锁，能够阻止wifi进入睡眠状态，使wifi一直处于活跃状态。这种锁，在下载一个较大的文件的时候，比较适合使用。
+http://www.xuebuyuan.com/508402.html
+
+使用wifi 不使用usb，来连接设备并调试：
+http://www.feeldesignstudio.com/2013/10/eclipse-debug-android-project-by-wifi
+http://ikinglai.blog.51cto.com/6220785/1191260
+
+通过wifi传文件：
+1：建立一个热点（这个借助Wifi tether 源代码）。
+2： 两个手机或PC根据 ip 地址 建立socket连接。
+3：发送文件 （注意：大文件要分段发就是切成小文件 否则容易手机内存溢满 抛异常 socket连接断开）

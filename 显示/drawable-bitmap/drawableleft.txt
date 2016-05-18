@@ -1,0 +1,25 @@
+xml的方式
+<TextView
+	android:id="@+id/bookTitle"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_weight="1"
+	android:drawableLeft="@drawable/checkmark"
+	android:gravity="center_vertical"
+	android:textStyle="bold"
+	android:textSize="24dip"
+	android:maxLines="1"
+
+	android:ellipsize="end"/>
+
+获得drawableleft
+(GradientDrawable) ((TextView)view.findViewById(R.id.checkHint)).getCompoundDrawables()[0];
+
+代码的方式
+Drawable drawable= getResources().getDrawable(R.drawable.drawable);
+// 这一步必须要做,否则不会显示.
+drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+myTextview.setCompoundDrawables(drawable,null,null,null);
+或者参考
+public void setCompoundDrawablesWithIntrinsicBounds (Drawable left,Drawable top, Drawable right, Drawable bottom)
+

@@ -1,0 +1,2 @@
+如何建立assets文件夹：
+选择module，new-folder-assets

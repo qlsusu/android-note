@@ -1,0 +1,41 @@
+参见：
+Canvas之图片文字
+	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B4%5DCanvas_PictureText.md
+
+picture是什么：
+canvas绘制内容的录制
+录制的内容是不会直接显示在屏幕上的，只是存储起来了而已。
+
+---------------------------------------先看下如何使用
+// 1.创建Picture
+private Picture mPicture = new Picture();
+
+
+// 2.录制内容方法
+private void recording() {
+	// 开始录制 (接收返回值Canvas)
+	Canvas canvas = mPicture.beginRecording(500, 500);
+	// 创建一个画笔
+	Paint paint = new Paint();
+	paint.setColor(Color.BLUE);
+	paint.setStyle(Paint.Style.FILL);
+
+	// 在Canvas中具体操作
+	// 位移
+	canvas.translate(250,250);
+	// 绘制一个圆
+	canvas.drawCircle(0,0,100,paint);
+
+	mPicture.endRecording();
+}
+
+
+// 3.在使用前调用(我在构造函数中调用了)
+  public Canvas3(Context context, AttributeSet attrs) {
+	super(context, attrs);
+
+	recording();    // 调用录制
+}
+
+如何显示
+canvas.drawPicture(mPicture,new RectF(0,0,mPicture.getWidth(),200));

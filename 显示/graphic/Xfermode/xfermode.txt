@@ -1,0 +1,9 @@
+参见：http://blog.csdn.net/aigestudio/article/details/41316141
+
+其效果和setcolorfilter类似
+paint.setXfermode(Xfermode xfermode)
+
+子类
+PorterDuffXfermode
+AvoidXfermode(过时，不支持硬件加速)
+PixelXorXfermode和（过时，不支持硬件加速）

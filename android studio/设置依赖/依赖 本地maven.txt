@@ -1,0 +1,52 @@
+参见:
+myas/libraries
+拥抱 Android Studio 之四：Maven 仓库使用与私有仓库搭建
+	http://blog.bugtags.com/2016/01/27/embrace-android-studio-maven-deploy/
+
+--------------为什么要依赖本地maven
+只维护一个library，而不是将library拷贝到多个工程下
+提高编译速度，因为app依赖的是aar
+
+--------------如何将library放入到本地maven
+!!!!注意：像依赖本地aar一样，如果app依赖了lib1，而lib1又依赖了lib2（无论该lib2是本地库 还是远程库），但app并没有设置：依赖lib2，则app运行的过程中，会报 找不到lib2中的class
+
+在myas/libraries中建立library
+
+为library建立gradle.properties，放入
+    PROJ_ARTIFACTID=myToolAndroid
+    
+在libraray的build.gradle的尾部，加入
+	apply plugin: 'maven'
+	uploadArchives {
+		repositories.mavenDeployer {
+			repository(url: LOCAL_REPO_URL)
+			pom.groupId = PROJ_GROUP
+			pom.artifactId = PROJ_ARTIFACTID
+			pom.version = PROJ_VERSION
+		}
+	}
+说明：上述的诸如LOCAL_REPO_URL等变量 在 project的build.gradle中定义
+
+视图中选择gradle，选择该lib，选择upload/uploadActions
+或者，命令行执行：./gradlew -p myToolAndroid uploadArchives
+
+如果library发生了改动，则重新执行上述命令行（不需要事先清理本地maven库）
+
+--------------app如何使用该library
+将project的build.gradle的库地址 变成如下：
+	allprojects {
+		repositories {
+			jcenter()
+
+			maven{
+				url 'file:///Users/qlong/mavenLocalRepo'
+			}
+		}
+	}
+	
+在app的build.gradle中，就可以进行如下依赖设置
+	dependencies {
+		compile 'com.ql:myToolAndroid:1.0.0@aar'
+	}
+
+如果library发生了改动，不需要rebuild project（当 app和library在不同的project中）

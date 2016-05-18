@@ -1,0 +1,1 @@
+jarsigner.exe -verbose -keystore bill_key -signedjar a_sign.apk a.apk bill_key

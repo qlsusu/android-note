@@ -1,0 +1,21 @@
+AdapterViewAnimator mContentFlipper;
+
+mContentFlipper.setAdapter(new FrameAdapter(this, mContentCount));
+
+ public void showNext() {
+	if (mContentCount > 1) {
+		setAnimations();
+		mContentFlipper.showNext();
+		isAnimatingUp = !isAnimatingUp;
+		mContentCount--;
+	} else {
+		finish();
+	}
+}
+
+ private void setAnimations() {
+	mContentFlipper.setInAnimation(this, isAnimatingUp
+			? R.animator.slide_in_bottom : R.animator.slide_in_left);
+	mContentFlipper.setOutAnimation(this, isAnimatingUp
+			? R.animator.slide_out_top : R.animator.slide_out_right);
+}

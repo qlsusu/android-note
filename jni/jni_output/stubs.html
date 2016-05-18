@@ -1,0 +1,1059 @@
+<html>
+<head>
+<title> Leveraging Existing Native Libraries</title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="other.html">Prev</a> | <a href="pitfalls.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="27577"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 9 chapter</font>
+</h1>
+</div>
+<a name="27578"></a>
+<h1>Leveraging Existing Native Libraries</h1>
+<hr><p>
+
+<p>
+  <a name="27579"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">O</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">ne</font> of the applications of the JNI is to write native methods that leverage code in existing native libraries. A typical approach, covered in this chapter, is to produce a class library that <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">wraps</font> a set of native functions.</font>
+</p>
+
+
+<p>
+  <a name="29308"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This chapter first discusses the most straightforward way to write wrapper classes&nbsp;--&nbsp;<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">one-to-one mapping</font>. We then introduce a technique, <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">shared stubs</font>, that simplifies the task of writing wrapper classes.</font>
+</p>
+
+
+<p>
+  <a name="59014"> </a><font face="Arial, Verdana, Helvetica, sans-serif">One-to-one mapping and shared stubs are both techniques for wrapping native functions. At the end of this chapter, we will also discuss how to wrap native data structures using <em>peer classes</em>.</font>
+</p>
+
+
+<p>
+  <a name="58955"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The approaches described in this chapter directly expose a native library using native methods, and thus have the disadvantage of making an application calling such native methods dependent on that native library. Such an application may run only on an operating system that supplies the native library. A preferred approach is to declare operating system-independent native methods. Only the native functions implementing those native methods use the native libraries directly, limiting the need for porting to those native functions. The application, including the native method declarations, does not need to be ported.</font>
+</p>
+
+<a name="6064"></a>
+<h2>9.1    One-to-One Mapping</h2>
+
+<p>
+  <a name="6371"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Let us begin with a simple example. Suppose that we want to write a wrapper class that exposes the <code>atol</code> function in the standard C library:</font>
+</p>
+
+<pre>
+<a name="25177"> </a>long atol(const char *str);
+</pre>
+
+<p>
+  <a name="25179"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>atol</code> function parses a string and returns the decimal value represented by the string. There is perhaps little reason to define such a native method in practice because the <code>Integer.parseInt</code> method, part of the Java API, supplies the equivalent functionality. Evaluating <code>atol("100")</code>, for example, results in the integer value <code>100</code>. We define a wrapper class as follows:</font>
+</p>
+
+<pre>
+<a name="25180"> </a>public class C {
+<a name="25181"> </a>    public static native int atol(String str);
+<a name="25183"> </a>    ...
+<a name="25184"> </a>}
+</pre>
+
+<p>
+  <a name="25186"> </a><font face="Arial, Verdana, Helvetica, sans-serif">For the sake of illustrating JNI programming in C++, we will implement native methods in this chapter using C++ (<a href="other.html#30951">&#167;8.6</a>). The C++ implementation of the <code>C.atol</code> native method is as follows:</font>
+</p>
+
+<pre>
+<a name="25192"> </a>JNIEXPORT jint JNICALL 
+<a name="25226"> </a>Java_C_atol(JNIEnv *env, jclass cls, jstring <code>str)
+</code><a name="25208"> </a><code>{
+</code><a name="25209"> </a>    const char *cstr = env-&gt;GetStringUTFChars(str, 0);
+<a name="25212"> </a>    if (cstr == NULL) {
+<a name="25213"> </a>        return 0; /* out of memory */
+<a name="25214"> </a>    }
+<a name="25215"> </a>    int result = atol(cstr);
+<a name="25216"> </a>    env-&gt;ReleaseStringUTFChars(str, cstr);
+<a name="25217"> </a>    return result;
+<a name="25206"> </a><code>}
+</code></pre>
+
+<p>
+  <a name="25239"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The implementation is quite straightforward. We use <code>GetStringUTFChars</code> to convert the Unicode string because decimal numbers are ASCII characters.</font>
+</p>
+
+
+<p>
+  <a name="25174"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Let us now examine a more complex example that involves passing structure pointers to a C function. Suppose that we want to write a wrapper class that exposes the <code>CreateFile</code> function from the Win32 API:</font>
+</p>
+
+<pre>
+<a name="7720"> </a>typedef void * HANDLE;
+<a name="38397"> </a>typedef long DWORD;
+<a name="38398"> </a>typedef struct {...} SECURITY_ATTRIBUTES;
+<a name="38399"> </a>
+<a name="24749"> </a>HANDLE CreateFile(
+<a name="24724"> </a>    const char *fileName,       // file name
+<a name="7723"> </a>    DWORD desiredAccess,        // access (read-write) mode 
+<a name="7726"> </a>    DWORD shareMode,            // share mode 
+<a name="7729"> </a>    SECURITY_ATTRIBUTES *attrs, // security attributes 
+<a name="7732"> </a>    DWORD creationDistribution, // how to create 
+<a name="7735"> </a>    DWORD flagsAndAttributes,   // file attributes 
+<a name="7738"> </a>    HANDLE templateFile         // file with attr. to copy
+<a name="7741"> </a>);
+</pre>
+
+<p>
+  <a name="7643"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CreateFile</code> function supports a number of Win32-specific features not available in the platform-independent Java File API. For example, the <code>CreateFile</code> function may be used to specify special access modes and file attributes, to open Win32 named pipes, and to handle serial port communications.</font>
+</p>
+
+
+<p>
+  <a name="24761"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We will not discuss further details of the <code>CreateFile</code> function in this book. The focus will be on how <code>CreateFile</code> may be mapped to a native method defined in a wrapper class called <code>Win32</code>:</font>
+</p>
+
+<pre>
+<a name="24762"> </a>public class Win32 {
+<a name="24766"> </a><code>    public static native int CreateFile(
+</code><a name="24774"> </a><code>        String fileName,          // file name
+</code><a name="24767"> </a>        int desiredAccess,        // access (read-write) mode 
+<a name="24768"> </a>        int shareMode,            // share mode 
+<a name="24769"> </a>        int[] secAttrs,           // security attributes 
+<a name="24770"> </a>        int creationDistribution, // how to create 
+<a name="24771"> </a>        int flagsAndAttributes,   // file attributes 
+<a name="24772"> </a>        int templateFile);        // file with attr. to copy
+<a name="24783"> </a>    ...
+<a name="24782"> </a>}
+</pre>
+
+<p>
+  <a name="24784"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The mapping from the <code>char</code> pointer type to <code>String</code> is obvious. We map the native Win32 type <code>long</code> (<code>DWORD</code>) to <code>int</code> in the Java programming language. The Win32 type <code>HANDLE</code>, an opaque 32-bit pointer type, is also mapped to <code>int</code>.</font>
+</p>
+
+
+<p>
+  <a name="25488"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Because of potential differences in how fields are laid out in memory, we do not map C structures to classes in the Java programming language. Instead, we use an array to store the contents of the C structure <code>SECURITY_ATTRIBUTES</code>. The caller may also pass <code>null</code> as <code>secAttrs</code> to specify the default Win32 security attributes. We will not discuss the contents of the <code>SECURITY_ATTRIBUTES</code> structure or how to encode that in an <code>int</code> array.</font>
+</p>
+
+
+<p>
+  <a name="24804"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A C++ implementation of the above native method is as follows:</font>
+</p>
+
+<pre>
+<a name="24807"> </a>JNIEXPORT jint JNICALL Java_Win32_CreateFile(
+<a name="24819"> </a>        JNIEnv *env,
+<a name="24809"> </a>        jclass cls,
+<a name="24812"> </a>        jstring <code> fileName,         // file name
+</code><a name="24813"> </a>        jint desiredAccess,        // access (read-write) mode 
+<a name="24814"> </a>        jint shareMode,            // share mode 
+<a name="24815"> </a>        jintArray secAttrs,        // security attributes 
+<a name="24816"> </a>        jint creationDistribution, // how to create 
+<a name="24817"> </a>        jint flagsAndAttributes,   // file attributes 
+<a name="24818"> </a>        jint templateFile)         // file with attr. to copy
+<a name="24822"> </a>{
+<a name="24857"> </a>    jint result = 0;
+<a name="24829"> </a>    jint *cSecAttrs = NULL;
+<a name="24834"> </a>    if (secAttrs) {
+<a name="24835"> </a>        cSecAttrs = env-&gt;GetIntArrayElements(secAttrs, 0);
+<a name="24842"> </a>        if (cSecAttrs == NULL) {
+<a name="24843"> </a>            return 0; /* out of memory */
+<a name="24844"> </a>        }
+<a name="24845"> </a>    }
+<a name="24823"> </a>    char *cFileName = JNU_GetStringNativeChars(env, fileName);
+<a name="24824"> </a>    if (cFileName) {
+<a name="24899"> </a>        /* call the real Win32 function */
+<a name="24825"> </a>        result = (jint)CreateFile(cFileName,
+<a name="24858"> </a>                       desiredAccess,
+<a name="24859"> </a>                       shareMode,
+<a name="24860"> </a>                       <code>(SECURITY_ATTRIBUTES</code> *)cSecAttrs,
+<a name="24861"> </a>                       creationDistribution,
+<a name="24862"> </a>                       flagsAndAttributes,
+<a name="24863"> </a>                       (HANDLE)templateFile);
+<a name="24868"> </a>        free(cFileName);
+<a name="24866"> </a>    }
+<a name="24882"> </a>    /* else fall through, out of memory exception thrown */
+<a name="24867"> </a>    if (secAttrs) {
+<a name="24869"> </a>        env-&gt;ReleaseIntArrayElements(secAttrs, cSecAttrs, 0);
+<a name="24870"> </a>    }
+<a name="24872"> </a>    return result;
+<a name="24871"> </a>}
+</pre>
+
+<p>
+  <a name="24904"> </a><font face="Arial, Verdana, Helvetica, sans-serif">First, we convert the security attributes stored in the <code>int</code> array into a <code>jint</code> array. If the <code>secAttrs</code> argument is a <code>NULL</code> reference, we pass <code>NULL</code> as the security attribute to the Win32 <code>CreateFile</code> function. Next, we call the utility function <code>JNU_GetStringNativeChars</code> (<a href="other.html#26043">&#167;8.2.2</a>) to obtain the file name represented as a locale-specific C string. Once we have converted the security attributes and file name, we pass the results of the conversions and the remaining arguments to the Win32 <code>CreateFile</code> function. </font>
+</p>
+
+
+<p>
+  <a name="24922"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We take care to check for exceptions and release virtual machine resources (such as <code>cSecAttrs</code>).</font>
+</p>
+
+
+<p>
+  <a name="50340"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>C.atol</code> and <code>Win32.CreateFile</code> examples demonstrate a common approach to writing wrapper classes and native methods. Each native function (for example, <code>CreateFile</code>) maps to a single native <em>stub</em> function (for example, <code>Java_Win32_CreateFile</code>), which in turn maps to a single native method definition (for example, <code>Win32.CreateFile</code>). In one-to-one mapping, the stub function serves two purposes:</font>
+</p>
+
+<ol><font face="Arial, Verdana, Helvetica, sans-serif">
+<li>The stub adapts the native function's argument passing convention to what is 
+expected by the Java virtual machine. The virtual machine expects the native 
+method implementation to follow a given naming convention and to accept two 
+additional arguments (the <code>JNIEnv</code> pointer and the "this" pointer).
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</ol><a name="6521"></a>
+<h2>9.2    Shared Stubs</h2>
+
+<p>
+  <a name="6525"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The one-to-one mapping approach requires you to write one stub function for each native function you want to wrap. This becomes tedious when you are faced with the task of writing wrapper classes for a large number of native functions. In this section we introduce the concept of shared stubs and demonstrate how shared stubs may be used to simplify the task of writing wrapper classes.</font>
+</p>
+
+
+<p>
+  <a name="25096"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A shared stub is a native method that dispatches to other native functions. The shared stub is responsible for converting the argument types from what is provided by the caller to what is accepted by the native functions.</font>
+</p>
+
+
+<p>
+  <a name="25275"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We will soon introduce a shared stub class <code>CFunction</code>, but first let us show how it can simplify the implementation of the <code>C.atol</code> method:</font>
+</p>
+
+<pre>
+<a name="25253"> </a>public class C {
+<a name="25264"> </a>    private static CFunction c_atol =
+<a name="25270"> </a>        new CFunction("msvcrt.dll", // native library name
+<a name="25268"> </a>                      "atol",       // C function name
+<a name="25269"> </a>                      "C");         // calling convention
+<a name="25254"> </a>    public static int atol(String str) {
+<a name="25273"> </a>        return c_atol.callInt(new Object[] {str});
+<a name="25274"> </a>    }
+<a name="25259"> </a>    ...
+<a name="25256"> </a>}
+</pre>
+
+<p>
+  <a name="25276"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>C.atol</code> is no longer a native method (and thus no longer needs a stub function). Instead, <code>C.atol</code> is defined using the <code>CFunction</code> class. The <code>CFunction</code> class internally implements a shared stub. The static variable <code>C.c_atol</code> stores a <code>CFunction</code> object that corresponds to the C function <code>atol</code> in the <code>msvcrt.dll</code> library (the multithreaded C library on Win32). The <code>CFunction</code> constructor call also specifies that <code>atol</code> follows the C calling convention (<a href="design.html#8330">&#167;11.4</a>). Once the <code>c_atol</code> field is initialized, calls to the <code>C.atol</code> method need only to redispatch through <code>c_atol.callInt</code>, the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">shared stub</font>.</font>
+</p>
+
+
+<p>
+  <a name="30213"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CFunction</code> class belongs to a class hierarchy that we will build up and use shortly:<img src="stubs2.gif" height="153" width="500" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+
+
+<p>
+  <a name="30208"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Instances of the <code>CFunction</code> class denote a pointer to a C function. <code>CFunction</code> is a subclass of <code>CPointer</code>, which denotes arbitrary C pointers:</font>
+</p>
+
+<pre>
+<a name="25295"> </a>public class CFunction extends CPointer {
+<a name="25296"> </a>    public CFunction(String lib,     // native library name
+<a name="25297"> </a>                     String fname,   // C function name
+<a name="25298"> </a>                     String conv) {  // calling convention
+<a name="25299"> </a>        ...
+<a name="25300"> </a>    }
+<a name="25301"> </a>    public native int callInt(Object[] args);
+<a name="25302"> </a>    ...
+<a name="25303"> </a>}
+</pre>
+
+<p>
+  <a name="25321"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>callInt</code> method takes as its argument an array of <code>java.lang.Object</code>. It inspects the types of the elements in the array, converts them (from <code>jstring</code> to <code>char</code> <code>*</code>, for example), and passes them as arguments to the underlying C function. The <code>callInt</code> method then returns the result of the underlying C function as an <code>int</code>. The <code>CFunction</code> class can define methods such as <code>callFloat</code> or <code>callDouble</code> to handle C functions with other return types.</font>
+</p>
+
+
+<p>
+  <a name="25368"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CPointer</code> class is defined as follows:</font>
+</p>
+
+<pre>
+<a name="25350"> </a>public abstract class CPointer {
+<a name="25351"> </a>    public native void copyIn(
+<a name="25357"> </a>             int bOff,     // offset from a C pointer
+<a name="25358"> </a>             int[] buf,    // source data
+<a name="25359"> </a>             int off,      // offset into source
+<a name="25360"> </a>             int len);     // number of elements to be copied
+<a name="25361"> </a>    public native void copyOut(...);
+<a name="25363"> </a>    ...
+<a name="25364"> </a>}
+</pre>
+
+<p>
+  <a name="25377"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>CPointer</code> is an abstract class that supports arbitrary access to C pointers. The <code>copyIn</code> method, for example, copies a number of elements from an <code>int</code> array to the location pointed to by the C pointer. This method should be used with care because it can easily be used to corrupt arbitrary memory locations in the address space. Native methods such as <code>CPointer.copyIn</code> are as unsafe as direct pointer manipulation in C.</font>
+</p>
+
+
+<p>
+  <a name="25387"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>CMalloc</code> is a subclass of <code>CPointer</code> that points to a block of memory allocated in the C heap using <code>malloc</code>:</font>
+</p>
+
+<pre>
+<a name="25390"> </a>public class CMalloc extends CPointer {
+<a name="25403"> </a>    public CMalloc(int size) throws OutOfMemoryError { ... }
+<a name="25410"> </a>    public native void free();
+<a name="25616"> </a>    ...
+<a name="25399"> </a>}
+</pre>
+
+<p>
+  <a name="25428"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CMalloc</code> constructor allocates a memory block of the given size in the C heap. The <code>CMalloc.free</code> method releases the memory block.</font>
+</p>
+
+
+<p>
+  <a name="25388"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Equipped with the <code>CFunction</code> and <code>CMalloc</code> classes, we can reimplement <code>Win32.CreateFile</code> as follows:</font>
+</p>
+
+<pre>
+<a name="25121"> </a>public class Win32 {
+<a name="25158"> </a>    private static CFunction c_CreateFile = 
+<a name="25162"> </a>        new CFunction ("kernel32.dll",   // native library name
+<a name="25160"> </a>                       "CreateFileA",    // native function
+<a name="25161"> </a>                       "JNI");           // calling convention
+<a name="55827"> </a>
+<a name="25122"> </a><code>    public static int CreateFile(
+</code><a name="25123"> </a><code>        String fileName,          // file name
+</code><a name="25124"> </a>        int desiredAccess,        // access (read-write) mode 
+<a name="25125"> </a>        int shareMode,            // share mode 
+<a name="25126"> </a>        int[] secAttrs,           // security attributes 
+<a name="25127"> </a>        int creationDistribution, // how to create 
+<a name="25128"> </a>        int flagsAndAttributes,   // file attributes 
+<a name="25129"> </a>        int templateFile)         // file with attr. to copy
+<a name="25134"> </a>    {
+<a name="25143"> </a>        CMalloc cSecAttrs = null;
+<a name="25449"> </a>        if (secAttrs != null) {
+<a name="25450"> </a>            cSecAttrs = new CMalloc(secAttrs.length * 4);
+<a name="25144"> </a>            cSecAttrs.copyIn(0, secAttrs, 0, secAttrs.length);
+<a name="25451"> </a>        }
+<a name="25145"> </a>        try {
+<a name="27604"> </a>            return c_CreateFile.callInt(new Object[] {
+<a name="25146"> </a>                           fileName,
+<a name="25147"> </a>                           new Integer(desiredAccess),
+<a name="25148"> </a>                           new Integer(shareMode),
+<a name="25149"> </a>                           cSecAttrs,
+<a name="25150"> </a>                           new Integer(creationDistribution),
+<a name="25151"> </a>                           new Integer(flagsAndAttributes),
+<a name="25152"> </a>                           new Integer(templateFile)});
+<a name="27605"> </a>        } finally {
+<a name="25153"> </a>            if (secAttrs != null) {
+<a name="25452"> </a>                cSecAttrs.free();
+<a name="25453"> </a>            }
+<a name="25154"> </a>        }
+<a name="25135"> </a>    }
+<a name="25130"> </a>    ...
+<a name="25131"> </a>}
+</pre>
+
+<p>
+  <a name="25440"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We cache the <code>CFunction</code> object in a static variable. The Win32 API <code>CreateFile</code> is exported from <code>kernel32.dll</code> as <code>CreateFileA</code>. Another exported entry, <code>Create-FileW</code>, takes a Unicode string as the file name argument. This function follows the JNI calling convention, which is the standard Win32 calling convention (<code>stdcall</code>).</font>
+</p>
+
+
+<p>
+  <a name="25446"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>Win32.CreateFile</code> implementation first allocates a memory block in the C heap that is big enough to hold the security attributes temporarily. It then packages all arguments in an array and invokes the underlying C function <code>CreateFileA</code> through the shared dispatcher. Finally the <code>Win32.CreateFile</code> method frees the C memory block used to hold the security attributes. We call <code>cSec-Attrs.free</code> in a <code>finally</code> clause to make sure the temporarily C memory is freed even if the <code>c_CreateFile.callInt</code> call raises an exception.</font>
+</p>
+
+<a name="25455"></a>
+<h2>9.3    One-to-One Mapping versus Shared Stubs</h2>
+
+<p>
+  <a name="25460"> </a><font face="Arial, Verdana, Helvetica, sans-serif">One-to-one mapping and shared stubs are two ways of building wrapper classes for native libraries. Each has its own advantages.</font>
+</p>
+
+
+<p>
+  <a name="25461"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The main advantage of shared stubs is that the programmer need not write a large number of stub functions in native code. Once a shared stub implementation such as <code>CFunction</code> is available, the programmer may be able to build wrapper classes without writing a single line of native code.</font>
+</p>
+
+
+<p>
+  <a name="25462"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Shared stubs must be used with care, however. With shared stubs, programmers are essentially writing C code in the Java programming language. This defeats the type safety of the Java programming language. Mistakes in using shared stubs can lead to corrupted memory and application crashes.</font>
+</p>
+
+
+<p>
+  <a name="25465"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The advantage of one-to-one mapping is that it is typically more efficient in converting the data types that are transferred between the Java virtual machine and native code. Shared stubs, on the other hand, can handle at most a predetermined set of argument types and cannot achieve optimal performance even for these argument types. The caller of <code>CFunction.callInt</code> always has to create an <code>Integer</code> object for each <code>int</code> argument. This adds both space and time overhead to the shared stubs scheme.</font>
+</p>
+
+
+<p>
+  <a name="25466"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In practice, you need to balance performance, portability, and short-term productivity. Shared stubs may be suitable for leveraging inherently nonportable native code that can tolerate a slight performance degradation, whereas one-to-one mapping should be used in cases where top performance is necessary or where portability matters.</font>
+</p>
+
+<a name="6206"></a>
+<h2>9.4    Implementation of Shared Stubs</h2>
+
+<p>
+  <a name="25543"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We have so far treated <code>CFunction</code>, <code>CPointer</code>, and <code>CMalloc</code> classes as black boxes. This section describes how they may be implemented using the basic JNI features.</font>
+</p>
+
+<a name="25546"></a>
+<h3>9.4.1    The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">CPointer</font> Class</h3>
+
+<p>
+  <a name="25658"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We look at the <code>CPointer</code> class first because it is the superclass of both <code>CFunction</code> and <code>CMalloc</code>. The abstract class <code>CPointer</code> contains a 64-bit field, <code>peer</code>, that stores the underlying C pointer:</font>
+</p>
+
+<pre>
+<a name="25549"> </a>public abstract class CPointer {
+<a name="25559"> </a>    protected long peer;
+<a name="25550"> </a>    public native void copyIn(int bOff, int[] buf,
+<a name="25570"> </a>                              int off,int len);
+<a name="25555"> </a>    public native void copyOut(...);
+<a name="25557"> </a>    ...
+<a name="25558"> </a>}
+</pre>
+
+<p>
+  <a name="25580"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The C++ implementation of native methods such as <code>copyIn</code> is straightforward:</font>
+</p>
+
+<pre>
+<a name="25583"> </a>JNIEXPORT void JNICALL
+<a name="58891"> </a>Java_CPointer_copyIn__I_3III(JNIEnv *env, jobject self,
+<a name="25592"> </a>    jint boff, jintArray arr, jint off, jint len)
+<a name="25585"> </a>{
+<a name="25586"> </a>    long peer = env-&gt;GetLongField(self, FID_CPointer_peer);
+<a name="25587"> </a>    env-&gt;GetIntArrayRegion(arr, off, len, (jint *)peer + boff);
+<a name="25581"> </a>}
+</pre>
+
+<p>
+  <a name="25594"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>FID_CPointer_peer</code> is the precomputed field ID for <code>CPointer.peer</code>. The native method implementation uses the long name encoding scheme (<a href="design.html#9984">&#167;11.3</a>) to resolve conflicts with implementations of overloaded <code>copyIn</code> native methods for other array types in the <code>CPointer</code> class.</font>
+</p>
+
+<a name="25905"></a>
+<h3>9.4.2    The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">CMalloc</font> Class</h3>
+
+<p>
+  <a name="25612"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CMalloc</code> class adds two native methods used to allocate and free C memory blocks:</font>
+</p>
+
+<pre>
+<a name="25603"> </a>public class CMalloc extends CPointer {
+<a name="25613"> </a>    private static native long malloc(int size);
+<a name="25604"> </a>    public CMalloc(int size) throws OutOfMemoryError {
+<a name="25605"> </a>        peer = malloc(size);
+<a name="25619"> </a>        if (peer == 0) {
+<a name="25620"> </a>            throw new OutOfMemoryError();
+<a name="25621"> </a>        }
+<a name="25606"> </a>    }
+<a name="25607"> </a>    public native void free();
+<a name="25628"> </a>    ...
+<a name="25611"> </a>}
+</pre>
+
+<p>
+  <a name="27307"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CMalloc</code> constructor calls a native method <code>CMalloc.malloc</code>, and throws an <code>OutOfMemoryError</code> if <code>CMalloc.malloc</code> fails to return a newly -allocated memory block in the C heap. We can implement the <code>CMalloc.malloc</code> and <code>CMalloc.free</code> methods as follows:</font>
+</p>
+
+<pre>
+<a name="25631"> </a>JNIEXPORT jlong JNICALL
+<a name="58898"> </a>Java_CMalloc_malloc(JNIEnv *env, jclass cls, jint size)
+<a name="25633"> </a>{
+<a name="25634"> </a>    return (jlong)malloc(size);
+<a name="25635"> </a>}
+<a name="25641"> </a>
+<a name="25648"> </a>JNIEXPORT void JNICALL
+<a name="58904"> </a>Java_CMalloc_free(JNIEnv *env, jobject self)
+<a name="25643"> </a>{
+<a name="25652"> </a>    long peer = env-&gt;GetLongField(self, FID_CPointer_peer);
+<a name="25644"> </a>    free((void *)peer);
+<a name="25547"> </a>}
+</pre>
+<a name="25906"></a>
+<h3>9.4.3    The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">CFunction</font> Class</h3>
+
+<p>
+  <a name="25657"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CFunction</code> class implementation requires the use of dynamic linking support in the operating system as well as CPU-specific assembly code. The implementation presented below is targeted specifically toward the Win32/Intel x86 environment. Once you understand the principles behind implementing the <code>CFunction</code> class, you can follow the same steps to implement it on other platforms.</font>
+</p>
+
+
+<p>
+  <a name="26063"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CFunction</code> class is defined as follows:</font>
+</p>
+
+<pre>
+<a name="25913"> </a>public class CFunction extends CPointer {
+<a name="25986"> </a>    private static final int CONV_C = 0;
+<a name="25987"> </a>    private static final int CONV_JNI = 1;
+<a name="25922"> </a>    private int conv;
+<a name="25923"> </a>    private native long find(String lib, String fname);
+<a name="25914"> </a>
+<a name="25989"> </a>    public CFunction(String lib,     // native library name
+<a name="25915"> </a>                     String fname,   // C function name
+<a name="25916"> </a>                     String conv) {  // calling convention
+<a name="25992"> </a>        if (conv.equals("C")) {
+<a name="25993"> </a>            conv = CONV_C;
+<a name="25994"> </a>        } else if (conv.equals("JNI")) {
+<a name="25995"> </a>            conv = CONV_JNI;
+<a name="25996"> </a>        } else {
+<a name="25997"> </a>            throw new IllegalArgumentException(
+<a name="25998"> </a>                        "bad calling convention");
+<a name="25999"> </a>        }
+<a name="25917"> </a>        peer = find(lib, fname);
+<a name="25918"> </a>    }
+<a name="25919"> </a>    public native int callInt(Object[] args);
+<a name="25920"> </a>    ...
+<a name="25921"> </a>}
+</pre>
+
+<p>
+  <a name="25928"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>CFunction</code> class declares a private field <code>conv</code> used to store the calling convention of the C function. The <code>CFunction.find</code> native method is implemented as follows:</font>
+</p>
+
+<pre>
+<a name="25930"> </a>JNIEXPORT jlong JNICALL
+<a name="58907"> </a>Java_CFunction_find(JNIEnv *env, jobject self, jstring lib,
+<a name="58910"> </a>                    jstring fun)
+<a name="25932"> </a>{
+<a name="25933"> </a>    void *handle;
+<a name="48945"> </a>    void *func;
+<a name="25935"> </a>    char *libname;
+<a name="48946"> </a>    char *funname;
+<a name="26048"> </a>
+<a name="25937"> </a>    if ((libname = JNU_GetStringNativeChars(env, lib))) {
+<a name="25939"> </a>        if ((funname = JNU_GetStringNativeChars(env, fun))) {
+<a name="25942"> </a>            if ((handle = LoadLibrary(libname))) {
+<a name="26023"> </a>                if (!(func = GetProcAddress(handle, funname))) {
+<a name="26024"> </a>                    JNU_ThrowByName(env, 
+<a name="26032"> </a>                        "java/lang/UnsatisfiedLinkError",
+<a name="26025"> </a>                        funname);
+<a name="26026"> </a>                }
+<a name="26016"> </a>            } else {
+<a name="25948"> </a>                JNU_ThrowByName(env, 
+<a name="26017"> </a>                        "java/lang/UnsatisfiedLinkError",
+<a name="25979"> </a>                        libname);
+<a name="26018"> </a>            }
+<a name="26035"> </a>            free(funname);
+<a name="26036"> </a>        }
+<a name="26056"> </a>        free(libname);
+<a name="26038"> </a>    }
+<a name="25952"> </a>    return (jlong)func;
+<a name="26042"> </a>}
+</pre>
+
+<p>
+  <a name="48939"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>CFunction.find</code> converts the library name and function name to locale-specific C strings, and then calls the Win32 API functions <code>LoadLibrary</code> and <code>GetProc-Address</code> to locate the C function in the named native library.</font>
+</p>
+
+
+<p>
+  <a name="26401"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>callInt</code> method, implemented as follows, carries out the main task of redispatching to the underlying C function:</font>
+</p>
+
+
+<p>
+  <a name="57528"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57529"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57530"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="26085"> </a>JNIEXPORT jint JNICALL
+<a name="58911"> </a>Java_CFunction_callInt(JNIEnv *env, jobject self,
+<a name="58914"> </a>                       jobjectArray arr)
+<a name="26197"> </a>{
+<a name="48954"> </a>#define MAX_NARGS 32
+<a name="26376"> </a>    jint ires;
+<a name="26111"> </a>    int nargs, nwords;
+<a name="26113"> </a>    jboolean is_string[MAX_NARGS];
+<a name="26114"> </a>    word_t args[MAX_NARGS];
+<a name="26371"> </a>
+<a name="26116"> </a>    nargs = env-&gt;GetArrayLength(arr);
+<a name="26117"> </a>    if (nargs &gt; MAX_NARGS) {
+<a name="26118"> </a>        JNU_ThrowByName(env, 
+<a name="26206"> </a>                    "java/lang/IllegalArgumentException",
+<a name="26119"> </a>                    "too many arguments");
+<a name="26120"> </a>        return 0;
+<a name="26121"> </a>    }
+<a name="26456"> </a>
+<a name="26536"> </a>    // convert arguments
+<a name="26123"> </a>    for (nwords = 0; nwords &lt; nargs; nwords++) {
+<a name="26413"> </a>        is_string[nwords] = JNI_FALSE;
+<a name="26124"> </a>        jobject arg = env-&gt;GetObjectArrayElement(arr, nwords);
+<a name="26457"> </a>
+<a name="26125"> </a>        if (arg == NULL) {
+<a name="26126"> </a>            args[nwords].p = NULL;
+<a name="26129"> </a>        } else if (env-&gt;IsInstanceOf(arg, Class_Integer)) {
+<a name="26131"> </a>            args[nwords].i =
+<a name="26453"> </a>                env-&gt;GetIntField(arg, FID_Integer_value);
+<a name="26472"> </a>        } else if (env-&gt;IsInstanceOf(arg, Class_Float)) {
+<a name="26473"> </a>            args[nwords].f =
+<a name="26474"> </a>                env-&gt;GetFloatField(arg, FID_Float_value);
+<a name="26134"> </a>        } else if (env-&gt;IsInstanceOf(arg, Class_CPointer)) {
+<a name="26135"> </a>            args[nwords].p = (void *)
+<a name="26136"> </a>                env-&gt;GetLongField(arg, FID_CPointer_peer);
+<a name="26138"> </a>        } else if (env-&gt;IsInstanceOf(arg, Class_String)) {
+<a name="26139"> </a>            char * cstr =
+<a name="38389"> </a>                JNU_GetStringNativeChars(env, (jstring)arg);
+<a name="26228"> </a>            if ((args[nwords].p = cstr) == NULL) {
+<a name="26140"> </a>                goto cleanup; // error thrown
+<a name="26141"> </a>            }
+<a name="26142"> </a>            is_string[nwords] = JNI_TRUE;
+<a name="26147"> </a>        } else {
+<a name="26156"> </a>            JNU_ThrowByName(env,
+<a name="26284"> </a>                "java/lang/IllegalArgumentException",
+<a name="26157"> </a>                "unrecognized argument type");
+<a name="26158"> </a>            goto cleanup;
+<a name="26159"> </a>        }
+<a name="26160"> </a>        env-&gt;DeleteLocalRef(arg);
+<a name="26161"> </a>    }
+<a name="26463"> </a>    void *func = 
+<a name="57537"> </a>        (void *)env-&gt;GetLongField(self, FID_CPointer_peer);
+<a name="26162"> </a>    int conv = env-&gt;GetIntField(self, FID_CFunction_conv);
+<a name="26567"> </a>
+<a name="26568"> </a>    // now transfer control to func.
+<a name="26163"> </a>    ires = asm_dispatch(func, nwords, args, conv);
+<a name="26454"> </a>
+<a name="26164"> </a>cleanup:
+<a name="26574"> </a>    // free all the native strings we have created
+<a name="26165"> </a>    for (int i = 0; i &lt; nwords; i++) {
+<a name="26166"> </a>        if (is_string[i]) {
+<a name="26167"> </a>            free(args[i].p);
+<a name="26168"> </a>        }
+<a name="26169"> </a>    }
+<a name="26170"> </a>    return ires;
+<a name="26043"> </a>}
+</pre>
+
+<p>
+  <a name="35503"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We assume that we have set up a number of global variables for caching the appropriate class references and field IDs. For example, global variable <code>FID_CPointer_peer</code> caches the field ID for <code>CPointer.peer</code> and global variable <code>Class_String</code> is a global reference to the <code>java.lang.String</code> class object.  The <code>word_t</code> type represents a machine word and is defined as follows:</font>
+</p>
+
+<pre>
+<a name="35504"> </a>typedef union {
+<a name="35487"> </a>    jint i;
+<a name="35488"> </a>    jfloat f;
+<a name="35489"> </a>    void *p;
+<a name="35490"> </a>} word_t;
+</pre>
+
+<p>
+  <a name="26573"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Java_CFunction_callInt</font> function iterates through the argument array, and checks the type of each element:</font>
+</p>
+
+<a name="26467"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>If the element is a <code>null</code> reference, it is passed as a <code>NULL</code> pointer to the C function. </font><a name="26477"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>If the element is an instance of the <code>java.lang.Integer</code> class, the integer value is fetched and passed to the C function.</font><a name="26479"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>If the element is an instance of the <code>java.lang.Float</code> class, the floating-point value is fetched and passed to the C function.</font><a name="26475"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>If the element is an instance of the <code>CPointer</code> class, the <code>peer</code> pointer is fetched and passed to the C function.</font><a name="26484"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>If the argument is an instance of <code>java.lang.String</code>, it is converted to a locale-specific C string and passed to the C function.</font><a name="26487"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Otherwise, an <code>IllegalArgumentException</code> is thrown.</font>
+</ul>
+<p>
+  <a name="26489"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We carefully check for possible errors during argument conversion and free all the temporary storage allocated for C strings before returning from the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Java_CFunction_callInt</font> function.</font>
+</p>
+
+
+<p>
+  <a name="26497"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The code that transfers the arguments from the temporary buffer <code>args</code> to the C function needs to manipulate the C stack directly. It is written in inlined assembly:</font>
+</p>
+
+<pre>
+<a name="26301"> </a>int asm_dispatch(void *func,   // pointer to the C function
+<a name="26302"> </a>                 int nwords,   // number of words in args array
+<a name="26303"> </a>                 word_t *args, // start of the argument data
+<a name="26364"> </a>                 int conv)     // calling convention 0: C
+<a name="38388"> </a>                               //                    1: JNI
+<a name="26308"> </a>{
+<a name="26309"> </a>    __asm {
+<a name="26310"> </a>        mov esi, args
+<a name="26311"> </a>        mov edx, nwords
+<a name="26312"> </a>        // word address -&gt; byte address
+<a name="26313"> </a>        shl edx, 2
+<a name="26314"> </a>        sub edx, 4
+<a name="26315"> </a>        jc  args_done
+<a name="26508"> </a>
+<a name="26316"> </a>        // push the last argument first
+<a name="26317"> </a>    args_loop:
+<a name="26318"> </a>        mov eax, DWORD PTR [esi+edx]
+<a name="26319"> </a>        push eax
+<a name="26320"> </a>        sub edx, 4
+<a name="26321"> </a>        jge SHORT args_loop
+<a name="26509"> </a>    args_done:
+<a name="26323"> </a>        call func
+<a name="26324"> </a>
+<a name="26512"> </a>        // check for calling convention
+<a name="26510"> </a>        mov edx, conv
+<a name="26325"> </a>        or edx, edx
+<a name="26326"> </a>        jnz jni_call
+<a name="26327"> </a>
+<a name="26511"> </a>        // pop the arguments
+<a name="26328"> </a>        mov edx, nwords
+<a name="26329"> </a>        shl edx, 2
+<a name="26330"> </a>        add esp, edx
+<a name="26331"> </a>    jni_call:
+<a name="26517"> </a>        // done, return value in eax
+<a name="26332"> </a>    }
+<a name="26299"> </a>}
+</pre>
+
+<p>
+  <a name="26496"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The assembly routine copies the arguments onto the C stack, then redispatches to the C function <code>func</code>. After <code>func</code> returns, the <code>asm_dispatch</code> routine checks <code>func</code>'s calling convention. If <code>func</code> follows the C calling convention, <code>asm_dispatch</code> pops the arguments passed to <code>func</code>. If <code>func</code> follows the JNI calling convention, <code>asm_dispatch</code> does not pop the arguments; <code>func</code> pops the arguments before it returns.</font>
+</p>
+
+<a name="30234"></a>
+<h2>9.5    Peer Classes</h2>
+
+<p>
+  <a name="30248"> </a><font face="Arial, Verdana, Helvetica, sans-serif">One-to-one mapping and shared stubs both address the problem of wrapping native functions. We also encountered the problem of wrapping native data structures in the course of constructing the shared stubs implementation. Recall the definition of the <code>CPointer</code> class:</font>
+</p>
+
+<pre>
+<a name="30251"> </a>public abstract class CPointer {
+<a name="30252"> </a>    protected long peer;
+<a name="30253"> </a>    public native void copyIn(int bOff, int[] buf,
+<a name="38441"> </a>                              int off, int len);
+<a name="30255"> </a>    public native void copyOut(...);
+<a name="30256"> </a>    ...
+<a name="30257"> </a>}
+</pre>
+
+<p>
+  <a name="30262"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It contains a 64-bit <code>peer</code> field that refers to the native data structure (in this case, a piece of memory in the C address space). Subclasses of <code>CPointer</code> assign specific meanings to the <code>peer</code> field. The <code>CMalloc</code> class, for example, uses the <code>peer</code> field to point to a chunk of memory in the C heap:</font>
+</p>
+
+
+<p>
+  <a name="30264"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><img src="stubs3.gif" height="124" width="500" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+
+
+<p>
+  <a name="30263"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Classes that directly correspond to native data structures, such as <code>CPointer</code> and <code>CMalloc</code>, are called <em>peer classes</em>. You can construct peer classes for a variety of native data structures, including, for example:</font>
+</p>
+
+<a name="30283"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>file descriptors</font><a name="30284"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>socket descriptors</font><a name="30285"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>windows or other graphics user interface components</font>
+</ul><a name="30290"></a>
+<h3>9.5.1    Peer Classes in the Java Platform</h3>
+
+<p>
+  <a name="30606"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The current JDK and Java 2 SDK releases (1.1 and 1.2) use peer classes internally to implement the <code>java.io</code>, <code>java.net</code>, and <code>java.awt</code> packages. An instance of the <code>java.io.FileDescriptor</code> class, for example, contains a private field <code>fd</code> that represents a native file descriptor:</font>
+</p>
+
+<pre>
+<a name="30305"> </a>// Implementation of the java.io.FileDescriptor class
+<a name="30309"> </a>public final class FileDescriptor {
+<a name="30303"> </a>    private int fd;
+<a name="30308"> </a>    ...
+<a name="30307"> </a>}
+</pre>
+
+<p>
+  <a name="35565"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Suppose that you want to perform a file operation that is not supported by the Java platform API. You might be tempted to use the JNI to find out the underlying native file descriptor of a <code>java.io.FileDescriptor</code> instance. The JNI allows you to access a private field, as long as you know its name and type. You might think that you could then perform the native file operation directly on that file descriptor. This approach, however, has a couple of problems:</font>
+</p>
+
+<a name="30302"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>First, you are relying on one <code>java.io.File-Descriptor</code> implementation that stores the native file descriptor in a private field called <code>fd</code>. There is no guarantee, however, that future implementations from Sun or third-party implementations of the <code>java.io.FileDescriptor</code> class will still use the same private field name <code>fd</code> for the native file descriptor. Native code that assumes the name of the peer field may fail to work with a different implementation of the Java platform.</font><a name="30315"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Second, the operation you perform directly on the native file descriptor may disrupt the internal consistency of the peer class. For example, <code>java.io.FileDescriptor</code> instances maintain an internal state indicating whether the underlying native file descriptor has been closed. If you use native code to bypass the peer class and close the underlying file descriptor, the state maintained in the <code>java.io.FileDescriptor</code> instance will no longer be consistent with the true state of the native file descriptor. Peer class implementations typically assume that they have exclusive access to the underlying native data structure.</font>
+</ul>
+<p>
+  <a name="30598"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The only way to overcome these problems is to define your own peer classes that wrap native data structures. In the above case, you can define your own file descriptor peer class that supports the required set of operations. This approach does not let you use your own peer classes to implement Java API classes. You cannot, for example, pass your own file descriptor instance to a method that expects a <code>java.io.FileDescriptor</code> instance. You can, however, easily define your own peer class that implements a standard interface in the Java API. This is a strong argument for designing APIs based on interfaces instead of classes.</font>
+</p>
+
+<a name="30607"></a>
+<h3>9.5.2    Freeing Native Data Structures</h3>
+
+<p>
+  <a name="30608"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Peer classes are defined in the Java programming language; thus instances of peer classes will be garbage collected automatically. You need to make sure, however, that the underlying native data structures will be freed as well.</font>
+</p>
+
+
+<p>
+  <a name="30611"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Recall that the <code>CMalloc</code> class contains a <code>free</code> method for explicitly freeing the <code>malloc</code>'ed C memory:</font>
+</p>
+
+<pre>
+<a name="30614"> </a>public class CMalloc extends CPointer {
+<a name="30622"> </a>    public native void free();
+<a name="30623"> </a>    ...
+<a name="30624"> </a>}
+</pre>
+
+<p>
+  <a name="30627"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You must remember to call <code>free</code> on instances of the <code>CMalloc</code> class; otherwise a <code>CMalloc</code> instance may be garbage collected, but its corresponding <code>malloc</code>'ed C memory will never be reclaimed.</font>
+</p>
+
+
+<p>
+  <a name="30635"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Some programmers like to put a finalizer in peer classes such as <code>CMalloc</code>:</font>
+</p>
+
+<pre>
+<a name="30637"> </a>public class CMalloc extends CPointer {
+<a name="30638"> </a>    public native synchronized void free();
+<a name="30645"> </a>    protected void finalize() {
+<a name="30648"> </a>        free();
+<a name="30646"> </a>    }
+<a name="30639"> </a>    ...
+<a name="30640"> </a>}
+</pre>
+
+<p>
+  <a name="30649"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The virtual machine calls the <code>finalize</code> method before it garbage collects an instance of <code>CMalloc</code>. Even if you forget to call <code>free</code>, the <code>finalize</code> method frees the <code>malloc</code>'ed C memory for you.</font>
+</p>
+
+
+<p>
+  <a name="31117"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You need to make a small change to the <code>CMalloc.free</code> native method implementation to account for the possibility that it may be called multiple times. You also need to make <code>CMalloc.free</code> a synchronized method to avoid thread race conditions:</font>
+</p>
+
+
+<p>
+  <a name="58928"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="58929"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="30664"> </a>JNIEXPORT void JNICALL
+<a name="58918"> </a>Java_CMalloc_free(JNIEnv *env, jobject self)
+<a name="30666"> </a>{
+<a name="30667"> </a>    long peer = env-&gt;GetLongField(self, FID_CPointer_peer);
+<a name="30675"> </a>    if (peer == 0) {
+<a name="30676"> </a>        return; /* not an error, freed previously */
+<a name="30677"> </a>    }
+<a name="30668"> </a>    free((void *)peer);
+<a name="31882"> </a>    peer = 0;
+<a name="30680"> </a>    env-&gt;SetLongField(self, FID_CPointer_peer, peer);
+<a name="30669"> </a>}
+</pre>
+
+<p>
+  <a name="30687"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We set the <code>peer</code> field using two statements:</font>
+</p>
+
+<pre>
+<a name="31886"> </a>peer = 0;
+<a name="31887"> </a>env-&gt;SetLongField(self, FID_CPointer_peer, peer);
+</pre>
+
+<p>
+  <a name="31888"> </a><font face="Arial, Verdana, Helvetica, sans-serif">instead of one statement:</font>
+</p>
+
+<pre>
+<a name="31890"> </a>env-&gt;SetLongField(self, FID_CPointer_peer, 0);
+</pre>
+
+<p>
+  <a name="31884"> </a><font face="Arial, Verdana, Helvetica, sans-serif">because C++ compilers will regard the literal <code>0</code> as a 32-bit integer, as opposed to a 64-bit integer. Some C++ compilers allow you to specify 64-bit integer literals, but using 64-bit literals will not be as portable.</font>
+</p>
+
+
+<p>
+  <a name="31883"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Defining a <code>finalize</code> method is a proper safeguard, but <em>you should never rely on finalizers as the sole means of freeing native data structures</em>. The reason is that the native data structures may consume much more resources than their peer instances. The Java virtual machine may not garbage collect and finalize instances of peer classes fast enough to free up their native counterparts.</font>
+</p>
+
+
+<p>
+  <a name="30694"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Defining a finalizer has performance consequences as well. It is typically slower to create and reclaim instances of classes with finalizers than to create and reclaim those without finalizers.</font>
+</p>
+
+
+<p>
+  <a name="30697"> </a><font face="Arial, Verdana, Helvetica, sans-serif">If you can always ensure that you manually free the native data structure for peer classes, you need not define a finalizer. You should make sure, however, to free native data structures in all paths of execution; otherwise you may have created a resource leak. <em>Pay special attention to possible exceptions thrown during the process of using a peer instance.</em> Always free native data structures in a <code>finally</code> clause:</font>
+</p>
+
+<pre>
+<a name="30705"> </a>CMalloc cptr = new CMalloc(10);
+<a name="30707"> </a>try {
+<a name="30709"> </a>    ... // use cptr
+<a name="30710"> </a>} finally {
+<a name="30711"> </a>    cptr.free();
+<a name="30712"> </a>}
+</pre>
+
+<p>
+  <a name="30714"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>finally</code> clause ensures that <code>cptr</code> is freed even if an exception occurs inside the <code>try</code> block.</font>
+</p>
+
+<a name="30720"></a>
+<h3>9.5.3    Backpointers to Peer Instances</h3>
+
+<p>
+  <a name="30721"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We have shown that peer classes typically contain a private field that refers to the underlying native data structure.  In some cases it is desirable to also include a reference from the native data structure to instances of the peer class. This happens, for example, when the native code needs to initiate callbacks to instance methods in the peer class.</font>
+</p>
+
+
+<p>
+  <a name="30725"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Suppose that we are building a hypothetical user interface component called <code>KeyInput</code>. <code>KeyInput</code>'s native C++ component, <code>key_input</code>, receives an event as a <code>key_pressed</code> C++ function call from the operating system when the user presses a key. The <code>key_input</code> C++ component reports the operating system event to the <code>KeyInput</code> instance by calling the <code>keyPressed</code> method on the <code>KeyInput</code> instance. The arrows in the figure below indicate how a key press event is originated by a user key press and propagated from the <code>key_input</code> C++ component to the <code>Key-Input</code> peer instance:</font>
+</p>
+
+
+<p>
+  <a name="43375"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><img src="stubsa.gif" height="123" width="501" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+
+
+<p>
+  <a name="35628"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>KeyInput</code> peer class is defined as follows:</font>
+</p>
+
+<pre>
+<a name="31190"> </a>class KeyInput {
+<a name="30737"> </a>    private long peer;
+<a name="30755"> </a>    private native long create();
+<a name="30756"> </a>    private native void destroy(long peer);
+<a name="30742"> </a>    public KeyInput() {
+<a name="30744"> </a>        peer = create();
+<a name="30743"> </a>    }
+<a name="30745"> </a>    public destroy() {
+<a name="30747"> </a>        destroy(peer);
+<a name="30746"> </a>    }
+<a name="30728"> </a>    private void keyPressed(int key) {
+<a name="30736"> </a>        ... /* process the key event */
+<a name="30735"> </a>    }
+<a name="30727"> </a>}
+</pre>
+
+<p>
+  <a name="30757"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>create</code> native method implementation allocates an instance of the C++ structure <code>key_input</code>. C++ structures are similar to C++ classes, with the only difference being that all members are by default public as opposed to private. We use a C++ structure instead of a C++ class in this example mainly to avoid confusion with classes in the Java programming language.</font>
+</p>
+
+<pre>
+<a name="30763"> </a>// C++ structure, native counterpart of KeyInput
+<a name="31193"> </a>struct key_input {
+<a name="30764"> </a>    jobject back_ptr;         // back pointer to peer instance
+<a name="30765"> </a>    int key_pressed(int key); // called by the operating system
+<a name="30768"> </a>};
+<a name="30807"> </a>
+<a name="30758"> </a>JNIEXPORT jlong JNICALL
+<a name="30759"> </a>Java_KeyInput_create(JNIEnv *env, jobject self)
+<a name="30760"> </a>{
+<a name="30762"> </a>    key_input *cpp_obj = new key_input();
+<a name="30784"> </a>    cpp_obj-&gt;back_ptr = env-&gt;NewGlobalRef(self);
+<a name="30785"> </a>    return (jlong)cpp_obj;
+<a name="30761"> </a>}
+<a name="48994"> </a>
+<a name="30788"> </a>JNIEXPORT void JNICALL
+<a name="30789"> </a>Java_KeyInput_destroy(JNIEnv *env, jobject self, jlong peer)
+<a name="30790"> </a>{
+<a name="30791"> </a>    key_input *cpp_obj = (key_input*)peer;
+<a name="30793"> </a>    env-&gt;DeleteGlobalRef(cpp_obj-&gt;back_ptr);
+<a name="30821"> </a>    delete cpp_obj;
+<a name="30794"> </a>    return;
+<a name="30795"> </a>}
+</pre>
+
+<p>
+  <a name="30806"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>create</code> native method allocates the C++ structure and initializes its <code>back_ptr</code> field to a global reference to the <code>KeyInput</code> peer instance. The <code>destroy</code> native method deletes the global reference to the peer instance and the C++ structure referred to by the peer instance. The <code>KeyInput</code> constructor calls the <code>create</code> native method to set up the links between a peer instance and its native counterpart:<img src="stubs4.gif" height="148" width="500" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+
+
+<p>
+  <a name="30830"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When the user presses a key, the operating system calls the C++ member function <code>key_input::key_pressed</code>. This member function responds to events by issuing a callback to the <code>keyPressed</code> method on the <code>KeyInput</code> peer instance.</font>
+</p>
+
+<pre>
+<a name="30870"> </a>// returns 0 on success, -1 on failure
+<a name="30873"> </a>int key_input::key_pressed(int key)
+<a name="30874"> </a>{
+<a name="30877"> </a>    jboolean has_exception;
+<a name="30886"> </a>    JNIEnv *env = JNU_GetEnv();
+<a name="30878"> </a>    JNU_CallMethodByName(env, 
+<a name="30921"> </a>                         &amp;has_exception,
+<a name="30881"> </a>                         java_peer,
+<a name="30884"> </a>                         "keyPressed",
+<a name="30882"> </a>                         "()V",
+<a name="30883"> </a>                         key);
+<a name="30885"> </a>    if (has_exception) {
+<a name="30892"> </a>        env-&gt;ExceptionClear();
+<a name="30895"> </a>        return -1;
+<a name="30893"> </a>    } else {
+<a name="30896"> </a>        return 0;
+<a name="30897"> </a>    }
+<a name="30898"> </a>}
+</pre>
+
+<p>
+  <a name="30916"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>key_press</code> member function clears any exceptions after the callback and returns error conditions to the operating system using the <code>-1</code> return code. Refer to Sections <a href="exceptions.html#26354">6.2.3</a> and <a href="other.html#30439">8.4.1</a> for the definitions of <code>JNU_CallMethodByName</code> and <code>JNU_GetEnv</code> utility functions respectively.</font>
+</p>
+
+
+<p>
+  <a name="30786"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Let us discuss one final issue before concluding this section. Suppose that you add a <code>finalize</code> method in the <code>KeyInput</code> class to avoid potential memory leaks:</font>
+</p>
+
+<pre>
+<a name="30980"> </a>class KeyInput {
+<a name="30986"> </a>    ...
+<a name="30987"> </a>    public synchronized destroy() {
+<a name="30988"> </a>        if (peer != 0) {
+<a name="30994"> </a>            destroy(peer);
+<a name="30996"> </a>            peer = 0;
+<a name="30995"> </a>        }
+<a name="30989"> </a>    }
+<a name="30997"> </a>    protect void finalize() {
+<a name="30999"> </a>        destroy();
+<a name="30998"> </a>    }
+<a name="30990"> </a>}
+</pre>
+
+<p>
+  <a name="31005"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>destroy</code> method checks whether the <code>peer</code> field is zero, and sets the <code>peer</code> field to zero after calling the overloaded <code>destroy</code> native method. It is defined as a synchronized method to avoid race conditions.</font>
+</p>
+
+
+<p>
+  <a name="31011"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The above code will not work as you might expect, however. The virtual machine will never garbage collect any <code>KeyInput</code> instances unless you call <code>destroy</code> explicitly. The <code>KeyInput</code> constructor creates a JNI global reference to the <code>KeyInput</code> instance. The global reference prevents the <code>KeyInput</code> instance from being garbage collected. You can overcome this problem by using a weak global reference instead of a global reference:</font>
+</p>
+
+<pre>
+<a name="31018"> </a>JNIEXPORT jlong JNICALL
+<a name="31019"> </a>Java_KeyInput_create(JNIEnv *env, jobject self)
+<a name="31020"> </a>{
+<a name="31021"> </a>    key_input *cpp_obj = new key_input();
+<a name="31022"> </a>    cpp_obj-&gt;back_ptr = env-&gt;<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">NewWeakGlobalRef</font>(self);
+<a name="31023"> </a>    return (jlong)cpp_obj;
+<a name="31024"> </a>}
+<a name="31025"> </a>
+<a name="31026"> </a>JNIEXPORT void JNICALL
+<a name="31027"> </a>Java_KeyInput_destroy(JNIEnv *env, jobject self, jlong peer)
+<a name="31028"> </a>{
+<a name="31029"> </a>    key_input *cpp_obj = (key_input*)peer;
+<a name="31030"> </a>    env-&gt;<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">DeleteWeakGlobalRef</font>(cpp_obj-&gt;back_ptr);
+<a name="31031"> </a>    delete cpp_obj;
+<a name="31032"> </a>    return;
+<a name="31033"> </a>}
+</pre>
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="other.html">Prev</a> | <a href="pitfalls.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

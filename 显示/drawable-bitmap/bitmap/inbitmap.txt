@@ -1,0 +1,54 @@
+参见：
+myandroidtool/bitmaptool和imagecache
+Managing Bitmap Memory
+	https://developer.android.com/training/displaying-bitmaps/manage-memory.html
+Android内存优化之OOM
+	http://hukai.me/android-performance-oom/
+Android-Bitmap面面观
+	http://jayfeng.com/2016/03/22/Android-Bitmap%E9%9D%A2%E9%9D%A2%E8%A7%82/
+
+有什么用：
+使用inBitmap属性可以告知Bitmap解码器去尝试使用之前那张bitmap在heap中所占据的pixel data内存区域，而不是去问内存重新申请一块区域来存放bitmap。
+
+--------------------如何使用：
+构建options.inbitmap
+	private static void addInBitmapOptions(BitmapFactory.Options options, ImageCache cache) {
+		// inBitmap only works with mutable bitmaps, so force the decoder to return mutable bitmaps.
+		options.inMutable = true;
+
+		if (cache != null) {
+			// Try to find a bitmap to use for inBitmap.
+			Bitmap inBitmap = cache.getBitmapFromReusableSet(options);
+
+			if (inBitmap != null) {
+				// If a suitable bitmap has been found, set it as the value of inBitmap.
+				options.inBitmap = inBitmap;
+			}
+		}
+	}
+	
+哪些bitmap可以作为inbitmap
+1. 该bitmap已经不再使用
+2. 尺寸要求
+从SDK 19开始，新申请的bitmap大小 必须小于或者等于 已经赋值过的bitmap大小。
+而在SDK 11 -> 18之间，重用的bitmap大小必须是一致的，例如:给inBitmap赋值的图片大小为100-100，那么新申请的bitmap必须也为100-100才能够被重用。
+3. 解码格式
+新申请的bitmap与旧的bitmap必须有相同的解码格式，例如大家都是8888的，如果前面的bitmap是8888，那么就不能支持4444与565格式的bitmap了。 
+我们可以创建一个包含多种典型可重用bitmap的对象池，这样后续的bitmap创建都能够找到合适的“模板”去进行重用
+
+static boolean canUseForInBitmap(Bitmap candidate, BitmapFactory.Options targetOptions) {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+		// From Android 4.4 (KitKat) onward we can re-use if the byte size of the new bitmap is smaller than
+		// the reusable bitmap candidate allocation byte count.
+		int width = targetOptions.outWidth / targetOptions.inSampleSize;
+		int height = targetOptions.outHeight / targetOptions.inSampleSize;
+		int byteCount = width * height
+			* getBytesPerPixel(candidate.getConfig());
+		return byteCount <= candidate.getAllocationByteCount();
+	}
+
+	// On earlier versions, the dimensions must match exactly and the inSampleSize must be 1
+	return candidate.getWidth() == targetOptions.outWidth
+		&& candidate.getHeight() == targetOptions.outHeight
+		&& targetOptions.inSampleSize == 1;
+}

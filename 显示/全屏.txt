@@ -1,0 +1,7 @@
+<style name="AppTheme" parent="AppBaseTheme">
+	<item name="android:windowNoTitle">true</item>
+	<item name="android:windowFullscreen">true</item>
+	<item name="android:windowActionBar">false</item>
+</style>
+
+代码中，参见：DeviceTool.fullScreen(boolean, Activity)

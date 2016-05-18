@@ -1,0 +1,3 @@
+**********************************获取system setting
+getContext().getContentResolver().registerContentObserver(
+                Settings.System.CONTENT_URI, true, contentobserver);

@@ -1,0 +1,24 @@
+参见：android recipe v4/2_16_DragTouch
+
+srcview
+View.startDrag (ClipData data, View.DragShadowBuilder shadowBuilder, Object myLocalState, int flags)
+效果：在手指处，将会产生一个shadow，该shadow将跟随着手指的移动而移动
+一个例子：
+DragShadowBuilder shadowBuilder = new DragShadowBuilder(srcview);
+srcview.startDrag(null, shadowBuilder, ((ImageView) srcview).getDrawable(), 0); 
+
+targetview
+通过setOnDragListener (View.OnDragListener l)将感知srcview的drag
+说明targetview和srcview不必具有联系
+
+DragEvent
+ACTION_DRAG_STARTED
+	开始drag时
+ACTION_DRAG_ENDED
+	drag结束时
+ACTION_DRAG_ENTERED
+	srcview的shadow 跟随手指进入到 targetview中时
+ACTION_DRAG_EXITED
+	srcview的shadow 跟随手指移出 targetview中时
+ACTION_DROP
+	当松开手指时，srcview的shadow 落入到 targetview中时

@@ -1,0 +1,53 @@
+----------------------------------------------------------------------------博客
+！！！___！！！！http://blog.csdn.net/lmj623565791/	
+	鸿洋 的博客
+	经常更新
+	
+！！！___!!!http://blog.csdn.net/feiduclear_up/
+	废墟的树 的博客
+	内容深度，经常更新
+	看到：Android5.x 新控件之RecyclerView，CardView，Palette的使用
+		该以前日期的博客文章
+		目前最新文章：Android对话框Dialog，PopupWindow，Toast的实现机制 
+
+！！！___!!!孙群，介绍了canvas等绘制，经常更新
+	http://blog.csdn.net/iispring?viewmode=contents
+	归纳整理：http://blog.csdn.net/iispring/article/details/47690011
+
+！！！___!!!有android开发周报（自己整理的）
+http://www.race604.com/
+
+http://blog.csdn.net/qibin0506/article/list/1
+
+爱哥
+	http://blog.csdn.net/aigestudio
+	https://github.com/AigeStudio?tab=activity
+
+mast coordinatorlayout的作者
+	http://saulmm.github.io/
+	https://plus.google.com/+SaulMolineroMalvido
+	http://www.materialdoc.com/author/saul
+	
+http://inthecheesefactory.com/blog
+
+https://www.aswifter.com/archives/
+http://blog.zhaiyifan.cn/
+http://blog.csdn.net/chen930724
+https://blog.stylingandroid.com
+
+http://blog.csdn.net/yanbober/article/
+	内容深度
+http://blog.csdn.net/fancylovejava	
+http://blog.isming.me/
+	sam
+http://blog.csdn.net/singwhatiwanna/
+	艺术开发之旅的作业的博客
+http://blog.csdn.net/guolin_blog/	
+http://blog.csdn.net/aigestudio/
+	自定义控件
+http://www.liaohuqiu.net/
+	pulltorefreshulatra作者的博客
+http://blog.mosil.biz
+
+http://blog.csdn.net/innost
+	android的框架层

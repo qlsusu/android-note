@@ -1,0 +1,9 @@
+save：一个存储点
+	存储的是：matrix/clip等 参见：saveflags.png
+	返回的是一个数字count，
+		可由restoreToCount使用，来恢复到特定的 save时的状态
+restore: 恢复到 存储点时的 状态
+
+设save了两次，返回的数字count分别为 4和5，则如果恢复到4，则5（的save时的状态）被pop而不再存在
+一个点可以被save多次，则每次save都代表当时的状态（matrix,clip），后续可多次恢复到该状态，并分别执行对应的绘制操作
+	

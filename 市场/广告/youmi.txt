@@ -1,0 +1,18 @@
+wiki
+	http://wiki.youmi.net/%E9%A6%96%E9%A1%B5
+	
+money
+	http://wiki.youmi.net/%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E#.E5.B9.BF.E5.91.8A.E6.94.B6.E7.9B.8A
+
+广告条
+	http://www.youmi.net/page/help/app_banner
+	
+积分墙
+	http://www.youmi.net/page/help/app_wall
+	http://tech.qq.com/a/20120109/000267.htm
+	优蜜科技（有米广告）  16:28:04
+		有米安卓积分墙3.0隆重发布，盈利杀器再战江湖！ 界面更美观，大幅提升加载速度，支持下载断点续传，在线配置参数等！
+		有米“广告一体包”上线，增加插播广告（包括全屏广告和半屏），精美的广告画面，有竞争力的价格！
+
+		积分墙3.0:http://www.youmi.net/page/activity/new_wall 
+		广告一体包（增加插播广告）：http://dev.youmi.net/2013/03/youmi-sdk4-0.html 

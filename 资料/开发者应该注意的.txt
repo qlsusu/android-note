@@ -1,0 +1,11 @@
+back切出
+home切出
+home之后，进程被意外终止
+锁屏情况
+
+混淆
+升级
+	versioncode和versionname
+	签名
+
+去掉syso

@@ -1,0 +1,2 @@
+例子：canvas.clipRect(0, 0, getWidth()/2, getHeight()/2); 
+效果：从起点(0,0)处，截取总空间的一半作为clip

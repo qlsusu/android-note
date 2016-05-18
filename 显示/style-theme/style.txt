@@ -1,0 +1,73 @@
+原生资源：platforms\android-L\data\res\
+
+android l引入了新的theme，so，你需要温习style
+有这样一篇文章（所以，本文为 转载）：http://www.cnblogs.com/angeldevil/p/3479431.html
+之下为 总结：
+
+attrs.xml
+其中定义了，app中允许出现哪些属性
+
+declare-styleable
+声明了一些属性
+	在一个attrs.xml中，你可以定义多个declare-styleable，但其中的attr不能重复
+形式：
+	<declare-styleable name="styleable1">
+		<attr name="attr1" format="" />
+	</declare-styleable>
+系统会为我们生成：
+	R.styleable.styleable1（为int[]类型，而其ele为 styleable1所声明的属性）
+	R.styleable.styleable1_attr1（该属性 在 styleable 中的索引）
+声明在 styleable中的属性 和 直接在attrs.xml中定义的属性 有什么区别：
+	当我们自定义了一个view，可能需要为该view设置一些属性，而这些属性从哪里来：往往来自styleable（和，系统已经预先定义的属性）
+
+style
+一些 属性和其值 的集合
+其中的属性 可以来自多个declare-styleable
+depends
+
+属性的值类型：
+string,int,color等
+	也可以引用一个资源
+reference
+	引用
+	空引用：@null
+其他属性的值
+	含义：属性b的值 就我这个属性 的值
+	如：
+		<item name="text1">?android:attr/text</item>
+		<item name="android:text">?attr/text2</item>
+枚举（也可参见：android:attr/sceenSize）
+	<attr name="displayOptions">
+		<flag name="none" value="0" />
+		<flag name="useLogo" value="0x1"/>
+		<flag name="showHome" value="0x2"/>
+		<flag name="homeAsUp" value="0x4"/>
+		<flag name="showTitle" value="0x8"/>
+		<flag name="showCustom" value="0x10"/>
+		<flag name="disableHome" value="0x20"/>
+	</attr>
+
+属性的值的来源 和 优先级：
+1. 在layout.xml中，定义 view的myappns:attr1
+2. 在layout.xml中，定义 view的style
+3. 在view.java中，指定 defStyleAttr（而当前theme会指定 该styleattr引用了哪个style）
+	defStyleAttr 和 defStyleRes：
+		出现在：public TypedArray obtainStyledAttributes (AttributeSet set, int[] attrs, int defStyleAttr, int defStyleRes)
+		而你可以通过：tarray.getxxx(R.styleable.styleable1_attr1);获得属性值
+4. 在view.java中，指定 defStyleRes（起作用的情形：当defStyleAttr为0 或者 defStyleAttr不为0，但是defStyleAttr并没被指定引用）
+5. 在theme中指定属性值
+
+在最新版本中（5.1.1时期），默认构建的app的主题需要继承于：Base.Theme.AppCompat.XXX，即是：前面加上Base.
+
+如果依赖于support库，主题应该继承于@android:style/Theme.AppCompat
+	一些式样需要被定义两次，如：一个带 android: 前缀，另一个不带。带前缀的适用于包含该式样的 Android 系统版本，不带前缀的适用于通过从 Support 库中读取式样的旧版本。
+	<resources>
+		<!-- 为程序或者活动应用的主题样式 -->
+		<style name="CustomActionBarTheme"
+			   parent="@android:style/Theme.AppCompat">
+			<item name="android:windowActionBarOverlay">true</item>
+
+			<!-- 兼容支持库 -->
+			<item name="windowActionBarOverlay">true</item>
+		</style>
+	</resources>

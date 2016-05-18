@@ -1,0 +1,3 @@
+参见：
+Canvas之绘制基本形状
+	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B2%5DCanvas_BasicGraphics.md

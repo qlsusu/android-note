@@ -1,0 +1,19 @@
+http://developer.android.com/index.html
+	设计，开发，分发
+http://android-developers.blogspot.com/
+	安卓开发者博客
+http://developer.android.com/distribute/index.html
+	如何分发
+http://developer.android.com/distribute/essentials/best-practices/apps.html
+	应用开发最好实践
+http://developer.android.com/distribute/googleplay/developer-console.html
+	开发者控制台
+http://developer.android.com/about/versions/android-5.0.html
+	5.0新特性介绍
+	开发注意事项
+http://developer.android.com/distribute/monetize/ads.html
+	加入广告
+http://developer.android.com/about/start.html
+	start界面：设计，开发，分发
+http://developer.android.com/google/index.html
+	google的一些service，包含：广告，云存储

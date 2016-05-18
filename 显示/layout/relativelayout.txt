@@ -1,0 +1,11 @@
+一个 孩子示例：
+<LinearLayout
+	android:id="@+id/linearLayout1"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentLeft="true"
+	android:layout_alignParentTop="true"
+	android:layout_marginLeft="-30dp"
+	android:layout_marginTop="24dp"
+	android:orientation="vertical" >
+说明：孩子必须包含诸如layout_alignParentLeft等，从而可以设置诸如marginleft和margintop等

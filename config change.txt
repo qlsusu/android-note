@@ -1,0 +1,13 @@
+在activity的声明中，如
+ <activity
+	android:name=".ManualRotationActivity"
+	android:label="@string/manual_name"
+	android:configChanges="orientation|keyboardHidden|screenSize">
+	<intent-filter>
+		<action android:name="android.intent.action.MAIN" />
+		<category android:name="android.intent.category.LAUNCHER" />
+	</intent-filter>
+</activity>
+
+在activity.java中
+重写public void onConfigurationChanged(Configuration newConfig)

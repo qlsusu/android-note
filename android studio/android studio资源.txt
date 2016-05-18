@@ -1,0 +1,100 @@
+参见：
+【移动开发必须要弄明白的问题】详解Eclipse转Android Studio
+	http://www.imooc.com/article/2640
+Android Studio安装配置笔记
+	http://unclechen.github.io/2015/06/01/Android-Studio%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/
+Android Studio Gradle实践之多渠道自动化打包+版本号管理
+	http://unclechen.github.io/2015/10/22/Android-Studio-Gradle%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%A4%9A%E6%B8%A0%E9%81%93%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85+%E7%89%88%E6%9C%AC%E5%8F%B7%E7%AE%A1%E7%90%86/
+
+注意：
+不要在androidmanifest.xml中来声明 use-sdk，应该在build.gradle中声明
+
+在Android Studio项目中导入开源库详细步骤教程
+	http://www.111cn.net/sj/android/92549.htm
+
+提高效率的 Android Studio 技巧汇总
+	http://www.codeceo.com/article/android-studio-skills.html
+http://www.android-studio.org/
+http://tools.android-studio.org/
+http://forum.android-studio.org/forum.php
+http://www.aswifter.com/
+https://plus.google.com/+AndroidDevelopers/posts/ECrb9VQW9XP	
+http://segmentfault.com/blog/stormzhang
+
+资料
+http://android.jobbole.com/77635/
+常用功能
+	http://ask.android-studio.org/?/article/23
+基本设置
+	http://ask.android-studio.org/?/article/14
+
+----------问题
+移动一个module到其他目录中
+因为该module还有可能被其他项目所引用
+或者，他就不可能被引用，如lib项目和 如何使用该lib的工程
+----------------
+
+
+
+不自动报错的问题
+
+导入开源项目的注意事项，check：build-tool的版本号，gradle的版本号等，语法等
+	
+ANDROID STUDIO 的中文亂碼/框框問題
+	http://blog.mosil.biz/2014/06/android-studio-mojibake/
+
+Project和Module
+Project，代表一个workspace。一个Project可以包含多个Module
+	Studio一个窗口只能有一个project
+Module，就相当于eclipse中的工程
+
+PS: 这个选择并下载2.25G的组件是studio的一个bug，评论里有人提醒，感谢这位同学。如果网速不行想跳过这步的可以在bin目录的idea.properties增加一行：disable.android.first.run=true就行了，mac平台的右键安装包->Show Package Contents 就找到bin目录了。）
+
+如何设置工程依赖
+如果让一个module具备library性质
+
+如何自动生成getter setter
+如何自动实现接口方法
+
+快捷键
+将keymap映射成为了eclipse后，还有哪些要调整
+	http://www.cnblogs.com/0616--ataozhijia/p/3870064.html
+
+Gradle同步 
+在你项目运行或者更改Gradle配置的时候都要点击下这个按钮，会下载相应的依赖
+
+如何高亮错误的提示
+如何自动修正错误
+
+代码补全
+忽略大小写
+	搜索code completion
+		case sensitive completion中，选择none
+
+为什么要设置nullable
+
+鼠标放置在代码上，给出提示
+搜索，quick doc on mouse move
+
+快捷键
+一个变量（如在方法中定义的局部变量）：cmd+shift+g
+
+android上有用的博客
+https://github.com/android-cn/android-dev-cn
+
+项目和module的概念
+
+单个变量的高亮
+
+textwrangler的color schema
+
+!!!!!!!!如何引入其他的module（在其他工程下面）
+
+不用每次都下载gradle
+
+Android Studio 导入第三方类库、jar 包和 so 库
+http://drakeet.me/android-studio
+http://www.cnblogs.com/zeusro/p/4788513.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+http://rocko.xyz/2014/12/13/Android-Studio-jar%E3%80%81so%E3%80%81library%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96/
+http://www.cnblogs.com/neozhu/p/3458759.html
+http://wiki.jikexueyuan.com/project/android-actual-combat-skills/android-studio-importing-third-patry-repository-jar-package-so-package.html

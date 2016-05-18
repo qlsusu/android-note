@@ -1,0 +1,9 @@
+混淆lib
+pro.config
+http://www.cnblogs.com/binmaizhai/archive/2013/05/06/3063490.html
+http://www.cnblogs.com/sw926/p/3314165.html
+
+混淆apk
+参见：http://ticktick.blog.51cto.com/823160/1413066
+放开project.properties中proguard.config
+在proguard-project.txt中添加 混淆规则

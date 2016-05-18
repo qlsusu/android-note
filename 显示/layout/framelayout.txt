@@ -1,0 +1,3 @@
+要设置child view的margin，有两种方式：
+1.设置child的layout_gravity，然后设置child的margin
+2.设置linearlayout，是其成为child的father，然后设置child的margin

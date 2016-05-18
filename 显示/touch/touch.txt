@@ -1,0 +1,10 @@
+﻿获得系统的长按的时长
+android.view.ViewConfiguration.getLongPressTimeout()
+
+构建一个motionevent（如手动构建一个cancel事件，然后下发）：
+android.view.MotionEvent.obtain(long downTime, long eventTime, int action, float x, float y, int metaState)
+
+getx/y
+	返回的是touch相对于view的左上角的坐标
+getrawx/y
+	返回的是touch相对于屏幕的左上角的坐标

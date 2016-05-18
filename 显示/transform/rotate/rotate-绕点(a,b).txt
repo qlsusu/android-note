@@ -1,0 +1,2 @@
+绕点(a,b)旋转，本质上相当于：
+先translate(a,b)，后进行旋转，在translate(-a,-b)

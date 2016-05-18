@@ -1,0 +1,306 @@
+<html>
+<head>
+<title> Getting Started </title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="intro.html">Prev</a> | <a href="part2.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="768"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 2 chapter</font>
+</h1>
+</div>
+<a name="769"></a>
+<h1>Getting Started </h1>
+<hr><p>
+
+<p>
+  <a name="770"> </a>This chapter walks you through a simple example of using the Java Native Interface. We will write a Java application that calls a C function to print "<code>Hello World!</code>".</font>
+</p>
+
+<a name="24512"></a>
+<h2>2.1    Overview</h2>
+
+<p>
+  <a name="32225"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Figure <a href="start.html#28337">2.1</a> illustrates the process for using JDK or Java 2 SDK releases to write a simple Java application that calls a C function to print "<code>Hello World!</code>". The process consists of the following steps:</font>
+</p>
+
+<ol><font face="Arial, Verdana, Helvetica, sans-serif">
+<li>Create a class (<code>HelloWorld.java</code>) that declares the native method. 
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif">Use <code>javac</code> to compile the <code>HelloWorld</code> source file, resulting in the class file 
+<code>HelloWorld.class</code>. The <code>javac</code> compiler is supplied with JDK or Java 2 SDK 
+releases.
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif">Use <code>javah</code> <code>-jni</code> to generate a C header file (<code>HelloWorld.h</code>) containing the 
+function prototype for the native method implementation. The <code>javah</code> tool is 
+provided with JDK or Java 2 SDK releases.
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif">Write the C implementation (<code>HelloWorld.c</code>) of the native method. 
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif">Compile the C implementation into a native library, creating <code>Hello-World.dll</code> 
+or <code>libHello-World.so</code>. Use the C compiler and linker available on the host 
+environment.
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif">Run the <code>HelloWorld</code> program using the <code>java</code> runtime interpreter. Both
+the class file (<code>HelloWorld.class</code>) and the native library
+(<code>HelloWorld.dll</code> or <code>libHelloWorld.so</code>) are loaded at runtime.</font>
+</ol>
+<p>
+  <a name="34097"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The remainder of this chapter explains these steps in detail.</font>
+</p>
+
+
+<p>
+  <a name="28333"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><img src="starta.gif" height="655" width="500" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+
+<a name="28337"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><b>Figure 2.1	</b>&nbsp;&nbsp; Steps in Writing and Running the "Hello World" Program</font><p><a name="26346"></a>
+<h2>2.2    Declare the Native Method</h2>
+
+<p>
+  <a name="26348"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You begin by writing the following program in the Java programming language. The program defines a class named <code>HelloWorld</code> that contains a native method, <code>print</code>.</font>
+</p>
+
+<pre>
+<a name="26351"> </a>class HelloWorld {
+<a name="27966"> </a>    private native void print();
+<a name="27404"> </a>    public static void main(String[] args) {
+<a name="27405"> </a>        new HelloWorld().print();
+<a name="27406"> </a>    }
+<a name="26354"> </a>    static {
+<a name="26355"> </a>        System.loadLibrary("HelloWorld");
+<a name="26356"> </a>    }
+<a name="26357"> </a>}
+</pre>
+
+<p>
+  <a name="26361"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>HelloWorld</code> class definition begins with the declaration of the <code>print</code> native method. This is followed by a <code>main</code> method that instantiates the <code>Hello-World</code> class and invokes the <code>print</code> native method for this instance. The last part of the class definition is a static initializer that loads the native library containing the implementation of the <code>print</code> native method.</font>
+</p>
+
+
+<p>
+  <a name="34100"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are two differences between the declaration of a native method such as <code>print</code> and the declaration of regular methods in the Java programming language. A native method declaration must contain the <code>native</code> modifier. The <code>native</code> modifier indicates that this method is implemented in another language. Also, the native method declaration is terminated with a semicolon, the statement terminator symbol, because there is no implementation for native methods in the class itself. We will implement the <code>print</code> method in a separate C file.</font>
+</p>
+
+
+<p>
+  <a name="26390"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Before the native method <code>print</code> can be called, the native library that implements <code>print</code> must be loaded. In this case, we load the native library in the static initializer of the <code>HelloWorld</code> class. The Java virtual machine automatically runs the static initializer before invoking any methods in the <code>HelloWorld</code> class, thus ensuring that the native library is loaded before the <code>print</code> native method is called.</font>
+</p>
+
+
+<p>
+  <a name="36112"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We define a <code>main</code> method to be able to run the <code>HelloWorld</code> class. <code>Hello-World.main</code> calls the native method <code>print</code> in the same manner as it would call a regular method.</font>
+</p>
+
+
+<p>
+  <a name="26397"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>System.loadLibrary</code> takes a library name, locates a native library that corresponds to that name, and loads the native library into the application. We will discuss the exact loading process later in the book. For now simply remember that in order for <code>System.loadLibrary("HelloWorld")</code> to succeed, we need to create a native library called <code>HelloWorld.dll</code> on Win32, or <code>libHelloWorld.so</code> on Solaris.</font>
+</p>
+
+<a name="26568"></a>
+<h2>2.3    Compile the <code>HelloWorld</code> Class</h2>
+
+<p>
+  <a name="1307"> </a><font face="Arial, Verdana, Helvetica, sans-serif">After you have defined the <code>HelloWorld</code> class, save the source code in a file called <code>HelloWorld.java</code>. Then compile the source file using the <code>javac</code> compiler that comes with the JDK or Java 2 SDK release:</font>
+</p>
+
+<pre>
+<a name="27521"> </a>javac HelloWorld.java
+</pre>
+
+<p>
+  <a name="32304"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This command will generate a <code>HelloWorld.class</code> file in the current directory.</font>
+</p>
+
+<a name="1309"></a>
+<h2>2.4    Create the Native Method Header File</h2>
+
+<p>
+  <a name="26681"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Next we will use the <code>javah</code> tool to generate a JNI-style header file that is useful when implementing the native method in C. You can run <code>javah</code> on the <code>Hello-World</code> class as follows:</font>
+</p>
+
+<pre>
+<a name="28098"> </a>javah -jni HelloWorld
+</pre>
+
+<p>
+  <a name="26693"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The name of the header file is the class name with a "<code>.h</code>" appended to the end of it. The command shown above generates a file named <code>HelloWorld.h</code>. We will not list the generated header file in its entirety here. The most important part of the header file is the function prototype for <code>Java_HelloWorld_print</code>, which is the C function that implements the <code>HelloWorld</code>.<code>print</code> method:</font>
+</p>
+
+<pre>
+<a name="372"> </a>JNIEXPORT void JNICALL 
+<a name="27751"> </a>Java_HelloWorld_print (JNIEnv *, jobject);
+</pre>
+
+<p>
+  <a name="28110"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Ignore the <code>JNIEXPORT</code> and <code>JNICALL</code> macros for now. You may have noticed that the C implementation of the native method accepts two arguments even though the corresponding declaration of the native method accepts no arguments. The first argument for every native method implementation is a <code>JNIEnv</code> interface pointer. The second argument is a reference to the <code>HelloWorld</code> object itself (sort of like the "this" pointer in C++). We will discuss how to use the <code>JNIEnv</code> interface pointer and the <code>jobject</code> arguments later in this book, but this simple example ignores both arguments.</font>
+</p>
+
+<a name="26865"></a>
+<h2>2.5    Write the Native Method Implementation</h2>
+
+<p>
+  <a name="36209"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI-style header file generated by <code>javah</code> helps you to write C or C++ implementations for the native method. The function that you write must follow the -prototype specified in the generated header file. You can implement the <code>Hello-World.print</code> method in a C file <code>HelloWorld.c</code> as follows:</font>
+</p>
+
+<pre>
+<a name="36210"> </a>#include &lt;jni.h&gt;
+<a name="26883"> </a>#include &lt;stdio.h&gt;
+<a name="33574"> </a>#include "HelloWorld.h"
+<a name="26884"> </a>
+<a name="26885"> </a>JNIEXPORT void JNICALL 
+<a name="27750"> </a>Java_HelloWorld_print(JNIEnv *env, jobject obj)
+<a name="26887"> </a>{
+<a name="26888"> </a>    printf("Hello World!\n");
+<a name="26889"> </a>    return;
+<a name="26890"> </a>}
+</pre>
+
+<p>
+  <a name="1227"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The implementation of this native method is straightforward. It uses the <code>printf</code> function to display the string "<code>Hello World!</code>" and then returns. As mentioned before, both arguments, the <code>JNIEnv</code> pointer and the reference to the object, are ignored.</font>
+</p>
+
+
+<p>
+  <a name="26896"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The C program includes three header files:</font>
+</p>
+
+<a name="26898"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li><code>jni.h&#160;</code>--&nbsp;This header file provides information the native code needs to call JNI functions. When writing native methods, you must always include this file in your C or C++ source files.</font><a name="26903"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>stdio.h&#160;</code>--&nbsp;The code snippet above also includes <code>stdio.h</code> because it uses the <code>printf</code> function.</font><a name="33579"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>HelloWorld.h&#160;</code>--&nbsp;The header file that you generated using <code>javah</code>. It includes the C/C++ prototype for the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Java_HelloWorld_print</font> function.</font>
+</ul><a name="27008"></a>
+<h2>2.6    Compile the C Source and Create a Native Library</h2>
+
+<p>
+  <a name="28419"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Remember that when you created the <code>HelloWorld</code> class in the <code>HelloWorld.java</code> file, you included a line of code that loaded a native library into the program:</font>
+</p>
+
+<pre>
+<a name="28420"> </a>System.loadLibrary("HelloWorld");
+<a name="64094"> </a>
+</pre>
+
+<p>
+  <a name="28421"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Now that all the necessary C code is written, you need to compile <code>Hello-World.c</code> and build this native library.</font>
+</p>
+
+
+<p>
+  <a name="27031"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Different operating systems support different ways to build native libraries. On Solaris, the following command builds a shared library called <code>libHello-World.so</code>:</font>
+</p>
+
+<pre>
+<a name="27034"> </a>cc -G -I/java/include -I/java/include/solaris 
+<a name="29934"> </a>    HelloWorld.c -o libHelloWorld.so
+</pre>
+
+<p>
+  <a name="27037"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>-G</code> option instructs the C compiler to generate a shared library instead of a regular Solaris executable file. Because of the limitation of page width in this book, we break the command line into two lines. You need to type the command in a single line, or place the command in a script file. On Win32, the following command builds a dynamic link library (DLL) <code>HelloWorld.dll</code> using the Microsoft Visual C++ compiler:</font>
+</p>
+
+<pre>
+<a name="27040"> </a>cl -Ic:\java\include -Ic:\java\include\win32 
+<a name="64099"> </a>    -MD -LD HelloWorld.c -FeHelloWorld.dll
+</pre>
+
+<p>
+  <a name="64101"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>-MD</code> option ensures that <code>HelloWorld.dll</code> is linked with the Win32 multithreaded C library. The <code>-LD</code> option instructs the C compiler to generate a DLL instead of a regular Win32 executable. Of course, on both Solaris and Win32 you need to put in the include paths that reflect the setup on your own machine.</font>
+</p>
+
+<a name="27157"></a>
+<h2>2.7    Run the Program</h2>
+
+<p>
+  <a name="27159"> </a><font face="Arial, Verdana, Helvetica, sans-serif">At this point, you have the two components ready to run the program. The class file (<code>HelloWorld.class</code>) calls a native method, and the native library (<code>Hello-World.dll</code>) implements the native method.</font>
+</p>
+
+
+<p>
+  <a name="32458"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Because the <code>HelloWorld</code> class contains its own <code>main</code> method, you can run the program on Solaris or Win32 as follows:</font>
+</p>
+
+<pre>
+<a name="27554"> </a>java HelloWorld
+</pre>
+
+<p>
+  <a name="29940"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You should see the following output:</font>
+</p>
+
+<pre>
+<a name="29941"> </a>Hello World!
+</pre>
+
+<p>
+  <a name="29942"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It is important to set your native library path correctly for your program to run. The native library path is a list of directories that the Java virtual machine searches when loading native libraries. If you do not have a native library path set up correctly, then you see an error similar to the following:</font>
+</p>
+
+
+<p>
+  <a name="60800"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="28437"> </a>java.lang.UnsatisfiedLinkError: no HelloWorld in library path
+<a name="28438"> </a>        at java.lang.Runtime.loadLibrary(Runtime.java)
+<a name="28441"> </a>        at java.lang.System.loadLibrary(System.java)
+<a name="28442"> </a>        at HelloWorld.main(HelloWorld.java)
+</pre>
+
+<p>
+  <a name="32210"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Make sure that the native library resides in one of the directories in the native library path. If you are running on a Solaris system, the <code>LD_LIBRARY_PATH</code> environment variable is used to define the native library path. Make sure that it includes the name of the directory that contains the <code>libHelloWorld.so</code> file. If the <code>libHelloWorld.so</code> file is in the current directory, you can issue the following two commands in the standard shell (<code>sh</code>) or KornShell (<code>ksh</code>) to set up the <code>LD_LIBRARY_PATH</code> environment variable properly:</font>
+</p>
+
+<pre>
+<a name="32507"> </a>LD_LIBRARY_PATH=.
+<a name="39531"> </a>export LD_LIBRARY_PATH
+</pre>
+
+<p>
+  <a name="39532"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The equivalent command in the C shell (<code>csh</code> or <code>tcsh</code>) is as follows:</font>
+</p>
+
+<pre>
+<a name="60804"> </a>setenv LD_LIBRARY_PATH .
+</pre>
+
+<p>
+  <a name="60803"> </a><font face="Arial, Verdana, Helvetica, sans-serif">If you are running on a Windows 95 or Windows NT machine, make sure that <code>HelloWorld.dll</code> is in the current directory, or in a directory that is listed in the <code>PATH</code> environment variable.</font>
+</p>
+
+
+<p>
+  <a name="36217"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In Java 2 SDK 1.2 release, you can also specify the native library path on the <code>java</code> command line as a system property as follows:</font>
+</p>
+
+<pre>
+<a name="36220"> </a>java -Djava.library.path=. HelloWorld
+</pre>
+
+<p>
+  <a name="36221"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The "<code>-D</code>" command-line option sets a Java platform system property. Setting the <code>java.library.path</code> property to "<code>.</code>" instructs the Java virtual machine to search for native libraries in the current directory.</font>
+</p>
+
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="intro.html">Prev</a> | <a href="part2.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

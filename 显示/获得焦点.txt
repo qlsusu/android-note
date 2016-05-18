@@ -1,0 +1,6 @@
+//无论view是不是editview
+View focus = findViewById(R.id.root);
+focus.setFocusable(true);
+focus.setFocusableInTouchMode(true);
+focus.requestFocus();
+focus.requestFocusFromTouch();

@@ -1,0 +1,7 @@
+soundpool
+可以改变播放速率，从而变声
+
+@soundtouch
+
+通过skip某些sample的方式，来加速：
+http://stackoverflow.com/questions/5760128/increase-playback-speed-of-sound-file-in-java

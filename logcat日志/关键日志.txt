@@ -1,0 +1,8 @@
+// 查看Activity跳转
+adb logcat -v time | grep ActivityManager
+// 查看崩溃信息
+adb logcat -v time | grep AndroidRuntime
+// 查看Dalvik信息，比如GC
+adb logcat -v time | grep "D\/Dalvik"
+// 查看art信息，比如GC
+adb logcat -v time | grep "I\/art"

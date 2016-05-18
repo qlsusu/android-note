@@ -1,0 +1,48 @@
+参见：
+http断点续传的秘密
+	http://blog.chinaunix.net/uid-25267728-id-4095080.html
+多线程系列之学习多线程下载的基本原理和基本用法（1）
+	http://godcoder.me/2016/04/19/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B3%BB%E5%88%97%E4%B9%8B%E5%AD%A6%E4%B9%A0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E8%BD%BD%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/
+Http头 Range、Content-Range【断点续传】
+	http://www.apkbus.com/thread-55748-1-1.html
+HTTP Range header
+	http://stackoverflow.com/questions/3303029/http-range-header
+
+可分两次请求1+次文件（第一次，获得文件大小，后面的几次来请求指定range段的数据）
+
+---------------------------Range头域
+Range头域可以请求实体的一个或者多个子范围，Range的值为0表示第一个字节，也就是Range计算字节数是从0开始的
+表示头500个字节：bytes=0-499
+表示第二个500字节：bytes=500-999
+表示最后500个字节：bytes=-500
+表示500字节以后的范围：bytes=500-
+第一个和最后一个字节：bytes=0-0,-1
+同时指定几个范围：bytes=500-600,601-999
+
+---------------------------例子
+第一次
+int length = conn.getContentLength();
+在range中指明 一个小的请求数据量，如：Range: bytes=0-32767
+通过响应得到数据的大小（注意，此刻返回码为206，如：HTTP/1.1 206 Partial Content）
+	Content-Range: bytes 0-32767/223652
+	
+后面的几次
+构建合适的range，如：Range: bytes=20001-223651
+
+---------------------------请求 响应 示例
+GET  /test.rar  HTTP/1.1 
+Connection:  close 
+Host:  116.1.219.219 
+Range:  bytes=0-100 
+
+
+HTTP/1.1 206 OK 
+Content-Length:  801      
+Content-Type:  application/octet-stream  
+Content-Location: http://www.onlinedown.net/hj_index.htm
+Content-Range:  bytes  0-100/2350 //2350:文件总大小 
+Last-Modified: Mon, 16 Feb 2009 16:10:12 GMT
+Accept-Ranges: bytes
+ETag: "d67a4bc5190c91:512"
+Server: Microsoft-IIS/6.0
+Date: Wed, 18 Feb 2009 07:55:26 GMT

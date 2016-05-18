@@ -1,0 +1,9 @@
+参见：
+Android布局优化之ViewStub、include、merge使用与源码分析
+	http://blog.csdn.net/bboyfeiyu/article/details/45869393
+	
+效果：和include连用时，直接将其中的子元素添加到merge标签parent中，这样就保证了不会引入额外的层级
+
+如：include对应的layout.xml的根布局是framelayout，而include的parent也是一个framelayout，
+那么，如果不使用merge，那么，view的层次就为 ...-framelayout-framelayout-...
+但是，如果使用了merge，那么，view的层次就为 ...-framelayout-...

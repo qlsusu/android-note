@@ -1,0 +1,2 @@
+依赖design库
+view的backgroud设置为：?attr/selectableItemBackground

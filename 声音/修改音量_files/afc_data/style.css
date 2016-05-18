@@ -1,0 +1,121 @@
+@charset "utf-8";
+
+*{ margin:0; padding:0;}
+body {background:#FFFFFF;font-family:'宋体' Tahoma,Geneva,sans-serif;font-size:12px; color:#333333;}
+form, ul, li{list-style: none outside none;}
+a img {border:0;}
+a {color:#0000ff;text-decoration:none;cursor:pointer;}
+a:hover {color:#0000ff;text-decoration:none;}
+cite,em{ font-style:normal;}
+em{color:#CC0033;}
+.wrap{width:1000px;}
+.wrap h2{ font-size:14px; margin-bottom:5px; line-height:30px; color:#900; background:#CCC;}
+
+.adView{ overflow:hidden; padding-top:3px;}
+.adView a{ display:block;}
+.adView h3{ line-height:22px; font-weight:normal; font-size:14px;}
+.adView h3 a{ text-decoration:none;}
+.adView h3 a:hover { text-decoration:underline;}
+.adView p a, .adView p a:hover, .adView p a:visited, .adView p a:active { color:#333333;}
+.adView cite a, .adView cite a:hover, .adView cite a:visited, .adView cite a:active { color:#008000; font-family:Arial; }
+
+.logoMark {
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+  bottom:0;
+  right:0;
+  z-index: 19;
+  text-align:right;
+}
+.logoImgText {
+  width:88px;
+  height:16px;
+  background:url("http://cache.soso.com/afc/preview/images/logoword.png") no-repeat;
+  border:none;
+  _background:none;
+  _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://cache.soso.com/afc/preview/images/logoword.png",enabled=true,sizingMethod=noscale);
+}
+.logoImgOpen {
+  width:90px;
+  height:16px;
+  background:url("http://cache.soso.com/afc/preview/images/logoimg.png") no-repeat;
+  border:none;
+  _background:none;
+  _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://cache.soso.com/afc/preview/images/logoimg.png",enabled=true,sizingMethod=noscale);
+}
+.logoImgClose {
+  width:16px;
+  height:16px;
+  background:url("http://cache.soso.com/afc/preview/images/logo.png") no-repeat;
+  border:none;
+  _background:none;
+  _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://cache.soso.com/afc/preview/images/logo.png",enabled=true,sizingMethod=noscale);
+}
+
+
+#att {position: absolute;z-index: 9020;}
+#att ul {height: 18px;list-style: none outside none;width: 110px;}
+#att ul li {float: left;}
+#abgf {background-color: #666666;height: 18px;width: 92px;}
+#abgt {height: 18px;position: relative;width: 18px;}
+#abgt .curve div { width: 1px;background-color: #666666;position: absolute; overflow: hidden;}
+#abgi {left: 12px;overflow: hidden;position: absolute;width: 96px;z-index: 9030;padding-left:2px; cursor:pointer;}
+#abgb {float: left;margin:2px 4px 0 2px;}
+
+.text-link{ height:23px; line-height:23px; padding-left:25px; border:none; overflow:hidden; background:url("http://cache.soso.com/afc/preview/images/logo.gif") no-repeat 5px 3px;}
+
+.adImgBlk, .adBlk1 { position:relative; }
+
+.adBlk{ line-height:16px; overflow:hidden; position:relative; border:1px solid #3385d6;}
+.adBlk table{ width:100%; height:100%;}
+.adBlk td{ padding:0 5px; vertical-align:top;}
+.ad960_60 h3,.ad760_60 h3,.ad640_60 h3,.ad460_60 h3,.ad640_40 h3,.ad468_60 h3,.ad120_240 h3{ font-size:13px; font-weight:bold;}
+
+.ad960_90{ width:960px; height:90px;}
+.ad960_60{ width:960px; height:60px;}
+.ad250_250{ width:250px; height:250px;}
+.ad250_230{ width:250px; height:230px;}
+.ad760_60{ width:760px; height:60px;}
+.ad760_90{ width:760px; height:90px;}
+.ad640_60{ width:640px; height:60px;}
+.ad640_90{ width:640px; height:90px;}
+.ad640_40{ width:640px; height:40px;}
+.ad728_90{ width:728px; height:90px;}
+.ad460_60{ width:460px; height:60px;}
+.ad468_60{ width:468px; height:60px;}
+.ad580_90{ width:580px; height:90px;}
+.ad120_240{ width:120px; height:240px;}
+.ad180_150{ width:180px; height:150px;}
+.ad200_200{ width:200px; height:200px;}
+.ad234_60{ width:234px; height:60px;}
+.ad300_280{ width:300px; height:280px;}
+.ad300_100{ width:300px; height:100px;}
+.ad320_50{ width:320px; height:50px;}
+.ad336_280{ width:336px; height:280px;}
+.ad360_150{ width:360px; height:150px;}
+.ad300_250{ width:300px; height:250px;}
+.ad240_100{ width:240px; height:100px;}
+.ad140_90{ width:140px; height:90px;}
+.ad230_210{ width:230px; height:210px;}
+.ad220_90{ width:220px; height:90px;}
+.ad220_25{ width:220px; height:25px;}
+.ad150_200{ width:150px; height:200px;}
+.ad290_40{ width:290px; height:40px;}
+.ad225_200{ width:225px; height:200px;}
+.ad910_90{ width:910px; height:90px;}
+
+/* added by simonkuang, on 2011-12-13 */
+.ad140_40{ width:140px; height:40px;}
+.ad140_240{ width:140px; height:240px;}
+.ad300_300{ width:300px; height:300px;}
+.ad198_40{ width:198px; height:40px;}
+.ad480_360{ width:480px; height:360px;}
+.ad400_300{ width:400px; height:300px;}
+.ad640_480{ width:640px; height:480px;}
+.ad330_300{ width:330px; height:300px;}
+.ad140_25{ width:106px; height:23px;}
+.ad200_25{ width:166px; height:23px;}
+
+/* added by simonkuang on 2012-05-23 */
+.ad80_80{ width:80px; height:80px; }

@@ -1,0 +1,31 @@
+当通过android:imeOptions指定了action，可以通过OnEditorActionListener来进行监听，如：
+EditText editText = (EditText) findViewById(R.id.search);
+editText.setOnEditorActionListener(new OnEditorActionListener() {
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+            sendMessage();
+            handled = true;
+        }
+        return handled;
+    }
+});
+
+自动填充AutoCompleteTextView
+例子：
+// Get a reference to the AutoCompleteTextView in the layout
+AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autocomplete_country);
+// Get the string array
+String[] countries = getResources().getStringArray(R.array.countries_array);
+// Create the adapter and set it to the AutoCompleteTextView 
+ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+textView.setAdapter(adapter);
+
+像ios一样加入清除按钮
+思想：设置drawableright
+参见：https://www.aswifter.com/2015/07/31/android-edittext-add-clear-button/
+
+设置光标的颜色
+android:textCursorDrawable="@null"
+作用为：让光标颜色和text color一样

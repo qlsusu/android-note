@@ -1,0 +1,14 @@
+ComposeShader composeShader = new ComposeShader(shaderA, shaderB, porterDuffMode);
+paint.setShader(composeShader);
+canvas.drawXXX(..., paint);
+
+等价于
+
+canvas.saveLayer(left, top, right, bottom, null, Canvas.ALL_SAVE_FLAG);
+    paint.setShader(shaderA);
+    canvas.drawXXX(..., paint);
+    paint.setXfermode(new PorterDuffXfermode(mode));
+    paint.setShader(shaderB);
+    canvas.drawXXX(..., paint);
+    paint.setXfermode(null);
+canvas.restore();

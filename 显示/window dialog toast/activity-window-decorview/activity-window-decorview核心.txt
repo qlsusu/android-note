@@ -1,0 +1,34 @@
+参见：
+PhoneWindow,ViewRoot,Activity之间的大致关系
+	http://www.cppblog.com/fwxjj/archive/2013/01/13/197231.html
+Android Input Event Dispatching
+	http://blog.csdn.net/zhejiang9/article/details/5899982
+Android Activity应用窗口的创建过程分析
+	http://blog.csdn.net/feiduclear_up/article/details/49201357
+
+一个app对应一个WindowManager窗口管理器，也就只有一个WindowManagerGlobal对象通过维护三个数组 mViews，mRoots，mParams来管理所有窗口的添加，更新，删除。
+	mViews：保存着当前应用所有窗口的顶层视图DecorView对象
+	mRoots：保存着当前应用所有窗口的视图绘制类ViewRootImpl
+	mParams：保存着当前应用所有窗口的参数 WindowManager.LayoutParams	
+一个Activity对应着一个PhoneWindow对象(Window的子类)，该对象用于描述窗口的。（参见activity-window.png）
+	activity.java中，mWindow = PolicyManager.makeNewWindow(this);
+一个phonewindow拥有一个decorview对象(PhoneWindow含有内部类DecorView)，用于描述窗口的顶层视图的。
+通过activitythread，decorview被加入到phonewindow中
+	r.window = r.activity.getWindow();
+	View decor = r.window.getDecorView();
+	decor.setVisibility(View.INVISIBLE);
+	ViewManager wm = a.getWindowManager();
+	WindowManager.LayoutParams l = r.window.getAttributes();
+	a.mDecor = decor;
+	l.type = WindowManager.LayoutParams.TYPE_BASE_APPLICATION;
+	wm.addView(decor, l);
+
+一个PhoneWindow对应着一个ViewRootImpl类（WindowManagerGlobal.mRoots和mViews是对应的）
+ViewRoot这个类在android的UI结构中扮演的是一个中间者的角色，连接着PhoneWindow和WindowManagerService
+	它负责将窗口的顶层视图DecorView内容绘制到手机屏幕上
+		绘制是从viewrootimpl.performtraversals()开始的
+	而WindowManagerService读取android系统里所有事件，键盘事件，轨迹球事件等等，它通过ViewRootImpl分发到activity上
+	--
+	如何连接
+		ViewRootImpl拥有W类型（继承自IWindow.Stub）
+		也拥有IWindowSession对象（是WindowManagerService的远程接口）

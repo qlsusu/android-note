@@ -1,0 +1,6 @@
+基本操作+对焦
+	http://www.pocketdigi.com/20110909/465.html
+变焦
+	http://blog.csdn.net/fuuckwtu/article/details/7068072
+preview变成bitmap
+	参见：talkingtom5中的 拍照模块

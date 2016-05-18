@@ -1,0 +1,52 @@
+参见：
+my/cailing3-busynow2的androidmanifest.xml中的widget部分
+my/cailing2
+my/modewidget
+Android 之窗口小部件详解--App Widget
+	http://www.cnblogs.com/skywang12345/p/3158310.html
+http://blog.csdn.net/tanranran/article/details/11874131
+http://blog.csdn.net/wangkuifeng0118/article/details/7362660
+http://weizhulin.blog.51cto.com/1556324/311438
+http://www.eoeandroid.com/thread-172476-1-1.html
+
+AppWidgetProvider本身是一个broadcastreceiver
+
+当widget添加到桌面上时
+onenable
+12-20 00:10:31.795: I/System.out(7855): action:android.appwidget.action.APPWIDGET_ENABLED
+12-20 00:10:31.795: I/System.out(7855): onupdate
+12-20 00:10:31.815: I/System.out(7855): action:android.appwidget.action.APPWIDGET_UPDATE
+--
+当widget从桌面上删除时
+12-20 00:09:59.425: I/System.out(7855): ondelete
+12-20 00:09:59.425: I/System.out(7855): action:android.appwidget.action.APPWIDGET_DELETED
+12-20 00:09:59.425: I/System.out(7855): ondisable
+12-20 00:09:59.425: I/System.out(7855): action:android.appwidget.action.APPWIDGET_DISABLED
+
+！！！！widget的用法，各个方法简介，使用service来每隔一段时间来更新widget
+	http://www.cnblogs.com/skywang12345/p/3158310.html		
+！！！！Android 之窗口小部件高级篇--App Widget 之 RemoteViews（介绍了如何使用listview等，以及item的点击）
+	http://www.cnblogs.com/skywang12345/p/3264991.html
+Android AppWidget实例验证
+	http://mypyg.iteye.com/blog/930072
+在widget实现复杂布局（Listview，GirdView）以及RemoteViewsService、RemoteViewsFactory的用法
+	http://blog.csdn.net/chinhape/article/details/22278683
+	http://developer.android.com/guide/topics/appwidgets/index.html#implementing_collections
+	进行更新
+		http://hubingforever.blog.163.com/blog/static/171040579201163195010354/
+
+widgetid
+当widget创建到桌面时，会产生id，此后，只要该widget存在于桌面上，该id就一直有效。则该id可以本地持久化，以方便后续使用
+当进程重启时，应该先通过该id刷新widget，以让该widget的点击有效
+
+widget点击没有反应 (pendingintent/intent的正确写法)
+这和pendingintent/intent的正确写法有关，正确写法为：
+	// 先用class的方式构建intent，然后再设置action
+	Intent intent = new Intent(context,ModeWidgetProvider2.class);
+	intent.setAction(ACTION_LOGIN);
+	PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+			intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	widgetRemoteView.setOnClickPendingIntent(R.id.root, pendingIntent);
+
+成员变量最好为static
+因为AppWidgetProvider本身是一个receiver，那么一旦完成了onreceive后，其生命就应该被结束

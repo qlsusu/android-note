@@ -1,0 +1,74 @@
+------------------------------------------------Scroller
+其只是在模拟滑动：开始位置是什么，在多长时间内，要滑动多少距离（采用某种interpolater）
+而我们可以利用 该模拟滑动中 产生的数值，来辅助进行实际的滑动（view.scrollto/by），因为这种效果会更真实
+
+------------原理：
+触发计算，如：startscroll/fling
+	startScroll(int startX, int startY, int dx, int dy)
+		在默认时间内完成（250ms）
+	自定义滑动时间：startScroll(int startX, int startY, int dx, int dy, int duration)
+调用computeScrollOffset进行计算，
+	If it returns true, the animation is not yet finished.
+	其往往在view.computeScroll中计算，并在其中也调用了invalidate（为了：触发下一次的view.computescroll的调用）
+通过getCurrX/Y来获得滑动的位置，参照于startX/Y
+后view根据该数值来进行scrollto/by
+
+强制停止
+if (!mScroller.isFinished()){
+	mScroller.abortAnimation();
+}
+mScroller.forceFinished(true);
+
+------------一个例子：
+// Revert any animation currently in progress
+mScroller.forceFinished(true);
+// Start scrolling by providing a starting point and the distance to travel
+// 函数签名为：scroller.startScroll(int startX, int startY, int dx, int dy)
+mScroller.startScroll(0, 0, 100, 0);
+// Invalidate to request a redraw
+invalidate();
+
+在view.computeScroll中来跟踪当前scroller的状态（默认，是一个空的方法体。draw会调用它）
+	if(scroller.computeScrollOffset){
+		//得到模拟滑动的数据
+		getCurrX/Y
+		view.scrollto/by
+		//会触发re-draw，则computeScroll会再被调用
+		postinvalidate
+	}
+
+参见：
+VerticalLinearLayout
+https://developer.android.com/reference/android/widget/Scroller.html中的例子
+
+------------------------------------------------zoom
+This class encapsulates scrolling. You can use scrollers (Scroller or OverScroller) to collect the data you need to produce a scrolling animation—for example, in response to a fling gesture. 
+Scrollers track scroll offsets for you over time, but they don't automatically apply those positions to your view. It's your responsibility to get and apply new coordinates at a rate that will make the scrolling animation look smooth.
+
+Here is a simple example:
+
+ private Scroller mScroller = new Scroller(context);
+ ...
+ public void zoomIn() {
+     // Revert any animation currently in progress
+     mScroller.forceFinished(true);
+     // Start scrolling by providing a starting point and
+     // the distance to travel
+     mScroller.startScroll(0, 0, 100, 0);
+     // Invalidate to request a redraw
+     invalidate();
+ }
+ 
+To track the changing positions of the x/y coordinates, use computeScrollOffset. The method returns a boolean to indicate whether the scroller is finished. 
+If it isn't, it means that a fling or programmatic pan operation is still in progress. 
+You can use this method to find the current offsets of the x and y coordinates, for example:
+
+if (mScroller.computeScrollOffset()) {
+     // Get current x and y positions
+     int currX = mScroller.getCurrX();
+     int currY = mScroller.getCurrY();
+    ...
+ }
+ 
+类似的，sample中也提供了zoomer
+参见：mytoolandrid中的zoomer.java

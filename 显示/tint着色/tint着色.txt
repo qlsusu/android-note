@@ -1,0 +1,1 @@
+当我们开发 App 的时候，如果使用了 Theme.AppCompat 主题的时候，会发现 ActionBar 或者 Toolbar 及相应的控件的颜色会相应的变成我们在 Theme 中设置的 colorPrimary， colorPrimaryDark， colorAccent 这些颜色，这是为什么呢，这就全是 Tint 的功劳了！

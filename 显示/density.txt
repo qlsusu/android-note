@@ -1,0 +1,7 @@
+参见：mytoolandroid中com.ql.tool.DeviceTool.getDisplayMetrics(Activity)
+
+* density=densityDpi/DENSITY_DEFAULT<br>
+* dp=px/density,px=dp*density<br>
+* 当一个图片被放入drawble-hdpi，其作为view的src/background，在显示时<br>
+* 将被扩大 density/DENSITY_HIGH 倍<br>
+* 同理，对于 放入drawable-ldpi等的情况

@@ -1,0 +1,16 @@
+----------------------用来绘制divider
+recyclerview.addItemDecoration(new DividerItemDecoration(context, orientation));
+--
+http://www.cnblogs.com/wkun/p/4374570.html
+http://blog.csdn.net/jxxfzgy/article/details/43736385
+
+添加/删除
+recyclerView.addItemDecoration(xx);
+recyclerView.removeItemDecoration(xx);
+
+----------------------用来 为item来inset一些距离
+下例中，每个item的 显示空间减少了mInsetMargin
+@Override
+public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+	outRect.set(mInsetMargin, mInsetMargin, mInsetMargin, mInsetMargin);
+}

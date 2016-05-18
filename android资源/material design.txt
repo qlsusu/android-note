@@ -1,0 +1,56 @@
+----------------------------------------------------------------------------material design
+！！！___！！！！github库
+https://github.com/lightSky/Awesome-MaterialDesign
+	注意查看：该git也包含的 文章/sample 资源
+	其他的lib：https://github.com/lightSky/Awesome-MaterialDesign#Libraries
+	包含了其他awesome的连接
+https://github.com/snowdream/awesome-android
+https://github.com/wasabeef/awesome-android-ui
+https://github.com/wasabeef/awesome-android-libraries
+--
+https://github.com/rey5137/material
+--
+介绍教程
+	http://inthecheesefactory.com/blog/android-design-support-library-codelab/en
+	http://blog.csdn.net/feiduclear_up/article/details/46514791
+Google Design-Support-Library
+	https://github.com/chrisbanes/cheesesquare
+google的sample
+	https://github.com/lightSky/Awesome-MaterialDesign#google-samples	
+！！！google的android design library说明
+	http://android-developers.blogspot.com/2015/05/android-design-support-library.html
+！！！使用该库来进行开发的例子
+	http://hmkcode.com/material-design-app-android-design-support-library-appcompat/
+--	
+http://blog.csdn.net/xushuaic/article/details/40627389
+	进入Material Design时代
+http://blog.csdn.net/xushuaic/article/details/40212327
+	AppCompat V21：将 Materia Design 兼容到5.0之前的设备
+--
+https://github.com/lyfeyaj/awesome-resources
+	资源总结
+--
+lightsky个人blog
+	http://www.lightskystreet.com/categories/
+	http://blog.csdn.net/xushuaic/
+	
+
+
+Android Design Support Library使用详解
+	http://blog.csdn.net/eclipsexys/article/details/46349721
+
+material design中文版，针对于ui设计准则，持续更新，
+http://wiki.jikexueyuan.com/project/material-design/
+
+material ui效果的github集合
+http://blog.csdn.net/fancylovejava/article/details/45787729
+
+https://github.com/willmo1987/LearnMaterialDesign
+包含了：toolbar, Blendent (theme configuration),RecyclerView,CardView,Animation
+
+在低版本Android上使用Material Design
+http://nashlegend.blog.51cto.com/5635342/1579082
+
+使用appcompat v7-21+
+http://blog.chengyunfeng.com/?p=626
+

@@ -1,0 +1,49 @@
+google的
+
+设置google service
+参见：https://developer.android.com/google/play-services/setup.html?hl=zh-cn
+	下载google play service，放入到#sdk/extras/google/中
+	将google-play-services_lib导入到工程
+	待发布的应用 引用该lib
+	manifest中添加 meta-data
+	添加 混淆的keep
+
+修正：依赖gms.ads时，eclipse占用高cpu，且因为内存不足而崩溃的问题
+修改eclipse.ini，参见：http://jmsliu.com/2085/add-admob-with-google-play-service.html
+
+混淆
+-keep public class com.google.android.gms.ads.** {
+   public *;
+}
+-keep public class com.google.ads.** {
+   public *;
+}
+
+unitid样式：ca-app-pub-XXXXXXXXXXXXXXXX/NNNNNNNNNN
+
+刷新频率
+Banner ads auto refresh if a refresh rate was specified in your AdMob account, and can also be refreshed by loading a new ad request
+	
+参见：
+http://developer.android.com/google/play-services/ads.html
+http://developers.google.com/mobile-ads-sdk/?hl=zh-cn
+http://developers.google.com/mobile-ads-sdk/?hl=en-us
+https://support.google.com/admob/?hl=zh-Hans
+	https://support.google.com/admob/topic/2745286?hl=zh-Hans&ref_topic=2792286
+	https://support.google.com/admob/topic/2745447?hl=zh-Hans&ref_topic=2792286
+https://apps.admob.com/
+http://www.blogjava.net/zh-weir/archive/2010/01/03/308110.html
+
+待学习
+admob
+	通过添加应用 来指定 还没有上架的应用
+	应用地址：https://play.google.com/store/apps/details?id=<应用包名称>
+	选择广告类型：https://support.google.com/admob/answer/6128738?hl=zh-Hans&ref_topic=3052726
+	广告刷新率：https://support.google.com/admob/answer/3245199?hl=zh-Hans&ref_topic=3052726
+	广告术语，如：填充率：https://support.google.com/admob/topic/2745446?hl=zh-Hans&ref_topic=2792286
+	付款：https://support.google.com/admob/topic/2745447?hl=zh-Hans&ref_topic=2792286
+	选择付款：https://support.google.com/admob/answer/2772229
+	
+mindnote广告
+广告单元 ID： ca-app-pub-3801288010277474/9737644144
+广告单元名称： root/entity list底部横幅

@@ -1,0 +1,50 @@
+/**
+ * 保存当前的matrix和clip到私有的栈中（Skia内部实现）。任何matrix变换和clip操作都会在调用restore的时候还原。
+ * @return 返回值可以传入到restoreToCount()方法，以返回到某个save状态之前。
+ */
+public native int save();
+
+
+
+/**
+ * 传入一个标志，来表示当restore 的时候，哪些参数需要还原。该参数定义在Canvas中，参照下面。
+ * save()方法默认的是还原matrix和clip，但是可以使用这个方法指定哪些需要还原。并且只有指定matrix和clip才有效，其余的几个参数是
+ * 用于saveLayer()和saveLayerAlpha()方法 的。
+ */
+public native int save(int saveFlags);
+
+
+/**
+ * 回到上一个save调用之前的状态，如果restore调用的次数大于save方法，会出错。
+ */
+public native void restore();
+
+ /**
+ * 返回栈中保存的状态，值等于 save()调用次数-restore()调用次数
+ */
+public native int getSaveCount();
+
+
+
+
+/**
+ * 回到任何一个save()方法调用之前的状态
+ */
+public native void restoreToCount(int saveCount);
+
+
+
+/**saveFlags的参数*/
+public static final int ALL_SAVE_FLAG = 0x1F; //还原所有
+public static final int MATRIX_SAVE_FLAG = 0x01;//需要还原Matrix
+public static final int CLIP_SAVE_FLAG = 0x02;//需要还原Clip
+/**下面三个参数在saveLayer的时候使用，具体作用，没有搞明白*/
+public static final int HAS_ALPHA_LAYER_SAVE_FLAG = 0x04;
+public static final int FULL_COLOR_LAYER_SAVE_FLAG = 0x08;
+public static final int CLIP_TO_LAYER_SAVE_FLAG = 0x10;
+
+/*关于saveLayer的具体flags还不大明白它的含义，具体怎么使用在下面例子中*/
+public int saveLayer(RectF bounds, Paint paint, int saveFlags)
+public int saveLayer(float left, float top, float right, float bottom, Paint paint, int saveFlags) 
+public int saveLayerAlpha(RectF bounds, int alpha, int saveFlags)
+public int saveLayerAlpha(float left, float top, float right, float bottom, int alpha, int saveFlags)

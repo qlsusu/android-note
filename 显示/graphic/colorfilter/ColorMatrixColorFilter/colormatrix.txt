@@ -1,0 +1,2 @@
+参见：http://blog.csdn.net/aigestudio/article/details/41316141
+	中，各种colormatrix对应的效果

@@ -1,0 +1,35 @@
+// Returns the number of cams & front/back face device name
+int camNumber = VideoCapturerAndroid.getDeviceCount();
+String frontFacingCam = VideoCapturerAndroid.getNameOfFrontFacingDevice();
+String backFacingCam = VideoCapturerAndroid.getNameOfBackFacingDevice();
+
+// Creates a VideoCapturerAndroid instance for the device name
+VideoCapturer capturer = VideoCapturerAndroid.create(frontFacingCam);
+
+// First create a Video Source, then we can make a Video Track
+localVideoSource = pcFactory.createVideoSource(capturer, this.pnRTCClient.videoConstraints());
+VideoTrack localVideoTrack = pcFactory.createVideoTrack(VIDEO_TRACK_ID, localVideoSource);
+
+// First we create an AudioSource then we can create our AudioTrack
+AudioSource audioSource = pcFactory.createAudioSource(this.pnRTCClient.audioConstraints());
+AudioTrack localAudioTrack = pcFactory.createAudioTrack(AUDIO_TRACK_ID, audioSource);
+
+		// To create our VideoRenderer, we can use the included VideoRendererGui for simplicity
+		// First we need to set the GLSurfaceView that it should render to
+		this.videoView = (GLSurfaceView) findViewById(R.id.gl_surface);
+
+		// Then we set that view, and pass a Runnable to run once the surface is ready
+		VideoRendererGui.setView(videoView, null);
+
+		// Now that VideoRendererGui is ready, we can get our VideoRenderer.
+		// IN THIS ORDER. Effects which is on top or bottom
+		remoteRender = VideoRendererGui.create(0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
+		localRender = VideoRendererGui.create(0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, true);
+
+// We start out with an empty MediaStream object, created with help from our PeerConnectionFactory
+//  Note that LOCAL_MEDIA_STREAM_ID can be any string
+MediaStream mediaStream = pcFactory.createLocalMediaStream(LOCAL_MEDIA_STREAM_ID);
+
+// Now we can add our tracks.
+mediaStream.addTrack(localVideoTrack);
+mediaStream.addTrack(localAudioTrack);

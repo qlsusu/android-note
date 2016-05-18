@@ -1,0 +1,11 @@
+参见：
+http://blog.csdn.net/iispring/article/details/49877661
+http://blog.csdn.net/aigestudio/article/details/41447349
+
+BlurMaskFilter：绘制模糊阴影
+EmbossMaskFilter：浮雕效果
+	所谓的浮雕效果其实就是模拟光照效果，靠近光的一面显得亮一点，远离光的一面显得暗一点，这样就通过颜色的亮暗营造出浮雕的3D立体效果
+	一般来说，一个相对完整的光照模型=环境光(ambient) + 漫反射 + 镜面反射(specular)。
+	而EmbossMaskFilter为了简化参数并且突出浮雕效果，就把漫反射给去掉了，所以EmbossMaskFilter所使用的光照模型就只有环境光和镜面反射了
+
+用法：Paint.setMaskFilter()

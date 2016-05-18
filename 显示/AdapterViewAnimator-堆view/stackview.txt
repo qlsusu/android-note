@@ -1,0 +1,2 @@
+像叠着的卡片一样
+http://stackoverflow.com/questions/7477158/what-does-an-android-stackview-look-like

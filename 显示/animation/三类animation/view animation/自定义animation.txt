@@ -1,0 +1,47 @@
+参见：my/ExpandableTextView中的 ExpandableTextView.java
+
+class ExpandCollapseAnimation extends Animation {
+	private final View mTargetView;
+	private final int mStartHeight;
+	private final int mEndHeight;
+
+	public ExpandCollapseAnimation(View view, int startHeight, int endHeight) {
+		mTargetView = view;
+		mStartHeight = startHeight;
+		mEndHeight = endHeight;
+		setDuration(mAnimationDuration);
+	}
+
+
+	/**
+     * Helper for getTransformation. Subclasses should implement this to apply
+     * their transforms given an interpolation value.  Implementations of this
+     * method should always replace the specified Transformation or document
+     * they are doing otherwise.
+     * 
+     * @param interpolatedTime The value of the normalized time (0.0 to 1.0)
+     *        after it has been run through the interpolation function.
+     * @param t The Transformation object to fill in with the current
+     *        transforms.
+     */
+	@Override
+	protected void applyTransformation(float interpolatedTime, Transformation t) {
+		final int newHeight = (int)((mEndHeight - mStartHeight) * interpolatedTime + mStartHeight);
+		mTv.setMaxHeight(newHeight - mMarginBetweenTxtAndBottom);
+		if (Float.compare(mAnimAlphaStart, 1.0f) != 0) {
+			applyAlphaAnimation(mTv, mAnimAlphaStart + interpolatedTime * (1.0f - mAnimAlphaStart));
+		}
+		mTargetView.getLayoutParams().height = newHeight;
+		mTargetView.requestLayout();
+	}
+
+	@Override
+	public void initialize( int width, int height, int parentWidth, int parentHeight ) {
+		super.initialize(width, height, parentWidth, parentHeight);
+	}
+
+	@Override
+	public boolean willChangeBounds( ) {
+		return true;
+	}
+}

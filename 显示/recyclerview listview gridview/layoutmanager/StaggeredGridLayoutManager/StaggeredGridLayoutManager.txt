@@ -1,0 +1,11 @@
+瀑布式，
+允许itemview的宽高不统一（如，在onbindview中，设置itemview的某些子view不显示）
+参见：com.gordonwong.materialsheetfab.sample.adapters.NotesAdapter
+可以认为是横向的gridview
+
+例子：
+	RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
+	recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(),
+			StaggeredGridLayoutManager.VERTICAL));
+	recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
+	

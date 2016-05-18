@@ -1,0 +1,22 @@
+可以通过itemanimator
+
+也可以通过
+设置item的进入动画
+在onbindviewholder中，对于item，执行动画（如property动画），如：
+	private void runEnterAnimation(View view, int position) {
+		if (!animateItems || position >= 3) {
+			return;
+		}
+
+		if (position > lastAnimatedPosition) {
+			lastAnimatedPosition = position;
+			view.setTranslationY(Utils.getScreenHeight(getActivity()));
+			view.animate()
+					.translationY(0)
+					.setStartDelay(100 * position)
+					.setInterpolator(new DecelerateInterpolator(3.f))
+					.setDuration(700)
+					.start();
+		}
+	}
+效果参见：https://www.aswifter.com/2015/08/01/android-material-design-animation/

@@ -1,0 +1,6 @@
+参见：
+Android Studio advanced configuration
+	http://liukun.engineer/2016/04/10/Android-Studio-advanced-configuration/
+
+在live templates中
+	

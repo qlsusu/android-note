@@ -1,0 +1,32 @@
+参见：android recipes v4/1_12_StaticTransforms
+
+效果：
+在layout孩子view后，对孩子进行transform变换，如：
+	在自定义viewgroup中，
+	@Override
+    protected boolean getChildStaticTransformation(View child, Transformation t) {
+        // Clear any existing transformation
+        t.clear();
+
+        if (getOrientation() == HORIZONTAL) {
+            // Scale children based on distance from left edge
+            float delta = 1.0f - ((float) child.getLeft() / getWidth());
+
+            t.getMatrix().setScale(delta, delta, child.getWidth() / 2,
+                    child.getHeight() / 2);
+        } else {
+            // Scale children based on distance from top edge
+            float delta = 1.0f - ((float) child.getTop() / getHeight());
+
+            t.getMatrix().setScale(delta, delta, child.getWidth() / 2,
+                    child.getHeight() / 2);
+            //Also apply a fade effect based on its location
+            t.setAlpha(delta);
+        }
+        return true;
+    }
+    说明：viewgroup本身需要setStaticTransformationsEnabled(true);
+但是，孩子的 本质位置（如：孩子view可能进行了translate，则显示位置和本质位置不同，而触控等是基于本质位置上，就如同进行了viewanimation一样）和尺寸是不发生变化的
+
+当该viewgroup继承了linearlayout，并且放入到scrollview中，当随着viewgroup的滚动，ChildStaticTransformation会被再次计算，
+会产生动画效果，参见：android recipes v4/1_12_StaticTransforms/PerspectiveScrollContentView

@@ -1,0 +1,18 @@
+参见：
+Canvas之图片文字
+	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B4%5DCanvas_PictureText.md
+
+----------------drawBitmap(Bitmap bitmap, Rect src, RectF dst, Paint paint)
+效果：将bitmap中src的部分，绘制到dst上（如果dst和src不一样，则进行缩放）
+
+// 将画布坐标系移动到画布中央
+canvas.translate(mWidth/2,mHeight/2);
+
+// 指定图片绘制区域(左上角的四分之一)
+Rect src = new Rect(0,0,bitmap.getWidth()/2,bitmap.getHeight()/2);
+
+// 指定图片在屏幕上显示的区域
+Rect dst = new Rect(0,0,200,400);
+
+// 绘制图片
+canvas.drawBitmap(bitmap,src,dst,null);

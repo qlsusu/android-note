@@ -1,0 +1,59 @@
+参见：my/Lab-Android-DesignLibrary/mainactivity.java
+
+继承于framelayout
+通常layout_scrollflags为"scroll|exitUntilCollapsed"
+
+和一般的toolbar相比，他都做了什么
+在dependency的scroll的响应中，imageview和title都有响应的效果
+
+可以设置title：
+setTitle("xxx")
+
+例子：
+<android.support.design.widget.CoordinatorLayout
+	android:id="@+id/rootLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<android.support.design.widget.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="256dp"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+		<android.support.design.widget.CollapsingToolbarLayout
+			android:id="@+id/collapsingToolbarLayout"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:layout_scrollFlags="scroll|exitUntilCollapsed"
+			<!-- 可以设置title，当CollapsingToolbarLayout完全展开时，该title距离左边缘的距离 -->
+			app:expandedTitleMarginStart="64dp" 
+			<!-- 导致：dependence向上滑动的过程中，在最终折叠到minheight高度时，背景色为该值 -->
+			app:contentScrim="?attr/colorPrimary">
+
+		 	<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				<!-- 导致：dependence滑动的过程中(CollapsingToolbarLayout在折叠)，imageview的内容也在进行滑动（和dependence的滑动方向相同） -->
+				app:layout_collapseMode="parallax"
+				app:layout_collapseParallaxMultiplier="0.7"
+				android:scaleType="centerCrop"
+				android:src="@drawable/header" />
+
+			<!-- 一般情况下，设置toolbar的背景为透明。则，此情况下，不进行background的赋值 -->
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				<!-- 导致：dependence向上滑动的过程中，菜单项一直停留在（pin在）顶部 -->
+				app:layout_collapseMode="pin"
+				android:minHeight="?attr/actionBarSize"
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+				app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+		</android.support.design.widget.CollapsingToolbarLayout>
+	</android.support.design.widget.AppBarLayout>
+    
+    <xxx />
+</<android.support.design.widget.CoordinatorLayout>
+
+参见：
+http://www.materialdoc.com/scrolling-techniques/

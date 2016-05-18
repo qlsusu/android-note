@@ -1,0 +1,61 @@
+<declare-styleable name="Follow">
+	<attr name="target" format="reference"/>
+</declare-styleable>
+
+-----
+
+public class FollowBehavior extends CoordinatorLayout.Behavior {
+  private int targetId;
+
+  public FollowBehavior(Context context, AttributeSet attrs) {
+      super(context, attrs);
+      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Follow);
+      for (int i = 0; i < a.getIndexCount(); i++) {
+          int attr = a.getIndex(i);
+          if(a.getIndex(i) == R.styleable.Follow_target){
+              targetId = a.getResourceId(attr, -1);
+          }
+      }
+      a.recycle();
+  }
+
+  @Override
+  public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
+       child.setY(dependency.getY()+dependency.getHeight());
+      return true;
+  }
+
+  @Override
+  public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+      return dependency.getId() == targetId;
+  }
+}
+
+-----
+
+<android.support.design.widget.CoordinatorLayout    
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <View
+        android:id="@+id/first"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:background="@android:color/holo_blue_light"/>
+
+    <View
+        android:id="@+id/second"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        app:layout_behavior=".FollowBehavior"
+        app:target="@id/first"
+        android:background="@android:color/holo_green_light"/>
+
+
+</android.support.design.widget.CoordinatorLayout>

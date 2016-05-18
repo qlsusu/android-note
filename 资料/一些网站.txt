@@ -1,0 +1,107 @@
+参见我的csdn博客中的网站
+
+android统计
+http://www.appbrain.com/
+http://www.appbrain.com/stats/
+
+android wiki
+	http://en.wikipedia.org/wiki/Android_(operating_system)
+
+http://androidappdocs-staging.appspot.com/index.html
+	本质上是google doc在线版
+	
+www.android123.com.cn
+
+eoe android
+	eoe特刊
+	高级开发资料-android kernel开发培训
+
+steve guo的window live博客
+goandroid，在chinaunix上，同时关注其收藏夹
+
+maxleng的csdn博客（包含了android核心分析）
+
+albertchen的百度空间
+
+幻之旅程的博客
+
+高焕堂
+	书
+		android应用框架与原理36技
+		android应用软体架构设计
+		android与物件导向技术
+		android设计招式之美
+		android线程模式知多少
+	论坛
+		http://www.android1.net/
+		资源：
+			技术服务中心板块的最后一个帖子，保存了其贡献的帖子的位置
+		系列（用繁体字搜做）：
+			android的核心框架技术
+			android讲义摘录
+			android框架底层结构知多少
+			架构师培育与框架(Framework)设计的12 堂课
+		视频
+			1. Android 潮流下的赢家定位(2009/10)：
+			http://www.tudou.com/programs/view/s33BzuaRppU/
+			2. Android 框架与核心服务(2009/10)：
+			http://www.tudou.com/programs/view/oLuAOBaWc9g/
+			3.中移动MM 未来的发展(2009/11)：
+			http://www.tudou.com/programs/view/lAU19Dw867Y/
+			4.北京、上海 亚太地区Android 技术大会(2009/5)：
+			http://v.youku.com/v_show/id_XOTIzMzgxMDg=.html
+			4.北京QCon 大会(2009/4)：
+			http://www.tudou.com/programs/view/SzcRtB5QF08/
+			http://www.tudou.com/programs/view/BiGwmgt_D1w/
+			4..NET/Android 架构设计(2009/2)：
+			http://www.tudou.com/programs/view/XIMU3Ovq-yg/
+			4.台北Android 技术大会(2008/11)：
+			http://www.tudou.com/programs/view/0Dbu2xWO6c4/
+			4.台北Android 应用大会(2008/10)：
+			http://www.tudou.com/programs/view/uqG7Su1E5cs/
+c层
+	android核心分析
+	后续：怎么调试跟踪到c代码；怎么使得修改后的c,java源码得到应用
+
+hellogv的csdn博客
+caowenbin的csdn博客
+stevenliyong的专栏
+九重天的chinaunix博客
+mobile.51cto.com/android
+51cto中的phone-club沙龙，android开发平台指南
+www.ideasandroid.com
+
+-------------------------------------------
+
+http://android.hk.cn
+csdn博客android排名
+
+http://android.blog.51cto.com/
+
+android123
+javaeye android圈子
+	http://www.javaeye.com/groups/tag/Android
+	http://android.group.javaeye.com/
+
+博客	
+	http://wuhua.javaeye.com/category/26760
+	http://wuhua.javaeye.com
+	http://wuhua.3geye.net
+	http://www.3geye.net 
+	www.androidin.com
+	http://android.blog.51cto.com/268543/323982 
+
+主题
+	Android permission 访问权限大全
+		http://rain-2372.javaeye.com/blog/725850
+	Security and Permissions
+		http://android.group.javaeye.com/group/blog/726845
+		
+资源帖子
+	http://android.group.javaeye.com/group/topic/3484
+	
+android开源框架
+	http://android.group.javaeye.com/group/blog/725273
+	
+	http://www.helloandroid.com/
+	

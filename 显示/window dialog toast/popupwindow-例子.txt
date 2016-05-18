@@ -1,0 +1,13 @@
+//加载popupWindow对话框布局
+View popWindow = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_window, null);
+//创建对话框
+pw = new PopupWindow(popWindow,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+
+//获得父窗口视图中的某个View对象
+//View parentView =  view;
+//显示对话框
+//pw.showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 300);
+
+//在指定的view下面来现实popupwindow
+//方法签名：PopupWindow.showAsDropDown(anchor, xoff, yoff)  
+pw.showAsDropDown(view.findViewById(R.id.text));

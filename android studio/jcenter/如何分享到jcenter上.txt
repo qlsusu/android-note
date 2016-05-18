@@ -1,0 +1,2 @@
+如何使用Android Studio把自己的Android library分享到jCenter和Maven Central
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0623/3097.html

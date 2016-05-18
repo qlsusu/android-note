@@ -1,0 +1,92 @@
+/*
+Theme Name: wopusV1
+Theme URI: http://www.wopus.org/
+Version: 1.0
+Author: Wopus
+Author URI: http://www.wopus.org
+*/
+#header{
+background:  url("http://icodelogic.com/wp-content/themes/wopusV1/images/1.jpg")
+no-repeat bottom center;
+}
+#headerimg {
+margin: 7px 9px 0; 
+height: 192px; 
+width: 740px; }
+
+body,h1,h2,h3,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea {margin: 0; padding: 0;}
+body {font:14px Tahoma, Helvetica, Arial, "\5b8b\4f53", Sans-serif;line-height:25px;}
+h1{font-size:30px; font-family:"Microsoft Yahei";}
+h2{font-size:20px; font-family:"Microsoft Yahei",Verdana,Tahoma;}
+h1 {color:#FFFFFF;margin-top:20px; margin-bottom:20px; float:left;}
+h2 {border-left:3px solid #007ac4; padding:0 10px; background:#eaf5ff; line-height:30px; height:30px;}
+h3 {font-size:14px; border-left:3px solid #007ac4; padding:0 10px; background:#eaf5ff; line-height:24px; height:24px;}
+h4 {background:#CFE5F7; border-bottom:1px solid #bbdaf7; line-height:30px; height:30px; padding-left:5px; margin:0;}
+a {text-decoration:none; color:rgb(42,133,232);}
+a:hover {text-decoration:underline;}
+ol,ul {list-style:none;}
+p,.post ul,.post ol {margin-bottom:15px;}
+img {border:none;}
+cite {font-style:normal;}
+textarea {padding:3px; width:95%;}
+#page {width:990px; margin:0 auto;}
+#main {width:690px; padding-right:40px;}
+#sidebar {width:252px;}
+blockquote {border-left:3px dashed #e6e6e6; background:#fafafa; padding:10px 10px 0; margin:10px;}
+p,textarea,#sidebar a,.fn,#cancel_comment_reply,#footer  {line-height:25px;}
+#nav li a,.fn,#rss_icon {display:block;color:rgb(42,133,232);}
+#nav li ul,.says {display:none;}
+h2,.page h3,.comment-body,#sidebar li,.post_nav,.navigation,.meta {margin-bottom:20px;}
+.comment_list li li,#respond,#footer,#commentform {margin-top:10px;}
+#main,#rss_icon,.alignleft,.comment-author {float:left;}
+#search,#sidebar,#rss,.alignright,.time,#cancel_comment_reply {float:right;}
+.post,.navigation,.post_nav,.linkcat,.comment_list li,#respond {overflow:auto; zoom:1;}
+#search {margin-top:15px;}
+.s-text {float:left; width:150px; height:26px; padding:8px 10px 0 7px; border:none; background: #fff url(images/bg-search-text.png) 0 0 no-repeat;}
+.s-submit {float:left; width:78px; height: 34px; border: none; background:#fff url(images/bg-search-submit.png) 0 0 no-repeat; cursor:pointer;}
+#nav {width:990px; height:30px; margin-top:10px;  margin-bottom:20px; background:#007ac4 url(images/bg-navi.png) 0 0 no-repeat; clear:both;}
+#nav li {float:left; background:url(images/nav_li.gif) right no-repeat; padding:0 5px; position:relative;}
+#nav li a {height:30px; line-height: 30px; width:77px; text-align:center; color: #fff; text-decoration:none;}
+#nav .current-menu-item a,#nav .current-menu-parent a {font-weight:700; color:#017dc8; background:#fff url(images/nav_hover.png) no-repeat; }
+#nav .current-menu-item li a,#nav .current-menu-parent li a {font-weight:400; color:#fff; background:none;}
+#nav li ul {display:none; position:absolute; left:0; z-index:999; background:#0068b5; padding-bottom:5px;}
+#nav li li {background:none; float:none; position:static;}
+#rss {margin-right:5px; margin-top:3px;}
+#rss_icon {width:24px; height:24px; background:url(images/rss.gif) no-repeat;}
+.post {margin-bottom:20px;}
+.post ul,.post ol {list-style-position:inside; margin-left:20px;}
+.post ul {list-style-type:disc;}
+.post ol {list-style-type:decimal ;}
+.post p,.meta,#commentform {margin-left:13px;}
+.post p {margin-right:5px;}
+.time,#cancel_comment_reply {font-weight:normal;}
+.meta {border-top:1px dashed #ddd; padding-top:10px; overflow:hidden; zoom:1;}
+.meta,.time {color:#666; font-size:12px;}
+.navigation,.post_nav {padding-right:1px; padding-left:13px;}
+.post_nav {padding-bottom:10px;}
+.comment_list {margin-bottom:20px;}
+.comment_list li {border-bottom:1px solid #ccc; padding-top:10px;}
+.comment_list li li {border-bottom:none; border-top:1px dashed #ccc; padding-top:10px;}
+.comment_list li li img {width:32px; height:32px;}
+.comment_list li p,.comment-meta {margin-bottom:5px;}
+.comment-author {width:60px; text-align:right; padding-right:10px;}
+.children .children,.children .reply,.children p {margin-left:50px;}
+.children #commentform p {margin-left:0;}
+.children .comment-author {width:50px; padding-right:10px;}
+.comment-body p,.reply,.children {margin-left:75px;}
+.children .comment-body p {margin-left:60px;}
+.thread-odd {background:#fafafa;}
+#sidebar li {background:#eaf5ff;}
+#sidebar li ul,.sidebar_box {padding:5px 10px 10px 10px; border-top:1px solid #fff;}
+#sidebar li li {margin-bottom:2px; padding-bottom:2px; border-bottom:1px dashed #bbdaf7;}
+#sidebar ol li {list-style:decimal inside;}
+#footer {text-align:center; border-top:1px solid #bbdaf7; padding-top:8px; padding-bottom:8px; clear:both;}
+#wp-calendar {width:100%;}
+#wp-calendar #next a {padding-right:10px; text-align:right;}
+#wp-calendar #prev a {padding-left:10px; text-align:left;}
+#wp-calendar a {display:block; font-weight:bold;}
+#wp-calendar td {text-align:center; line-height:20px;}
+#wp-calendar td:hover, #wp-calendar #today {background:#eaf5ff;}
+.aligncenter {display:block; margin-left: auto; margin-right: auto;}
+.alignleft {float:left;}
+.alignright {float:right;}

@@ -1,0 +1,671 @@
+<html>
+<head>
+<title> Additional JNI Features</title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="invoke.html">Prev</a> | <a href="stubs.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="11201"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 8 chapter</font>
+</h1>
+</div>
+<a name="11202"></a>
+<h1>Additional JNI Features</h1>
+<hr><p>
+
+<p>
+  <a name="11203"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">W</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">E</font> have discussed the JNI features used for writing native methods and embedding a Java virtual machine implementation in a native application. This chapter introduces the remaining JNI features.</font>
+</p>
+
+<a name="29362"></a>
+<h2>8.1    JNI and Threads</h2>
+
+<p>
+  <a name="26013"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The Java virtual machine supports multiple threads of control concurrently executing in the same address space. This concurrency introduces a degree of complexity that you do not have in a single-threaded environment. Multiple threads may access the same objects, the same file descriptors--in short, the same shared resources--at the same time.</font>
+</p>
+
+
+<p>
+  <a name="10363"> </a><font face="Arial, Verdana, Helvetica, sans-serif">To get the most out of this section, you should be familiar with the concepts of multithreaded programming. You should know how to write Java applications that utilize multiple threads and how to synchronize access of shared resources. A good reference on multithreaded programming in the Java programming language is <em>Concurrent Programming in Java</em><font size="-1"><sup>TM</sup></font><em>, Design Principles and Patterns</em>, by Doug Lea (Addison-Wesley, 1997).</font>
+</p>
+
+<a name="4813"></a>
+<h3>8.1.1    Constraints</h3>
+
+<p>
+  <a name="4814"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are certain constraints that you must keep in mind when writing native methods that are to run in a multithreaded environment. By understanding and programming within these constraints, your native methods will execute safely no matter how many threads simultaneously execute a given native method. For example:</font>
+</p>
+
+<a name="4816"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>A <code>JNIEnv</code> pointer is only valid in the thread associated with it. You must not pass this pointer from one thread to another, or cache and use it in multiple threads. The Java virtual machine passes a native method the same <code>JNIEnv</code> pointer in consecutive invocations from the same thread, but passes different <code>JNIEnv</code> pointers when invoking that native method from different threads. Avoid the common mistake of caching the <code>JNIEnv</code> pointer of one thread and using the pointer in another thread.</font><a name="34889"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Local references are valid only in the thread that created them. You must not pass local references from one thread to another. You should always convert local references to global references whenever there is a possibility that multiple threads may use the same reference.</font>
+</ul><a name="34892"></a>
+<h3>8.1.2    Monitor Entry and Exit</h3>
+
+<p>
+  <a name="8452"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Monitors are the primitive synchronization mechanism on the Java platform. Each object can be dynamically associated with a monitor. The JNI allows you to synchronize using these monitors, thus implementing the functionality equivalent to a synchronized block in the Java programming language:</font>
+</p>
+
+<pre>
+<a name="4830"> </a>synchronized (obj) {
+<a name="4831"> </a>    ...                   // synchronized block
+<a name="4832"> </a>}
+</pre>
+
+<p>
+  <a name="4833"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The Java virtual machine guarantees that a thread acquires the monitor associated with the object <code>obj</code> before it executes any statements in the block. This ensures that there can be at most one thread that holds the monitor and executes inside the synchronized block at any given time. A thread blocks when it waits for another thread to exit a monitor.</font>
+</p>
+
+
+<p>
+  <a name="5561"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Native code can use JNI functions to perform equivalent synchronization on JNI references. You can use the <code>MonitorEnter</code> function to enter the monitor and the <code>MonitorExit</code> function to exit the monitor:</font>
+</p>
+
+<pre>
+<a name="4837"> </a>if ((*env)-&gt;MonitorEnter(env, obj) != JNI_OK) {
+<a name="30222"> </a>    ... /* error handling */
+<a name="30221"> </a>}
+<a name="4838"> </a>...     /* synchronized block */
+<a name="4839"> </a>if ((*env)-&gt;MonitorExit(env, obj) != JNI_OK) {
+<a name="30226"> </a>    ... /* error handling */
+<a name="30228"> </a>};
+</pre>
+
+<p>
+  <a name="4840"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Executing the code above, a thread must first enter the monitor associated with <code>obj</code> before executing any code inside the synchronized block. The <code>Monitor-Enter</code> operation takes a <code>jobject</code> as an argument and blocks if another thread has already entered the monitor associated with the <code>jobject</code>. Calling <code>MonitorExit</code> when the current thread does not own the monitor results in an error and causes an <code>Illegal-MonitorStateException</code> to be raised. The above code contains a matched pair of <code>MonitorEnter</code> and <code>MonitorExit</code> calls, yet we still need to check for possible errors. Monitor operations may fail if, for example, the underlying thread implementation cannot allocate the resources necessary to perform the monitor operation.</font>
+</p>
+
+
+<p>
+  <a name="11194"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>MonitorEnter</code> and <code>MonitorExit</code> work on <code>jclass</code>, <code>jstring</code>, and <code>jarray</code> types, which are special kinds of <code>jobject</code> references.</font>
+</p>
+
+
+<p>
+  <a name="28776"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Remember to match a <code>MonitorEnter</code> call with the appropriate number of <code>MonitorExit</code> calls, especially in code that handles errors and exceptions:</font>
+</p>
+
+<pre>
+<a name="29372"> </a>if ((*env)-&gt;MonitorEnter(env, obj) != JNI_OK) ...;
+<a name="29373"> </a>...
+<a name="29374"> </a>if ((*env)-&gt;ExceptionOccurred(env)) {
+<a name="30240"> </a>    ... /* exception handling */
+<a name="29375"> </a>    /* remember to call MonitorExit here */
+<a name="29376"> </a>    if ((*env)-&gt;MonitorExit(env, obj) != JNI_OK) ...;
+<a name="29377"> </a>}
+<a name="29378"> </a>... /* Normal execution path.
+<a name="29381"> </a>if ((*env)-&gt;MonitorExit(env, obj) != JNI_OK) ...;
+</pre>
+
+<p>
+  <a name="29388"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Failure to call <code>MonitorExit</code> will most likely lead to deadlocks. By comparing the above C code segment with the code segment at the beginning of this section, you can appreciate how much easier it is to program with the Java programming language than with the JNI. Thus, it is preferable to express synchronization constructs in the Java programming language. If, for example, a static native method needs to enter the monitor associated with its defining class, you should define a static synchronized native method as opposed to performing JNI-level monitor synchronization in native code.</font>
+</p>
+
+<a name="4841"></a>
+<h3>8.1.3    Monitor Wait and Notify</h3>
+
+<p>
+  <a name="4842"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The Java API contains several other methods that are useful for thread synchronization. They are <code>Object.wait</code>, <code>Object.notify</code>, and <code>Object.notifyAll</code>. No JNI functions are supplied that correspond directly to these methods because monitor wait and notify operations are not as performance critical as monitor enter and exit operations. Native code may instead use the JNI method call mechanism to invoke the corresponding methods in the Java API:</font>
+</p>
+
+
+<p>
+  <a name="57680"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57681"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57682"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57683"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57684"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57685"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="57686"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="57671"> </a>/* precomputed method IDs */
+<a name="24873"> </a>static jmethodID MID_Object_wait;
+<a name="24802"> </a>static jmethodID MID_Object_notify;
+<a name="24803"> </a>static jmethodID MID_Object_notifyAll;
+<a name="24804"> </a>
+<a name="24870"> </a>void
+<a name="24805"> </a>JNU_MonitorWait(JNIEnv *env, jobject object, jlong timeout)
+<a name="24806"> </a>{
+<a name="24821"> </a>    (*env)-&gt;CallVoidMethod(env, object, MID_Object_wait,
+<a name="24874"> </a>                           timeout);
+<a name="24822"> </a>}
+<a name="24875"> </a>
+<a name="24823"> </a>void
+<a name="24824"> </a>JNU_MonitorNotify(JNIEnv *env, jobject object)
+<a name="24825"> </a>{
+<a name="24840"> </a>    (*env)-&gt;CallVoidMethod(env, object, MID_Object_notify);
+<a name="24841"> </a>}
+<a name="24878"> </a>
+<a name="24842"> </a>void
+<a name="24843"> </a>JNU_MonitorNotifyAll(JNIEnv *env, jobject object)
+<a name="24844"> </a>{
+<a name="24859"> </a>    (*env)-&gt;CallVoidMethod(env, object, MID_Object_notifyAll);
+<a name="24860"> </a>}
+</pre>
+
+<p>
+  <a name="29391"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We assume that the method IDs for <code>Object.wait</code>, <code>Object.notify</code>, and <code>Object.notifyAll</code> have been calculated elsewhere and are cached in the global variables. Like in the Java programming language, you can call the above monitor-related functions only when holding the monitor associated with the <code>jobject</code> argument.</font>
+</p>
+
+<a name="26206"></a>
+<h3>8.1.4    Obtaining a <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">JNIEnv</font> Pointer in Arbitrary Contexts</h3>
+
+<p>
+  <a name="26219"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We explained earlier that a <code>JNIEnv</code> pointer is only valid in its associated thread. This is generally not a problem for native methods because they receive the <code>JNIEnv</code> pointer from the virtual machine as the first argument. Occasionally, however, it may be necessary for a piece of native code not called directly from the virtual machine to obtain the <code>JNIEnv</code> interface pointer that belongs to the current thread. For example, the piece of native code may belong to a "callback" function called by the operating system, in which case the <code>JNIEnv</code> pointer will probably not be available as an argument.</font>
+</p>
+
+
+<p>
+  <a name="30321"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can obtain the <code>JNIEnv</code> pointer for the current thread by calling the <code>AttachCurrentThread</code> function of the invocation interface:</font>
+</p>
+
+
+<p>
+  <a name="48226"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="26207"> </a>JavaVM *jvm; /* already set */
+<a name="26208"> </a>
+<a name="26209"> </a>f()
+<a name="34946"> </a>{
+<a name="26210"> </a>    JNIEnv *env;
+<a name="26211"> </a>    (*jvm)-&gt;AttachCurrentThread(jvm, (void **)&amp;env, NULL);
+<a name="26212"> </a>    ... /* use env */
+<a name="26213"> </a>}
+</pre>
+
+<p>
+  <a name="26214"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When the current thread is already attached to the virtual machine, <code>Attach-Current-Thread</code> returns the <code>JNIEnv</code> interface pointer that belongs to the current thread.</font>
+</p>
+
+
+<p>
+  <a name="28760"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are many ways to obtain the <code>JavaVM</code> pointer: by recording it when the virtual machine is created, by querying for the created virtual machines using <code>JNI_GetCreatedJavaVMs</code>, by calling the JNI function <code>GetJavaVM</code> inside a regular native method, or by defining a <code>JNI_OnLoad</code> handler. Unlike the <code>JNIEnv</code> pointer, the <code>JavaVM</code> pointer remains valid across multiple threads so it can be cached in a global variable.</font>
+</p>
+
+
+<p>
+  <a name="29401"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Java 2 SDK release 1.2 provides a new invocation interface function <code>GetEnv</code> so that you can check whether the current thread is attached to the virtual machine, and, if so, to return the <code>JNIEnv</code> pointer that belongs to the current thread. <code>GetEnv</code> and <code>AttachCurrentThread</code> are functionally equivalent if the current thread is already attached to the virtual machine.</font>
+</p>
+
+<a name="29406"></a>
+<h3>8.1.5    Matching the Thread Models</h3>
+
+<p>
+  <a name="34976"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Suppose that native code to be run in multiple threads accesses a global resource. Should the native code use JNI functions <code>MonitorEnter</code> and <code>MonitorExit</code>, or use the native thread synchronization primitives in the host environment (such as <code>mutex_lock</code> on Solaris)? Similarly, if the native code needs to create a new thread, should it create a <code>java.lang.Thread</code> object and perform a callback of <code>Thread.start</code> through the JNI, or should it use the native thread creation primitive in the host environment (such as <code>thr_create</code> on Solaris)? </font>
+</p>
+
+
+<p>
+  <a name="31039"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The answer is that all of these approaches work if the Java virtual machine implementation supports a <em>thread model</em> that matches that used by the native code. The thread model dictates how the system implements essential thread operations such as scheduling, context switching, synchronization, and blocking in system calls. In a <em>native thread </em>model the operating system manages all the essential thread operations. In a <em>user thread</em> model, on the other hand, the application code implements the thread operations. For example, the "Green thread" model shipped with JDK and Java 2 SDK releases on Solaris uses the ANSI C functions <code>setjmp</code> and <code>longjmp</code> to implement context switches.</font>
+</p>
+
+
+<p>
+  <a name="29423"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Many modern operating systems (such as Solaris and Win32) support a native thread model. Unfortunately, some operating systems still lack native thread support. Instead, there may be one or many user thread packages on these operating systems.</font>
+</p>
+
+
+<p>
+  <a name="29426"> </a><font face="Arial, Verdana, Helvetica, sans-serif">If you write application strictly in the Java programming language, you need not worry about the underlying thread model of the virtual machine implementation. The Java platform can be ported to any host environment that supports the required set of thread primitives. Most native and user thread packages provide the necessary thread primitives for implementing a Java virtual machine.</font>
+</p>
+
+
+<p>
+  <a name="29433"> </a><font face="Arial, Verdana, Helvetica, sans-serif">JNI programmers, on the other hand, must pay attention to thread models. The application using native code may not function properly if the Java virtual implementation and the native code have a different notion of threading and synchronization. For example, a native method could be blocked in a synchronization operation in its own thread model, but the Java virtual machine, running in a different thread model, may not be aware that the thread executing the native method is blocked. The application deadlocks because no other threads will be scheduled.</font>
+</p>
+
+
+<p>
+  <a name="29456"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The thread models match if the native code uses the same thread model as the Java virtual machine implementation. If the Java virtual machine implementation uses native thread support, the native code can freely invoke thread-related primitives in the host environment. If the Java virtual machine implementation is based on a user thread package, the native code should either link with the same user thread package or rely on no thread operations at all. The latter may be harder to achieve than you think: most C library calls (such as I/O and memory allocation functions) perform thread synchronization underneath. Unless the native code performs pure computation and makes no library calls, it is likely to use thread primitives indirectly.</font>
+</p>
+
+
+<p>
+  <a name="29464"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Most virtual machine implementations support only a particular thread model for JNI native code. Implementations that support native threads are the most flexible, hence native threads, when available, are typically preferred on a given host environment. Virtual machine implementations that rely on a particular user thread package may be severely limited as to the type of native code with which they can operate.</font>
+</p>
+
+
+<p>
+  <a name="29472"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Some virtual machine implementations may support a number of different thread models. A more flexible type of virtual machine implementation may even allow you to provide a custom thread model implementation for virtual machine's internal use, thus ensuring that the virtual machine implementation can work with your native code. Before embarking on a project likely to require native code, you should consult the documentation that comes with your virtual machine implementation for thread model limitations.</font>
+</p>
+
+<a name="26018"></a>
+<h2>8.2    Writing Internationalized Code</h2>
+
+<p>
+  <a name="26019"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Special care must be taken to write code that works well in multiple locales.  The JNI gives programmers complete access to the internationalization features of the Java platform. We will use string conversion as an example because file names and messages may contain non-ASCII characters in many locales.</font>
+</p>
+
+
+<p>
+  <a name="29531"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The Java virtual machine represents strings in the Unicode format. Although some native platforms (such as Windows NT) also provide Unicode support, most represent strings in locale-specific encodings.</font>
+</p>
+
+
+<p>
+  <a name="26020"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Do not use <code>GetStringUTFChars</code> and <code>GetStringUTFRegion</code> functions to convert between <code>jstring</code>s and locale-specific strings unless UTF-8 happens to be the native encoding on the platform. UTF-8 strings are useful when representing names and descriptors (such as the arguments to <code>GetMethodID</code>) that are to be passed to JNI functions, but are not appropriate for representing locale-specific strings such as file names.</font>
+</p>
+
+<a name="26021"></a>
+<h3>8.2.1    Creating <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">jstring</font>s from Native Strings</h3>
+
+<p>
+  <a name="26022"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Use the <code>String(byte[]</code> <code>bytes)</code> constructor to convert a native string into a <code>jstring</code>. The following utility function creates a <code>jstring</code> from a locale-specific native C string:</font>
+</p>
+
+<pre>
+<a name="26023"> </a>jstring JNU_NewStringNative(JNIEnv *env, const char *str)
+<a name="26024"> </a>{
+<a name="26025"> </a>    jstring result;
+<a name="26026"> </a>    jbyteArray bytes = 0;
+<a name="26027"> </a>    int len;
+<a name="26028"> </a>    if ((*env)-&gt;EnsureLocalCapacity(env, 2) &lt; 0) {
+<a name="26029"> </a>        return NULL; /* out of memory error */
+<a name="35088"> </a>    }
+<a name="26030"> </a>    len = strlen(str);
+<a name="26031"> </a>    bytes = (*env)-&gt;NewByteArray(env, len);
+<a name="26032"> </a>    if (bytes != NULL) {
+<a name="26033"> </a>        (*env)-&gt;SetByteArrayRegion(env, bytes, 0, len,
+<a name="26034"> </a>                                   (jbyte *)str);
+<a name="26035"> </a>        result = (*env)-&gt;NewObject(env, Class_java_lang_String,
+<a name="26036"> </a>                                   MID_String_init, bytes);
+<a name="26037"> </a>        (*env)-&gt;DeleteLocalRef(env, bytes);
+<a name="26038"> </a>        return result;
+<a name="26039"> </a>    } /* else fall through */
+<a name="26040"> </a>    return NULL;
+<a name="26041"> </a>}
+</pre>
+
+<p>
+  <a name="26042"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The function creates a byte array, copies the native C string into the byte array, and finally invokes the <code>String(byte[]</code> <code>bytes)</code> constructor to create the resulting <code>jstring</code> object. <code>Class_java_lang_String</code> is a global reference to the <code>java.lang.String</code> class, and <code>MID_String_init</code> is the method ID of the string constructor. Because this is a utility function, we make sure to delete the local reference to the byte array created temporarily to store the characters.</font>
+</p>
+
+
+<p>
+  <a name="26772"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Delete the call to <code>EnsureLocalCapacity</code> if you need to use this function with JDK release 1.1. </font>
+</p>
+
+<a name="26043"></a>
+<h3>8.2.2    Translating <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">jstring</font>s to Native Strings</h3>
+
+<p>
+  <a name="37866"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Use the <code>String.getBytes</code> method to convert a <code>jstring</code> to the appropriate native encoding. The following utility function translates a <code>jstring</code> to a locale-specific native C string:</font>
+</p>
+
+<pre>
+<a name="37867"> </a>char *JNU_GetStringNativeChars(JNIEnv *env, jstring jstr)
+<a name="37868"> </a>{
+<a name="37869"> </a>    jbyteArray bytes = 0;
+<a name="37870"> </a>    jthrowable exc;
+<a name="37871"> </a>    char *result = 0;
+<a name="37872"> </a>    if ((*env)-&gt;EnsureLocalCapacity(env, 2) &lt; 0) {
+<a name="37873"> </a>        return 0; /* out of memory error */
+<a name="37874"> </a>    }
+<a name="37875"> </a>    bytes = (*env)-&gt;CallObjectMethod(env, jstr,
+<a name="37876"> </a>                                     MID_String_getBytes);
+<a name="37877"> </a>    exc = (*env)-&gt;ExceptionOccurred(env);
+<a name="37878"> </a>    if (!exc) {
+<a name="37879"> </a>        jint len = (*env)-&gt;GetArrayLength(env, bytes);
+<a name="37880"> </a>        result = (char *)malloc(len + 1);
+<a name="37881"> </a>        if (result == 0) {
+<a name="37882"> </a>            JNU_ThrowByName(env, "java/lang/OutOfMemoryError",
+<a name="37883"> </a>                            0);
+<a name="37884"> </a>            (*env)-&gt;DeleteLocalRef(env, bytes);
+<a name="37885"> </a>            return 0;
+<a name="37886"> </a>        }
+<a name="37887"> </a>        (*env)-&gt;GetByteArrayRegion(env, bytes, 0, len,
+<a name="37888"> </a>                                   (jbyte *)result);
+<a name="37889"> </a>        result[len] = 0; /* NULL-terminate */
+<a name="37890"> </a>    } else {
+<a name="37891"> </a>        (*env)-&gt;DeleteLocalRef(env, exc);
+<a name="37892"> </a>    }
+<a name="37893"> </a>    (*env)-&gt;DeleteLocalRef(env, bytes);
+<a name="37894"> </a>    return result;
+<a name="37895"> </a>}
+</pre>
+
+<p>
+  <a name="37896"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The function passes the <code>java.lang.String</code> reference to the <code>String.getBytes</code> method and then copies the elements of the byte array to a newly allocated C array. <code>MID_String_getBytes</code> is the precomputed method ID of the <code>String.getBytes</code> method. Because this is a utility function, we make sure to delete the local references to the byte array and the exception object. Keep in mind that deleting a JNI reference to the exception object does not clear the pending exception.</font>
+</p>
+
+
+<p>
+  <a name="26779"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Once again, delete the call to <code>EnsureLocalCapacity</code> if you need to use this function with JDK release 1.1. </font>
+</p>
+
+<a name="29535"></a>
+<h2>8.3    Registering Native Methods</h2>
+
+<p>
+  <a name="29543"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Before an application executes a native method it goes through a two-step process to load the native library containing the native method implementation and then link to the native method implementation:</font>
+</p>
+
+<ol><font face="Arial, Verdana, Helvetica, sans-serif">
+<li><code>System.loadLibrary</code> locates and loads the named native library. For example, 
+<code>System.loadLibrary("foo")</code> may cause <code>foo.dll</code> to be loaded on Win32.
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</ol>
+<p>
+  <a name="29552"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This section will introduce another way to accomplish the second step. Instead of relying on the virtual machine to search for the native method in the already loaded native libraries, the JNI programmer can manually link native methods by registering a function pointer with a class reference, method name, and method descriptor:</font>
+</p>
+
+<pre>
+<a name="29574"> </a>JNINativeMethod nm;
+<a name="29575"> </a>nm.name = "g";
+<a name="37855"> </a>/* method descriptor assigned to signature field */
+<a name="29576"> </a>nm.signature = "()V";
+<a name="29577"> </a>nm.fnPtr = g_impl;
+<a name="29578"> </a>(*env)-&gt;RegisterNatives(env, cls, &amp;nm, 1);
+</pre>
+
+<p>
+  <a name="57692"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The above code registers the native function <code>g_impl</code> as the implementation of the <code>Foo.g</code> native method:</font>
+</p>
+
+<pre>
+<a name="57695"> </a>void JNICALL g_impl(JNIEnv *env, jobject self);
+</pre>
+
+<p>
+  <a name="57687"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The native function <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">g_impl</font> does not need to follow the JNI naming convention because only function pointers are involved, nor does it need to be exported from the library (thus there is no need to declare the function using <code>JNIEXPORT</code>). The native function <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">g_impl</font> must still, however, follow the <code>JNICALL</code> calling convention.</font>
+</p>
+
+
+<p>
+  <a name="29586"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>RegisterNatives</code> function is useful for a number of purposes:</font>
+</p>
+
+<a name="29595"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>It is sometimes more convenient and more efficient to register a large number of native method implementations eagerly, as opposed to letting the virtual machine link these entries lazily.</font><a name="29599"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>You may call <code>RegisterNatives</code> multiple times on a method, allowing the native method implementation to be updated at runtime.</font><a name="29600"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>RegisterNatives</code> is particularly useful when a native application embeds a virtual machine implementation and needs to link with a native method implementation defined in the native application. The virtual machine would not be able to find this native method implementation automatically because it only searches in native libraries, not the application itself. </font>
+</ul><a name="30368"></a>
+<h2>8.4    Load and Unload Handlers</h2>
+
+<p>
+  <a name="30369"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Load and unload handlers allow the native library to export two functions: one to be called when <code>System.loadLibrary</code> loads the native library, the other to be called when the virtual machine unloads the native library. This feature was added in Java 2 SDK release 1.2.</font>
+</p>
+
+<a name="30439"></a>
+<h3>8.4.1    The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">JNI_OnLoad</font> Handler</h3>
+
+<p>
+  <a name="30426"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When <code>System.loadLibrary</code> loads a native library, the virtual machine searches for the following exported entry in the native library:</font>
+</p>
+
+<pre>
+<a name="30370"> </a>JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved);
+</pre>
+
+<p>
+  <a name="30374"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can invoke any JNI functions in an implementation of <code>JNI_Onload</code>. A typical use of the <code>JNI_OnLoad</code> handler is caching the <code>JavaVM</code> pointer, class references, or method and field IDs, as shown in the following example:</font>
+</p>
+
+<pre>
+<a name="30381"> </a>JavaVM *cached_jvm;
+<a name="30388"> </a>jclass Class_C;
+<a name="30389"> </a>jmethodID MID_C_g;
+<a name="30385"> </a>
+<a name="57708"> </a>
+<a name="57709"> </a>
+<a name="57710"> </a>
+<a name="30386"> </a>JNIEXPORT jint JNICALL
+<a name="57719"> </a>JNI_OnLoad(JavaVM *jvm, void *reserved)
+<a name="30382"> </a>{
+<a name="30392"> </a>    JNIEnv *env;
+<a name="30404"> </a>    jclass cls;
+<a name="30384"> </a>    cached_jvm = jvm;  /* cache the JavaVM pointer */
+<a name="48229"> </a>
+<a name="30390"> </a>    if ((*jvm)-&gt;GetEnv(jvm, (void **)&amp;env, JNI_VERSION_1_2)) {
+<a name="30399"> </a>        return JNI_ERR; /* JNI version not supported */
+<a name="30400"> </a>    }
+<a name="30387"> </a>    cls = (*env)-&gt;FindClass(env, "C");
+<a name="30405"> </a>    if (cls == NULL) {
+<a name="30406"> </a>        return JNI_ERR;
+<a name="30407"> </a>    }
+<a name="30421"> </a>    /* Use weak global ref to allow C class to be unloaded */
+<a name="30408"> </a>    Class_C = (*env)-&gt;NewWeakGlobalRef(env, cls);
+<a name="30409"> </a>    if (Class_C == NULL) {
+<a name="30410"> </a>        return JNI_ERR;
+<a name="30411"> </a>    }
+<a name="31108"> </a>    /* Compute and cache the method ID */
+<a name="30412"> </a>    MID_C_g = (*env)-&gt;GetMethodID(env, cls, "g", "()V");
+<a name="30413"> </a>    if (MID_C_g == NULL) {
+<a name="30414"> </a>        return JNI_ERR;
+<a name="30415"> </a>    }
+<a name="30391"> </a>    return JNI_VERSION_1_2;
+<a name="30383"> </a>}
+</pre>
+
+<p>
+  <a name="30429"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>JNI_OnLoad</code> function first caches the <code>JavaVM</code> pointer in the global variable <code>cached_jvm</code>. It then obtains the <code>JNIEnv</code> pointer by calling <code>GetEnv</code>. It finally loads the <code>C</code> class, caches the class reference, and computes the method ID for <code>C.g</code>. The <code>JNI_OnLoad</code> function returns <code>JNI_ERR</code> (<a href="types.html#46915">&#167;12.4</a>) on error and otherwise returns the <code>JNIEnv</code> version <code>JNI_VERSION_1_2</code> needed by the native library.</font>
+</p>
+
+
+<p>
+  <a name="30959"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We will explain in the next section why we cache the <code>C</code> class in a weak global reference instead of a global reference.</font>
+</p>
+
+
+<p>
+  <a name="31411"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Given a cached <code>JavaVM</code> interface pointer it is trivial to implement a utility function that allows the native code to obtain the <code>JNIEnv</code> interface pointer for the current thread (<a href="other.html#26206">&#167;8.1.4</a>) :</font>
+</p>
+
+<pre>
+<a name="31412"> </a>JNIEnv *JNU_GetEnv()
+<a name="31414"> </a>{
+<a name="31416"> </a>    JNIEnv *env;
+<a name="31415"> </a>    (*cached_jvm)-&gt;GetEnv(cached_jvm,
+<a name="31428"> </a>                          (void **)&amp;env,
+<a name="31429"> </a>                          JNI_VERSION_1_2);
+<a name="31419"> </a>    return env;
+<a name="31413"> </a>}
+</pre>
+<a name="30440"></a>
+<h3>8.4.2    The <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">JNI_OnUnload</font> Handler</h3>
+
+<p>
+  <a name="30444"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Intuitively, the virtual machine calls the <code>JNI_OnUnload</code> handler when it unloads a JNI native library. This is not precise enough, however. When does the virtual machine determine that it can unload a native library? Which thread runs the <code>JNI_OnUnload</code> handler?</font>
+</p>
+
+
+<p>
+  <a name="31116"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The rules of unloading native libraries are as follows: </font>
+</p>
+
+<a name="30455"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>The virtual machine associates each native library with the class loader <code>L</code> of the class <code>C</code> that issues the <code>System.loadLibrary</code> call.</font><a name="30458"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>The virtual machine calls the <code>JNI_OnUnload</code> handler and unloads the native library after it determines that the class loader <code>L</code> is no longer a live object. Because a class loader refers to all the classes it defines, this implies that <code>C</code> can be unloaded as well.</font><a name="30986"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>The <code>JNI_OnUnload</code> handler runs in a finalizer, and is either invoked synchroniously by <code>java.lang.System.runFinalization</code> or invoked asynchronously by the virtual machine.</font>
+</ul>
+<p>
+  <a name="30510"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Here is the definition of a <code>JNI_OnUnload</code> handler that cleans up the resources allocated by the <code>JNI_OnLoad</code> handler in the last section:</font>
+</p>
+
+<pre>
+<a name="30485"> </a>JNIEXPORT void JNICALL 
+<a name="30516"> </a>JNI_OnUnload(JavaVM *jvm, void *reserved)
+<a name="30519"> </a>{
+<a name="30520"> </a>    JNIEnv *env;
+<a name="30523"> </a>    if ((*jvm)-&gt;GetEnv(jvm, (void **)&amp;env, JNI_VERSION_1_2)) {
+<a name="30491"> </a>        return;
+<a name="30492"> </a>    }
+<a name="30498"> </a>    (*env)-&gt;DeleteWeakGlobalRef(env, Class_C);
+<a name="30506"> </a>    return;
+<a name="30507"> </a>}
+</pre>
+
+<p>
+  <a name="30530"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>JNI_OnUnload</code> function deletes the weak global reference to the <code>C</code> class created in the <code>JNI_OnLoad</code> handler. We need not delete the method ID <code>MID_C_g</code> because the virtual machine automatically reclaims the resources needed to represent <code>C</code>'s method IDs when unloading its defining class <code>C</code>.</font>
+</p>
+
+
+<p>
+  <a name="30538"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We are now ready to explain why we cache the <code>C</code> class in a weak global reference instead of a global reference. A global reference would keep <code>C</code> alive, which in turn would keep <code>C</code>'s class loader alive. Given that the native library is associated with <code>C</code>'s class loader <code>L</code>, the native library would not be unloaded and <code>JNI_OnUnload</code> would not be called.</font>
+</p>
+
+
+<p>
+  <a name="30911"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>JNI_OnUnload</code> handler runs in a finalizer. In contrast, the <code>JNI_OnLoad</code> handler runs in the thread that initiates the <code>System.loadLibrary</code> call. Because                             <code>JNI_OnUnload</code> runs in an unknown thread context, to avoid possible deadlocks, you should avoid complex synchronization and locking operations in <code>JNI_OnUnload</code>. The <code>JNI_OnUnload</code> handler typically carries out simple tasks such as releasing the resources allocated by the native library.</font>
+</p>
+
+
+<p>
+  <a name="30916"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>JNI_OnUnload</code> handler runs when the class loader that loaded the library and all classes defined by that class loader are no longer alive. The <code>JNI_OnUnload</code> handler must not use these classes in any way. In the above <code>JNI_OnUnload</code> definition, you must not perform any operations that assume <code>Class_C</code> still refers to a valid class. The <code>DeleteWeakGlobalRef</code> call in the example frees the memory for the weak global reference itself, but does not manipulate the referred class <code>C</code> in any way.</font>
+</p>
+
+
+<p>
+  <a name="30952"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In summary, you should be careful when writing <code>JNI_OnUnload</code> handlers. Avoid complex locking operations that may introduce deadlocks. Keep in mind that classes have been unloaded when the <code>JNI_OnUnload</code> handler is invoked.</font>
+</p>
+
+<a name="30982"></a>
+<h2>8.5    Reflection Support</h2>
+
+<p>
+  <a name="30983"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Reflection generally refers to manipulating language-level constructs at runtime. For example, reflection allows you to discover at run time the name of arbitrary class objects and the set of fields and methods defined in the class. Reflection support is provided at the Java programming language level through the <code>java.lang.reflect</code> package as well as some methods in the <code>java.lang.Object</code> and <code>java.lang.Class</code> classes. Although you can always call the corresponding Java API to carry out reflective operations, the JNI provides the following functions to make the frequent reflective operations from native code more efficient and convenient:</font>
+</p>
+
+<a name="30996"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li><code>GetSuperclass</code> returns the superclass of a given class reference.</font><a name="30997"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>IsAssignableFrom</code> checks whether instances of one class can be used when instances of another class are expected.</font><a name="30998"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>GetObjectClass</code> returns the class of a given <code>jobject</code> reference.</font><a name="31000"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>IsInstanceOf</code> checks whether a <code>jobject</code> reference is an instance of a given class.</font><a name="31002"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>FromReflectedField</code> and <code>ToReflectedField</code> allow the native code to convert between field IDs and <code>java.lang.reflect.Field</code> objects. They are new additions in Java 2 SDK release 1.2.</font><a name="31007"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li><code>FromReflectedMethod</code> and <code>ToReflectedMethod</code> allow the native code to convert between method IDs, <code>java.lang.reflect.Method</code> objects and <code>java.lang.reflect.Constructor </code>objects. They are new additions in Java 2 SDK release 1.2.</font>
+</ul><a name="30951"></a>
+<h2>8.6    JNI Programming in C++</h2>
+
+<p>
+  <a name="30942"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI presents a slightly simpler interface for C++ programmers. The <code>jni.h</code> file contains a set of definitions so that C++ programmers can write, for example:</font>
+</p>
+
+<pre>
+<a name="26082"> </a>jclass cls = env-&gt;FindClass("java/lang/String");
+</pre>
+
+<p>
+  <a name="26083"> </a><font face="Arial, Verdana, Helvetica, sans-serif">instead of in C:</font>
+</p>
+
+<pre>
+<a name="26084"> </a>jclass cls = (*env)-&gt;FindClass(env, "java/lang/String");
+</pre>
+
+<p>
+  <a name="26085"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The extra level of indirection on env and the env argument to <code>FindClass</code> are hidden from the programmer. The C++ compiler inlines the C++ member function calls to their equivalent C counterparts; the resulting code is exactly the same. There is no inherent performance difference between using the JNI in C or C++.</font>
+</p>
+
+
+<p>
+  <a name="26086"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In addition, the <code>jni.h</code> file also defines a set of dummy C++ classes to enforce the subtyping relationships among different <code>jobject</code> subtypes:</font>
+</p>
+
+<pre>
+<a name="26087"> </a>     // JNI reference types defined in C++
+<a name="26470"> </a>     class _jobject {};
+<a name="26088"> </a>     class _jclass : public _jobject {};
+<a name="26089"> </a>     class _jstring : public _jobject {};
+<a name="26466"> </a>     ...
+<a name="26467"> </a>     typedef _jobject* jobject;
+<a name="26468"> </a>     typedef _jclass*  jclass;
+<a name="26469"> </a>     typedef _jstring* jstring;
+<a name="26090"> </a>     ...
+</pre>
+
+<p>
+  <a name="26091"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The C++ compiler is able to detect at compile time if you pass in, for example, a <code>jobject</code> to <code>GetMethodID</code>:</font>
+</p>
+
+<pre>
+<a name="26092"> </a>// ERROR: pass jobject as a jclass:
+<a name="28777"> </a>jobject obj = env-&gt;NewObject(...);
+<a name="26169"> </a>jmethodID mid =  env-&gt;GetMethodID(obj, "foo", "()V");
+</pre>
+
+<p>
+  <a name="26176"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Because <code>GetMethodID</code> expects a <code>jclass</code> reference, the C++ compiler will give an error message. In the C type definitions for JNI, <code>jclass</code> is the same as <code>jobject</code>:</font>
+</p>
+
+<pre>
+<a name="26095"> </a>typedef jobject jclass;
+</pre>
+
+<p>
+  <a name="26096"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Therefore, a C compiler is not able to detect that you have mistakenly passed a <code>jobject</code> instead of <code>jclass</code>. </font>
+</p>
+
+
+<p>
+  <a name="26097"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The added type hierarchy in C++ sometimes necessitates additional casting. In C, you can fetch a string from an array of strings and assign the result to a <code>jstring</code>:</font>
+</p>
+
+<pre>
+<a name="26098"> </a>jstring jstr = (*env)-&gt;GetObjectArrayElement(env, arr, i);
+</pre>
+
+<p>
+  <a name="26099"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In C++, however, you need to insert an explicit conversion:</font>
+</p>
+
+<pre>
+<a name="26100"> </a>jstring jstr = (jstring)env-&gt;GetObjectArrayElement(arr, i);
+<a name="28785"> </a>
+</pre>
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="invoke.html">Prev</a> | <a href="stubs.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

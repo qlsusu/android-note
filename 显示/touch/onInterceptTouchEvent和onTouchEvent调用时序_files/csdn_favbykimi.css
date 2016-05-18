@@ -1,0 +1,5 @@
+cite.fav_csdnstylebykimi{font-style:normal;margin:0 0 0 5px;display:inline;text-decoration:none;padding:0;}
+cite.fav_csdnstylebykimi a{font:normal 12px Tahoma,sans-serif;padding:0 25px 1px 10px;background:url(http://blog.csdn.net/images/share-add.gif) 0 0 no-repeat;}
+*+html cite.fav_csdnstylebykimi a{padding:2px 25px 0 10px !important;}
+@media all and (min-width:0px){cite.fav_csdnstylebykimi a{padding:1px 25px 1px 10px;}} 
+cite.fav_csdnstylebykimi a:hover{background:url(http://blog.csdn.net/images/share-add.gif) 0 100% no-repeat;color:#fff;text-decoration:none;clear:both;}

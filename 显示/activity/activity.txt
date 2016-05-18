@@ -1,0 +1,13 @@
+需要在onCreate里面调用finish方法，这样系统会直接调用onDestory，跳过生命周期中的其他方法。
+
+我们应该避免在onPause()时执行CPU-intensive 的工作，例如写数据到DB，因为它会导致切换到下一个activity变得缓慢
+应该把那些heavy-load的工作放到onStop()去做
+参见：my/activityOnPause
+
+onpause 应该和 onresume对应
+onstop 应该和 onstart对应
+
+instance state
+如果因为系统资源紧张而导致Activity的Destory， 系统会在用户回到这个Activity时有这个Activity存在过的记录，
+系统会使用那些保存的记录数据（描述了当Activity被Destory时的状态）来重新创建一个新的Activity实例。
+那些被系统用来恢复之前状态而保存的数据被叫做 "instance state" 

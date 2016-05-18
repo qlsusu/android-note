@@ -1,0 +1,68 @@
+参见：
+Android内存优化之OOM 中的 如何避免OOM总结
+	http://hukai.me/android-performance-oom/
+Android面试——APP性能优化
+	http://yuweiguocn.github.io/2016/04/10/android-interview-peformance/
+
+----------------------------------需要关注的方面
+减小对象的内存占用
+	使用更加轻量的数据结构
+	避免在Android里面使用Enum
+	减小Bitmap对象的内存占用
+		inSampleSize
+		decode format
+	使用更小的图片
+内存对象的重复利用
+	复用系统自带的资源
+	Bitmap对象的复用
+		inbitmap
+	避免在onDraw方法里面执行对象的创建
+	StringBuilder
+避免对象的内存泄露
+	注意Activity的泄漏
+		使用static类型的内部类
+		如果要依赖于activity，那么使用weakreference
+	考虑使用Application Context而不是Activity Context	
+	注意临时Bitmap对象的及时回收
+		根据老的bitmap来生成新的bitmap，通过bitmap.createbitmap
+			注意：需要判断 老的 和 新的 的引用是否相等，如果不相等，才将老的recycle，因为：有可能产生的新的 还是老的
+	注意监听器的注销
+	注意缓存容器中的对象泄漏
+	注意WebView的泄漏
+		为WebView开启另外一个进程，通过AIDL与主进程进行通信，WebView所在的进程可以根据业务的需要选择合适的时机进行销毁，从而达到内存的完整释放。
+	注意Cursor对象是否及时关闭
+内存使用策略优化
+	谨慎使用large heap
+	综合考虑设备内存阈值与其他因素设计合适的缓存大小
+	onLowMemory()与onTrimMemory()
+		对于foreground的进程，onLowMemory()会被调用
+		当系统内存达到某些条件的时候，所有正在运行的应用都会收到onTrimMemory()对调通知
+	资源文件需要选择合适的文件夹进行存放
+		如果图片不需要缩放，那么放入到nodpi或者asset文件夹内
+	Try catch某些大内存分配的操作
+		如果在产生bitmap时发生了异常，那么在catch中，增大insamplesize，在重新decode出bitmap
+	谨慎使用static对象
+		生命周期和进程一样长
+	特别留意单例对象中不合理的持有
+		生命周期和进程一样长
+	珍惜Services资源
+		尽量使用intentservice
+	优化布局层次，减少内存消耗
+	谨慎使用“抽象”编程
+	使用nano protobufs序列化数据
+	谨慎使用依赖注入框架
+	谨慎使用多进程
+	使用ProGuard来剔除不需要的代码
+	谨慎使用第三方libraries
+	考虑不同的实现方式来优化内存占用
+		通过分解一个图片的不同部分，来进行动画，而不要使用 帧动画的形式（需要一张张完整的大图片）
+----------------------------------
+
+什么会影响处理速度：
+大图片加载的太多，有效内存减少，其他非图片处理操作，运行会慢
+	bitmap缓存分配的内存小点
+	图片的定期清理	
+		lrucache.evictAll();
+		entryRemoved()
+	不要使用大图片
+数据库的写入，当如到一个remoteservice中来写？

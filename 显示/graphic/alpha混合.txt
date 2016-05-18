@@ -1,0 +1,4 @@
+R(C)=alpha*R(B)+(1-alpha)*R(A)
+G(C)=alpha*G(B)+(1-alpha)*G(A)
+B(C)=alpha*B(B)+(1-alpha)*B(A)
+R(x)、G(x)、B(x)分别指颜色x的RGB分量。

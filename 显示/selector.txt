@@ -1,0 +1,29 @@
+一个例子为（模拟：floatactionbutton）：
+<?xml version="1.0" encoding="utf-8"?>
+<!-- drawable/btn_fab_default.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_pressed="false">
+		<layer-list>
+			<item android:bottom="0dp" android:left="2dp" android:right="2dp"
+				android:top="2dp">
+				<shape android:shape="oval">
+					<solid android:color="#ff0000" />
+				</shape>
+			</item>
+			<item android:bottom="2dp" android:left="2dp" android:right="2dp"
+				android:top="2dp">
+				<shape android:shape="oval">
+					<solid android:color="#00ff00" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item android:state_pressed="true">
+		<shape android:bottom="2dp" android:left="2dp" android:right="2dp"
+			android:shape="oval" android:top="2dp">
+			<solid android:color="#0000ff" />
+		</shape>
+	</item>
+</selector>
+
+其中的item拥有padding属性，其参照于：view本身，效果可参见：如：textview padding=5dp

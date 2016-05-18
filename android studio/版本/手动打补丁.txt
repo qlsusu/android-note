@@ -1,0 +1,12 @@
+参见：
+http://www.jianshu.com/p/53c676630b45
+http://blog.csdn.net/hil2000/article/details/11395485
+
+查看自身的版本号
+在https://dl.google.com/android/studio/patches/updates.xml中查看 相应type（如preview,beta）的最新的版本号
+	以自己的版本号为搜索条件，进行搜索
+构建下载地址：https://dl.google.com/android/studio/patches/AI-$FROM-$TO-patch-mac.jar，如：
+https://dl.google.com/android/studio/patches/AI-143.2739321-143.2783836-patch-mac.jar
+
+将该jar应用到android studio.app/Contents下，如：
+java -classpath ../patch/AI-143.2739321-143.2783836-patch-mac.jar com.intellij.updater.Runner install Contents/

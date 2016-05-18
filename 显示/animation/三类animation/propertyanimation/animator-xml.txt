@@ -1,0 +1,29 @@
+例子：
+<set android:ordering="sequentially">
+    <set>
+        <objectAnimator
+            android:propertyName="x"
+            android:duration="500"
+            android:valueTo="400"
+            android:valueType="intType"/>
+        <objectAnimator
+            android:propertyName="y"
+            android:duration="500"
+            android:valueTo="300"
+            android:valueType="intType"/>
+    </set>
+    <objectAnimator
+        android:propertyName="alpha"
+        android:duration="500"
+        android:valueTo="1f"/>
+</set>
+
+位置：res/animator/xxx.xml
+	对比于view animation: res/anim/xxx.xml
+
+用法：
+AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(myContext, R.anim.property_animator);
+set.setTarget(myObject);
+set.start();
+
+资料：b21，p278

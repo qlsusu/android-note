@@ -1,0 +1,6 @@
+mPopupMenu = new PopupMenu(Context context, View anchor);
+mPopupMenu.setOnMenuItemClickListener(this);
+mPopupMenu.inflate(R.menu.contextmenu);
+
+显示：mPopupMenu.show();
+其会在anchor的 上部/下部 来展示

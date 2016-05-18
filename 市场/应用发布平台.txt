@@ -1,0 +1,83 @@
+sku Number是区分你的app用的，可以填app的BundleIdentifier，或者能唯一标识你的app的字符都可以。
+但是注意，sku Number在app发布后就不能更改了。
+
+********************************助手
+
+360助手
+次数：2175
+
+91助手
+次数：156
+
+********************************商城
+安卓市场：
+http://dev.apk.hiapk.com/
+http://static.apk.hiapk.com/html/2012/11/997902.html?module=256&info=Gk%2F0i92LhHZkbMZZK3M%3D
+上线时间：121129
+次数：11007
+用户名: aoshandi@gmail.com
+密码: anzhuoasd1120
+--
+91市场（在安卓市场旗下）
+http://apk.91.com/Soft/Android/com.oooo3d.talkingtom-1.html
+上线时间：121112
+次数：1319
+
+google play
+https://play.google.com/apps/publish/Home?dev_acc=03326962691693915676
+次数：8583
+aoshandi@gmail.com
+awsa181#3d
+
+360开发者：
+http://open.app.360.cn/
+http://zhushou.360.cn/detail/index/soft_id/192264?recrefer=SE_D_%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E6%B1%A4%E5%A7%86%E7%8C%AB
+上线时间：121128
+次数：4911（同360助手）
+user:aoshandihahah
+pw:a123haha567
+bill.qi
+
+安智市场
+http://dev.anzhi.com
+http://www.anzhi.com/soft_538299.html
+上线时间：121123
+次数：大于1千次
+aosha
+azoooo3d,
+
+应用汇:
+http://dev.appchina.com/
+http://www.appchina.com/app/com.oooo3d.talkingtom/
+上线时间：121120
+次数：931
+用户名: aoshandi@gmail.com
+昵称：南京奥闪迪信息技术有限公司
+密码: yyhasd1120
+
+机锋市场：
+http://dev.gfan.com
+http://apk.gfan.com/Product/App420657.html
+上线时间：121120
+次数：589
+aoshandi
+jifasd1120	
+
+中国移动MM：
+http://dev.10086.cn/
+http://mm.10086.cn/index.html
+未上架
+次数：
+用户名: aoshandi@gmail.com
+密码：oooo3dmobile,
+
+********************************广告
+
+有米开发者：
+http://www.youmi.net/login
+用户名: aoshandi@gmail.com
+密码: asdyoumi1120
+
+数据统计：
+call summay('20121119','20121128');
+call scene('20121119','20121128');

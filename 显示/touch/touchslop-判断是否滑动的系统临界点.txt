@@ -1,0 +1,7 @@
+touchslop
+系统所能识别出的被认为是滑动的最小的距离
+viewconfiguration.get().getscaledtouchslop
+
+默认值：8dp
+frameworks/base/core/res/res/values/config.xml 文件中
+	<dimen name="config_viewConfigurationTouchSlop">8dp</dimen> 

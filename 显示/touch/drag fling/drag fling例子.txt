@@ -1,0 +1,119 @@
+参见：
+Android Scroll详解(二)：OverScroller实战
+	http://ztelur.github.io/2016/04/07/Android-Scroll%E8%AF%A6%E8%A7%A3-%E4%BA%8C-%EF%BC%9AOverScroller%E5%AE%9E%E6%88%98/
+
+------------------------drag	
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+    int actionId = MotionEventCompat.getActionMasked(event);
+    switch (actionId) {
+        case MotionEvent.ACTION_DOWN:
+            mLastX = event.getX();
+            mLastY = event.getY();
+            mIsBeingDragged = true;
+            if (getParent() != null) {
+                getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            break;
+        case MotionEvent.ACTION_MOVE:
+            float curX = event.getX();
+            float curY = event.getY();
+            int deltaX = (int) (mLastX - curX);
+            int deltaY = (int) (mLastY - curY);
+            if (!mIsBeingDragged && 
+            	(Math.abs(deltaX)> mTouchSlop || Math.abs(deltaY)> mTouchSlop)) {
+                mIsBeingDragged = true;
+                // 让第一次滑动的距离和之后的距离不至于差距太大
+                // 因为第一次必须>TouchSlop,之后则是直接滑动
+                if (deltaX > 0) {
+                    deltaX -= mTouchSlop;
+                } else {
+                    deltaX += mTouchSlop;
+                }
+                if (deltaY > 0) {
+                    deltaY -= mTouchSlop;
+                } else {
+                    deltaY += mTouchSlop;
+                }
+            }
+            // 当mIsBeingDragged为true时，就不用判断> touchSlop啦，不然会导致滚动是一段一段的
+            // 不是很连续
+            if (mIsBeingDragged) {
+                    scrollBy(deltaX, deltaY);
+                    mLastX = curX;
+                    mLastY = curY;
+            }
+            break;
+        case MotionEvent.ACTION_CANCEL:
+        case MotionEvent.ACTION_UP:
+            mIsBeingDragged = false;
+            mLastY = 0;
+            mLastX = 0;
+            break;
+        default:
+    }
+    return mIsBeingDragged;
+}
+
+------------------------fling
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+   .....
+   if (mVelocityTracker == null) {
+		//检查速度测量器，如果为null，获得一个
+	   mVelocityTracker = VelocityTracker.obtain();
+   }
+   int action = MotionEventCompat.getActionMasked(event);
+   int index = -1;
+   switch (action) {
+	   case MotionEvent.ACTION_DOWN:
+		   ......
+			if (!mScroller.isFinished()) { //fling
+			   mScroller.abortAnimation();
+		   }
+		   .....
+		   break;
+	   case MotionEvent.ACTION_MOVE:
+		   ......
+		   break;
+	   case MotionEvent.ACTION_CANCEL:
+		   endDrag();
+		   break;
+	   case MotionEvent.ACTION_UP:
+		   if (mIsBeingDragged) {
+		   		//当手指立刻屏幕时，获得速度，作为fling的初始速度     
+		   		mVelocityTracker.computeCurrentVelocity(1000,mMaxFlingSpeed);
+			   int initialVelocity = (int)mVelocityTracker.getYVelocity(mActivePointerId);
+			   if (Math.abs(initialVelocity) > mMinFlingSpeed) {
+				   // 由于坐标轴正方向问题，要加负号。
+				   doFling(-initialVelocity);
+			   }
+			   endDrag();
+		   }
+		   break;
+	   default:
+   }
+   //每次onTouchEvent处理Event时，都将event交给时间
+   //测量器
+   if (mVelocityTracker != null) {
+	   mVelocityTracker.addMovement(event);
+   }
+   return true;
+}
+
+private void doFling(int speed) {
+   if (mScroller == null) {
+	   return;
+   }
+   // 函数签名为：scroller.fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY)
+   mScroller.fling(0,getScrollY(),0,speed,0,0,-500,10000);
+   invalidate();
+}
+
+@Override
+public void computeScroll() {
+   if (mScroller.computeScrollOffset()) {
+	   scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+	   postInvalidate();
+   }
+}

@@ -1,0 +1,84 @@
+DIV.topic_page {
+	COLOR: #108ac6; TEXT-DECORATION: underline
+}
+A {
+	COLOR: #108ac6; TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: white
+}
+DIV.app_nav {
+	BACKGROUND-COLOR: #effaff
+}
+DIV#page {
+	BACKGROUND-COLOR: #effaff
+}
+.comment_title {
+	BACKGROUND-COLOR: #effaff
+}
+TR.mouse_over {
+	BACKGROUND-COLOR: #effaff
+}
+DIV#local {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BACKGROUND-COLOR: white; BORDER-RIGHT-COLOR: #108ac6
+}
+DIV#main {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BACKGROUND-COLOR: white; BORDER-RIGHT-COLOR: #108ac6
+}
+.blog_main {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BACKGROUND-COLOR: white; BORDER-RIGHT-COLOR: #108ac6
+}
+.pagination A:hover {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BACKGROUND-COLOR: white; BORDER-RIGHT-COLOR: #108ac6
+}
+.pagination A:active {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BACKGROUND-COLOR: white; BORDER-RIGHT-COLOR: #108ac6
+}
+DIV.nav {
+	BACKGROUND-COLOR: #108ac6
+}
+DIV#app_list DIV.decorate {
+	BACKGROUND-COLOR: #108ac6
+}
+A:hover {
+	BACKGROUND-COLOR: #108ac6
+}
+DIV#branding {
+	BACKGROUND-COLOR: #108ac6
+}
+INPUT.button {
+	BACKGROUND-COLOR: #108ac6
+}
+INPUT.submit {
+	BACKGROUND-COLOR: #108ac6
+}
+TD.buttons A {
+	BACKGROUND-COLOR: #108ac6
+}
+.pagination SPAN.current {
+	BACKGROUND-COLOR: #108ac6
+}
+.blog_bottom LI {
+	COLOR: #108ac6; BORDER-RIGHT-COLOR: #108ac6
+}
+TABLE.admin THEAD {
+	COLOR: #108ac6
+}
+.pagination A {
+	COLOR: #108ac6
+}
+.pagination A:visited {
+	COLOR: #108ac6
+}
+DIV.app_nav {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BORDER-RIGHT-COLOR: #108ac6
+}
+.pagination SPAN.current {
+	BORDER-LEFT-COLOR: #108ac6; BORDER-BOTTOM-COLOR: #108ac6; BORDER-TOP-COLOR: #108ac6; BORDER-RIGHT-COLOR: #108ac6
+}
+.blog_comment {
+	BORDER-TOP-COLOR: #108ac6
+}
+DIV.picture_full {
+	BORDER-TOP-COLOR: #108ac6
+}

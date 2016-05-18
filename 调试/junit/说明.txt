@@ -1,0 +1,6 @@
+建立android test project：
+	先建立android project，然后右键project，new，android test project。则eclipse会自动建立该test project，且在manifest.xml中指明了target project，即是，你可以在test project中引用target project中的类，即使它属于不同的项目。
+	如果你的test project需要某种permission，如写入contact数据库，那么use-permission应该出现在target project的manifest.xml中
+
+参见
+	moandroid.com-tag为“深入浅出 junit”的系列文章

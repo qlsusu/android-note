@@ -1,0 +1,15 @@
+针对于view1的touch，可以将motionevent进行适当的调整，再传递给其他view。如：
+public boolean onTouch(View v, MotionEvent event) {
+	// You can massage the event location if necessary.
+	// Here we set the vertical location for each event to
+	// the middle of the HorizontalScrollView.
+	
+	// View's expect events to be relative to their own coordinates.
+	event.setLocation(event.getX(), mScrollView.getHeight() / 2);
+	
+	// Forward each event from the TextView to the
+	// HorizontalScrollView
+	mScrollView.dispatchTouchEvent(event);
+	return true;
+}
+参见：android recipe v4/2_13-14_CustomTouch/RemoteScrollActivity

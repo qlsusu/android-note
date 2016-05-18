@@ -1,0 +1,8 @@
+设置缓存页面，当前页面的相邻N各页面都会被缓存：viewPager.setOffscreenPageLimit(cachePagers);
+
+显示有动画效果：
+如果viewpager被封装到viewpagerfrag中，可以使用 如下 来达到 渐渐出现的效果
+	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+	transaction.setCustomAnimations(R.anim.frag_push_fade_in,R.anim.frag_push_fade_out);
+	transaction.add(R.id.statis, viewPagerFrag);
+	transaction.commit();

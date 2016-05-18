@@ -1,0 +1,3 @@
+使用：fiddler
+设置：tools-fiddler option-connections-allow remote computer to connect
+参见：http://www.cnblogs.com/findyou/p/3491014.html

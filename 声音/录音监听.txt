@@ -1,0 +1,22 @@
+参见
+my/talkingtom中 com.oooo3d.lib.animation.record.RecordPlayer
+http://developer.android.com/intl/zh-CN/guide/topics/media/audio-capture.html
+mycsdn
+
+权限
+android.permission.RECORD_AUDIO
+
+**********************方法：
+我在stackoverflow上貌似找到了答案，参见：http://stackoverflow.com/questions/7955041/voice-detection-in-android-application
+帖子的问题描述是这样的：
+I want to change my application in this way,
+when application start work it begin to analyze sound coming from microphone,
+if user keep silent application continue to analyze income sound from microphone,
+if user start to talk application begin to Record sound coming from microphone
+and then user finish talking application stops recording and give me back same buffer, with voice data in .wav format.
+
+解决：
+1.问题的提出者和解答者是同一个人，他贴出了源码，但是有一些变量的具体数值没有给出，参见：http://stackoverflow.com/questions/7955041/voice-detection-in-android-application
+2.然后，我貌似找到了那个人的主页，他又贴出了不完整的源码（包含了上面的参数值，虽然有download，但是链接失效）参见：http://vitosolutions.wordpress.com/tag/voice/，
+3.在早些时候，好心的网友给出了类似的解答，参见：http://wapiknow.baidu.com/question/416835390.html?fr=ala3&ssid=0&from=1097d&uid=wiaui_1295711782_6667&pu=usm%401%2Csz%401320_240&bd_page_type=1&tj=zhidao_2_0_10
+同事记录其录制的操作

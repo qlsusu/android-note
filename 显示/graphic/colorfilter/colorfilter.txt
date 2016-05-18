@@ -1,0 +1,12 @@
+参见：
+http://blog.csdn.net/aigestudio/article/details/41316141
+
+paint.setColorFilter(ColorFilter filter)
+设置颜色滤镜。就像拿个筛子把颜色“滤”一遍，以产生一种新的显示效果。本质上为：图像色彩混合
+
+子类
+ColorMatrixColorFilter、
+LightingColorFilter和
+	LightingColorFilter (int colorMultiply, int colorAdd)  
+PorterDuffColorFilter
+	PorterDuffColorFilter(int color, PorterDuff.Mode mode) 

@@ -1,0 +1,20 @@
+安装：
+http://blog.csdn.net/masonblog/article/details/49022057
+https://github.com/Piasy/OkBuck/blob/master/README-zh.md
+
+如何使用
+修改项目的build.gradle
+	参见：示例文件
+为app添加sign
+运行 ./gradlew okbuck
+修改项目的.buckconfig中的别名，如：
+	[alias]
+		release = //app:bin_release
+		app = //app:bin_debug
+运行buck build app
+	adb install -r buck-out/gen/app/bin_debug.apk
+	
+------
+	
+中文的quickstart
+https://buck.readthedocs.org/en/latest/quick_start.html

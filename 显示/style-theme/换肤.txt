@@ -1,0 +1,6 @@
+本质上还是新启动activity，只是过渡动画采用fade_in/fade_out（或不用任何的过渡动画）
+参见：
+	https://medium.com/android-news/android-changing-app-theme-at-runtime-ab17d3eb93cc#.ja3mww1zc
+		它的源码：https://gist.github.com/alphamu/f2469c28e17b24114fe5
+	列举了几种方式，也包含对resource.java的修改：
+		http://blog.zhaiyifan.cn/2015/09/10/Android%E6%8D%A2%E8%82%A4%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/

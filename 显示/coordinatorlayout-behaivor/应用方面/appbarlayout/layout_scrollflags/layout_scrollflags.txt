@@ -1,0 +1,25 @@
+layout_scrollflags定义在appbarlayout的孩子中
+用于：appbarlayout的兄弟（实现了nestedscrollingchild接口）发生了scroll时，将会通知nestedscrollingparent(往往是coordinatorlayout)，进而会通知appbarlayout.behaivor
+appbarlayout将根据孩子的scrollflags来进行 响应dependency的性质的 相应的scroll行为
+
+scroll - If you want the view to scroll along the content. 
+	如果仅仅只是为scroll，那么，当content已经scroll到顶部，再向下滑动时，才归位
+enterXXX
+	代表了：该view已经因为scroll而变不可见，则，什么时机可以触发其归位
+	--
+	enterAlways
+		只要content有向下的滑动，则归位
+		--
+		之前，当content向上滑动时，toolbar完全消失
+	enterAlwaysCollapsed
+		当content已经scroll到顶部，再向下滑动时，才归位
+		--
+		之前，当content向上滑动时，toolbar完全消失
+	exitUntilCollapsed
+		当content已经scroll到顶部，再向下滑动时，才归位
+		例子：
+			<android.support.v7.widget.Toolbar
+				...
+				android:minHeight="?attr/actionBarSize"
+				app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+		注意：之前，当content向上滑动时，toolbar是没有完全消失的（而是空了minheight）

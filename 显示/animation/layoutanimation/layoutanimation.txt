@@ -1,0 +1,26 @@
+让layout使用animation
+为layout设置LayoutAnimation
+在layoutanimation中，指定item的anim
+为viewgroup启动动画：startLayoutAnimation
+--
+设置LayoutAnimation中的order（LayoutAnimation默认只有三种顺序，即顺序逆序和随机）
+	通过继承LayoutAnimationController
+	http://my.oschina.net/u/724985/blog/289123
+--
+my/layoutanimation
+http://blog.csdn.net/tu_bingbing/article/details/8917992
+
+	
+listview/gridview等的 layoutanimation
+使用方式，同layoutanimation
+另外一种方式，在getview中，对item view进行animation（setAnimation）
+	http://gundumw100.iteye.com/blog/1874545
+--
+http://blog.csdn.net/wang6279026/article/details/8019282
+	
+recyclerview的
+一开始，设置itemcount为0
+然后在某个时刻，设置itemcount为正常值
+后，在onBindViewHolder中，对itemview进行单纯的animation
+参见：http://frogermcs.github.io/Instagram-with-Material-Design-concept-is-getting-real/
+	

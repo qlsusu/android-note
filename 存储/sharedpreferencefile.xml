@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+<string name="name">susu</string>
+<string name="age">18</string>
+<string name="class">boy</string>
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<boolean name="isright" value="true" />
+</map>

@@ -1,0 +1,15 @@
+// 获取位图  
+Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a);  
+// 实例化一个Shader  
+BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);  
+
+// 进行坐标变换
+// 实例一个矩阵对象  
+Matrix matrix = new Matrix();  
+// 设置矩阵变换  
+matrix.setTranslate(500, 500);  
+// 设置Shader的变换矩阵  
+bitmapShader.setLocalMatrix(matrix);  
+
+// 设置着色器  
+mPaint.setShader(bitmapShader);  

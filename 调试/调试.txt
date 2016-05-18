@@ -1,0 +1,2 @@
+使用MAT(記憶體分析)工具查看Memory Leak 
+	http://lp43.blogspot.com/2011/11/mat.html

@@ -1,0 +1,8 @@
+参见：file:///Users/qlong/_study/android/android-sdk-macosx/docs/guide/topics/resources/providing-resources.html
+
+可以在res/下放置什么
+	Resource directories supported inside project res/ directory.
+有哪些quaulifier
+	Configuration qualifier names.
+		包含了国家码：Language and region
+

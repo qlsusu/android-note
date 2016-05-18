@@ -1,0 +1,188 @@
+常用intent列表： 
+Android Intent 用法汇总 
+显示网页 
+- <activity android:name="BrowserActivity" android:label="Browser" android:launchMode="singleTask" android:alwaysRetainTaskState="true" android:configChanges="orientation|keyboardHidden" android:theme="@style/BrowserTheme"> 
+- <!-- 
+For these schemes were not particular MIME type has been 
+                 supplied, we are a good candidate. 
+  --> 
+- <intent-filter> 
+  <action android:name="android.intent.action.VIEW" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  <category android:name="android.intent.category.BROWSABLE" /> 
+  <data android:scheme="http" /> 
+  <data android:scheme="https" /> 
+  <data android:scheme="about" /> 
+  </intent-filter> 
+- <!-- 
+  For these schemes where any of these particular MIME types 
+                  have been supplied, we are a good candidate. 
+  --> 
+- <intent-filter> 
+  <action android:name="android.intent.action.VIEW" /> 
+  <category android:name="android.intent.category.BROWSABLE" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  <data android:scheme="http" /> 
+  <data android:scheme="https" /> 
+  <data android:mimeType="text/html" /> 
+  <data android:mimeType="text/plain" /> 
+  <data android:mimeType="application/xhtml+xml" /> 
+  <data android:mimeType="application/vnd.wap.xhtml+xml" /> 
+  </intent-filter> 
+- <!-- 
+We are also the main entry point of the browser. 
+  --> 
+- <intent-filter> 
+  <action android:name="android.intent.action.MAIN" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  <category android:name="android.intent.category.LAUNCHER" /> 
+  <category android:name="android.intent.category.BROWSABLE" /> 
+  </intent-filter> 
+- <intent-filter> 
+  <action android:name="android.intent.action.WEB_SEARCH" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  <category android:name="android.intent.category.BROWSABLE" /> 
+  <data android:scheme="" /> 
+  <data android:scheme="http" /> 
+  <data android:scheme="https" /> 
+  </intent-filter> 
+- <intent-filter> 
+  <action android:name="android.intent.action.WEB_SEARCH" /> 
+  <action android:name="android.intent.action.MEDIA_SEARCH" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  </intent-filter> 
+- <intent-filter> 
+  <action android:name="android.intent.action.SEARCH" /> 
+  <category android:name="android.intent.category.DEFAULT" /> 
+  </intent-filter> 
+  <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" /> 
+- <intent-filter> 
+  <action android:name="android.net.http.NETWORK_STATE" /> 
+  <action android:name="android.intent.action.PROXY_CHANGE" /> 
+  </intent-filter> 
+  </activity> 
+
+1. Uri uri = Uri.parse("http://google.com");  
+   2. Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+   3. startActivity(it); 
+
+显示地图 
+   1. Uri uri = Uri.parse("geo:38.899533,-77.036476");  
+   2. Intent it = new Intent(Intent.ACTION_VIEW, uri);   
+   3. startActivity(it);   
+   4. //其他 geo URI 範例  
+   5. //geo:latitude,longitude  
+   6. //geo:latitude,longitude?z=zoom  
+   7. //geo:0,0?q=my+street+address  
+   8. //geo:0,0?q=business+near+city  
+   9. //google.streetview:cbll=lat,lng&cbp=1,yaw,,pitch,zoom&mz=mapZoom 
+
+路径规划 
+   1. Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr=startLat%20startLng&daddr=endLat%20endLng&hl=en");  
+   2. Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+   3. startActivity(it);  
+   4. //where startLat, startLng, endLat, endLng are a long with 6 decimals like: 50.123456  
+
+打电话 
+   1. //叫出拨号程序 
+   2. Uri uri = Uri.parse("tel:0800000123");  
+   3. Intent it = new Intent(Intent.ACTION_DIAL, uri);  
+   4. startActivity(it);  
+
+   1. //直接打电话出去  
+   2. Uri uri = Uri.parse("tel:0800000123");  
+   3. Intent it = new Intent(Intent.ACTION_CALL, uri);  
+   4. startActivity(it);  
+   5. //用這個，要在 AndroidManifest.xml 中，加上  
+   6. //<uses-permission id="android.permission.CALL_PHONE" />  
+
+传送SMS/MMS 
+   1. //调用短信程序 
+   2. Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+   3. it.putExtra("sms_body", "The SMS text");   
+   4. it.setType("vnd.android-dir/mms-sms");  
+   5. startActivity(it); 
+
+   1. //传送消息 
+   2. Uri uri = Uri.parse("smsto://0800000123");  
+   3. Intent it = new Intent(Intent.ACTION_SENDTO, uri);  
+   4. it.putExtra("sms_body", "The SMS text");  
+   5. startActivity(it); 
+
+   1. //传送 MMS  
+   2. Uri uri = Uri.parse("content://media/external/images/media/23");  
+   3. Intent it = new Intent(Intent.ACTION_SEND);   
+   4. it.putExtra("sms_body", "some text");   
+   5. it.putExtra(Intent.EXTRA_STREAM, uri);  
+   6. it.setType("image/png");   
+   7. startActivity(it);  
+
+传送 Email 
+   1. Uri uri = Uri.parse("mailto:xxx@abc.com");  
+   2. Intent it = new Intent(Intent.ACTION_SENDTO, uri);  
+   3. startActivity(it);  
+
+   1. Intent it = new Intent(Intent.ACTION_SEND);  
+   2. it.putExtra(Intent.EXTRA_EMAIL, "me@abc.com");  
+   3. it.putExtra(Intent.EXTRA_TEXT, "The email body text");  
+   4. it.setType("text/plain");  
+   5. startActivity(Intent.createChooser(it, "Choose Email Client"));  
+
+   1. Intent it=new Intent(Intent.ACTION_SEND);    
+   2. String[] tos={"me@abc.com"};    
+   3. String[] ccs={"you@abc.com"};    
+   4. it.putExtra(Intent.EXTRA_EMAIL, tos);    
+   5. it.putExtra(Intent.EXTRA_CC, ccs);    
+   6. it.putExtra(Intent.EXTRA_TEXT, "The email body text");    
+   7. it.putExtra(Intent.EXTRA_SUBJECT, "The email subject text");    
+   8. it.setType("message/rfc822");    
+   9. startActivity(Intent.createChooser(it, "Choose Email Client")); 
+
+   1. //传送附件 
+   2. Intent it = new Intent(Intent.ACTION_SEND);  
+   3. it.putExtra(Intent.EXTRA_SUBJECT, "The email subject text");  
+   4. it.putExtra(Intent.EXTRA_STREAM, "file:///sdcard/mysong.mp3");  
+   5. sendIntent.setType("audio/mp3");  
+   6. startActivity(Intent.createChooser(it, "Choose Email Client")); 
+
+播放多媒体 
+       Uri uri = Uri.parse("file:///sdcard/song.mp3");  
+       Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+       it.setType("audio/mp3");  
+       startActivity(it); 
+
+       Uri uri = Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, "1");  
+       Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+
+       startActivity(it); 
+
+Market 相关 
+1.        //寻找某个应用 
+2.        Uri uri = Uri.parse("market://search?q=pname:pkg_name"); 
+3.        Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+4.        startActivity(it);  
+5.        //where pkg_name is the full package path for an application 
+
+1.        //显示某个应用的相关信息 
+2.        Uri uri = Uri.parse("market://details?id=app_id");  
+3.        Intent it = new Intent(Intent.ACTION_VIEW, uri); 
+4.        startActivity(it);  
+5.        //where app_id is the application ID, find the ID   
+6.        //by clicking on your application on Market home   
+7.        //page, and notice the ID from the address bar 
+
+Uninstall 应用程序 
+1.        Uri uri = Uri.fromParts("package", strPackageName, null); 
+2.        Intent it = new Intent(Intent.ACTION_DELETE, uri);   
+3.        startActivity(it); 
+
+使用指定的浏览器来访问
+		String url = "https://accounts.google.com/o/oauth2/auth?"
+				+ constructParams();
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.VIEW");
+		Uri content_uri_browsers = Uri.parse(url);
+		intent.setData(content_uri_browsers);
+		intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
+如果去掉intent.setClassName，则系统让你选择浏览器
+如果去掉intent.setAction，浏览器将跳到主页，而不是指定的url

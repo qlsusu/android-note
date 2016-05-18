@@ -1,0 +1,14 @@
+addToBackStack
+效果：当用户点击back按键时，之前的fragment会再次出现（无论新的fragment是通过add还是replace加入）
+本质：
+在执行fragment事务时，如移除或者替换，我们经常要适当地让用户可以向后导航与"撤销"这次改变。
+为了让用户向后导航fragment事务，我们必须在FragmentTransaction提交前调用addToBackStack()方法(其中的参数可以为null)
+当移除或者替换一个fragment并把它放入返回栈中时，被移除的fragment的生命周期是stopped(不是destoryed).
+当用户返回重新恢复这个fragment,它的生命周期是restarts。如果没有把fragment放入返回栈中，那么当它被移除或者替换时，其生命周期是destoryed。
+
+popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+参见：android recipe v4/2_08_CustomBack
+如：tag1, tag2, tag3,tag4依次进入到backstack
+此刻呈现的是，tag4对应的frag
+当popBackStack(tag3, FragmentManager.POP_BACK_STACK_INCLUSIVE)时，呈现的是tag2对应的frag，
+此刻按back按键，呈现tag1

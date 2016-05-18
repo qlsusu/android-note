@@ -1,0 +1,19 @@
+参照：https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-18/还在用Toast？你Out啦，试试Snackbar吧！.md
+
+例子：
+Snackbar.make(someView, "Hello. I am Snackbar!", Snackbar.LENGTH_SHORT)
+	.setAction("Undo", new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+
+		}
+	})
+	.show();       
+其中，someView：
+	View or Layout that you want to show a Snackbar at it's bottom position
+	官方的解释：
+		snackbar会根据提供的view来 试着寻找一个父view来hold snackbar的view. 
+		Snackbar将遍历整个view tree 来寻找一个合适的父view，
+		它可能是一个coordinatorLayout也可能是window decor’s content view,随便哪一个都行。
+
+	

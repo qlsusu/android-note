@@ -1,0 +1,5 @@
+动画效果演示
+	http://inloop.github.io/interpolator/
+	
+参见：
+my/animate中，interpolators界面 和 view property animator界面

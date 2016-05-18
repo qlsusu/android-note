@@ -1,0 +1,36 @@
+measurespec代表一个32位int的值，
+高2位代表specmode，
+低30位代表specsize
+
+创建：
+view指定layoutparams，它再和父容器的measurespec，来确定view的measurespec
+
+------------------------------------
+
+specmode有以下几种
+unspecified
+	父容器不对view有任何的限制，view要多大有多大
+	这种情况用于系统的内部，表示一种测量的状态
+exactly
+	对应于 view的match_parent和具体数值时的情况
+at_most
+	对应于 view的wrap_content的情况
+
+------------------------------------构建
+		
+通过int的spec，来获得mode和size
+int specMode = MeasureSpec.getMode(spec);
+int specSize = MeasureSpec.getSize(spec);
+
+通过mode和size，来构建spec
+MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+
+------------------------------------
+
+在一个方向上，根据孩子的lp，为孩子构建spec
+android.view.ViewGroup.getChildMeasureSpec(int spec, int padding, int childDimension) {
+参数中
+	spec：自己的spec
+	padding：已经使用了多少空间（自己的padding+其他孩子已经使用的空间+该孩子的margin）
+	childDimension：该孩子期望的空间（根据lp来，则可以为具体数值，或者wrap/fill）
+也可以参见：android.view.ViewGroup.measureChildWithMargins(View, int, int, int, int)

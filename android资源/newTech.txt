@@ -1,0 +1,500 @@
+3d旋转
+https://github.com/GcsSloop/Rotate3dAnimation
+
+loading
+[置顶] 一个绚丽的loading动效分析与实现！
+	http://blog.csdn.net/tianjian4592/article/details/44538605
+
+热修复
+AndFix从放弃到捡起
+	http://mp.weixin.qq.com/s?__biz=MzIxNDE1NjQ2Mw==&mid=2649872256&idx=1&sn=253973ed6b5539b0fbfffa3ae18bdae6&scene=0#wechat_redirect
+
+data bind
+完全掌握Android Data Binding
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0603/2992.html
+
+联系人
+功能
+	index
+		右边有字母index表，可以滑动该index，中心显示字母
+		而且根据字母列出姓氏（如：s可以包含孙 苏等）
+搜索：可以根据 汉字 字母 数字进行搜索
+地址：https://github.com/handsomezhou/PinyinSearchLibrary
+
+Android创建桌面快捷方式几种方法
+	http://1002878825-qq-com.iteye.com/blog/1828669
+	http://m.cr173.com/w/19597
+
+事件总线：EventBus、Otto
+ORM框架：GreenDAO、Litepal
+
+数据统计：友盟统计，百度统计...
+奔溃搜集：腾讯bugly、bugtags...
+云存储：七牛...
+即使通讯：环信、融云、阿里百川...
+推送：小米推送、腾讯推送、百度推送...
+安全加固：360加固宝、爱加密...
+
+--------------------性能
+!!!_!!!http://hukai.me/blog/archives/
+http://hukai.me/android-performance-oom/
+--------------------性能↑
+
+声波的效果
+https://github.com/Yalantis/Horizon
+
+仿ios的日期选择
+	效果更好
+	PickerView
+	https://github.com/saiwu-bigkoo/Android-PickerView
+
+Java7提供的并行执行任务框架：Fork、Join框架
+	类似map reduce
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0331/4110.html
+
+性能
+内存分析
+	mat
+		http://blog.csdn.net/p106786860/article/details/9268613
+
+--------------------工具集合
+LessCode
+	https://github.com/openproject/LessCode/blob/master/README-cn.md
+--------------------工具集合↑
+		
+图片处理库
+ Glide, Picasso, Fresco
+
+二维码
+http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&mid=405489196&idx=1&sn=60f385f5d3fcb97ce4813a372028817a&scene=0#wechat_redirect
+
+锁屏的实现
+http://blog.csdn.net/qinjuning/article/details/7558588
+
+检测内存泄漏
+Android内存泄漏检测利器：LeakCanary
+	http://droidyue.com/blog/2016/03/28/android-leakcanary/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+
+进程保活（实验了，应用于cailing，可以）
+http://gold.xitu.io/entry/56ec2a1eda2f60004c85aa8b/view
+
+MaterialDrawer
+https://github.com/mikepenz/MaterialDrawer
+
+掘金收藏的 一个文科妹子写的github的教程
+
+GitHub 排名前 Top 100 的 Android 开源项目简介
+	http://gold.xitu.io/entry/56df9824128fe10059ef48e2/view
+
+Futurice 公司 的Android开发最佳实践
+	https://github.com/futurice/android-best-practices#styles
+
+横向的刻度尺
+Android实现滑动刻度尺效果，选择身高体重和生日
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4028.html
+
+
+android staticlayout使用讲解
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0915/1682.html
+
+
+http://blog.zhaiyifan.cn/archives/page/2/
+	博客中的文章
+
+aop
+基于AOP的方法级自动埋点
+	http://blog.zhaiyifan.cn/2015/12/07/AopBasedMonitor/
+深入理解android之aop
+	http://blog.csdn.net/innost/article/details/49387395
+
+Drawable 着色的后向兼容方案
+	http://www.race604.com/tint-drawable/
+浅谈 Android L 的 Tint（着色）
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0128/3923.html
+
+Android过场动画基础教程
+	https://yq.aliyun.com/articles/3016?spm=5176.100239.yqblog1.56.2O25S2
+
+android性能优化典范
+	http://hukai.me/blog/archives/
+
+状态栏
+Android-transulcent-status-bar
+	http://niorgai.github.io/2016/03/20/Android-transulcent-status-bar/
+沉浸式状态栏技术方案及其中的一些坑(状态栏设置颜色)
+	http://blog.zhaiyifan.cn/2015/02/25/%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%8A%B6%E6%80%81%E6%A0%8F%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E5%8F%8A%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91/
+
+颜色主题切换
+	https://github.com/wangdan/AisenWeiBo
+
+----------------------图像
+
+Fresco
+Android-Universal-Image-Loader、Glide、Fresco、Picasso
+
+设置锁屏壁纸
+	http://p.codekk.com/detail/Android/wenhuaijun/SearchPictureTool
+
+扫描二维码
+Android 扫描二维码的实现（简化zxing）
+	https://segmentfault.com/a/1190000003945592
+	
+对图片进行压缩
+tinypng
+	https://tinypng.com/
+
+----------------------图像↑
+
+https://github.com/AigeStudio/WheelPicker
+	仿照ios的垂直滚动选择，效果较好，爱哥实现
+
+https://www.aswifter.com/2015/07/10/android-record-video-to-gif/
+	录制屏幕，并且转换成gif
+
+listview的自动滚动
+	https://github.com/jpardogo/ListBuddies
+
+时间线
+RecyclerView 列表控件中简单实现时间线
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0825/3364.html
+
+support库里面包含了 下拉刷新 (SwipeRefreshLayout)
+	http://www.materialdoc.com/swipe-to-refresh/
+
+viewpager效果 滑动效果
+	http://blog.csdn.net/chen930724/article/details/50466199
+	
+https://segmentfault.com/u/gemini/articles?page=2
+	中的一些例子
+
+将process/service.onstartcommend.txt 放入到service目录下（新建）
+service.stopself(int)方法：
+	Note that multiple calls to Context.startService() do not nest (though they do result in multiple corresponding calls to onStartCommand()), so no matter how many times it is started a service will be stopped once Context.stopService() or stopSelf() is called; 
+	however, services can use their stopSelf(int) method to ensure the service is not stopped until started intents have been processed.
+	--
+	当多次请求service时，如何传递startid
+
+依赖注入
+Android 中的依赖注入框架
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0226/3998.html
+Dagger 2: Step To Step
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0309/4041.html
+
+
+！！！！！！！！！！-----------------------花开项目用到
+进度条（用于 非强制升级时的 下载）
+NumberProgressBar
+	http://blog.csdn.net/fancylovejava/article/details/45787729
+
+圆圈进度条(用于 强制升级时的 下载)
+circular-progress-button
+	http://blog.csdn.net/fancylovejava/article/details/45787729中
+https://github.com/rey5137/material中的Circular
+	
+indicater中的动画
+SpringIndicator
+	http://blog.csdn.net/fancylovejava/article/details/45787729中
+
+曲线图等图表 的绘制
+WilliamChart
+	http://blog.csdn.net/fancylovejava/article/details/45787729中
+	https://github.com/diogobernardino/WilliamChart
+
+挂挂乐
+	http://blog.csdn.net/lmj623565791/article/details/40162163
+	
+library/showcaseview
+用在高亮 界面上指示用户的操作
+-----------------------↑
+
+！！！滑动删除库（删除之后，如何布局后续条目）
+	http://www.open-open.com/lib/view/open1445773975085.html
+
+coverflow效果
+	http://www.open-open.com/lib/view/open1330427728483.html
+下拉刷新
+	http://www.open-open.com/lib/view/open1445843048538.html
+	
+android 非全屏显示、窗口背景透明效果
+	http://blog.163.com/benben_long/blog/static/1994582432014111533529836/	
+
+向右滑动，拉出来菜单栏，很酷的效果
+	http://www.open-open.com/lib/view/open1445865683804.html
+
+圆形进度条
+	http://www.open-open.com/code/view/1445745484601
+	
+数据持久化：litepal
+
+time/date picker
+	http://www.open-open.com/lib/view/open1445774842960.html
+
+在运行过程中，切换activity主题
+	library/reminderdatepicker
+
+添加和删除孩子动画，参见：/RecycleViewDemo
+
+listbuddies
+	透明的状态栏
+	图片滚动
+	参见：手机上的安装
+
+！！！！Android对话框Dialog，PopupWindow，Toast的实现机制
+	http://blog.csdn.net/feiduclear_up/article/details/49080587
+	包含了：怎么使用windows
+	
+！！！！！ Android 对话框AlertDialog，PopupWindow使用大全
+	http://blog.csdn.net/feiduclear_up/article/details/45842743
+
+！！！！scrollto是什么
+	http://www.imooc.com/video/4382
+
+！！！！propertyanimation
+	废墟的树的博客http://blog.csdn.net/feiduclear_up/article/details/45893619
+	后查看：
+		学习ViewPropertyAnimator（如：android.view.ViewPropertyAnimator.alpha(float value)）
+		github上androidfloatlabel中，com.iangclifton.android.floatlabel.FloatLabel.DefaultLabelAnimator
+		除此之外
+			view.sety
+			Gravity.getAbsoluteGravity(gravity, layoutDirection);
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+			 protected void onRestoreInstanceState(Parcelable state) {等
+			 protected Parcelable onSaveInstanceState() {
+			 <merge>类型的layout
+	
+增加/删除孩子时的动画
+	cardsui for android
+卡片
+	点击一个卡片右边的菜单项，弹出来菜单
+		cards-ui
+	可以左右滑动来删除卡片
+		cardsui for android
+点击一个view，在上面弹出来一个菜单（本质上，参照于一个view的位置，来创建另外一个view）
+	circularfloatingactionmenu
+	此外，能够在屏幕上，创建一个view，即便自身app退出时，还能显示
+点击一个view，弹出来类似于android的4.x版本的菜单
+	popupmenucompat
+
+*touch
+Android中MotionEvent的来源和ViewRootImpl
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0302/4025.html
+
+调整状态栏的颜色
+	library/systembarhint
+
+*gradle
+关于Android Studio项目的Gradle构建
+	http://www.jcodecraeer.com/a/anzhuokaifa/Android_Studio/2016/0216/3969.html
+
+ANDROID – 單色漸層效果的改良 – GRADIENT SCRIMS
+	http://blog.mosil.biz/2014/11/android-better-gradient-scrims/
+
+progress button(先出现进度条，到100%后，按钮的形状发生变化)
+	https://github.com/dmytrodanylyk/circular-progress-button
+
+ANDROID PROGRESS BAR 效果 (整理自網路)
+	http://blog.mosil.biz/2014/09/android-about-progress-bar/
+	
+蓝牙
+蓝牙开发个人总结文档
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0128/3918.html
+	
+在滚动列表中实现视频的播放(ListView & RecyclerView)
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0130/3927.html
+实现类似朋友圈视频的滚动播放功能
+	http://www.jianshu.com/p/6e1dbf050782
+
+Android 开源项目： Material Design 风格 底部导航栏
+	https://github.com/tyzlmjj/PagerBottomTabStrip
+
+粒子系统
+	https://github.com/plattysoft/Leonids
+
+为你的应用加速 - 安卓优化指南
+	https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-27/%E4%B8%BA%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E5%8A%A0%E9%80%9F%20-%20%E5%AE%89%E5%8D%93%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.md
+
+Android RecyclerView--体验艺术般的控件
+	http://blog.csdn.net/lmj623565791/article/details/45059587
+
+在activity上 浮动出 半透明的内容：
+sample-apidemo-activity-translucent
+
+fragment讲解（需要测试，add和replace的区别）
+	http://android-doc.com/guide/components/fragments.html
+
+viewgroup中的scroll
+	http://blog.csdn.net/fancylovejava/article/details/46344937
+scrollto和scrollby
+	http://blog.csdn.net/vipzjyno1/article/details/24577023
+
+图片的圆形 椭圆形 裁剪
+	http://blog.csdn.net/lmj623565791/article/details/24555655
+	http://blog.csdn.net/fancylovejava/article/details/47024755
+
+listview中，元素的滑动有停滞效果
+Euclid
+	http://blog.csdn.net/fancylovejava/article/details/45787729中
+
+动画
+包含propertyanim
+http://www.lightskystreet.com/categories/Android/Android%E5%8A%A8%E7%94%BB/
+
+Android中的LayerDrawable 和 Drawable.Callback
+	http://www.devtf.cn/?p=1010
+
+读取manifest.xml中的metadata的信息
+	参见个推的demo
+
+*图形图像绘图graphics,canvas
+Android Canvas编程：对rotate()和translate()两个方法的研究
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2013/0304/957.html
+uCrop介绍，我们自己的安卓版图片裁剪库
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0123/3909.html
+
+butterknife annotation
+参见
+	项目中的使用：my/material-calendarview-demo
+	eclipse中，工程的annotation的配置
+		参见：学习笔记中 annotation的说明
+View 注入框架 Butter Knife
+	http://blog.chengyunfeng.com/?p=550#ixzz3hjKb7pCf
+	类似于这种：
+		@InjectView(R.id.title) TextView name;
+		--
+		@OnClick(R.id.submit)
+		public void submit() {
+使用注解处理器生成代码-1 注解类型
+	http://ztelur.github.io/2016/02/21/%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81-1-%E6%B3%A8%E8%A7%A3%E7%B1%BB%E5%9E%8B/
+	
+recyclerview的divider和listselector
+	http://willclub.me/android/2015/04/24/recyclerview3/
+
+MAT - Memory Analyzer Tool 使用进阶	
+	http://www.lightskystreet.com/2015/09/01/mat_usage/
+
+transition	
+	Animating Views Using Scenes and Transitions
+		http://developer.android.com/training/transitions/index.html	
+	Adding Animations
+		http://developer.android.com/training/animation/index.html
+	https://www.aswifter.com/2015/08/01/android-material-design-animation/
+
+下拉刷新（不仅仅针对于listview！！！！）
+	http://codekk.com/open-source-project-analysis/detail/Android/Grumoon/android-Ultra-Pull-To-Refresh%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90
+material的progressbar
+	http://codekk.com/open-source-project-analysis/detail/Android/Grumoon/android-Ultra-Pull-To-Refresh%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%9
+
+snakebar
+	https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-18/还在用Toast？你Out啦，试试Snackbar吧！.md
+	
+拖拽recyclerview	
+	https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-18/拖拽RecyclerView.md		
+
+json
+ig-json-parser，Jackson， gson，Fastjson
+
+
+
+
+网络----------------	
+retrofit
+	用 Retrofit 2 简化 HTTP 请求
+		https://realm.io/cn/news/droidcon-jake-wharton-simple-http-retrofit-2/
+		Jake Wharton写的
+	https://github.com/square/retrofit
+	Retrofit使用教程(一)
+		http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html
+		http://blog.xuanzhangjiong.xyz/2016/02/25/%E5%AD%A6%E4%B9%A0Retrofit%E5%92%8CRxJava%E5%B0%8F%E8%AE%B0/
+okhttp	
+	https://medium.com/@sotti/android-networking-i-okhttp-volley-and-gson-72004efff196
+	如何更高效地使用 OkHttp
+		http://www.tuicool.com/articles/b67NZz
+Volley
+android-async-http
+
+kerkee
+	http://blog.linzihong.com/kerkeezai-androidshang-de-kuai-su-shang-shou-zhi-nan/
+kerkee在Android上的快速上手指南（kerkee是一个多主体共存型Hybrid框架）
+----------------网络↑
+
+导航
+https://github.com/DevLight-Mobile-Agency/NavigationTabBar
+效果很好
+
+浅谈 RxAndroid + Retrofit + Databinding
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0131/3930.html
+
+
+
+引导页（在切换的过程中，背景和状态栏都会发生变化）
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4030.html
+
+BottomSheets
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0228/4008.html
+	https://github.com/android-cjj/BottomSheets
+	
+背景虚化	
+	http://2.rogerbolg.sinaapp.com/?p=92
+		
+disklrucache	
+	http://blog.csdn.net/guolin_blog/article/details/28863651
+	http://blog.csdn.net/guolin_blog/article/details/34093441
+	
+侧边栏
+	http://blog.csdn.net/lmj623565791/article/details/46405409	
+
+LocalBroadcastManager
+	广播通信
+	和一般的broadcastreceiver有什么区别
+	
+prop动画
+	http://www.lightskystreet.com/categories/Android/Android动画/
+	
+64K方法
+	http://frogermcs.github.io/MultiDex-solution-for-64k-limit-in-Dalvik/
+	http://blog.isming.me/2015/05/01/android-multi-dex/
+	
+全局悬浮窗（类似于360在任何程序中的悬浮）
+	http://www.360doc.com/content/12/0823/15/5087210_231916274.shtml
+
+
+http://codekk.com/open-source-project-analysis
+	开源项目分析
+	另外一个：https://github.com/android-cn/android-open-project-analysis
+	--
+	下拉刷新（不仅仅针对于listview！！！！）
+		http://codekk.com/open-source-project-analysis/detail/Android/Grumoon/android-Ultra-Pull-To-Refresh%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90
+	侧边栏
+		http://codekk.com/open-source-project-analysis/detail/Android/huxian99/SlidingMenu%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90
+
+
+仿照ios的日期选择对话框（还具备地理位置等）
+iosdialog
+
+listview的触控原理（跟手来滑动，非系统自身处理）
+listview3d
+
+具备material性质的对话框（适用于低于5的版本）
+materialdialog
+
+上拉刷新 下拉加载更多的listview
+zrclistview
+
+progressbar
+样式仿照5的样式，可以定义箭头，颜色，粗细
+如果要使用基于其的progressdialog，那么参见cailing工程中的myprogressdialog，和，style.xml
+materialLoadingProgressBar
+
+圆形imageview的裁剪
+CircleImageVIewDemo
+
+类似于表格
+demoHListView
+性能还行
+
+图像剪裁开源项目：
+1、https://github.com/edmodo/cropper（比较完善）
+2、https://github.com/jdamcd/android-crop
+3、https://github.com/biokys/cropimage
+4、https://github.com/lvillani/android-cropimage
+http://blog.csdn.net/wangjinyu501/article/details/41518465

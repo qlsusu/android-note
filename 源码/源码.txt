@@ -1,0 +1,8 @@
+https://github.com/android/platform_frameworks_base
+https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/
+
+如：https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v7/recyclerview/src/android/support/v7/widget/DefaultItemAnimator.java
+
+获取Android源码，初识源码模块架构
+	涉及到了linux和cygwin
+	http://www.jianshu.com/p/fb176196bfcf

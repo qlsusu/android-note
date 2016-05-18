@@ -1,0 +1,2 @@
+adb shell screenrecord --size 848x480 --bit-rate 2000000 /sdcard/test.mp4
+adb pull /sdcard/test.mp4 .

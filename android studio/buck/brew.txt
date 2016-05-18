@@ -1,0 +1,35 @@
+参见：http://blog.csdn.net/Tomstrong_369/article/details/47365181
+
+安装
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+如果出现了 已经安装的提示，那么：rm -fr /usr/local/.git，后再重新试一次
+
+---------------------------------------------------操作(以软件wget为例)
+参见：http://blog.csdn.net/aaawqqq/article/details/44088141
+
+查找软件包
+brew search wget
+
+安装软件包
+brew install wget
+
+列出已安装的软件包
+brew list
+
+删除软件包
+brew remove wget
+
+查看软件包信息
+brew info wget
+
+列出软件包的依赖关系
+brew deps wget
+
+更新brew
+brew update
+
+列出过时的软件包（已安装但不是最新版本）
+brew outdated
+
+更新过时的软件包（全部或指定）
+brew upgrade 或 brew upgrade wget

@@ -1,0 +1,2 @@
+-------------------------------------------------监听电话 状态
+参见：com.samsung.scrc.smarthome.phone.manager.PhoneManager.listenComing()

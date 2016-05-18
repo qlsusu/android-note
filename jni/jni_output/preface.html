@@ -1,0 +1,149 @@
+<html>
+<head>
+<title> </title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="jniTOC.html">Prev</a> | <a href="part1.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<a name="10790"></a>
+<h2> Preface </h2>
+
+<p>
+  <a name="11931"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="19390"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="19391"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="19392"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="19393"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="19389"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">T</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">his</font> book covers the Java<font size="-1"><sup>TM</sup></font> Native Interface (JNI). It will be useful to you if you are interested in any of the following:</font>
+</p>
+
+<a name="12498"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>integrating a Java application with legacy code written in languages such as C or C++</font><a name="12508"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>incorporating a Java virtual machine implementation into an existing application written in languages such as C or C++</font><a name="12515"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>implementing a Java virtual machine</font><a name="12516"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>understanding the technical issues in language interoperability, in particular how to handle features such as garbage collection and multithreading</font>
+</ul>
+<p>
+  <a name="12527"> </a><font face="Arial, Verdana, Helvetica, sans-serif">First and foremost, the book is written for developers. You will find easy steps to get started with the JNI, informative discussions on various JNI features, and helpful tips on how to use the JNI effectively. The JNI was initially released in early 1997. The book summarizes two years of collective experience gained by engineers at Sun Microsystems as well as the vast number of developers in the Java technology community.</font>
+</p>
+
+
+<p>
+  <a name="12538"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Second, the book presents the design rationale of various JNI features. Not only is this of interest to the academic community, but a thorough understanding of the design is also a prerequisite to using the JNI effectively.</font>
+</p>
+
+
+<p>
+  <a name="12541"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Third, a part of the book is the definitive JNI specification for the Java 2 platform. JNI programmers may use the specification as a reference manual. Java virtual machine implementors must follow the specification to achieve conformance.</font>
+</p>
+
+
+<p>
+  <a name="39203"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Send comments on this specification or questions about JNI to our electronic mail address: <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">jni@java.sun.com</font>. For the latest on the Java 2 platform, or to get the latest Java 2 SDK release, visit our web site at <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">http://java.sun.com</font>. For updated information about The Java<font  size="2" face="Arial, Verdana, Helvetica, sans-serif"><font size="-1"><sup>TM</sup></font></font> Series, including errata for this book, and previews of forthcoming books, visit <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">http://java.sun.com/Series</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">.</font></font>
+</p>
+
+
+<p>
+  <a name="39239"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI was designed following a series of discussions between Sun Microsystems and Java technology licensees. The JNI partly evolved from Netscape's Java Runtime Interface (JRI), which was designed by Warren Harris. Many people from Java technology licensee companies actively participated in the design discussions. They include Russ Arun (Microsoft), Patrick Beard (Apple), Simon Nash (IBM), Ken Root (Intel), Ian Ellison-Taylor (Microsoft), and Mike Toutonghi (Microsoft).</font>
+</p>
+
+
+<p>
+  <a name="39262"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI design also benefited greatly from Sun internal design reviews conducted by Dave Bowen, James Gosling, Peter Kessler, Tim Lindholm, Mark Reinhold, Derek White, and Frank Yellin. Dave Brown, Dave Connelly, James McIlree, Benjamin Renaud, and Tom Rodriguez made significant contributions to the JNI enhancements in Java 2 SDK 1.2. Carla Schroer's team of compatibility testers in Novosibirsk, Russia, wrote compatibility tests for the JNI. In the process they uncovered places where the original specification was unclear or incomplete.</font>
+</p>
+
+
+<p>
+  <a name="14829"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI technology would not have been developed and deployed without the management support of Dave Bowen, Larry Abrahams, Dick Neiss, Jon Kannegaard, and Alan Baratz. I received full support and encouragement to work on this book from my manager Dave Bowen.</font>
+</p>
+
+
+<p>
+  <a name="38857"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Tim Lindholm, author of <em>The Java</em><font  size="2" face="Arial, Verdana, Helvetica, sans-serif"><font size="-1"><sup>TM</sup></font></font><em> Virtual Machine Specification</em>, led the Java virtual machine development effort at the time when the JNI was being designed. Tim did pioneering work on the virtual machine and native interfaces, advocated the use of the JNI, and added rigor and clarity to this book. He also provided the initial sketch for this book's "kitchen and dining room" cover art design.</font>
+</p>
+
+
+<p>
+  <a name="12555"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This book benefited from the help of many colleagues. Anand Palaniswamy wrote a portion of Chapter <a href="pitfalls.html#25705">10</a> on common traps and pitfalls. Janet Koenig carefully reviewed a preliminary draft and contributed many useful ideas. Beth Stearns wrote a draft of Chapter <a href="start.html#768">2</a> based on the online JNI tutorial.</font>
+</p>
+
+
+<p>
+  <a name="35844"> </a><font face="Arial, Verdana, Helvetica, sans-serif">I received valuable comments on a draft of this book from Craig J. Bordelon, Michael Brundage, Mary Dageforde, Joshua Engel, and Elliott Hughes.</font>
+</p>
+
+
+<p>
+  <a name="12556"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Lisa Friendly, editor of The Java<font  size="2" face="Arial, Verdana, Helvetica, sans-serif"><font size="-1"><sup>TM</sup></font></font> Series, was instrumental in getting this book written and published. Ken Arnold, author of <em>The Java</em><font  size="2" face="Arial, Verdana, Helvetica, sans-serif"><font size="-1"><sup>TM</sup></font></font><em> Programming Language</em>, first suggested that a JNI book be written. I am indebted to Mike Hendrikson and Marina Lang at Addison-Wesley for their help and their patience throughout the process. Diane Freed oversaw the production process from copy editing to final printing.</font>
+</p>
+
+
+<p>
+  <a name="12562"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In the past several years I have had the privilege of working with a group of talented and dedicated people in Java Software at Sun Microsystems, in particular members of the original, HotSpot, and Sun Labs virtual machine teams. This book is dedicated to them.</font>
+</p>
+
+
+<p>
+  <a name="39267"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="39268"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="12575"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Sheng Liang</font>
+</p>
+
+
+<p>
+  <a name="12576"> </a><font face="Arial, Verdana, Helvetica, sans-serif">May 1999</font>
+</p>
+
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="jniTOC.html">Prev</a> | <a href="part1.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

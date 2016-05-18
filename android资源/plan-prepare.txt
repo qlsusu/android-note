@@ -1,0 +1,810 @@
+﻿--android app切换语言
+--Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+android开发游记：RecyclerView无法添加onItemClickListener最佳的高效解决方案
+	http://blog.csdn.net/liaoinstan/article/details/51200600
+一个很赞的RecyclerView Adapter辅助类
+	http://droidyue.com/blog/2016/05/09/baserecyclerviewadapterhelper/index.html
+为RecyclerView打造通用Adapter 让RecyclerView更加好用
+	http://blog.csdn.net/lmj623565791/article/details/51118836
+
+as的快捷操作
+	--需要有本地库？
+		如果本地库又依赖了其他本地库该如何
+	当前chrome中的网页
+	掘金上新的文章
+	小米浏览器中的收藏
+	
+--异常有哪几类
+
+
+------------------------
+
+自定义view的系列教程
+	该看：https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B3%5DCanvas_Convert.md中的rotate
+	https://github.com/GcsSloop/AndroidNote/tree/master/CustomView
+	--01	安卓自定义View基础 - 坐标系
+	--02	安卓自定义View基础 - 角度弧度
+	--03	安卓自定义View基础 - 颜色
+	--04	安卓自定义View进阶 - 分类和流程
+	--05	安卓自定义View进阶 - 绘制基本图形
+	06	安卓自定义View进阶 - 画布操作
+		https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B3%5DCanvas_Convert.md
+listview的局部刷新		
+
+
+
+ondendency时，dependency已经进行了layout
+setframe来确定left,right等
+
+
+Android开发中，那些让你相见恨晚的方法、类或接口
+	http://liukun.engineer/2016/04/11/Android%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E9%82%A3%E4%BA%9B%E8%AE%A9%E4%BD%A0%E7%9B%B8%E8%A7%81%E6%81%A8%E6%99%9A%E7%9A%84%E6%96%B9%E6%B3%95%E3%80%81%E7%B1%BB%E6%88%96%E6%8E%A5%E5%8F%A3/
+做好canvas的save -restore笔记，针对于scale工程（比例为负值）
+查看掘金上每周最热
+
+threadlocal
+
+
+viewroot是decorview的父视图
+	整理如下：
+	Android Input Event Dispatching
+		http://blog.csdn.net/zhejiang9/article/details/5899982
+	PhoneWindow,ViewRoot,Activity之间的大致关系
+		http://www.cppblog.com/fwxjj/archive/2013/01/13/197231.html
+	viewroot和decoreview
+
+测试rotate工程中，调用invalidate，canvas是否还是初始的对象
+
+
+ImageView通过matrix实现手势缩放
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2013/1023/1579.html
+
+
+
+整理chrome收藏夹，和，mindnote中的学习, 和 掘金收藏 到prepare中
+整理空间库合集（swipeback的作者的推荐）
+	https://github.com/liuguangqiang/TopAndroid
+
+---------------------------	
+**明天的任务
+
+
+自定义view的系列教程（中的2）
+	https://github.com/GcsSloop/AndroidNote/tree/master/CustomView
+
+
+
+
+
+----------------------------------------------------↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+整理：
+关于Android分享的目录 - 送给读者的一份礼物
+	http://www.jianshu.com/p/780658b79227
+	
+Android MotionEvent详解
+	http://ztelur.github.io/2016/03/16/Android-MotionEvent%E8%AF%A6%E8%A7%A3/
+《图解Android事件传递之ViewGroup篇》
+	http://ztelur.github.io/2016/02/11/%E5%9B%BE%E8%A7%A3Android%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E4%B9%8BViewGroup%E7%AF%87/
+《图解Android事件传递之View篇》
+	http://ztelur.github.io/2016/02/04/%E5%9B%BE%E8%A7%A3Android%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E4%B9%8BView%E7%AF%87/
+
+[置顶] 那些你应该知道却不一定知道的——View坐标分析汇总
+	http://blog.csdn.net/mr_immortalz/article/details/51168278
+	他的博客中，也有一些其他的文章
+
+
+做好进程保活的方式
+	小米/掘金的收藏
+
+我是一个线程
+	http://mp.weixin.qq.com/s?__biz=MjM5NzA1MTcyMA==&mid=403498894&idx=2&sn=219c1a6001b5bb7e6bdc7963b1af8450&scene=2&srcid=0330UDNmQ2GlTOLo1CY8IZfH&from=timeline&isappinstalled=0#wechat_redirect
+
+依赖注入：
+dagger2
+	http://www.jianshu.com/p/24820bf3df5c
+		中
+		5、Android：dagger2让你爱不释手－基础依赖注入框架篇
+		6、Android：dagger2让你爱不释手－重点概念讲解、融合篇
+		7、Android：dagger2让你爱不释手－终结篇
+
+MVP模式和 MVVM
+	小米浏览器收藏，infoq的
+!!!_!!!rxjava
+	给 Android 开发者的 RxJava 详解
+		http://gank.io/post/560e15be2dca930e00da1083
+	从案例学习RxAndroid
+		http://blog.chengdazhi.com/index.php/140
+	http://www.captechconsulting.com/blogs/getting-started-with-rxjava-and-android
+	https://speakerdeck.com/passsy/get-reactive
+
+
+！！！translation动画
+	https://developer.android.com/training/transitions/index.html
+	https://github.com/lgvalle/Material-Animations
+	http://lgvalle.xyz/2015/06/07/material-animations/
+	Fragment transitions with shared elements
+		https://medium.com/@bherbst/fragment-transitions-with-shared-elements-7c7d71d31cbb#.1xg1t9afc
+	https://github.com/toddway/MaterialTransitions
+		fragment之间如何切换
+	http://www.androiddesignpatterns.com/2014/12/activity-fragment-transitions-in-android-lollipop-part1.html
+	Fragment transitions with shared elements
+		https://medium.com/@bherbst/fragment-transitions-with-shared-elements-7c7d71d31cbb#.sltj8m6dw
+
+
+
+Android开发最佳实践
+	http://hukai.me/android-dev-patterns/
+	之下为需要整理的内容，结合：my/animate项目
+	！！！——！！！探索安卓中有意义的动画！
+		学习到：morph transitions开始 的 transition framework的学习
+		my/android resource中的animate工程
+		--
+		其中介绍了transition等
+		https://segmentfault.com/a/1190000004182537
+		原文：	https://github.com/hitherejoe/animate
+		github:https://github.com/hitherejoe/animate
+	
+
+	--activity_view_properties中<Spinner
+			android:id="@+id/spinner_interpolators"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:entries="@array/interpolators" />
+
+	<item name="android:windowTranslucentStatus">true</item>有什么用
+		可以看到：上一个activity，参见swipeback开源工程
+	
+	--AdapterViewAnimator在com.hitherejoe.animate.ui.activity.ObjectAnimatorActivity
+	  mContentFlipper.setInAnimation(this, isAnimatingUp
+					? R.animator.slide_in_bottom : R.animator.slide_in_left);
+			mContentFlipper.setOutAnimation(this, isAnimatingUp
+					? R.animator.slide_out_top : R.animator.slide_out_right);
+		mContentFlipper.showNext();
+		mContentFlipper.setAdapter(new FrameAdapter(this, mContentCount));
+
+
+	如何是叠加模式
+
+	--学习animationdrawable
+	android:fitsSystemWindows
+		Why would I want to fitsSystemWindows?
+			https://medium.com/google-developers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec#.3tx36nsgv
+				system window
+					status bar和下方的导航栏
+
+	为什么按钮是蓝色的morph
+	options.toBundle()
+
+
+状态栏
+！！！——！！！Android App 沉浸式状态栏解决方案
+	http://laobie.github.io/android/2016/02/15/status-bar-demo.html
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0327/4088.html
+！！！——！！！Android 状态栏工具类（实现沉浸式状态栏/变色状态栏）
+	https://github.com/laobie/StatusBarUtil
+	http://laobie.github.io/android/2016/03/27/statusbar-util.html
+Android 透明状态栏实现方案
+	http://46aae4d1e2371e4aa769798941cef698.devproxy.yunshipei.com/fanxin_92/article/details/51086144
+
+https://developer.android.com/training/material/animations.html
+
+--android studio2.0正式版发布
+
+对列表的项操作，可以删除，可以添加，可以排序
+https://github.com/nhaarman/ListViewAnimations
+
+！！！——！！！如何学习 Android Animation？
+	https://segmentfault.com/a/1190000004354609
+
+
+
+
+InstaMaterial系列教程
+https://github.com/frogermcs/InstaMaterial
+！！！！！！！！！InstaMaterial & design support library
+	http://frogermcs.github.io/	
+	http://frogermcs.github.io/Instagram-with-Material-Design-concept-is-getting-real/
+	http://frogermcs.github.io/instamaterial-meets-design-support-library/
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0728/3224.html
+		中文翻译
+
+
+
+Fragment的setUserVisibleHint方法实现懒加载
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/1021/1813.html
+
+
+rxandroid
+
+一个炫酷的SearchView搜索动画库
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0405/4121.html
+
+视频在滑动列表中的异步缓存和播放
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0329/4099.html
+
+
+
+Creating Apps with Material Design
+	https://developer.android.com/training/material/animations.html
+
+!!!__!!!!http://hukai.me/blog/archives/
+中的性能优化典范
+
+Android Material Design动画
+	http://blog.csdn.net/qibin0506/article/details/49069089
+	
+http://blog.csdn.net/nugongahou110/article/details/49927667对应博客中的 其他并发相关的文章
+
+
+https://github.com/facebook/fresco
+
+fresco
+https://github.com/facebook/fresco
+http://fresco-cn.org/docs/index.html
+
+--activity的手势退出
+	https://github.com/liuguangqiang/SwipeBack	
+	https://github.com/Issacw0ng/SwipeBackLayout
+
+VelocityTracker 怎么用
+
+性能文章
+http://hukai.me/blog/archives/
+http://hukai.me/android-performance-oom/
+
+------------------
+你所不知道的Activity转场动画——ActivityOptions
+	http://blog.csdn.net/qibin0506/article/details/48129139
+
+
+
+http://blog.csdn.net/qibin0506/article/list/1
+中的文章
+
+看完：
+--Android-Bitmap面面观
+	http://jayfeng.com/2016/03/22/Android-Bitmap%E9%9D%A2%E9%9D%A2%E8%A7%82/
+
+[原创] 连载 1 - 深入讨论 Android 关于高效显示图片的问题 - 如何高效的加载大位图
+	http://yhz61010.iteye.com/blog/1848337
+	和，该系列中的其他文章
+
+--你应该知道的那些Android小经验
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0329/4102.html
+
+
+
+https://github.com/bm-x/PhotoView很好的图片性质的view
+	从一个view到另外一个展示图片的view
+	缩放旋转，查看图片的全貌
+
+	
+
+https://github.com/Yalantis中的效果
+
+文字展开/折叠时的动画
+	ExpandableTextView
+	https://github.com/Manabu-GT/ExpandableTextView
+
+listview自动滚动
+	https://github.com/jpardogo/ListBuddies
+
+PullToZoomInListView
+	图片放大效果
+
+圆角imageview
+SelectableRoundedImageView
+https://github.com/pungrue26/SelectableRoundedImageView
+https://github.com/hdodenhof/CircleImageView
+
+rebound
+	http://blog.zhaiyifan.cn/2015/03/13/facebook-rebound-intro/
+	http://blog.zhaiyifan.cn/2015/09/10/Facebook-Rebound-%E5%BC%B9%E6%80%A7%E5%8A%A8%E7%94%BB%E5%BA%93-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/
+	https://github.com/facebook/rebound
+	
+listview，下拉时，一些列表项目被拉出空隙
+PullSeparateListView
+	https://github.com/chiemy/PullSeparateListView
+
+下拉刷新，上拉加载更多
+https://github.com/canyinghao/CanRefresh
+
+----------------------------------------
+
+aige 自定义控件很简单系列
+http://blog.csdn.net/aigestudio?viewmode=contents
+涉及canvas绘图技巧等
+
+图片的切换效果
+https://github.com/daimajia/AndroidImageSlider
+ConvenientBanner
+	https://github.com/saiwu-bigkoo/Android-ConvenientBanner
+
+Drawable 着色的后向兼容方案
+	http://www.race604.com/tint-drawable/
+
+https://github.com/litesuits/android-common
+	包含了一些基本的工具，也有关于图片裁剪等的
+Android中Canvas绘图基础详解
+	http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0828/1666.html
+		下部相关的文章列表
+fresco
+	Android 三大图片缓存原理、特性对比
+		http://b.codekk.com/detail/Trinea/Android%20%E4%B8%89%E5%A4%A7%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98%E5%8E%9F%E7%90%86%E3%80%81%E7%89%B9%E6%80%A7%E5%AF%B9%E6%AF%94
+		对比了facebook的fresco 和 google的glide
+	！！！！！！！！glide（感觉应该去熟悉fresco）
+		http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en
+	Fresco——专为ANDROID加载图片
+		https://www.aswifter.com/2015/07/25/fresco-android-image-library/
+		http://blog.zhaiyifan.cn/2015/09/10/Facebook-Rebound-%E5%BC%B9%E6%80%A7%E5%8A%A8%E7%94%BB%E5%BA%93-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/
+
+Scrolling techniques
+里面包含了coordinatorlayout的一系列技巧
+http://www.materialdoc.com/scrolling-techniques/
+
+看过：
+	Android 2D Graphics学习（二）、Canvas篇1、Canvas基本使用
+
+孙群博客中的其他内容，做好计划
+	View及ViewGroup相关博文： 
+	该看：源码解析Android中View的layout布局过程
+
+android train
+	每天半章，共16章
+	http://hukai.me/android-training-course-in-chinese/basics/supporting-devices/index.html
+	--
+	该看：
+		Best Practices for Interaction and Engagement
+			Implementing Effective Navigation，其中查看源码
+	未看：
+		1.3兼容不同的设备
+		2.2分享文件
+		2.3使用nfc分享文件
+		Building Apps with Multimedia
+		Displaying Graphics with OpenGL ES
+	未细看
+		1.6.2
+		1.6.3
+		Building Apps with Graphics & Animation
+			Displaying Bitmaps Efficiently
+				Managing Bitmap Memory
+				Displaying Bitmaps in Your UI
+android guide
+	关注的内容 各1节
+	关注内容：user interface和animation and graphics
+	--
+	该看：
+		user interface
+			Input Events
+	未看：
+	未细看：
+		animation and graphics
+			OpenGL ES
+查看github的例子：https://github.com/liuguangqiang/SwipeBack
+---
+
+sample
+	apidemo
+		每天1个
+	其他的内容
+
+书
+	每天15页，共507页
+	重点，性能分析等
+
+例子
+	泡仔网上的日子的微博中的，一些例子
+-----------------------
+
+2015年十大热门Android开源新项目
+	http://android.jobbole.com/82311/
+
+开源项目学习（awsome-android（中performance）,aswomeandroid-ui）
+	主题的动态变化
+		https://github.com/tekinarslan/AndroidMaterialDesignToolbar
+	transition
+	performance
+	一周一个
+泡在网上的日子等，查看文章
+
+开发周报
+	每周一次
+
+
+	
+------------------------------------------------------------------------计划准备↑
+https://github.com/qlsusu/Material-Animations
+
+列表中，在滑动的过程中，header固定不动
+	https://github.com/timehop/sticky-headers-recyclerview
+
+Google推荐的图片加载库Glide
+
+class动态加载
+
+android recipe
+	每天5-10个，共99个
+	未看：2_13-14_CustomTouch
+	看到：2_17_DrawerLayout
+
+50 android hack
+	该看hack7
+
+---------------------------
+
+！！！canvas 绘图 graphcis
+Android中Canvas绘图基础详解
+	http://blog.csdn.net/iispring/article/details/49770651
+	http://blog.csdn.net/iispring/article/details/47690011
+		中的canvas部分
+	http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0828/1666.html
+		下部相关的文章列表
+硬件加速
+	http://blog.csdn.net/iispring/article/details/49835061
+
+---------------------------
+
+编程找到有哪些方式可以共享：
+	bottomsheet-shareaction
+
+动态改变view的大小，以dialog的形式
+	dialogplus
+
+按照字母表进行排序
+/** 
+	 * 按字母表对Collection列表进行排序 
+	 * */  
+	public class AlphabetComparator implements Comparator<ContactInfo> {  
+	  
+	    // java提供的对照器  
+	    private RuleBasedCollator collator = null;  
+	  
+	    /** 
+	     * 默认构造器是按中文字母表进行排序 
+	     * */  
+	    public AlphabetComparator() {  
+	        collator = (RuleBasedCollator) Collator.getInstance();  
+	    }  
+	  
+	    /** 
+	     * 可以通过传入Locale值实现按不同语言进行排序 
+	     * */  
+	    public AlphabetComparator(Locale locale) {  
+	        collator = (RuleBasedCollator) Collator.getInstance(locale);  
+	    }  
+	  
+	    public int compare(ContactInfo obj1, ContactInfo obj2) {  
+	        CollationKey c1 = collator.getCollationKey(obj1.name);  
+	        CollationKey c2 = collator.getCollationKey(obj2.name);  
+	  
+	        return collator.compare(((CollationKey) c1).getSourceString(),  
+	                ((CollationKey) c2).getSourceString());  
+	    }  
+	  
+	}  
+okhttp
+http://www.jianshu.com/p/3141d4e46240#Volley&OkHttp
+
+图片缓存
+Fresco&Glide
+http://www.jianshu.com/p/3141d4e46240#Volley&OkHttp
+
+
+The Busy Coder's Guide to Android Development
+	https://commonsware.com/blog/2015/10/26/busy-coders-guide-android-development-6p9-released.html
+	https://github.com/commonsguy/cw-omnibus
+	https://plus.google.com/114205433913370454414
+
+
+！！！appbar
+	https://blog.stylingandroid.com/appbar-part-1/
+
+！！！学习design library
+	http://www.jcodecraeer.com/a/anzhuokaifa/developer/2015/0531/2958.html
+	http://blog.csdn.net/feiduclear_up/article/details/46500865
+	http://blog.csdn.net/feiduclear_up/article/details/46514791
+！！！学习google的android sample
+
+如何调整scroller的interperator	
+
+
+依赖注入
+	http://tech.just-eat.com/2015/10/26/dependency-injection-on-android/
+android:protectionLevel是什么
+	参见：个推demo中的manifest.xml
+
+recyclerview的item的拖动 和 上下排序，以及，调整动画（但是需要recyclerview的版本为22.2+）
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0630/3123.html
+
+viewgroup的添加/删除孩子动画
+	当是wrap_content时
+高效视频录制
+	https://yalantis.com/blog/video-recording-app-development-how-we-built-instagram-for-videos/
+gridlayoutmanager还有方向之分？：http://frank-zhu.github.io/android/2015/02/26/android-recyclerview-part-3/
+
+下拉刷新，上拉加载更多的recyclerview
+	https://github.com/jianghejie/XRecyclerView
+
+学习NestedScrollView
+	http://stackoverflow.com/questions/25136481/what-are-the-new-nested-scrolling-apis-for-android-l
+android stuido 2.0
+--------------------------------
+
+将http://frogermcs.github.io/Instagram-with-Material-Design-concept-is-getting-real/看完
+
+影响界面的显示效率，在fragment切换时
+如果界面上，有listview，那么，在切换动画中，不要对该list进行操作
+	如：notifydatasetchange
+	smoothscrolltopostion等
+
+--------------------------------
+imageview的scaletype为center意味着什么
+
+学习mavon，将picasso的工程依赖搞定
+
+com.huakai.core.work.HomeworkManager.fetchMySubmitHomeworkMetadataAttachmentByIds(List<Homework>, Course, OnFetchBeansListener)中myhomework.makereverserelation
+
+viewgroup中，根据touch来 动态的layout孩子
+	此外，还有一种方式，改变孩子的layoutparam.margin信息
+
+pullToRefresh要求
+	--material design
+	--自动刷新动画
+	不用等待 动画完成就刷新
+	判断内容是否刷新
+
+pullToRefresh中需要学习的
+	200ms自动恢复
+	阻挡系数
+
+
+mPtrIndicator
+mScrollChecker
+松手时，如何
+
+onFinishInflate用于，自定义view中，得到孩子view等
+
+  protected void measureChildWithMargins(View child,
+            int parentWidthMeasureSpec, int widthUsed,
+            int parentHeightMeasureSpec, int heightUsed) {
+        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+
+        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+                mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
+                        + widthUsed, lp.width);
+        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+                mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
+                        + heightUsed, lp.height);
+
+        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    }
+
+private void measureContentView(View child,
+                                    int parentWidthMeasureSpec,
+                                    int parentHeightMeasureSpec) {
+									
+
+        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+
+        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+                getPaddingLeft() + getPaddingRight() + lp.leftMargin + lp.rightMargin, lp.width);
+        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+                getPaddingTop() + getPaddingBottom() + lp.topMargin, lp.height);
+
+        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    }
+
+	 private void sendCancelEvent() {
+        if (DEBUG) {
+            PtrCLog.d(LOG_TAG, "send cancel event");
+        }
+        // The ScrollChecker will update position and lead to send cancel event when mLastMoveEvent is null.
+        // fix #104, #80, #92
+        if (mLastMoveEvent == null) {
+            return;
+        }
+        MotionEvent last = mLastMoveEvent;
+        MotionEvent e = MotionEvent.obtain(last.getDownTime(), last.getEventTime() + ViewConfiguration.getLongPressTimeout(), MotionEvent.ACTION_CANCEL, last.getX(), last.getY(), last.getMetaState());
+        dispatchTouchEventSupper(e);
+    }
+	
+	方法的含义
+	   } else {
+                return view.getScrollY() > 0;
+            }
+        } else {
+            return view.canScrollVertically(-1);
+        }
+	
+	eclipse format格式
+	
+--------------------------------------------------------------------------------
+
+viewgroup的ondraw什么时候被调用
+
+包含了引用第三方jar的lib，客户端可以引用这些第三方jar吗
+
+imageview的background和bitmap
+
+一个classA中声明了一个变量a，在该class中定义内部类B，且B继承A
+在A中定义方法，在该方法中，产生B对象，直接调用：B.a会提示 访问限制
+为什么
+
+android l中，activity继承自actionbar activity，但menu item的可见为always，但并不是总是可见
+
+httpclient
+
+threadpoolexecute
+	如何关闭一个thread:shutdownnow？
+
+activity中singletask的具体含义，并笔记
+
+android style：
+	http://www.cnblogs.com/angeldevil/p/3479431.html
+
+material
+	http://developer.android.com/preview/material/index.html
+	https://www.google.com/design/spec/material-design/introduction.html
+
+
+phonegap等
+	http://mobile.51cto.com/web-412307_all.htm
+
+git
+maven
+js
+
+电话监听放入 
+设置媒体音量 
+	http://www.cnblogs.com/tracydj/archive/2011/11/02/2232640.html
+	AudioManager audio = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(
+				AudioManager.STREAM_MUSIC,
+				AudioManager.ADJUST_RAISE,
+				AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(
+				AudioManager.STREAM_MUSIC,
+				AudioManager.ADJUST_LOWER,
+				AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			break;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+耳机插拔，当前耳机插入状态
+
+static的abstract
+
+音乐的均衡器
+http://www.cnblogs.com/wenjiang/archive/2013/05/10/3071103.html
+
+ios
+疯狂ios 讲义(上) objective-c 2.0与iphone/ipad应用开发基础 即时配发
+精通iOS开发（第5版） 第1章：欢迎来到iOS 世界
+Objective-C 程序设计(第4版)
+
+textspan
+参见：my/textspan
+完善click span的两种方式
+
+dom4j中大数据量的解析
+	http://blog.csdn.net/warhin/article/details/17507197
+该网页中，说ElementParser<Bean> parser，具体怎么用
+
+mysql的分区
+	http://lobert.iteye.com/blog/1955841
+	http://database.51cto.com/art/201002/184392.htm
+	http://blog.csdn.net/neal1225/article/details/12098619
+	http://jsczxy2.iteye.com/blog/1947050
+	--
+	http://pmghong.blog.51cto.com/3221425/1301945
+	http://blog.csdn.net/jiao_fuyou/article/details/16801389
+	查询table在创立时，进行了分区
+		show table status like 'wb_terms_new3';  	
+	一个例子
+		CREATE TABLE `wb_terms_new4` (
+			`term_row_id` INT(11) NOT NULL,
+			`term_entity_id` INT(10) UNSIGNED NOT NULL,
+			`term_entity_type` VARBINARY(32) NOT NULL,
+			`term_language` VARBINARY(32) NOT NULL,
+			`term_type` VARBINARY(32) NOT NULL,
+			`term_text` VARBINARY(255) NOT NULL,
+			`term_search_key` VARBINARY(255) NOT NULL,
+			`term_weight` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+			INDEX `term_entity_id` (`term_entity_id`),
+			INDEX `term_entity_type` (`term_entity_type`),
+			INDEX `term_type` (`term_type`),
+			INDEX `term_language` (`term_language`)
+		)
+		COLLATE='binary'
+		ENGINE=MyISAM
+		PARTITION BY HASH(term_entity_id DIV 1000000)
+mysql中的查询操作
+	每个操作利用一个connection等
+线程池
+保证性能
+	使用连接池
+	使用完毕，及时关闭connection, statement, result
+		在之前，还原autocommit
+			在还原之前，判断conn是否已经关闭
+		使用dbutils来释放conn
+			并不会立刻释放
+			如果要频繁的 释放 申请，则，隔断时间再申请
+	preparedstatement.executebatch之后，clearbatch
+	尽量少的提交
+表不存在时，才创建的方式
+	sql
+	代码
+批量插入的高效
+大数据量查询（在索引列上查询等）
+
+DOM解析大xml文件
+	http://blog.csdn.net/warhin/article/details/17507197
+	http://tankmarshal.iteye.com/blog/1622490
+	detach来释放内存
+	
+在sql进行操作时，使用preparedstatement，
+	避免，插入的string中含有"等特殊字符
+	提高效率
+问题：
+	什么时候用execute，什么时候用executeupdate等
+	
+python的配置文件
+	运行了python setup.py install后，给出了一个目录
+
+jsoup是什么
+
+short char类型在运算时，将自动转换成int
+在运算时，表达式的类型为 参与的操作数的最高类型
+	short - int - long - float - double
+
+负数的值＝补码
+补码＝若是负数，除符号位外，全取反，后＋1
+
+dbpool放入到mytool中
+
+问题：
+	为什么executorservice分配的线程会以pool-3-thread-7,5,main样式	
+	
+单例模式的加载性能 是否在 懒惰和快捷之间：
+	参见：com.samsung.scrc.extract.tool.DBPool
+	
+httpclient:
+http://topmanopensource.iteye.com/blog/821954
+http://liangruijun.blog.51cto.com/3061169/803097
+http://yshjava.iteye.com/blog/1872020
+http://icekirin.com/wordpress/?p=178
+http://hi.baidu.com/black_zhu/item/7e9d9cdd4ed6b939e2108fc7
+http://www.whoslab.me/blog/?p=418
+http://blog.sina.com.cn/s/blog_8417657f0101gvpc.html
+http://www.cnblogs.com/linjiqin/archive/2012/02/16/2353597.html
+http://www.cnblogs.com/plokmju/p/Android_apacheHttpClient.html
+http://blog.csdn.net/zhejingyuan/article/details/10959491
+http://www.iteye.com/topic/503155
+	post/put请求转发
+	
+get/post/put/delete
+	http://changfakong.diandian.com/post/2012-02-13/15973956
+	http://blog.csdn.net/kthq/article/details/5157822
+
+python 的java调用
+http://tonl.iteye.com/blog/1918245
+
+http设置cookies
+	/myTest/src/org/wikipedia/Wiki.java
+	
+lucene
+	怎么定位到一个记录，然后重新开始
+		用collecter有无性能问题
+	避免插入重复的数据
+		updatedoc可以插入新数据吗
+	谢瑀的通用tool
+	lucene中的分页 中的int如果超出范围了该如何

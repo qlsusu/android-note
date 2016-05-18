@@ -1,0 +1,7 @@
+so放入到：libs/架构文件夹/，如：libs/armeabi/
+然后在module的build.gradle中的 Android元素中，添加：
+	sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }

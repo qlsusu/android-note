@@ -1,0 +1,2 @@
+加速Android Studio/Gradle构建
+	http://blog.isming.me/2015/03/18/android-build-speed-up/

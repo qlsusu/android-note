@@ -1,0 +1,2 @@
+下载adt：
+	http://developer.android.com/sdk/installing/installing-adt.html

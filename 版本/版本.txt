@@ -1,0 +1,5 @@
+android.os.Build.VERSION_CODES
+	如：ICE_CREAM_SANDWICH
+	
+设备的版本分布：
+https://developer.android.com/intl/zh-cn/about/dashboards/index.html

@@ -1,0 +1,24 @@
+开发者控制台
+	https://play.google.com/apps/publish/?dev_acc=06967612780926943599
+Google Play开发者帮助中心
+	https://support.google.com/googleplay/android-developer/?hl=zh-Hans#topic=3450769	
+注册：
+	https://play.google.com/apps/publish/signup/
+	所用地址：
+		香港九龙红磡育才道11号香港理工大学 电话: (852) 2766 5111传真: (852) 2764 3374香港理工大学（
+		简称理大；英文：The Hong Kong Polytechnic University），位於九龙红磡，座落於畅运道与康庄道交界，邻近红磡海底隧道及港铁红磡站。 
+		The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong. 
+		Tel No: (852) 2766 5111 . Fax: (852) 2764 3374
+
+google admob
+https://www.google.com/ads/admob/
+https://developers.google.com/mobile-ads-sdk/download
+
+Google Play付费应用发布、开发者账号注册、解封的心路历程
+	http://www.eoeandroid.com/thread-321687-1-1.html
+Google Play开发者账号注册 最新攻略
+	http://www.eoeandroid.com/thread-321206-1-1.html
+关于Google Play收费应用的几点说明
+	http://www.eoeandroid.com/thread-304319-1-1.html
+如何将Android应用发布到Google Play（Android Market）官方市场
+	http://game.dapps.net/mobile-game-market/android-market/google-play/5594.html

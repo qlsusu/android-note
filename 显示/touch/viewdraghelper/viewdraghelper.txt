@@ -1,0 +1,86 @@
+参见：
+my/swipeback
+my/viewdraghelper
+http://flavienlaurent.com/blog/2013/08/28/each-navigation-drawer-hides-a-viewdraghelper/
+ViewDragHelper几个方法的理解
+	http://blog.csdn.net/coder_nice/article/details/44958341
+ViewDragHelper详解
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0911/1680.html
+
+------------------------------------------------有什么用
+当对于一个viewgroup进行触控时，能移动子view
+该触控可从边缘位置触发
+也提供了方法让view直接移动（脱离触控的控制）
+
+------------------------------------------------如何使用
+---------准备工作：
+mDragHelper = ViewDragHelper.create(this, 1f, new DragHelperCallback());
+@Override
+public boolean onInterceptTouchEvent(MotionEvent ev) {
+	final int action = MotionEventCompat.getActionMasked(ev);
+	if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+		mDragHelper.cancel();
+		return false;
+	}
+	return mDragHelper.shouldInterceptTouchEvent(ev);
+}
+@Override
+public boolean onTouchEvent(MotionEvent ev) {
+	mDragHelper.processTouchEvent(ev);
+	return true;
+}
+
+---------触控 要移动 哪个子view：
+对该view进行触控
+且，draghelpercallback中
+	@Override
+	public boolean tryCaptureView(View child, int pointerId) {
+		if (mDragCapture) {
+			return child == mDragView1;
+		}
+		return true;
+	}
+
+---------要移动多少距离
+draghelpercallback中
+// 指定child在触控后，相对于父亲的位置（left/top）（需要考虑父亲的padding）（如果涉及垂直方向，那么：clampViewPositionVertical()）
+// 本质上，将会执行：mCapturedView.offsetLeftAndRight(clampedX - oldLeft);
+@Override
+public int clampViewPositionHorizontal(View child, int left, int dx) {
+	if (mDragHorizontal || mDragCapture || mDragEdge) {
+		final int leftBound = getPaddingLeft();
+		final int rightBound = getWidth() - mDragView1.getWidth()-getPaddingRight();
+
+		final int newLeft = Math.min(
+			Math.max(left, leftBound), 
+			rightBound);
+
+		return newLeft;
+	}
+	return super.clampViewPositionHorizontal(child, left, dx);
+}
+
+---------当前已经移动了多少距离
+draghelpercallback中
+onViewPositionChanged(View changedView, int left, int top, int dx, int dy)
+
+---------当触控完成后
+callback中的onViewReleased(View releasedChild, float xvel, float yvel)会被调用
+在其中，可根据releasedChild的已经移动的距离 和 速度（xvel/yvel）来进行进一步的操作（如：my/swipeback中，移动了一定距离后，则contentview可被settle到 back，或者，原来的位置）
+
+---------让captureview移动到特定的位置（不是通过触控的方式）
+settleCapturedViewAt(int finalLeft, int finalTop)
+
+----------------------------------------
+
+对边缘触控有反应：
+mDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
+
+触控边缘时，要移动哪个view
+draghelpercallback中
+@Override
+public void onEdgeDragStarted(int edgeFlags, int pointerId) {
+	if (mDragEdge) {
+		mDragHelper.captureChildView(mDragView1, pointerId);
+	}
+}

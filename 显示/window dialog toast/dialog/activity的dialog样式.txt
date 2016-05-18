@@ -1,0 +1,18 @@
+参见：
+http://blog.csdn.net/manymore13/article/details/8686391
+
+<style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+	<item name="android:windowBackground">@android:color/transparent</item>
+	<item name="android:windowFrame">@null</item>
+	<item name="android:windowNoTitle">true</item>
+	<item name="android:windowIsFloating">true</item>
+	<!--背景是否透明-->
+	<item name="android:windowIsTranslucent">true</item>
+	<item name="android:windowContentOverlay">@null</item>
+	<!--可以自定义动画样式，可参见：activitydiaolog工程-->
+	<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+	<item name="android:backgroundDimEnabled">true</item>
+	<item name="windowActionBar">false</item>
+</style>
+
+ 

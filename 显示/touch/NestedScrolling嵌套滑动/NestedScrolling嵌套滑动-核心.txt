@@ -1,0 +1,49 @@
+参见：
+Android 嵌套滑动机制（NestedScrolling）
+	https://segmentfault.com/a/1190000002873657
+NestedScrollingChild.startNestedScroll的文档说明
+NestedScrollView.java中的 onTouchEvent
+	其中，真实滑动发生在 overScrollByCompat
+Android NestedScrolling 实战
+	http://www.race604.com/android-nested-scrolling/
+NestedScrollingParent, NestedScrollingChild  详解
+	http://blog.csdn.net/chen930724/article/details/50307193
+--
+https://github.com/xhc2/NestScrollingAndRecyleView
+https://github.com/Kishan-Cj/nestedScrollCompat-listview
+https://github.com/race604/FlyRefresh
+
+为什么要有nestedscrolling嵌套滑动：
+正常的流程下，motionevent的处理中，要么被view消耗，要么被父亲消耗，而不能二者同时来处理
+而nestedscrolling的存在，可以使得view（需要实现nestedscrollingchild接口）进行一些scroll，同时，父亲（需要实现nestedscrollingparent接口）也进行一些scroll
+
+原理：
+startNestedScroll(int axes)
+	当view准备开始滑动了，view告诉 Parent，我准备要进入滑动状态了
+			怎么告诉parent:onStartNestedScroll()
+		parent如何找到：一层层找 实现了NestedScrollingParent接口的 parent(或者parent.parent)
+		如果startNestedScroll返回true，则代表找到了parent
+	往往在 ontouch的ACTION_DOWN中被调用
+----------------incremental step of the scroll
+dispatchNestedPreScroll (int dx, int dy, int[] consumed, int[] offsetInWindow)
+	当view将要scroll时，view告诉parent 我将在某个方向上进行scroll 且距离是多少
+		怎么告诉parent:onNestedPreScroll()
+	parent可根据提供的参数，进行进一步处理，如：进行自身的scroll（消耗一部分d），并填充consumed数组
+	helper.dispatchNestedPreScroll之后会计算 在parent滑动之后 view的locationinwindow的偏移量，并写入到offsetInWindow数组中
+	--
+	此刻，view还没有进行真实的滑动，而是 根据consumed来调整 自身将要滑动的距离，根据offsetInWindow来调整 基于motionevent中的y的某变量
+view按照调整后的参数进行真实的滑动
+dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow)
+	在view真实滑动之后，告诉parent 自己滑动消耗了多少，还剩下多少没有消耗
+		怎么告诉parent:onNestedScroll
+	parent可根据提供的参数，进行进一步处理，如：进行自身的scroll，或者转发给behaivor(对于coordinatorlayout)
+	helper.dispatchNestedPreScroll之后会计算 在parent滑动之后 view的locationinwindow的偏移量，并写入到offsetInWindow数组中
+	--
+	view再根据offsetInWindow来调整 基于motionevent中的y的某变量
+----------------↑
+stopNestedScroll()
+	告诉父亲:onStopNestedScroll()
+--
+除了上面的 Scroll 相关的调用和回调，还有 Fling 相关的调用和回调，处理逻辑基本一致。
+
+child和parent都含有helper,startNestedScroll等方法都委派给了helper

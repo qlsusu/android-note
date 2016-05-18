@@ -1,0 +1,19 @@
+view左上角的顶点x,y
+x=left+translationx
+y=top+translationy
+其中left/top为 view被layout后，在父亲坐标系下的坐标
+
+translationx/y默认为0
+改变translationx/y并不会导致被重新layout(猜测)
+
+在window/screen上的位置：
+View.getLocationInWindow
+对于普通activity下的view，该值和View.getLocationOnScreen的返回值相同
+	因为：此情况下，window会占据全部screen
+当view处于dialog下，该值会比View.getLocationOnScreen要小
+--
+当activity被attach到了window上，上述方法的返回值才不会是0
+	什么时候被attach了：当activity.onWindowFocusChanged()回调被调用时
+	
+offsetTopAndBottom 和 offsetleftandright
+更新了view的显示位置，同时，也同步更新view的触控区域

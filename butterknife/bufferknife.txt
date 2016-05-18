@@ -1,0 +1,4 @@
+在eclipse中进行配置：http://jakewharton.github.io/butterknife/ide-eclipse.html
+
+设置完毕后，如何使用：
+在activity.oncreate中ButterKnife.bind(this);

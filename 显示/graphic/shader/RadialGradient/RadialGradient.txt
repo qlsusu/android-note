@@ -1,0 +1,12 @@
+创建从中心向四周发散的辐射渐变效果
+RadialGradient(float centerX, float centerY, float radius, int centerColor, int edgeColor, Shader.TileMode tileMode)
+
+例子：
+int canvasWidth = canvas.getWidth();
+int canvasHeight = canvas.getHeight();
+float centerX = canvasWidth / 2f;
+float centerY = canvasHeight / 2f;
+float radius = canvasWidth / 4f;
+RadialGradient radialGradient = new RadialGradient(centerX, centerY, radius, Color.GREEN, Color.BLUE, Shader.TileMode.MIRROR);
+paint.setShader(radialGradient);
+canvas.drawRect(0, 0, canvasWidth, canvasHeight, paint);

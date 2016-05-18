@@ -1,0 +1,44 @@
+参见：
+http://208089151.blog.51cto.com/6377860/1302905
+
+一.反编译Apk得到Java源代码 
+转载自：http://hi.baidu.com/%CB%BF%D4%B5%CC%EC%CF%C2/blog/item/2284e2debafc541e495403ec.html
+ 
+工具下载：需用到dex2jar和JD-GUI这2个工具
+dex2jar下载地址：http://laichao.googlecode.com/files/dex2jar-0.0.7-SNAPSHOT.zip
+JD-GUI下载地址：
+  windows版JD-GUI：http://laichao.googlecode.com/files/jdgui.zip
+  Linux版JD-GUI：http://laichao.googlecode.com/files/jd-gui-0.3.2.linux.i686.tar.gz
+步骤：
+1.首先找到Android软件安装包中的classes.dex
+把.apk文件改名为.zip，然后解压缩,得到其中的classes.dex文件，它就是java文件编译再通过dx工具打包成的,所以现在我们就用上述提到的2个工具来逆方向导出java源文件
+
+2.把classes.dex拷贝到dex2jar.bat所在目录。
+在命令行模式下定位到dex2jar.bat所在目录，运行 d2j-dex2jar.bat classes.dex  ，生成classes.dex.dex2jar.jar 
+
+3.运行JD-GUI工具（它是绿色无须安装的）
+打开上面的jar文件，即可看到源代码
+
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
+二.反编译apk生成程序的源代码和图片、XML配置、语言资源等文件。
+转载自：http://blog.sina.com.cn/s/blog_5752764e0100kv34.html
+apktool
+	https://code.google.com/p/android-apktool/
+	https://code.google.com/p/android-apktool/wiki/Install
+步骤：
+1.按照https://code.google.com/p/android-apktool/wiki/Install进行安装
+2.如，你要反编译abc.apk，则输入：apktool d abc.apk
+3.其会在abc.apk下产生一个文件夹 abc/
+ 
+三.将反编译完的文件重新打包成apk
+ 很简单，只要输入：
+     apktood b 文件夹1（你编译出来文件夹）	 
+目标apk路径：文件夹1/dist/xxx.apk
+该APK是没有签名的，对其进行签名，参见：http://blog.csdn.net/aeolus1019/article/details/8121031
+如：
+生成签名(密码：somekey)：
+keytool -genkey -alias some.key -keyalg RSA -validity 20000 -keystore some.key
+签名：
+jarsigner -verbose -keystore some.key -signedjar laohuji-sign.apk laohuji.apk some.key

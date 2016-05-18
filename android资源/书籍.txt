@@ -1,0 +1,22 @@
+----------------------------------------------------------------------------书籍
+b21
+《Android开发艺术探索》
+勘误：http://blog.csdn.net/singwhatiwanna/article/details/48439621
+
+看过
+ch3, ch4，ch6, ch7
+
+在看：ch7
+
+未细看
+ch3. p161-173
+ch7. p270-272, p288-p292
+
+还未看
+ch5
+
+pro android graphics
+pro android 5
+
+----------------------------------------------------------------------------下载
+https://it-ebooks.info/tag/android/

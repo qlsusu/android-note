@@ -1,0 +1,5 @@
+ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+		this, R.layout.item_spinner, getResources().getStringArray(R.array.interpolators));
+adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
+mInterpolatorSpinner.setAdapter(adapter);
+    

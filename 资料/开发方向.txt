@@ -1,0 +1,31 @@
+源地址http://www.android123.com.cn/kaifanews/560.html
+
+ 
+
+今天我们主要一起讨论下Android发展方向，目前来说Android开源项目最终可能帮助Google实现Linux平台的统一，推出企业的Linux Server逐渐蚕食微软，当然这些任务可能是Chrome OS，不过Android最终应用在大多数MID。
+
+   开发者应该掌握Android目前的一些基础问题以及Java中的易犯错误点。从目前国内满天的开发书籍中来看整体水平偏低，很多作者还是概念不清，这里不一一列举，还有大部分的作者对于一些常见的技术闭口不谈基本上就是UI控件的使用，API Demo的几个例子搬一下，感觉十分空洞。作为一个合格的Android开发者，这里Android123建议大家阅读以下内容。
+
+  1. Android的Service机制，后台服务分两种，比如需要Binder的AIDL方式，和直接通过onStart传递参数。
+
+  2. Android Handler线程相关问题，这里是导致很多网络应用程序中出现FC强制关闭的主要因素，对于线程的同步我们强烈推荐Android支持的Java完善的concurrent并发库来解决。
+
+  3. Apache库，对于一般的Web Service，Http通讯以及Xml解析操作。
+
+  4. SQLite数据库，作为一个在Linux上跨平台很好的轻量级数据库，和db4o一样的简单好用，可以很好兼容Symbian^3和iPhone 3以后的操作系统。
+
+  5. OpenGL，对应图形方面Android开发网一直推崇着用游戏的设计方式实现常规应用的高质量UI，如果大家从Android 2.0开始可能发现除了Launcher2的出现，Gallery开始使用3D来实现图形显示了，作为一个跨平台很好的高性能底层图形库对于iPhone、Symbian有很好的兼容性，当然Android上的OpenGL仍然可以通过NDK来来本地使用。
+
+  6. NDK，作为一个底层的开发库对于算法敏感的操作可以大显伸手，比如说在视频解码器上可以直接使用很多开源功能，比如MPlayer和FFMpeg，移植一些PDF或Office工具十分轻松，实现自己的视频Filter解码还是很方便的，配合mmap内存映射还可以处理很多性能敏感的应用。
+
+  7. Google Maps是Android平台上针对LBS类应用提供的开发包，虽然在跨平台上有些打折扣但是我们尽量通过Web Service处理一些应用。
+
+  8. Android上最大的鸡肋仍然Java的高额内存消耗，学习好Java功底，对于内存分配的优化和改进可以大大加快应用程序的运行，提高稳定性，经常使用GDB观察系统底层的性能对于开发出一流的Android应用至关重要。
+
+  9. Telephony、Sms和Bluetooth的开发，常规的应用程序应该处理好来电时程序的情况，以及挂机时恢复状态，尤其是游戏不能因为一个电话导致之后玩家的进度出现问题，对于蓝牙这些近距离传输方式也有一定的开发点。
+
+  10. 再次声明Android123版权所有，转载请注明出处，尊重我们的劳动成果才能更好的为大家服务。 that's all
+
+  针对以上问题，Android开发网将会在以后的每个月一一放出详细示例来解决项目中实际点的问题。
+
+ 

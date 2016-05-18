@@ -1,0 +1,1 @@
+document.write('<li><a href="http://g.csdn.net/5230702" target=_blank>软考培训7.5折</a></li><li><a href="http://g.csdn.net/5230701" target=_blank>品质服务，高通过率软考培训</a></li>');

@@ -1,0 +1,21 @@
+LinearGradient(float x0, float y0, float x1, float y1, int color0, int color1, Shader.TileMode tile)
+LinearGradient是用来创建线性渐变效果的，它是沿着某条直线的方向渐变的，坐标(x0,y0)就是这条渐变直线的起点，坐标(x1,y1)就是这条渐变直线的终点。
+	需要说明的是，坐标(x0,y0)和坐标(x1,y1)都是Canvas绘图坐标系中的坐标。
+color0和color1分别表示了渐变的起始颜色和终止颜色
+
+例子：
+LinearGradient linearGradient = new LinearGradient(
+	100, 100, 
+	500, 500, 
+	Color.GREEN, Color.BLUE, 
+	Shader.TileMode.CLAMP);
+paint.setShader(linearGradient);
+//canvas.drawRect(100, 100, 500, 500, paint);
+canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
+
+例子2：
+mPaint.setShader(new LinearGradient(
+	left, top, right, bottom, 
+	new int[] { Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE }, 
+	new float[] { 0, 0.1F, 0.5F, 0.7F, 0.8F }, 
+	Shader.TileMode.MIRROR));

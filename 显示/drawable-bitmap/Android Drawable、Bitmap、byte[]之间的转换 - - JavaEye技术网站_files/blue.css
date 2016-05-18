@@ -1,0 +1,38 @@
+div.topic_page, a {
+    color: #108AC6;
+    text-decoration: underline;
+}
+
+a:hover {
+  color: white;
+}
+
+div.app_nav, div#page, .comment_title, tr.mouse_over {
+    background-color: #effaff;
+}
+
+div#local, div#main, .blog_main, .pagination a:hover, .pagination a:active {
+    background-color: white;
+    border-color: #108AC6;
+}
+
+div.nav, div#app_list div.decorate, a:hover, div#branding, input.button, input.submit, td.buttons a, .pagination span.current {
+    background-color: #108AC6;
+}
+
+.blog_bottom li {
+    border-right-color: #108AC6;
+    color: #108AC6;
+}
+
+table.admin thead, .pagination a, .pagination a:visited {
+    color: #108AC6;
+}
+
+div.app_nav, .pagination span.current {
+    border-color: #108AC6;
+}
+
+.blog_comment, div.picture_full {
+    border-top-color: #108AC6;
+}

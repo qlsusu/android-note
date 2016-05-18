@@ -1,0 +1,16 @@
+控制：孩子view 被添加 被删除时，可见visible 不可见gone时，
+	该孩子 和 
+	其他孩子的动画效果
+		其他孩子在布局上，和该孩子有所关联。如：linearlayout，一个孩子被添加到/被删除从 i位置，则从i+1以及之后的孩子 受影响
+	说明：如果要有位置变化的效果（如：删除一个view时，其他view在位置上有所动画），则动画中需要拥有一个 位置相关的component
+		如：PropertyValuesHolder.ofFloat("y", 0, 1); //这里的1实际上随便设置的
+
+用法步骤：
+xml中，
+	viewgroup需要设置android:animateLayoutChanges="true"
+代码中(可选)，
+	LayoutTransition transition = new LayoutTransition();
+	viewgroup.setLayoutTransition(transition);
+	transition.setAnimator(LayoutTransition.XXX, xxxpropertyAnim);
+
+参见：android recipe v4/1_05_AnimateLayout

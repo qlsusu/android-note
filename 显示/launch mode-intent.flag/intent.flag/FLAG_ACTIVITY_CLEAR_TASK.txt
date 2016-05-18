@@ -1,0 +1,3 @@
+如果在通过Context.startActivity()启动activity时为Intent设置了此标识，这个标识将导致：在此activity启动之前，任何与此activity相关联的task都会被清除。
+	也就是说，此activity将变成一个空栈中新的最底端的activity，所有的旧activity都会被finish掉，
+这个标识仅仅和FLAG_ACTIVITY_NEW_TASK联合起来才能使用。

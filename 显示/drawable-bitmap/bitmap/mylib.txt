@@ -1,0 +1,4 @@
+参见：my/imageProcess
+包括功能：
+	读取bitmap的像素值，RGBA
+	将新像素值放入一个新的bitmap

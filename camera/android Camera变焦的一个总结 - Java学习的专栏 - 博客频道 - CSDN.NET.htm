@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0053)http://blog.csdn.net/fuuckwtu/article/details/7068072 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET</title>
+
+<meta name="description" content="最近老大交给了一个任务，说是要在本地视频端很够调节摄像头焦距。碰到了一些问题:1.手机支不支持摄像头变焦2.系统自带摄像软件可以变焦，但是自己编写的程序不支持变焦，这个问题网上也有很多童鞋碰到了：public void setZoomIn(){    try{        params = camera.getParameters();        zoomVal">
+<script type="text/javascript" async="" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ga.js"></script><script src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/jquery.js" type="text/javascript"></script>
+<script src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/plugins.js" type="text/javascript"></script>
+<script src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad.js"></script>
+<link rel="Stylesheet" type="text/css" href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/fuuckwtu/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/default.css">
+</head>
+<body>
+<script src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><span style="color:red;">您还未登录！</span>|<a href="https://passport.csdn.net/account/login" target="_top">登录</a>|<a href="https://passport.csdn.net/account/register" target="_top">注册</a>|<a href="https://passport.csdn.net/help/faq" target="_blank">帮助</a></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank">首页</a></li>
+<li><a href="http://news.csdn.net/" target="_blank">业界</a></li>
+<li><a href="http://mobile.csdn.net/" target="_blank">移动</a></li>
+<li><a href="http://cloud.csdn.net/" target="_blank">云计算</a></li>
+<li><a href="http://sd.csdn.net/" target="_blank">研发</a></li>
+<li><a href="http://bbs.csdn.net/" target="_blank">论坛</a></li>
+<li><a href="http://blog.csdn.net/" target="_blank">博客</a></li>
+<li><a href="http://download.csdn.net/" target="_blank">下载</a></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);">更多</a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/fuuckwtu">Java学习的专栏</a></h1>
+            <h2></h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/fuuckwtu?viewmode=contents"><span><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/fuuckwtu?viewmode=list"><span><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/fuuckwtu/rss/list"><span><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ico_rss.gif">订阅</span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "fuuckwtu";
+    var blog_address = "http://blog.csdn.net/fuuckwtu";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script>
+        
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8424776" target="_blank">
+<font color="red">
+2013年4月微软MVP申请开始啦！   </font></a>
+
+&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/390312398" target="_blank"><font color="red">CSDN论坛2012年度职场优秀帖评选活动正式开始！</font></a>
+
+&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8424675" target="_blank"><font color="red">CSDN博客频道年终送好礼！</font></a>
+
+
+<br>
+
+
+
+
+
+<a href="http://vote.blog.csdn.net/details/blogstar" target="_blank">
+<font color="red">2012CSDN博客之星评选正式上线 </font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/zhangoi391/article/details/8161343" target="_blank">
+<font color="red">2000元大奖征异构开发博文  </font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://huiyi.csdn.net/cmdn/view/183" target="_blank">
+<font color="red">Q14年互联网产品进化史   </font></a>
+
+</div><div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Original"></span>
+    <h3>
+        <span class="link_title"><a href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET.htm">
+        android Camera变焦的一个总结
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/fuuckwtu/article/category/952806">Camera</a> 
+        </span>
+    <span class="link_postdate">2011-12-13 19:57</span>
+    <span class="link_view" title="阅读次数">845人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#comments">评论</a>(2)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;android Camera变焦的一个总结&#39;,&#39;7068072&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#report" onclick="javascript:report(7068072,2);return false;" title="举报">举报</a></span>
+    
+</div>
+
+
+    
+<div id="article_content" class="article_content">
+
+<p>最近老大交给了一个任务，说是要在本地视频端很够调节摄像头焦距。</p>
+<p>碰到了一些问题:</p>
+<p>1.手机支不支持摄像头变焦</p>
+<p>2.系统自带摄像软件可以变焦，但是自己编写的程序不支持变焦，</p>
+<p>这个问题网上也有很多童鞋碰到了：</p>
+<p></p>
+<pre class="default prettyprint" name="code"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> setZoomIn</span><span class="pun">(){</span><span class="pln">
+&nbsp; &nbsp; </span><span class="kwd">try</span><span class="pun">{</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">params</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> camera</span><span class="pun">.</span><span class="pln">getParameters</span><span class="pun">();</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; zoomValue </span><span class="pun">+=</span><span class="lit">5</span><span class="pun">;</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">params</span><span class="pun">.</span><span class="pln">setZoom</span><span class="pun">(</span><span class="pln">zoomValue</span><span class="pun">);</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; camera</span><span class="pun">.</span><span class="pln">setParameters</span><span class="pun">(</span><span class="kwd">params</span><span class="pun">);</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Log</span><span class="pun">.</span><span class="pln">d</span><span class="pun">(</span><span class="pln">TAG</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Is support Zoom "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="kwd">params</span><span class="pun">.</span><span class="pln">isZoomSupported</span><span class="pun">());</span><span class="pln">
+&nbsp; &nbsp; </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+&nbsp; &nbsp; &nbsp; &nbsp; e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span><span class="pln">
+&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span></code></pre>
+这段代码在Lg上可以运行，但是在htc sensation上crash了。
+<p></p>
+<p>这哥们和我遇到了同样的问题，我的手机也是htc sensation哦。</p>
+<p>请问 android 相机 怎么变焦啊:<br>
+我查了api2.2<br>
+说是调用这个函数就好了<br>
+mCamera.startSmoothZoom(zoom);<br>
+但是,调用了没有任何反应!<br>
+然后,尝试了:<br>
+mCamera.getParameters().setZoom(zoom);<br>
+也没有任何反应<br>
+说是zoom改变会调用ZoomChangeListener,于是我加了监听,但是监听一直都未被调用过<br>
+mCamera.setZoomChangeListener();</p>
+<p>其实问题比较简单：</p>
+<p>第一：调用mCamera.getParameters().isSmoothZoomSupported()返回为false，则不支持变焦，设置zoom出错</p>
+<p>第二：调用mCamera.getParameters().isZoomSupported()返回为true，mCamera.getParameters().isSmoothZoomSupported()返回为false，可能手机自带的摄像应用支持zoom，变焦，只是我们自己的应用就不行了。这个问题，我现在也没想到办法解决。</p>
+<p>所以在编写变焦摄像，说着视频的时候就使用isSmoothZoomSupported判断，这样就不会再其他不支持变焦的手机上crash了。<br>
+</p>
+<br>
+
+</div>
+<div class="share_buttons" id="sharePanel"><span>分享到：</span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到腾讯微博"></a></div>
+<!--192.168.1.236-->
+<div class="article_next_prev">
+    <li class="prev_article"><span>上一篇：</span><a href="http://blog.csdn.net/fuuckwtu/article/details/7055673">setOnDismissListener作用</a></li>
+    <li class="next_article"><span>下一篇：</span><a href="http://blog.csdn.net/fuuckwtu/article/details/7070205">SurfaceView显示Camera拍摄的画面</a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen"><iframe id="ad_frm_0" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 732px; height: 96px; " src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad(1).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head">查看评论<a name="comments"></a></div>
+<div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_2133152"><dt class="comment_head" floor="2">2楼 <span class="user"><a class="username" href="http://blog.csdn.net/jqandjq" target="_blank">jqandjq</a> <span class="ptime">2012-03-16 14:01发表</span>  <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2133152" username="jqandjq"> <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/jqandjq" target="_blank"><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/3_jqandjq.jpg" width="40" height="40"></a></dd><dd class="comment_body"><fieldset><legend>引用“fuuckwtu”的评论：</legend>这篇blog有错误，看Camera系列纠正</fieldset><br>求解</dd></dl><dl class="comment_item comment_topic" id="comment_item_2053454"><dt class="comment_head" floor="1">1楼 <span class="user"><a class="username" href="http://blog.csdn.net/fuuckwtu" target="_blank">fuuckwtu</a> <span class="ptime">2011-12-15 14:20发表</span>  <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2053454" username="fuuckwtu"> <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/fuuckwtu" target="_blank"><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/3_fuuckwtu.jpg" width="40" height="40"></a></dd><dd class="comment_body">这篇blog有错误，看Camera系列纠正</dd></dl><div class="clear"></div></div>
+<div id="comment_bar" style="display: none; "></div>
+<div id="comment_form"><div class="guest_link">您还没有登录,请<a href="http://passport.csdn.net/account/login?from=http%3A%2F%2Fblog.csdn.net%2Ffuuckwtu%2Farticle%2Fdetails%2F7068072">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Ffuuckwtu%2Farticle%2Fdetails%2F7068072">[注册]</a></div></div>
+<div class="announce">* 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '7068072';
+    var commentscount = 2;
+    var islock = false
+</script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/comment.js"></script>
+<div id="ad_bot"><iframe id="ad_frm_1" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 732px; height: 170px; " src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad(2).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top">
+<a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#" onclick="javascript:document.body.scrollTop=0;document.documentElement.scrollTop=0;this.blur();return false;" title="回到顶部">
+<img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/top.png" alt="TOP"></a>
+</div>
+
+
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+    <ul class="panel_head"><span>个人资料</span></ul>
+    <ul class="panel_body profile">
+        <div id="blog_userface">
+            <a href="http://my.csdn.net/fuuckwtu" target="_blank">
+            <img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/1_fuuckwtu.jpg" title="访问我的空间" style="max-width:90%">
+            </a>
+            <br>
+            <span><a href="http://my.csdn.net/fuuckwtu" class="user_name" target="_blank">fuuckwtu</a></span>
+        </div>
+<div class="interact">
+<!--<a href="#" class="attented" title="已关注"></a>-->
+<a href="http://blog.csdn.net/fuuckwtu/article/details/7068072#" class="attent" id="span_add_follow" title="[加关注]"></a>
+<a href="http://my.csdn.net/my/letter/send/fuuckwtu" class="letter" title="[发私信]"></a>
+</div>
+        <div id="blog_medal">
+        <div id="bms_box"><a href="http://medal.blog.csdn.net/allmedal.aspx" target="_blank"><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/holdon_s2.gif" onmouseover="m_over_m(this,0)" onmouseout="m_out_m()" alt=""></a></div></div>
+        <ul id="blog_rank">
+            <li>访问：<span>86868次</span></li>
+            <li>积分：<span>3096分</span></li>
+            <li>排名：<span>第1654名</span></li>
+        </ul>
+        <ul id="blog_statistics">
+            <li>原创：<span>215篇</span></li>
+            <li>转载：<span>20篇</span></li>
+            <li>译文：<span>0篇</span></li>
+            <li>评论：<span>110条</span></li>
+        </ul>
+    </ul>
+</div>
+<script type="text/javascript">
+    var _blogger = 'fuuckwtu';
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    var un = getUN().toLowerCase();
+    if (un == _blogger.toLowerCase()) {
+        $('.interact').hide();
+    } else if(un) {
+        var url = "http://my.csdn.net/index.php/follow/check_is_followed/" + encodeURIComponent(un) + "/" + encodeURIComponent(_blogger) + "?jsonpcallback=?";
+        $.getJSON(url, {}, function (data) {
+            if (data.succ == 1 && data.info == 1) {
+                $('#span_add_follow').attr('class', 'attented');
+            } else {
+                $('#span_add_follow').click(guanzhu);
+            }
+        }, 'json');
+    }
+});
+function guanzhu() {
+    var url = "http://my.csdn.net/index.php/follow/do_follow?jsonpcallback=?";
+    $.getJSON(url, { "username": _blogger }, function (data) {
+        if (data.succ == 1) {
+            alert('关注成功！');
+            $('#span_add_follow').attr('class', 'attented').click(function () { return false; });
+        } else {
+            alert(data.msg);
+        }
+    });
+    return false;
+}
+function getUN() {
+    var m = document.cookie.match(new RegExp("(^| )UserName=([^;]*)(;|$)"));
+    if (m) return m[2];
+    else return '';
+}
+</script>
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="submit" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+    <ul class="panel_head"><span>文章分类</span></ul>
+    <ul class="panel_body">
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/784088">android实习杂记</a><span>(6)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/725105">java基础学习</a><span>(6)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/788543">项目（一）中</a><span>(23)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/892674">++</a><span>(35)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/951900">SDK</a><span>(2)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/952803">控件效果</a><span>(6)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/952806">Camera</a><span>(8)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/955091">画图</a><span>(4)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/1110939">sybase-dba</a><span>(9)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/fuuckwtu/article/category/1118167">sybase存储过程</a><span>(2)</span>
+        </li>
+    </ul>
+</div><div id="panel_Archive" class="panel">
+    <ul class="panel_head"><span>文章存档</span></ul>
+    <ul class="panel_body">
+        <div id="archive_list"><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2012/05">2012年05月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2012/04">2012年04月</a><span>(7)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2012/03">2012年03月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2012/02">2012年02月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/12">2011年12月</a><span>(25)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/11">2011年11月</a><span>(12)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/10">2011年10月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/09">2011年09月</a><span>(9)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/04">2011年04月</a><span>(22)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/03">2011年03月</a><span>(34)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2011/02">2011年02月</a><span>(47)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2010/10">2010年10月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2010/08">2010年08月</a><span>(53)</span></li><li><a href="http://blog.csdn.net/fuuckwtu/article/month/2010/07">2010年07月</a><span>(7)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+    </ul>
+</div>
+<div id="hotarticls" class="panel">
+    <ul class="panel_head"><span>阅读排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6521877" title="java——Handler类">java——Handler类</a><span>(4864)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6518600" title="Android Parcelable">Android Parcelable</a><span>(3661)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6522090" title="typedarray自定义属性的使用">typedarray自定义属性的使用</a><span>(1987)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6366912" title="Android 怎样获得手机信息（二）">Android 怎样获得手机信息（二）</a><span>(1946)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6518571" title="AnimationDrawable">AnimationDrawable</a><span>(1934)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6521873" title="ListView动态更新">ListView动态更新</a><span>(1842)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6974263" title="eclipse添加注释模板">eclipse添加注释模板</a><span>(1756)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6978124" title="android软键盘enter键">android软键盘enter键</a><span>(1324)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6255632" title="修改listview中的某一项，进行更新">修改listview中的某一项，进行更新</a><span>(1317)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6801157" title="Gallery下面的小圆点实现">Gallery下面的小圆点实现</a><span>(1271)</span>
+        </li>
+    </ul>
+</div>
+<div id="hotarticls2" class="panel">
+    <ul class="panel_head"><span>评论排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6519348" title="数据库操作总结">数据库操作总结</a><span>(8)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6801157" title="Gallery下面的小圆点实现">Gallery下面的小圆点实现</a><span>(6)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6519689" title="Android获取状态栏和标题栏的高度">Android获取状态栏和标题栏的高度</a><span>(5)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/7404101" title="DBArtisan 8.6.1破解">DBArtisan 8.6.1破解</a><span>(5)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6519047" title="Dialog的使用：onCreateDialog showDialog">Dialog的使用：onCreateDialog showDialog</a><span>(5)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6518924" title="SIM卡的IMSI号">SIM卡的IMSI号</a><span>(4)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/7074434" title="SurfaceView显示Camera摄像（之二设置参数、变焦）">SurfaceView显示Camera摄像（之二设置参数、变焦）</a><span>(4)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/6503787" title="抽象类的进一步使用">抽象类的进一步使用</a><span>(4)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/7050343" title="类似qq聊天表情实现">类似qq聊天表情实现</a><span>(4)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/fuuckwtu/article/details/5829018" title="静态块">静态块</a><span>(3)</span>
+        </li>
+    </ul>
+</div>
+<div id="homepageArticles" class="panel">
+    <ul class="panel_head"><span>推荐文章</span></ul>
+    <ul class="panel_body" id="ad_commend">
+    <iframe id="ad_frm_2" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 182px; height: 254px; " src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad.htm"></iframe></ul>
+</div>
+<script type="text/javascript">
+    new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/7050343#comments">类似qq聊天表情实现</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/disappear1314" class="user_name">disappear1314</a>:
+这个是安卓的代码？请问有java的实现表情发送的代码吗？
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/7074434#comments">SurfaceView显示Camera摄像（之二设置参数、变焦）</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/luoyg1004" class="user_name">luoyg1004</a>:
+跪求博主发个完整demo工程，万分感谢啊~~~~辛苦了~~~email：      luoyg100...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/7404101#comments">DBArtisan 8.6.1破解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/guoxingxing1234" class="user_name">guoxingxing1234</a>:
+给我一份！
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/6518924#comments">SIM卡的IMSI号</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/Jack_2301" class="user_name">Jack_2301</a>:
+知道sim卡串号，怎么查手机号的啊？、急知道串号是89860110601105488558、怎么查出...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/7404101#comments">DBArtisan 8.6.1破解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/jing4321" class="user_name">jing4321</a>:
+为什么说是破解 就只写一句话、、、
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/6974263#comments">eclipse添加注释模板</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/zhaizu" class="user_name">zhaizu</a>:
+好东西，用起来好方便，顶楼主。
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/5829018#comments">静态块</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/wangjinjinbang" class="user_name">wangjinjinbang</a>:
+还是不懂，楼上的程序运行不出来！
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/6259155#comments">textview圆角效果</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/hhp5127447" class="user_name">hhp5127447</a>:
+好，学习了
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/6519689#comments">Android获取状态栏和标题栏的高度</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/banxi1988" class="user_name">banxi</a>:
+不错，就是除了排版问题。
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/fuuckwtu/article/details/7074434#comments">SurfaceView显示Camera摄像（之二设置参数、变焦）</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/fen7395470" class="user_name">fen7395470</a>:
+1193039561@qq.com也给我一个吧，需要完整的demo
+    </p>
+    </li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/shCore-src.js"></script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ZeroClipboard.js"></script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/article_code.js"></script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/cnick.js"></script>
+
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/show.js"></script>
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/showblogmedal.ashx"></script>
+
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/pub_footer_2012.css"><div class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>世纪乐知(北京)网络技术有限公司 提供技术支持</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ico_email.gif" alt="" title=""> 联系邮箱：webmaster(at)csdn.net</dd><dd>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div>
+
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/msg.popup.js"></script>
+
+<!--ad.csdn.net-->
+<script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad-blog.js"></script><script type="text/javascript" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/ad-ibm439.js"></script>
+
+
+
+
+</div>
+
+<link href="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/message_pop.css" rel="stylesheet" type="text/css"><div style="display: block; " id="_popup_msg_container">
+
+<div wistate="max" id="im_popupWindow_miniMsg" class="im_popupWindow" style="display: none; height: 0px; ">
+	<h6 class="wi_draggable"><span>0元学4个月软件开发！
+</span><a onclick="_message_tips_pop(&#39;down&#39;);return false;"><img alt="close" class="founctionpic3" src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/pic_close.gif"></a></h6>
+    <div id="im_popupWindow_miniMsgContent" class="wi_content">
+		<div class="kuai">
+			<div style="width:280px;"><a href="http://edu.csdn.net/AD1.shtml?from=121226webim" target="_blank"><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/Catch750(12-24-17-49-50).jpg" alt="" border="0" style="border:0;" title=""></a></div>
+		</div>
+	</div>
+	<div class="content_qq"><span onclick="window.open(&#39;https://itunes.apple.com/cn/app/cheng-xu-yuan-za-zhi/id544773337&#39;)" target="_blank"></span>
+ </div>
+ 
+ 
+</div>
+</div><img src="./android Camera变焦的一个总结 - Java学习的专栏 - 博客频道 - CSDN.NET_files/count_new.php" style="display: none; "></body></html>

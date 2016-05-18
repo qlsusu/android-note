@@ -1,0 +1,9 @@
+可折叠的text
+参见：my/ExpandableTextView
+
+效果：一个textview中有100行，但是最多只展示4行，其他行均被折叠(collapsed)，并有一个展开/折叠按钮
+当点击该按钮时，可以进行折叠或者打开
+
+实现思路：
+有折叠时，和，无折叠效果时，textview的高度
+当折叠/展开时，启动动画，来改变 textview.lp.height，并requestlayout

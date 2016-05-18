@@ -1,0 +1,40 @@
+一天两篇文章
+	plan-prepare中的内容
+
+
+
+
+----------------------
+
+看完 
+http://blog.csdn.net/aigestudio/article/details/41799811
+--
+
+----------------------
+coordinatorlayout的学习
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0603/2990.html
+		学习nestsscroller
+		学习view.offsettopandbottom
+	https://github.com/saulmm/CoordinatorBehaviorExample
+	https://www.aswifter.com/2015/11/12/mastering-coordinator/
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0822/3342.html
+appbarlayout
+
+
+
+	
+---------------------	
+
+
+android train
+	半章
+android guide中 
+	user interface，1-2节
+	animation and graphics，1-2节
+android sample
+	1个
+	swipeback
+canvas的文章
+	1个
+孙群博客中，
+	1个文章

@@ -1,0 +1,40 @@
+例子：
+<FrameLayout
+	android:id="@+id/rootLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fabBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+		android:src="@drawable/ic_plus"
+		app:fabSize="normal" />
+</FrameLayout>
+
+中心图片
+android:src is used to define a Resource ID of icon you want (40dp transparent png file is recommended) 
+
+大小
+while app:fabSize="normal" is used to define FAB's size. 
+normal means the standard 56dp button used in most of the case
+mini is an another choice that will change its width to 40dp.
+
+shadow depth
+默认下，6dp at idle state and 12dp at pressed state. 
+自定义
+	app:elevation for idle state's shadow depth 
+	app:pressedTranslationZ for press state's.
+	
+背景色
+默认使用accent color
+自定义：app:backgroundTint
+
+锚点anchor
+app:layout_anchor="@id/main.appbar"
+app:layout_anchorGravity="bottom|right|end"
+说明：main.appbar是一个appbarlayout
+参见:
+	anchor效果图.gif
+	http://saulmm.github.io/mastering-coordinator

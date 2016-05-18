@@ -1,0 +1,48 @@
+参见：
+http://www.cnblogs.com/lcyty/p/3383960.html
+	Fragment自定义动画、动画监听以及兼容性包使用
+
+一个Fragment的实例都必须与一个FragmentActivity
+
+fragment的切换
+replace()这个方法只是在上一个Fragment不再需要时采用的简便方法。
+正确的切换方式是add()，切换时hide()，add()另一个Fragment；再次切换时，只需hide()当前，show()另一个。
+这样就能做到多个Fragment切换不重新实例化
+	
+ChildFragmentManager	
+如果一个fragment内部，要使用viewpager，而其内部又要使用FragmentPagerAdapter，则FragmentPagerAdapter的构建使用fragment.getChildFragmentManager
+
+在进程被系统回收时
+fragment依附于activity，设该activity是进程被系统回收时，最后一个activity(回收时，仍存在于task中)
+当进程被系统回收，再次进入时，该activity应该被finish，而activity.finish的流程中，会再次重新构建fragment，则此刻应该避免：在该fragment使用getChildFragmentManager再添加子fragment
+
+fragment里面再嵌套fragment，不要放在 父亲fragment对应的layout中的 根view
+
+当宿主activity被re-create时
+如果fragment.setRetainInstance(true)了，那么即便activity重新创建了，该fragment仍然被保存了
+例子:
+	class RetainFragment extends Fragment {
+		private static final String TAG = "RetainFragment";
+		public LruCache<String, Bitmap> mRetainedCache;
+
+		public RetainFragment() {}
+
+		public static RetainFragment findOrCreateRetainFragment(FragmentManager fm) {
+			RetainFragment fragment = (RetainFragment) fm.findFragmentByTag(TAG);
+			if (fragment == null) {
+				fragment = new RetainFragment();
+				fm.beginTransaction().add(fragment, TAG).commit();
+			}
+			return fragment;
+		}
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setRetainInstance(true);
+		}
+	}
+
+Added in API level 11
+Control whether a fragment instance is retained across Activity re-creation (such as from a configuration change). This can only be used with fragments not in the back stack. If set, the fragment lifecycle will be slightly different when an activity is recreated:
+

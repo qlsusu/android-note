@@ -1,0 +1,35 @@
+下载前缀：https://dl-ssl.google.com/android/repository/
+打开：http://developer.android.com/sdk/exploring.html，查看File Location这一栏
+	如，你要下载文档，则找到<sdk>/docs/，则找到docs
+打开：http://developer.android.com/reference/packages.html，查看api level
+	如，当前最大值为16
+构建下载地址：https://dl-ssl.google.com/android/repository/docs-16_r0x.zip
+则此时，唯一不确定的是x：先实验1，如果通过，再实验2，依次类推，直到找到最大值
+最后构建地址，下载
+
+参考xml：http://dl-ssl.google.com/android/repository/repository-x.xml
+当前x为7，如果地址失效，或者内容发生变化（精简了），那么试试7+（如：8）
+
+**************************************************************之前的内容
+
+可以通过eclipse中的adt工具，其会请求并解析一些xml（如https://dl-ssl.google.com/android/repository/repository.xml），但是可能因为被墙问题，该过程可能会出错
+但是，可以查看在其运行过程中的日志，找到一个xml地址，并用浏览器打开
+找到类似于<sdk:url>android-1.1_r1-windows.zip</sdk:url>，构造地址：https://dl-ssl.google.com/android/repository/ + android-1.1_r1-windows.zip
+
+http://dl-ssl.google.com/Android/repository/addon.xml
+http://dl-ssl.google.com/Android/repository/repository.xml
+http://dl-ssl.google.com/Android/repository/repository-5.xml
+
+下完之后，
+名字以android的，解压到platforms里面
+以google_apis开头的，解压到addons里面
+usb驱动的，直接解压到根目录
+
+对于下载doc的，依然构造地址
+
+元素为：
+	<sdk:platform>
+	<sdk:doc>
+	<sdk:sample>
+	<sdk:tool>
+	<sdk:add-ons>

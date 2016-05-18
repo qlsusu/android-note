@@ -1,0 +1,37 @@
+参见：
+【译】Handler当做内部类，导致内存泄露的问题
+	http://www.jianshu.com/p/1b39416f1508
+Android内存泄漏总结
+	http://blog.xuanzhangjiong.xyz/2016/03/01/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93/
+Android内存优化之OOM
+	http://hukai.me/android-performance-oom/
+Android中常见的内存泄漏
+	http://www.jianshu.com/p/130d3b22a386
+
+---------------------------------什么是内存泄漏
+内存机制
+Android虚拟机中把内存分为两部分，一部分为栈空间，存储一些全局引用和静态变量等值，该空间的分配与回收由系统机制决定，垃圾回收不作用在这块区域；
+另一部分为堆空间，里面存储是对象的实例，需要开发者主动创建，垃圾回收主要作用在这部分，
+回收的一个主要策略是检测堆中的对象在栈空间有无对应的引用。
+
+一些对象有着有限的生命周期。当这些对象所要做的事情完成了，我们希望他们会被回收掉。
+但是如果有一系列对这个对象的引用，那么在我们期待这个对象生命周期结束的时候被收回的时候，它是不会被回收的。它还会占用内存，这就造成了内存泄露。
+
+比如，当 Activity.onDestroy 被调用之后，activity 以及它涉及到的 view 和相关的 bitmap 都应该被回收。
+但是，如果有一个后台线程持有这个 activity 的引用，那么 activity 对应的内存就不能被回收
+
+---------------------------------实践准则
+对于生命周期比Activity长的对象如果需要应该使用ApplicationContext
+对于需要在静态内部类中使用非静态外部成员变量（如：Context、View )，可以在静态内部类中使用弱引用来引用外部类的变量来避免内存泄漏
+对于不再需要使用的对象，显示的将其赋值为null，比如使用完Bitmap后先调用recycle()，再赋为null
+保持对对象生命周期的敏感，特别注意单例、静态对象、全局性集合等的生命周期
+对于生命周期比Activity长的内部类对象，并且内部类中使用了外部类的成员变量，可以这样做避免内存泄漏：
+将内部类改为静态内部类
+静态内部类中使用弱引用来引用外部类的成员变量
+在涉及到Context时先考虑ApplicationContext，当然它并不是万能的，对于有些地方则必须使用Activity的，如dialog
+
+
+
+---------------------------------开源工具
+最新的LeakCanary开源控件，可以很好的帮助我们发现内存泄露的情况，
+更多关于LeakCanary的介绍，请看这里https://github.com/square/leakcanary(中文使用说明http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/)

@@ -1,0 +1,10 @@
+参见：
+http://blog.csdn.net/feiduclear_up/article/details/46439005
+
+需要依赖cardview工程
+
+常用属性：
+cardElevation:卡片阴影的宽度
+cardMaxElevation：最大卡片阴影的宽度
+cardBackgroundColor:卡片的背景颜色
+cardCornerRadius ：卡片的圆角半径

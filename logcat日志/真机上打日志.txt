@@ -1,0 +1,3 @@
+连上手机之后 cmd里面执行
+adb shell
+logcat

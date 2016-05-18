@@ -1,0 +1,26 @@
+参见：http://www.cnblogs.com/heiguy/archive/2010/10/30/1865239.html
+
+------------------------------------onSaveInstanceState
+什么时候被调用
+即当系统“未经你许可”时销毁了你的activity，则onSaveInstanceState会被系统调用
+--
+Android calls onSaveInstanceState() before the activity becomes vulnerable to being destroyed by the system, 
+	but does not bother calling it when the instance is actually being destroyed by a user action (such as pressing the BACK key)
+	
+调用时机举例：
+1、当用户按下HOME键时。
+	app所在的进程优先级变低，可能被系统杀死，则activity有可能被销毁
+2、长按HOME键，选择运行其他的程序时。
+	同1
+3、按下电源按键（关闭屏幕显示）时。
+	同1
+4、从activity A中启动一个新的activity B时。
+	虽然这个时候，app的进程的优先级不一定变低（除非activityB在另外一个进程上）
+	但是，当前界面是activityB之后，用户有可能home，而让整个app的进程优先级变低，则进程有可能被杀死，
+	但是，此刻，如果只让activityB保存状态，activityA而没有机会保存状态 就不对了。
+	则该时机应该保存activityA的状态
+5、屏幕方向切换时，例如从竖屏切换到横屏时。
+
+------------------------------------onRestoreInstanceState
+什么时候被调用
+activity A“确实”被系统销毁了，而非仅仅是停留在 有销毁的可能性下

@@ -1,0 +1,8 @@
+前景色
+可在framelayout中进行设置
+
+代码中，
+//设置
+((ColorDrawable) layout.getForeground().mutate()).setColor(value);
+//获得
+((ColorDrawable) layout.getForeground()).getColor();

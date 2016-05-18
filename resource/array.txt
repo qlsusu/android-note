@@ -1,0 +1,15 @@
+可以在strings.xml中定义，如
+<string-array name="interpolators">
+	<item>None</item>
+	<item>FastOutLinearInInterpolator</item>
+	<item>FastOutSlowInInterpolator</item>
+	<item>LinearOutSlowInInterpolator</item>
+	<item>AccelerateDecelerateInterpolator</item>
+	<item>AccelerateInterpolator</item>
+	<item>DecelerateInterpolator</item>
+	<item>AnticipateInterpolator</item>
+	<item>AnticipateOvershootInterpolator</item>
+	<item>BounceInterpolator</item>
+	<item>LinearInterpolator</item>
+	<item>OvershootInterpolator</item>
+</string-array>

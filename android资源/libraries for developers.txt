@@ -1,0 +1,42 @@
+滑动时，item
+
+stickyscrollviewitems
+
+在列表滑动时，弹出来一个window，用于回到顶部和底部
+	quickreturn-layout
+	
+下方还有内容，上下滑，将下方内容滑出来，上方内容完全消失（如：统计信息中，有一类统计的两个部分）
+	android swipe layout-layout
+	
+在list的滑动中，head能被拉伸。head在被挤压的过程中，有一些动画（如：图片会到左上角）
+	stikkyheader-layout
+	
+activity切换动画
+	activity transition-transition
+fragment切换动画
+	fragmenttransactionextended
+	
+设置状态栏的颜色（透明，在4.x版本上）
+	systembartint
+	
+！！！图片变小后的恢复（很自然）
+点击图片，图片在其位置展开
+	rebound-animations
+
+！！！添加删除孩子（动画展示）
+	recyclerviewanimations-animation
+
+内容很长，但是每版都是一个独立的内容，上下滑动，来切换 上下一斑
+	android swipe layout
+	
+窗口颜色的渐变（在引导界面上）
+	guidebackgroundcoloranimation
+
+动态改变主题
+	pagedheadlistview
+	
+viewpager的切换效果
+	pagedheadlistview
+	
+recyclerview中item，点击，能打开折叠项子项
+	expandablelayout

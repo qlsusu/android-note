@@ -1,0 +1,18 @@
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//从startview的中心处触发波纹
+private void prepareCircularReveal(View startView, View targetView) {
+	int centerX = (startView.getLeft() + startView.getRight()) / 2;
+	int centerY = (startView.getTop() + startView.getBottom()) / 2;
+	float finalRadius = (float) Math.hypot((double) centerX, (double) centerY);
+	
+	mCircularReveal = ViewAnimationUtils.createCircularReveal(
+			targetView, centerX, centerY, 0, finalRadius);
+	mCircularReveal.addListener(new AnimatorListenerAdapter() {
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			mCircularReveal.removeListener(this);
+		}
+	});
+}
+
+后在某个时刻start动画：mCircularReveal.start();

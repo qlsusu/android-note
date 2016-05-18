@@ -1,0 +1,9 @@
+权限：
+<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+
+// 获取Vibrate对象  
+Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);  
+// 震动一下
+//  vibrator.vibrate(3000);  
+// 也可以 设置Vibrate的震动周期  
+vibrator.vibrate(new long[]{1000,2000,3000,4000}, 0);  

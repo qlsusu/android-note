@@ -1,0 +1,522 @@
+02-25 12:32:45.705: D/MA-dC(20376): HERE_NOW:  CH - ggg-stdby {"status":200,"message":"OK","service":"Presence","uuids":["ggg"],"occupancy":1}
+02-25 12:32:45.797: D/MA-dC(20376): SUCCESS: [1,"Sent","14563747657065997"]
+02-25 12:32:45.943: D/EglBase(20376): SDK version: 23
+02-25 12:32:45.944: D/*WEBRTCN*(20376): SetRenderAndroidVM
+02-25 12:32:45.945: D/JVM(20376): JVM::Initialize@[tid=20376]
+02-25 12:32:45.945: D/JVM(20376): JVM::JVM@[tid=20376]
+02-25 12:32:45.945: D/MediaCodecVideo(20376): SetAndroidObjects for surface decoding.
+02-25 12:32:45.945: D/MediaCodecVideo(20376): NULL VideoDecoder EGL context - HW surface decoding is disabled.
+02-25 12:32:45.979: W/VideoCapabilities(20376): Unrecognized profile 2130706433 for video/avc
+02-25 12:32:46.005: W/VideoCapabilities(20376): Unrecognized profile/level 0/3 for video/mpeg2
+02-25 12:32:46.007: W/VideoCapabilities(20376): Unrecognized profile/level 0/3 for video/mpeg2
+02-25 12:32:46.015: W/VideoCapabilities(20376): Unsupported mime video/x-ms-wmv
+02-25 12:32:46.016: W/VideoCapabilities(20376): Unsupported mime video/divx
+02-25 12:32:46.018: W/VideoCapabilities(20376): Unsupported mime video/divx311
+02-25 12:32:46.020: W/VideoCapabilities(20376): Unsupported mime video/divx4
+02-25 12:32:46.027: W/AudioCapabilities(20376): Unsupported mime audio/dsd
+02-25 12:32:46.028: W/AudioCapabilities(20376): Unsupported mime audio/x-ape
+02-25 12:32:46.029: W/AudioCapabilities(20376): Unsupported mime audio/32KADPCM
+02-25 12:32:46.032: W/VideoCapabilities(20376): Unsupported mime video/mp4v-esdp
+02-25 12:32:46.047: I/VideoCapabilities(20376): Unsupported profile 4 for video/mp4v-es
+02-25 12:32:46.051: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.vp8
+02-25 12:32:46.052: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.052: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:32:46.052: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:32:46.052: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:32:46.052: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/x-vnd.on2.vp8 : OMX.qcom.video.encoder.vp8. Color: 0x15
+02-25 12:32:46.052: D/MediaCodecVideo(20376): VP8 HW Encoder supported.
+02-25 12:32:46.052: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.avc
+02-25 12:32:46.052: W/VideoCapabilities(20376): Unrecognized profile 2130706433 for video/avc
+02-25 12:32:46.053: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.053: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:32:46.053: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:32:46.053: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:32:46.053: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/avc : OMX.qcom.video.encoder.avc. Color: 0x15
+02-25 12:32:46.053: D/MediaCodecVideo(20376): H.264 HW Encoder supported.
+02-25 12:32:46.054: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.vp8
+02-25 12:32:46.054: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:32:46.054: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.054: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:32:46.054: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:32:46.055: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:32:46.055: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.vp8. Color: 0x13
+02-25 12:32:46.055: D/MediaCodecVideo(20376): VP8 HW Decoder supported.
+02-25 12:32:46.055: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.avc
+02-25 12:32:46.056: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:32:46.056: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.056: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:32:46.056: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:32:46.056: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:32:46.056: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.avc. Color: 0x13
+02-25 12:32:46.056: D/MediaCodecVideo(20376): H264 HW Decoder supported.
+02-25 12:32:46.074: D/JVM(20376): AttachCurrentThreadIfNeeded::ctor@[tid=23529]
+02-25 12:32:46.074: D/JVM(20376): Attaching thread to JVM
+02-25 12:32:46.076: D/JVM(20376): JVM::environment@[tid=23529]
+02-25 12:32:46.076: D/JVM(20376): JNIEnvironment::ctor@[tid=23529]
+02-25 12:32:46.076: D/AudioManager(20376): ctor@[tid=23529]
+02-25 12:32:46.076: D/JVM(20376): JNIEnvironment::RegisterNatives(org/webrtc/voiceengine/WebRtcAudioManager)
+02-25 12:32:46.076: D/JVM(20376): NativeRegistration::ctor@[tid=23529]
+02-25 12:32:46.077: D/JVM(20376): NativeRegistration::NewObject@[tid=23529]
+02-25 12:32:46.078: D/WebRtcAudioManager(20376): ctor@[name=Thread-9933, id=9933]
+02-25 12:32:46.088: D/AudioManager(20376): OnCacheAudioParameters@[tid=23529]
+02-25 12:32:46.088: D/AudioManager(20376): hardware_aec: 1
+02-25 12:32:46.088: D/AudioManager(20376): low_latency_output: 1
+02-25 12:32:46.088: D/AudioManager(20376): sample_rate: 48000
+02-25 12:32:46.088: D/AudioManager(20376): channels: 1
+02-25 12:32:46.088: D/AudioManager(20376): output_buffer_size: 960
+02-25 12:32:46.088: D/AudioManager(20376): input_buffer_size: 1920
+02-25 12:32:46.088: D/JVM(20376): GlobalRef::ctor@[tid=23529]
+02-25 12:32:46.088: D/AudioManager(20376): JavaAudioManager::ctor@[tid=23529]
+02-25 12:32:46.088: D/AudioManager(20376): IsLowLatencyPlayoutSupported()
+02-25 12:32:46.088: D/OpenSLESPlayer(20376): ctor@[tid=23529]
+02-25 12:32:46.088: D/OpenSLESPlayer(20376): CreatePCMConfiguration
+02-25 12:32:46.088: D/JVM(20376): AttachCurrentThreadIfNeeded::ctor@[tid=23529]
+02-25 12:32:46.088: D/JVM(20376): JVM::environment@[tid=23529]
+02-25 12:32:46.088: D/JVM(20376): JNIEnvironment::ctor@[tid=23529]
+02-25 12:32:46.088: D/AudioRecordJni(20376): ctor@[tid=23529]
+02-25 12:32:46.088: D/JVM(20376): JNIEnvironment::RegisterNatives(org/webrtc/voiceengine/WebRtcAudioRecord)
+02-25 12:32:46.088: D/JVM(20376): NativeRegistration::ctor@[tid=23529]
+02-25 12:32:46.089: D/JVM(20376): NativeRegistration::NewObject@[tid=23529]
+02-25 12:32:46.089: D/WebRtcAudioRecord(20376): ctor@[name=Thread-9933, id=9933]
+02-25 12:32:46.089: D/JVM(20376): GlobalRef::ctor@[tid=23529]
+02-25 12:32:46.089: D/AudioManager(20376): SetActiveAudioLayer(6)@[tid=23529]
+02-25 12:32:46.089: D/AudioManager(20376): delay_estimate_in_milliseconds: 50
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): AttachAudioBuffer
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): SetPlayoutSampleRate(48000)
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): SetPlayoutChannels(1)
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): AllocateDataBuffers
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): native buffer size: 1920
+02-25 12:32:46.089: D/OpenSLESPlayer(20376): required buffer size: 2880
+02-25 12:32:46.089: D/AudioRecordJni(20376): AttachAudioBuffer
+02-25 12:32:46.089: D/AudioRecordJni(20376): SetRecordingSampleRate(48000)
+02-25 12:32:46.089: D/AudioRecordJni(20376): SetRecordingChannels(1)
+02-25 12:32:46.089: D/AudioRecordJni(20376): total_delay_in_milliseconds: 50
+02-25 12:32:46.089: D/AudioManager(20376): Init@[tid=23529]
+02-25 12:32:46.089: D/WebRtcAudioManager(20376): init@[name=Thread-9933, id=9933]
+02-25 12:32:46.089: D/WebRtcAudioManager(20376): audio mode is: MODE_NORMAL
+02-25 12:32:46.090: D/AudioRecordJni(20376): EnableBuiltInAEC@[tid=23529]
+02-25 12:32:46.090: D/WebRtcAudioRecord(20376): EnableBuiltInAEC(true)
+02-25 12:32:46.095: D/AudioRecordJni(20376): EnableBuiltInAEC@[tid=23529]
+02-25 12:32:46.095: D/WebRtcAudioRecord(20376): EnableBuiltInAEC(true)
+02-25 12:32:46.112: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.vp8
+02-25 12:32:46.113: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.114: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:32:46.114: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:32:46.114: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:32:46.114: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/x-vnd.on2.vp8 : OMX.qcom.video.encoder.vp8. Color: 0x15
+02-25 12:32:46.114: D/MediaCodecVideo(20376): VP8 HW Encoder supported.
+02-25 12:32:46.114: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.avc
+02-25 12:32:46.114: W/VideoCapabilities(20376): Unrecognized profile 2130706433 for video/avc
+02-25 12:32:46.116: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.116: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:32:46.116: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:32:46.116: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:32:46.116: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/avc : OMX.qcom.video.encoder.avc. Color: 0x15
+02-25 12:32:46.116: D/MediaCodecVideo(20376): H.264 HW Encoder supported.
+02-25 12:32:46.116: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.vp8
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:32:46.118: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.vp8. Color: 0x13
+02-25 12:32:46.118: D/MediaCodecVideo(20376): VP8 HW Decoder supported.
+02-25 12:32:46.118: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.avc
+02-25 12:32:46.120: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:32:46.120: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:32:46.120: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:32:46.120: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:32:46.120: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:32:46.120: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.avc. Color: 0x13
+02-25 12:32:46.120: D/MediaCodecVideo(20376): H264 HW Decoder supported.
+02-25 12:32:46.125: D/JVM(20376): AttachCurrentThreadIfNeeded::ctor@[tid=23538]
+02-25 12:32:46.125: D/JVM(20376): Attaching thread to JVM
+02-25 12:32:46.126: D/JVM(20376): JVM::environment@[tid=23538]
+02-25 12:32:46.127: D/JVM(20376): JNIEnvironment::ctor@[tid=23538]
+02-25 12:32:46.127: D/AudioManager(20376): ctor@[tid=23538]
+02-25 12:32:46.127: D/JVM(20376): JNIEnvironment::RegisterNatives(org/webrtc/voiceengine/WebRtcAudioManager)
+02-25 12:32:46.127: D/JVM(20376): NativeRegistration::ctor@[tid=23538]
+02-25 12:32:46.127: D/JVM(20376): NativeRegistration::NewObject@[tid=23538]
+02-25 12:32:46.127: D/WebRtcAudioManager(20376): ctor@[name=Thread-9936, id=9936]
+02-25 12:32:46.132: D/AudioManager(20376): OnCacheAudioParameters@[tid=23538]
+02-25 12:32:46.132: D/AudioManager(20376): hardware_aec: 1
+02-25 12:32:46.132: D/AudioManager(20376): low_latency_output: 1
+02-25 12:32:46.132: D/AudioManager(20376): sample_rate: 48000
+02-25 12:32:46.132: D/AudioManager(20376): channels: 1
+02-25 12:32:46.132: D/AudioManager(20376): output_buffer_size: 960
+02-25 12:32:46.132: D/AudioManager(20376): input_buffer_size: 1920
+02-25 12:32:46.132: D/JVM(20376): GlobalRef::ctor@[tid=23538]
+02-25 12:32:46.132: D/AudioManager(20376): JavaAudioManager::ctor@[tid=23538]
+02-25 12:32:46.132: D/AudioManager(20376): IsLowLatencyPlayoutSupported()
+02-25 12:32:46.132: D/OpenSLESPlayer(20376): ctor@[tid=23538]
+02-25 12:32:46.132: D/OpenSLESPlayer(20376): CreatePCMConfiguration
+02-25 12:32:46.132: D/JVM(20376): AttachCurrentThreadIfNeeded::ctor@[tid=23538]
+02-25 12:32:46.132: D/JVM(20376): JVM::environment@[tid=23538]
+02-25 12:32:46.132: D/JVM(20376): JNIEnvironment::ctor@[tid=23538]
+02-25 12:32:46.132: D/AudioRecordJni(20376): ctor@[tid=23538]
+02-25 12:32:46.132: D/JVM(20376): JNIEnvironment::RegisterNatives(org/webrtc/voiceengine/WebRtcAudioRecord)
+02-25 12:32:46.132: D/JVM(20376): NativeRegistration::ctor@[tid=23538]
+02-25 12:32:46.132: D/JVM(20376): NativeRegistration::NewObject@[tid=23538]
+02-25 12:32:46.132: D/WebRtcAudioRecord(20376): ctor@[name=Thread-9936, id=9936]
+02-25 12:32:46.132: D/JVM(20376): GlobalRef::ctor@[tid=23538]
+02-25 12:32:46.132: D/AudioManager(20376): SetActiveAudioLayer(6)@[tid=23538]
+02-25 12:32:46.133: D/AudioManager(20376): delay_estimate_in_milliseconds: 50
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): AttachAudioBuffer
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): SetPlayoutSampleRate(48000)
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): SetPlayoutChannels(1)
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): AllocateDataBuffers
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): native buffer size: 1920
+02-25 12:32:46.133: D/OpenSLESPlayer(20376): required buffer size: 2880
+02-25 12:32:46.133: D/AudioRecordJni(20376): AttachAudioBuffer
+02-25 12:32:46.133: D/AudioRecordJni(20376): SetRecordingSampleRate(48000)
+02-25 12:32:46.133: D/AudioRecordJni(20376): SetRecordingChannels(1)
+02-25 12:32:46.133: D/AudioRecordJni(20376): total_delay_in_milliseconds: 50
+02-25 12:32:46.133: D/AudioManager(20376): Init@[tid=23538]
+02-25 12:32:46.133: D/WebRtcAudioManager(20376): init@[name=Thread-9936, id=9936]
+02-25 12:32:46.133: D/WebRtcAudioManager(20376): audio mode is: MODE_NORMAL
+02-25 12:32:46.134: D/AudioRecordJni(20376): EnableBuiltInAEC@[tid=23538]
+02-25 12:32:46.134: D/WebRtcAudioRecord(20376): EnableBuiltInAEC(true)
+02-25 12:32:46.137: D/AudioRecordJni(20376): EnableBuiltInAEC@[tid=23538]
+02-25 12:32:46.137: D/WebRtcAudioRecord(20376): EnableBuiltInAEC(true)
+02-25 12:32:46.157: W/System(20376): ClassLoader referenced unknown path: /system/framework/tcmclient.jar
+02-25 12:32:46.159: W/System(20376): ClassLoader referenced unknown path: /system/framework/com.qualcomm.qti.GBAHttpAuthentication.jar
+02-25 12:32:48.212: D/Http Post Response:(20376): org.apache.http.message.BasicHttpResponse@49e813d
+02-25 12:32:48.213: I/XIRSYS(20376): Servers: [stun:turn02.uswest.xirsys.com[:], turn:turn02.uswest.xirsys.com:443?transport=udp[0353f064-db73-11e5-af53-8b41e76e0d74:0353f15e-db73-11e5-a9c0-f365627f92c4], turn:turn02.uswest.xirsys.com:443?transport=tcp[0353f064-db73-11e5-af53-8b41e76e0d74:0353f15e-db73-11e5-a9c0-f365627f92c4], turn:turn02.uswest.xirsys.com:5349?transport=udp[0353f064-db73-11e5-af53-8b41e76e0d74:0353f15e-db73-11e5-a9c0-f365627f92c4], turn:turn02.uswest.xirsys.com:5349?transport=tcp[0353f064-db73-11e5-af53-8b41e76e0d74:0353f15e-db73-11e5-a9c0-f365627f92c4]]
+02-25 12:32:48.229: D/VideoCapturerAndroid(20376): VideoCapturerAndroid
+02-25 12:32:48.229: D/VideoCapturerAndroid(20376): init: Camera 1, Facing front, Orientation 270
+02-25 12:32:48.229: D/VideoCapturerAndroid(20376): Get supported formats.
+02-25 12:32:48.230: D/VideoCapturerAndroid(20376): Opening camera 1
+02-25 12:32:53.565: D/VideoCapturerAndroid(20376): Opening camera 0
+02-25 12:32:58.775: D/VideoCapturerAndroid(20376): Get supported formats done.
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376): Supported formats for camera 1: [
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 1920,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 1080,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 1440,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 1080,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 1280,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 720,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 960,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 720,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 864,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 480,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 800,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 480,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 768,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 432,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 720,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 480,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 640,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 480,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 576,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 432,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 480,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 320,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 384,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 288,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 352,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 288,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 320,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 240,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 240,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 160,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   },
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   {
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "width": 176,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "height": 144,
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):     "framerate": 30
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376):   }
+02-25 12:32:58.780: D/VideoCapturerAndroid(20376): ]
+02-25 12:32:58.792: D/VideoCapturerAndroid(20376): startCapture requested: 640x480@30
+02-25 12:32:58.799: D/VideoCapturerAndroid(20376): Opening camera 1
+02-25 12:32:58.800: D/VideoRendererGui(20376): VideoRendererGui.setView
+02-25 12:32:58.802: D/VideoRendererGui(20376): YuvImageRenderer.Create id: 0
+02-25 12:32:58.802: D/VideoRendererGui(20376): YuvImageRenderer.Create id: 1
+02-25 12:32:58.803: I/RTCListener(20376): OnLocalStream - [localStreamPN:A=1:V=1]
+02-25 12:32:58.805: I/System.out(20376): ---extras info
+02-25 12:32:58.805: I/System.out(20376): key:me.kg.androidrtc.SHARED_PREFS.CALL_USER,value:ggg
+02-25 12:32:58.805: I/System.out(20376): key:me.kg.androidrtc.SHARED_PREFS.USER_NAME,value:kkk
+02-25 12:32:58.805: I/System.out(20376): extras.getString(Constants.CALL_USER):ggg
+02-25 12:32:58.807: D/PnPeer(20376): new Peer: ggg
+02-25 12:32:58.823: I/RTCListener(20376): OnPeerStatusChanged - ggg Status: CONNECTING Dialed: false Received: false Type: NONE
+02-25 12:32:58.826: D/COAction(20376): CreateOfferAction
+02-25 12:32:58.866: I/Choreographer(20376): Skipped 781 frames!  The application may be doing too much work on its main thread.
+02-25 12:32:58.939: D/VideoRendererGui(20376): VideoRendererGui.onSurfaceCreated
+02-25 12:32:58.939: D/VideoRendererGui(20376): VideoRendererGui EGL Context: android.opengl.EGLContext@60b9cc4e
+02-25 12:32:58.939: D/VideoRendererGui(20376):   YuvImageRenderer.createTextures 0 on GL thread:9938
+02-25 12:32:58.940: D/VideoRendererGui(20376):   YuvImageRenderer.createTextures 1 on GL thread:9938
+02-25 12:32:58.940: D/VideoRendererGui(20376): VideoRendererGui.onSurfaceChanged: 1080 x 1920  
+02-25 12:32:58.940: D/VideoRendererGui(20376): ID: 0. YuvImageRenderer.setScreenSize: 1080 x 1920
+02-25 12:32:58.940: D/VideoRendererGui(20376): ID: 1. YuvImageRenderer.setScreenSize: 1080 x 1920
+02-25 12:32:58.971: I/RTCListener(20376): OnDebug - [1,"Subscribe connected","14563747787630868"]
+02-25 12:32:58.971: I/RTCListener(20376): OnConnected - kkk
+02-25 12:32:59.046: D/VideoCapturerAndroid(20376): Camera orientation: 270 .Device orientation: 0
+02-25 12:32:59.046: D/VideoCapturerAndroid(20376): startPreviewOnCameraThread requested: 640x480@30
+02-25 12:32:59.052: D/VideoCapturerAndroid(20376): isVideoStabilizationSupported: true
+02-25 12:32:59.053: D/VideoCapturerAndroid(20376): Start capturing: 640x480@[30000:30000]
+02-25 12:32:59.061: D/VideoCapturerAndroid(20376): queueCameraBuffers enqueued 3 buffers of size 460800.
+02-25 12:32:59.142: W/IInputConnectionWrapper(20376): getExtractedText on inactive InputConnection
+02-25 12:32:59.172: W/IInputConnectionWrapper(20376): getTextBeforeCursor on inactive InputConnection
+02-25 12:32:59.205: W/IInputConnectionWrapper(20376): getTextAfterCursor on inactive InputConnection
+02-25 12:32:59.239: W/IInputConnectionWrapper(20376): getCursorCapsMode on inactive InputConnection
+02-25 12:32:59.246: W/IInputConnectionWrapper(20376): beginBatchEdit on inactive InputConnection
+02-25 12:32:59.247: W/IInputConnectionWrapper(20376): endBatchEdit on inactive InputConnection
+02-25 12:32:59.455: D/VideoRendererGui(20376): ID: 1. YuvImageRenderer.setSize: 480 x 640 rotation 0
+02-25 12:32:59.455: D/VideoRendererGui(20376):   YuvImageRenderer.setSize done.
+02-25 12:32:59.457: D/VideoRendererGui(20376): ID: 1. AdjustTextureCoords. Allowed display size: 1080 x 1920. Video: 480 x 640. Rotation: 0. Mirror: true
+02-25 12:32:59.457: D/VideoRendererGui(20376):   Adjusted display size: 1080 x 1920
+02-25 12:32:59.457: D/VideoRendererGui(20376):   AdjustTextureCoords done
+02-25 12:33:04.229: I/System.out(20376): successCallback
+02-25 12:33:04.230: I/RTCListener(20376): OnDebug - {"packet":{"type":"answer","sdp":"v=0\r\no=- 3083880111205151707 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE audio video\r\na=msid-semantic: WMS localStreamPN\r\nm=audio 9 UDP\/TLS\/RTP\/SAVPF 111 103 9 102 0 8 106 105 13 127 126\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=ice-ufrag:e00Ze3R0Br7vVKkT\r\na=ice-pwd:VbW+tGFU8Yo\/njbygDz6La+s\r\na=fingerprint:sha-256 7C:10:14:8A:E0:D6:09:A7:75:EB:20:B4:3C:8F:EE:4A:F1:BD:88:AD:6A:6D:37:C8:2E:C1:D6:A6:E8:E5:60:9C\r\na=setup:active\r\na=mid:audio\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r\na=recvonly\r\na=rtcp-mux\r\na=rtpmap:111 opus\/48000\/2\r\na=fmtp:111 minptime=10; useinbandfec=1\r\na=rtpmap:103 ISAC\/16000\r\na=rtpmap:9 G722\/8000\r\na=rtpmap:102 ILBC\/8000\r\na=rtpmap:0 PCMU\/8000\r\na=rtpmap:8 PCMA\/8000\r\na=rtpmap:106 CN\/32000\r\na=rtpmap:105 CN\/16000\r\na=rtpmap:13 CN\/8000\r\na=rtpmap:127 red\/8000\r\na=rtpmap:126 telephone-event\/8000\r\na=maxptime:60\r\na=ssrc:3552337804 cname:QcZ5pTE8S\/ZhNXMu\r\na=ssrc:3552337804 msid:localStreamPN audioPN\r\na=ssrc:3552337804 mslabel:localStreamPN\r\na=ssrc:3552337804 label:audioPN\r\nm=video 9 UDP\/TLS\/RTP\/SAVPF 100 116 117 96\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=ice-ufrag:e00Ze3R0Br7vVKkT\r\na=ice-pwd:VbW+tGFU8Yo\/njbygDz6La+s\r\na=fingerprint:sha-256 7C:10:14:8A:E0:D6:09:A7:75:EB:20:B4:3C:8F:EE:4A:F1:BD:88:AD:6A:6D:37:C8:2E:C1:D6:A6:E8:E5:60:9C\r\na=setup:active\r\na=mid:video\r\na=extmap:2 urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r\na=extmap:4 urn:3gpp:video-orientation\r\na=sendrecv\r\na=rtcp-mux\r\na=rtpmap:100 VP8\/90000\r\na=rtcp-fb:100 ccm fir\r\na=rtcp-fb:100 nack\r\na=rtcp-fb:100 nack pli\r\na=rtcp-fb:100 goog-remb\r\na=rtpmap:116 red\/90000\r\na=rtpmap:117 ulpfec\/90000\r\na=rtpmap:96 rtx\/90000\r\na=fmtp:96 apt=100\r\na=ssrc-group:FID 1083596038 261719780\r\na=ssrc:1083596038 cname:QcZ5pTE8S\/ZhNXMu\r\na=ssrc:1083596038 msid:localStreamPN videoPN\r\na=ssrc:1083596038 mslabel:localStreamPN\r\na=ssrc:1083596038 label:videoPN\r\na=ssrc:261719780 cname:QcZ5pTE8S\/ZhNXMu\r\na=ssrc:261719780 msid:localStreamPN videoPN\r\na=ssrc:261719780 mslabel:localStreamPN\r\na=ssrc:261719780 label:videoPN\r\n"},"id":"","number":"ggg"}
+02-25 12:33:04.230: I/RTCListener(20376): OnDebug - SDP - ggg Status: CONNECTING Dialed: true Received: true Type: answer
+02-25 12:33:04.230: D/SRSAction(20376): SetRemoteSDPAction
+02-25 12:33:04.271: D/MediaCodecVideo(20376): Create HW video encoder for type 0 (VP8).
+02-25 12:33:04.271: D/MediaCodecVideo(20376): InitEncode request
+02-25 12:33:04.275: D/MediaCodecVideo(20376): InitEncodeOnCodecThread Type: 0. 176 x 144. Bitrate: 300 kbps. Fps: 60
+02-25 12:33:04.276: D/MediaCodecVideoEncoder(20376): Java initEncode: VIDEO_CODEC_VP8 : 176 x 144. @ 300 kbps. Fps: 60. Color: 0x0
+02-25 12:33:04.277: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.vp8
+02-25 12:33:04.281: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:33:04.281: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:33:04.281: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:33:04.282: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:33:04.282: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/x-vnd.on2.vp8 : OMX.qcom.video.encoder.vp8. Color: 0x15
+02-25 12:33:04.283: D/MediaCodecVideoEncoder(20376):   Format: {mime=video/x-vnd.on2.vp8, frame-rate=60, color-format=21, height=144, width=176, bitrate=300000, i-frame-interval=100, bitrate-mode=2}
+02-25 12:33:04.290: I/OMXClient(20376): Using client-side OMX mux.
+02-25 12:33:04.363: V/VideoCapturerAndroid(20376): Camera is running out of capture buffers. Pending buffers: [406370257, 406370178, 406370212]
+02-25 12:33:04.364: D/VideoCapturerAndroid(20376): Camera fps: 30. CaptureBuffers: 3.0. Pending buffers: [406370257, 406370178, 406370212]
+02-25 12:33:04.397: E/ACodec(20376): [OMX.qcom.video.encoder.vp8] storeMetaDataInBuffers (output) failed w/ err -1010
+02-25 12:33:04.398: W/ACodec(20376): do not know color format 0x7fa30c04 = 2141391876
+02-25 12:33:04.398: W/ACodec(20376): do not know color format 0x7f000789 = 2130708361
+02-25 12:33:04.405: I/ACodec(20376): setupVideoEncoder succeeded
+02-25 12:33:04.420: D/MediaCodecVideoEncoder(20376): Input buffers: 3. Output buffers: 4
+02-25 12:33:04.422: D/MediaCodecVideo(20376): Destroy video encoder.
+02-25 12:33:04.422: D/MediaCodecVideo(20376): EncoderRelease request
+02-25 12:33:04.422: D/MediaCodecVideo(20376): EncoderReleaseOnCodecThread: Frames received: 0. Encoded: 0. Dropped: 0.
+02-25 12:33:04.422: D/MediaCodecVideoEncoder(20376): Java releaseEncoder
+02-25 12:33:04.436: W/art(20376): Native thread exiting without having called DetachCurrentThread (maybe it's going to use a pthread_key_create destructor?): Thread[16,tid=23971,Native,Thread*=0xa942ed30,peer=0x130e20a0,"MediaCodecVideo - 23971"]
+02-25 12:33:04.466: D/MediaCodecVideo(20376): Create HW video encoder for type 0 (VP8).
+02-25 12:33:04.467: D/MediaCodecVideo(20376): InitEncode request
+02-25 12:33:04.468: D/MediaCodecVideo(20376): InitEncodeOnCodecThread Type: 0. 176 x 144. Bitrate: 300 kbps. Fps: 60
+02-25 12:33:04.468: D/MediaCodecVideoEncoder(20376): Java initEncode: VIDEO_CODEC_VP8 : 176 x 144. @ 300 kbps. Fps: 60. Color: 0x0
+02-25 12:33:04.468: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.vp8
+02-25 12:33:04.471: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:33:04.471: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:33:04.471: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:33:04.471: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:33:04.471: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/x-vnd.on2.vp8 : OMX.qcom.video.encoder.vp8. Color: 0x15
+02-25 12:33:04.472: D/MediaCodecVideoEncoder(20376):   Format: {mime=video/x-vnd.on2.vp8, frame-rate=60, color-format=21, height=144, width=176, bitrate=300000, i-frame-interval=100, bitrate-mode=2}
+02-25 12:33:04.479: I/OMXClient(20376): Using client-side OMX mux.
+02-25 12:33:04.489: E/ACodec(20376): [OMX.qcom.video.encoder.vp8] storeMetaDataInBuffers (output) failed w/ err -1010
+02-25 12:33:04.489: W/ACodec(20376): do not know color format 0x7fa30c04 = 2141391876
+02-25 12:33:04.490: W/ACodec(20376): do not know color format 0x7f000789 = 2130708361
+02-25 12:33:04.495: I/ACodec(20376): setupVideoEncoder succeeded
+02-25 12:33:04.509: D/MediaCodecVideoEncoder(20376): Input buffers: 3. Output buffers: 4
+02-25 12:33:04.510: D/MediaCodecVideo(20376): Create HW video decoder for type 0.
+02-25 12:33:04.512: D/VideoRendererGui(20376): ID: 1. YuvImageRenderer.setSize: 640 x 480 rotation 270
+02-25 12:33:04.513: D/VideoRendererGui(20376):   YuvImageRenderer.setSize done.
+02-25 12:33:04.514: D/MediaCodecVideo(20376): Create HW video decoder for type 2.
+02-25 12:33:04.523: V/VideoCapturerAndroid(20376): Frame returned when camera is running out of capture buffers for TS 406370178
+02-25 12:33:04.525: D/VideoRendererGui(20376): ID: 1. AdjustTextureCoords. Allowed display size: 1080 x 1920. Video: 640 x 480. Rotation: 270. Mirror: true
+02-25 12:33:04.525: D/VideoRendererGui(20376):   Adjusted display size: 1080 x 1920
+02-25 12:33:04.525: D/VideoRendererGui(20376):   AdjustTextureCoords done
+02-25 12:33:04.534: D/PnPeer(20376): onAddStream localStreamPN
+02-25 12:33:04.534: I/RTCListener(20376): OnAddRemoteStream - ggg Status: CONNECTING Dialed: true Received: true Type: answer
+02-25 12:33:04.541: D/VideoRendererGui(20376): VideoRendererGui.update
+02-25 12:33:04.541: D/VideoRendererGui(20376): VideoRendererGui.update
+02-25 12:33:04.541: D/VideoRendererGui(20376): ID: 1. YuvImageRenderer.setPosition: (72, 65) 25 x 25. Scaling: SCALE_ASPECT_FIT. Mirror: true
+02-25 12:33:04.552: D/VideoRendererGui(20376): ID: 1. AdjustTextureCoords. Allowed display size: 269 x 480. Video: 640 x 480. Rotation: 270. Mirror: true
+02-25 12:33:04.552: D/VideoRendererGui(20376):   Adjusted display size: 269 x 358
+02-25 12:33:04.552: D/VideoRendererGui(20376):   AdjustTextureCoords done
+02-25 12:33:04.652: D/AudioRecordJni(20376): InitRecording@[tid=23538]
+02-25 12:33:04.653: D/WebRtcAudioRecord(20376): InitRecording(sampleRate=48000, channels=1)
+02-25 12:33:04.655: D/WebRtcAudioRecord(20376): byteBuffer.capacity: 960
+02-25 12:33:04.655: D/AudioRecordJni(20376): OnCacheDirectBufferAddress
+02-25 12:33:04.655: D/AudioRecordJni(20376): direct buffer capacity: 960
+02-25 12:33:04.655: D/WebRtcAudioRecord(20376): AudioRecord.getMinBufferSize: 3840
+02-25 12:33:04.656: D/WebRtcAudioRecord(20376): bufferSizeInBytes: 3840
+02-25 12:33:04.667: D/WebRtcAudioRecord(20376): AudioRecord session ID: 7532, audio format: 2, channels: 1, sample rate: 48000
+02-25 12:33:04.670: D/WebRtcAudioRecord(20376): AcousticEchoCanceler.isAvailable: true
+02-25 12:33:04.675: D/WebRtcAudioRecord(20376): AcousticEchoCanceler name: Acoustic Echo Canceler, implementor: Qualcomm Fluence, uuid: 0f8d0d2a-59e5-45fe-b6e4-248c8a799109
+02-25 12:33:04.675: D/WebRtcAudioRecord(20376): AcousticEchoCanceler.getEnabled: true
+02-25 12:33:04.675: D/AudioRecordJni(20376): frames_per_buffer: 480
+02-25 12:33:04.675: D/AudioManager(20376): IsCommunicationModeEnabled()
+02-25 12:33:04.675: W/AudioDeviceTemplate(20376): The application should use MODE_IN_COMMUNICATION audio mode!
+02-25 12:33:04.675: D/AudioRecordJni(20376): StartRecording@[tid=23538]
+02-25 12:33:04.675: D/WebRtcAudioRecord(20376): StartRecording
+02-25 12:33:04.683: I/System.out(20376): successCallback
+02-25 12:33:04.683: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":0,"sdpMid":"audio","candidate":"candidate:1516508954 1 udp 2122260223 192.168.0.106 36093 typ host generation 0"},"id":"","number":"ggg"}
+02-25 12:33:04.683: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:04.684: V/RenderScript(20376): 0x9c059000 Launching thread(s), CPUs 4
+02-25 12:33:04.690: I/System.out(20376): successCallback
+02-25 12:33:04.690: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":1,"sdpMid":"video","candidate":"candidate:1516508954 1 udp 2122260223 192.168.0.106 36093 typ host generation 0"},"id":"","number":"ggg"}
+02-25 12:33:04.690: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:04.690: D/WebRtcAudioRecord(20376): AudioRecordThread@[name=AudioRecordJavaThread, id=9950]
+02-25 12:33:04.692: I/System.out(20376): successCallback
+02-25 12:33:04.692: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":0,"sdpMid":"audio","candidate":"candidate:3677098414 1 udp 1686052607 180.102.121.140 12039 typ srflx raddr 192.168.0.106 rport 36093 generation 0"},"id":"","number":"ggg"}
+02-25 12:33:04.692: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:04.716: D/MediaCodecVideo(20376): Destroy video encoder.
+02-25 12:33:04.716: D/MediaCodecVideo(20376): EncoderRelease request
+02-25 12:33:04.718: D/MediaCodecVideo(20376): EncoderReleaseOnCodecThread: Frames received: 0. Encoded: 0. Dropped: 0.
+02-25 12:33:04.718: D/MediaCodecVideoEncoder(20376): Java releaseEncoder
+02-25 12:33:04.727: W/art(20376): Native thread exiting without having called DetachCurrentThread (maybe it's going to use a pthread_key_create destructor?): Thread[16,tid=23982,Native,Thread*=0xa942ed30,peer=0x130e2340,"MediaCodecVideo - 23982"]
+02-25 12:33:04.728: D/MediaCodecVideo(20376): Create HW video encoder for type 0 (VP8).
+02-25 12:33:04.728: D/MediaCodecVideo(20376): InitEncode request
+02-25 12:33:04.730: D/MediaCodecVideo(20376): InitEncodeOnCodecThread Type: 0. 640 x 480. Bitrate: 300 kbps. Fps: 60
+02-25 12:33:04.730: D/MediaCodecVideoEncoder(20376): Java initEncode: VIDEO_CODEC_VP8 : 640 x 480. @ 300 kbps. Fps: 60. Color: 0x0
+02-25 12:33:04.730: V/MediaCodecVideoEncoder(20376): Found candidate encoder OMX.qcom.video.encoder.vp8
+02-25 12:33:04.731: V/MediaCodecVideoEncoder(20376):    Color: 0x7fa30c04
+02-25 12:33:04.731: V/MediaCodecVideoEncoder(20376):    Color: 0x7f000789
+02-25 12:33:04.731: V/MediaCodecVideoEncoder(20376):    Color: 0x7f420888
+02-25 12:33:04.731: V/MediaCodecVideoEncoder(20376):    Color: 0x15
+02-25 12:33:04.731: D/MediaCodecVideoEncoder(20376): Found target encoder for mime video/x-vnd.on2.vp8 : OMX.qcom.video.encoder.vp8. Color: 0x15
+02-25 12:33:04.731: D/MediaCodecVideoEncoder(20376):   Format: {mime=video/x-vnd.on2.vp8, frame-rate=60, color-format=21, height=480, width=640, bitrate=300000, i-frame-interval=100, bitrate-mode=2}
+02-25 12:33:04.735: I/OMXClient(20376): Using client-side OMX mux.
+02-25 12:33:04.742: E/ACodec(20376): [OMX.qcom.video.encoder.vp8] storeMetaDataInBuffers (output) failed w/ err -1010
+02-25 12:33:04.745: W/ACodec(20376): do not know color format 0x7fa30c04 = 2141391876
+02-25 12:33:04.746: W/ACodec(20376): do not know color format 0x7f000789 = 2130708361
+02-25 12:33:04.752: I/ACodec(20376): setupVideoEncoder succeeded
+02-25 12:33:04.767: D/MediaCodecVideoEncoder(20376): Input buffers: 3. Output buffers: 4
+02-25 12:33:04.772: D/MediaCodecVideo(20376): InitDecode.
+02-25 12:33:04.774: D/MediaCodecVideo(20376): InitDecodeOnCodecThread Type: 0. 320 x 180. Fps: 1.
+02-25 12:33:04.775: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.vp8
+02-25 12:33:04.777: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:33:04.777: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:33:04.777: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:33:04.777: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:33:04.777: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:33:04.777: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.vp8. Color: 0x13
+02-25 12:33:04.777: D/MediaCodecVideoDecoder(20376): Java initDecode: VIDEO_CODEC_VP8 : 320 x 180. Color: 0x13. Use Surface: false
+02-25 12:33:04.777: D/MediaCodecVideoDecoder(20376):   Format: {height=180, width=320, mime=video/x-vnd.on2.vp8, color-format=19}
+02-25 12:33:04.788: I/OMXClient(20376): Using client-side OMX mux.
+02-25 12:33:04.801: D/MediaCodecVideoEncoder(20376): Sync frame generated
+02-25 12:33:04.816: I/System.out(20376): successCallback
+02-25 12:33:04.816: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":1,"sdpMid":"video","candidate":"candidate:3677098414 1 udp 1686052607 180.102.121.140 12039 typ srflx raddr 192.168.0.106 rport 36093 generation 0"},"id":"","number":"ggg"}
+02-25 12:33:04.816: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:04.934: D/MediaCodecVideoDecoder(20376): Input buffers: 4. Output buffers: 6
+02-25 12:33:04.935: D/MediaCodecVideo(20376): InitDecode.
+02-25 12:33:04.935: D/MediaCodecVideo(20376): InitDecodeOnCodecThread Type: 0. 640 x 480. Fps: 1.
+02-25 12:33:04.935: D/MediaCodecVideo(20376): DecoderReleaseOnCodecThread: Frames received: 0.
+02-25 12:33:04.935: D/MediaCodecVideoDecoder(20376): Java releaseDecoder
+02-25 12:33:04.947: I/System.out(20376): successCallback
+02-25 12:33:04.947: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":0,"sdpMid":"audio","candidate":"candidate:350743530 1 tcp 1518280447 192.168.0.106 44175 typ host tcptype passive generation 0"},"id":"","number":"ggg"}
+02-25 12:33:04.947: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:04.955: V/MediaCodecVideoEncoder(20376): setRates: 300 kbps. Fps: 39
+02-25 12:33:04.957: V/MediaCodecVideoDecoder(20376): Found candidate decoder OMX.qcom.video.decoder.vp8
+02-25 12:33:04.961: V/MediaCodecVideoDecoder(20376):    Color: 0x7f420888
+02-25 12:33:04.962: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c04
+02-25 12:33:04.962: V/MediaCodecVideoDecoder(20376):    Color: 0x15
+02-25 12:33:04.962: V/MediaCodecVideoDecoder(20376):    Color: 0x13
+02-25 12:33:04.962: V/MediaCodecVideoDecoder(20376):    Color: 0x7fa30c05
+02-25 12:33:04.962: D/MediaCodecVideoDecoder(20376): Found target decoder OMX.qcom.video.decoder.vp8. Color: 0x13
+02-25 12:33:04.962: D/MediaCodecVideoDecoder(20376): Java initDecode: VIDEO_CODEC_VP8 : 640 x 480. Color: 0x13. Use Surface: false
+02-25 12:33:04.962: D/MediaCodecVideoDecoder(20376):   Format: {height=480, width=640, mime=video/x-vnd.on2.vp8, color-format=19}
+02-25 12:33:04.964: I/OMXClient(20376): Using client-side OMX mux.
+02-25 12:33:04.983: V/MediaCodecVideoEncoder(20376): setRates: 300 kbps. Fps: 37
+02-25 12:33:05.052: V/MediaCodecVideoEncoder(20376): setRates: 300 kbps. Fps: 36
+02-25 12:33:05.070: I/System.out(20376): successCallback
+02-25 12:33:05.070: I/RTCListener(20376): OnDebug - {"packet":{"sdpMLineIndex":1,"sdpMid":"video","candidate":"candidate:350743530 1 tcp 1518280447 192.168.0.106 44175 typ host tcptype passive generation 0"},"id":"","number":"ggg"}
+02-25 12:33:05.070: D/AICAction(20376): AddIceCandidateAction
+02-25 12:33:05.084: D/MediaCodecVideoDecoder(20376): Input buffers: 4. Output buffers: 6
+02-25 12:33:05.087: V/MediaCodecVideoEncoder(20376): setRates: 300 kbps. Fps: 35
+02-25 12:33:05.121: V/MediaCodecVideoEncoder(20376): setRates: 300 kbps. Fps: 34
+02-25 12:33:05.151: D/MediaCodecVideoDecoder(20376): Decoder format changed: {image-data=java.nio.ByteArrayBuffer[position=0,limit=80,capacity=80], mime=video/raw, crop-top=0, crop-right=639, slice-height=480, color-format=19, height=480, width=640, what=1869968451, crop-bottom=479, crop-left=0, stride=640}
+02-25 12:33:05.151: D/MediaCodecVideoDecoder(20376): Color: 0x13
+02-25 12:33:05.151: D/MediaCodecVideoDecoder(20376): Frame stride and slice height: 640 x 480
+02-25 12:33:05.158: D/VideoRendererGui(20376): ID: 0. YuvImageRenderer.setSize: 640 x 480 rotation 270
+02-25 12:33:05.158: D/VideoRendererGui(20376):   YuvImageRenderer.setSize done.
+02-25 12:33:05.160: D/VideoRendererGui(20376): ID: 0. AdjustTextureCoords. Allowed display size: 1080 x 1920. Video: 640 x 480. Rotation: 270. Mirror: false
+02-25 12:33:05.160: D/VideoRendererGui(20376):   Adjusted display size: 1080 x 1920
+02-25 12:33:05.160: D/VideoRendererGui(20376):   AdjustTextureCoords done
+02-25 12:33:05.185: V/MediaCodecVideoEncoder(20376): setRates: 325 kbps. Fps: 34
+02-25 12:33:05.255: V/MediaCodecVideoEncoder(20376): setRates: 325 kbps. Fps: 33
+02-25 12:33:05.452: V/MediaCodecVideoEncoder(20376): setRates: 325 kbps. Fps: 32
+02-25 12:33:05.852: V/MediaCodecVideoEncoder(20376): setRates: 325 kbps. Fps: 31
+02-25 12:33:06.218: V/MediaCodecVideoEncoder(20376): setRates: 352 kbps. Fps: 31
+02-25 12:33:06.787: V/MediaCodecVideoEncoder(20376): setRates: 352 kbps. Fps: 30
+02-25 12:33:07.217: V/MediaCodecVideoEncoder(20376): setRates: 381 kbps. Fps: 30
+02-25 12:33:07.742: D/MediaCodecVideo(20376): Encoder bitrate: 279, target: 381 kbps, fps: 30, encTime: 19 for last 3012 ms
+02-25 12:33:08.115: D/MediaCodecVideo(20376): Decoder bitrate: 368 kbps, fps: 33, decTime: 25 for last 3031 ms
+02-25 12:33:08.252: V/MediaCodecVideoEncoder(20376): setRates: 413 kbps. Fps: 30
+02-25 12:33:09.286: V/MediaCodecVideoEncoder(20376): setRates: 447 kbps. Fps: 30
+02-25 12:33:09.364: D/VideoCapturerAndroid(20376): Camera fps: 29. CaptureBuffers: 3.0. Pending buffers: []
+02-25 12:33:09.592: D/VideoRendererGui(20376): ID: 1. Type: RENDERER_YUV. Frames received: 300. Dropped: 0. Rendered: 300
+02-25 12:33:09.592: D/VideoRendererGui(20376): Duration: 10135 ms. FPS: 29.599349991565
+02-25 12:33:09.592: D/VideoRendererGui(20376): Draw time: 1334 us. Copy time: 331 us
+02-25 12:33:10.284: V/MediaCodecVideoEncoder(20376): setRates: 483 kbps. Fps: 30
+02-25 12:33:10.773: D/MediaCodecVideo(20376): Encoder bitrate: 423, target: 483 kbps, fps: 30, encTime: 18 for last 3031 ms
+02-25 12:33:11.319: V/MediaCodecVideoEncoder(20376): setRates: 523 kbps. Fps: 30
+02-25 12:33:11.408: I/System.out(20376): successCallback
+02-25 12:33:11.413: I/RTCListener(20376): OnDebug - {"packet":{"hangup":true},"id":"","number":"ggg"}
+02-25 12:33:11.414: D/PnUserHangup(20376): PnUserHangupAction
+02-25 12:33:11.431: D/MediaCodecVideo(20376): Destroy video encoder.
+02-25 12:33:11.431: D/MediaCodecVideo(20376): EncoderRelease request
+02-25 12:33:11.431: D/MediaCodecVideo(20376): EncoderReleaseOnCodecThread: Frames received: 202. Encoded: 201. Dropped: 0.
+02-25 12:33:11.431: D/MediaCodecVideoEncoder(20376): Java releaseEncoder
+02-25 12:33:11.462: W/art(20376): Native thread exiting without having called DetachCurrentThread (maybe it's going to use a pthread_key_create destructor?): Thread[16,tid=24001,Native,Thread*=0xa942ed30,peer=0x130e25e0,"MediaCodecVideo - 24001"]
+02-25 12:33:11.508: W/art(20376): Native thread exiting without having called DetachCurrentThread (maybe it's going to use a pthread_key_create destructor?): Thread[41,tid=23990,Native,Thread*=0x9e39ad30,peer=0x1315c0a0,"IncomingVideoSt - 23990"]
+02-25 12:33:11.508: D/MediaCodecVideo(20376): DecoderRelease request
+02-25 12:33:11.508: D/MediaCodecVideo(20376): DecoderReleaseOnCodecThread: Frames received: 155.
+02-25 12:33:11.508: D/MediaCodecVideoDecoder(20376): Java releaseDecoder
+02-25 12:33:11.538: D/MediaCodecVideo(20376): DecoderRelease request
+02-25 12:33:11.539: W/art(20376): Native thread exiting without having called DetachCurrentThread (maybe it's going to use a pthread_key_create destructor?): Thread[39,tid=23988,Native,Thread*=0x9e3a8d30,peer=0x131200a0,"MediaCodecVideo - 23988"]
+02-25 12:33:11.540: D/MediaCodecVideo(20376): DecoderRelease request
+02-25 12:33:11.543: D/AudioRecordJni(20376): StopRecording@[tid=23538]
+02-25 12:33:11.543: D/WebRtcAudioRecord(20376): StopRecording
+02-25 12:33:11.630: D/AudioRecordJni(20376): EnableBuiltInAEC@[tid=23538]
+02-25 12:33:11.630: D/WebRtcAudioRecord(20376): EnableBuiltInAEC(true)
+02-25 12:33:11.640: I/RTCListener(20376): OnPeerStatusChanged - ggg Status: DISCONNECTED Dialed: true Received: true Type: answer
+02-25 12:33:11.640: I/RTCListener(20376): OnPeerConnectionClosed - ggg Status: DISCONNECTED Dialed: true Received: true Type: answer
+02-25 12:33:13.219: D/VideoCapturerAndroid(20376): stopCapture
+02-25 12:33:13.219: D/VideoCapturerAndroid(20376): stopCaptureOnCameraThread
+02-25 12:33:13.219: D/VideoCapturerAndroid(20376): Stop preview.
+02-25 12:33:13.447: D/VideoCapturerAndroid(20376): stopReturnBuffersToCamera called. All buffers have been returned.
+02-25 12:33:13.447: D/Camera(20376): app passed NULL surface
+02-25 12:33:13.453: D/MA-iPN(20376): CONNECTED: [1,"Subscribe connected","14563747932470324"]
+02-25 12:33:13.456: D/VideoCapturerAndroid(20376): Release camera.
+02-25 12:33:13.461: D/HA-uH(20376): HISTORY: [["Use of the history API requires the Storage & Playback add-on which is not enabled for this subscribe key. Login to your PubNub Dashboard Account and ADD the Storage & Playback add-on. Contact support@pubnub.com if you require further assistance."],0,0]
+02-25 12:33:13.910: D/MA-sUS(20376): State Set: {"status":"Available"}
+02-25 12:33:14.053: D/VideoCapturerAndroid(20376): stopCapture done
+02-25 12:33:14.086: I/Choreographer(20376): Skipped 53 frames!  The application may be doing too much work on its main thread.

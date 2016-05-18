@@ -1,0 +1,2 @@
+activityA传递给了activityB一些数据，通过intent.putextra
+当app进程因为系统回收资源而被杀死时，再次进入app，将进入activityB，而传递给它的intent.extra还在

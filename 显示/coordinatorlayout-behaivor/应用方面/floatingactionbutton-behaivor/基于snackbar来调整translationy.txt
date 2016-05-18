@@ -1,0 +1,37 @@
+参见：https://lab.getbase.com/introduction-to-coordinator-layout-on-android/
+
+效果：
+当为rootLayout指定了snackbar时，snackbar出现时，fab在snackbar的上面，并随着snackbar的消失而调整y
+
+----------------------------------个人的代码（非系统内置）来实现
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:layout_behavior="com.getbase.coordinatorlayoutdemo.FloatingActionButtonBehavior"
+        app:fab_icon="@drawable/ic_done" />
+
+</android.support.design.widget.CoordinatorLayout>
+
+FloatingActionButtonBehavior.java内部
+	@Override
+	public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+	  return dependency instanceof SnackbarLayout;
+	}
+
+	@Override
+	public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+	  float translationY = Math.min(0, dependency.getTranslationY() - dependency.getHeight());
+	  child.setTranslationY(translationY);
+	  return true;
+	}

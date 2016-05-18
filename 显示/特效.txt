@@ -1,0 +1,12 @@
+btn点击的效果：
+	不采用一个图片
+	而是采用：图片+Shape Drawable
+	参见：my/buttonEffect
+path特效：
+	参见：my/pathEffect
+paint的一些用法
+	参见：my/paint
+其他特效
+	参见：my/androidEffect
+bitmap的像素级控制（改变颜色，投影，改变alpha）
+	参见：my/bitmapPixel

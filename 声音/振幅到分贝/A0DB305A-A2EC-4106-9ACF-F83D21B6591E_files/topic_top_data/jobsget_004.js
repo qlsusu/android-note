@@ -1,0 +1,1 @@
+document.write('<li><a href="http://www.csdn.net/article/2012-09-21/2810214" target=_blank>开发优秀产品的六大秘诀</a></li>');

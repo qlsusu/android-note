@@ -1,0 +1,12 @@
+请设置imageview的src，而不是background
+在某个地方调用，imageview.setmatrix...
+
+当设置了background（通过设置resid）
+那么，设置src时（通过设置bitmap），图片在展示上，会自动放大（倍数参见：com.ql.tool.DeviceTool.getDisplayMetrics(Activity)的说明）
+同理，对于 一开始设置了src，而后又要设置background的情况
+--
+但是，当没有设置background（通过设置resid）（而无论是否设置了src），当设置src时（通过bitmap），图片在展示上，不会自动放大
+同理，对于 没有设置src，而后又要设置background的情况
+
+scaletype
+参见：http://blog.csdn.net/larryl2003/article/details/6919513

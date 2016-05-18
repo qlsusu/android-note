@@ -1,0 +1,31 @@
+参见：
+Android Studio 打包及引用 aar
+	http://www.androidchina.net/2467.html
+
+---------------------------------------------
+
+aar包含了一个 library的资源（如：res和.class等）
+
+---------------------------------------------如何使用
+libraray可以和app位于不同的project中
+
+如何生成library（设名字为lib1）对应的aar：
+在project中选中libraray模块，菜单中build-make module 'lib1'
+后，在 工程/lib1/build/outputs/aar/ 下，可以发现lib1-debug.aar
+
+在app的build.gradle中
+//意味着增加一个本地库
+repositories {
+    flatDir {
+        dirs '.aar的父文件夹的完整路径'
+    }
+}
+
+dependencies {
+    compile(name: 'aar文件的名字（不含扩展名）', ext: 'aar')
+}
+
+---------------------------------------------有什么问题
+当修改了library的代码后，需要再进行build，否则app依赖的aar还是老的
+
+当lib1依赖了另外一个library（lib2）,虽然在编译上没有报错，但是在运行app时，却提示 没有找到lib2中对应的class

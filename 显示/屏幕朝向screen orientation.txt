@@ -1,0 +1,15 @@
+无论是否声明：朝向固定
+监听屏幕朝向改变：com.oooo3d.talkingtom.util.DeviceTool.listenOrientation(Context, OrientationChangeListener)
+在声明朝向固定前提下，当监听到朝向改变，
+	获取应调整角度：com.oooo3d.talkingtom.util.DeviceTool.getOrientationAngle()
+	调整
+	
+强制控制屏幕朝向
+activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	SCREEN_ORIENTATION_PORTRAIT
+	SCREEN_ORIENTATION_LANDSCAPE
+	SCREEN_ORIENTATION_UNSPECIFIED
+	
+获得当前的屏幕朝向
+resource.getConfiguration().orientation;
+可能的取值为Configuration.ORIENTATION_LANDSCAPE, Configuration.ORIENTATION_PORTRAIT

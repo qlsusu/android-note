@@ -1,0 +1,14 @@
+采用android l sdk，使app的UI效果在 4.x和5之间切换
+
+使用5效果，条件：
+app基于5 sdk开发
+依赖appcompat_v7
+values/values-v11/values-v14中，AppBaseTheme的parent为 Theme.AppCompat.Light/Theme.AppCompat.Light/Theme.AppCompat.Light.DarkActionBar
+Activity继承于ActionBarActivity
+
+-------------------------------
+
+使用4.x效果，条件：
+android:Theme.Holo.Light.DarkActionBar
+values/values-v11/values-v14中，AppBaseTheme的parent为 android:Theme.Light/android:Theme.Holo.Light/android:Theme.Holo.Light.DarkActionBar
+Activity继承于Activity

@@ -1,0 +1,3 @@
+参见：http://blog.csdn.net/giantgreen/article/details/8723305
+该dialog为系统级dialog
+dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//设定为系统级警告，关键  

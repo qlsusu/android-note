@@ -1,0 +1,3 @@
+参见：
+Android中如何实现蓝牙的配对与连接
+	http://blog.csdn.net/u012910985/article/details/50387551

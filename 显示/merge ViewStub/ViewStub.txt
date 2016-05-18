@@ -1,0 +1,47 @@
+参见：
+Android布局优化之ViewStub、include、merge使用与源码分析
+	http://blog.csdn.net/bboyfeiyu/article/details/45869393
+
+ViewStub就是一个宽高都为0的一个View，它默认是不可见的，只有通过调用setVisibility函数或者Inflate函数才会将其要装载的目标布局给加载出来，从而达到延迟加载的效果
+加载结果：ViewStub从parent中移除、把目标布局的根元素添加到parent中
+
+一个例子：
+<ViewStub  
+    android:id="@+id/stub_import"  
+    android:inflatedId="@+id/stub_comm_lv"  
+    android:layout="@layout/my_comment_layout"  
+    android:layout_width="fill_parent"  
+    android:layout_height="wrap_content"  
+    android:layout_gravity="bottom" /  
+--  
+而my_comment_layout.xml如下:
+<?xml version="1.0" encoding="utf-8"?>  
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:id="@+id/my_comm_lv"  
+    android:layout_height="match_parent" >  
+</ListView>  
+
+如果加载：
+方式1（通过setvisibility）：
+ViewStub listStub = (ViewStub) findViewById(R.id.stub_import);  
+// 加载评论列表布局  
+listStub.setVisibility(View.VISIBLE);  
+// 获取到评论ListView，注意这里是通过ViewStub的inflatedId来获取  
+//	如果inflatedId不设置，则通过R.id.my_comm_lv
+	ListView commLv = findViewById(R.id.stub_comm_lv);  
+		if ( listStub.getVisibility() == View.VISIBLE ) {  
+			   // 已经加载, 否则还没有加载  
+		}  
+	}  
+}  
+--
+方式2（通过inflate）
+ViewStub listStub2 = (ViewStub) findViewById(R.id.stub_import) ;  
+// 成员变量commLv2为空则代表未加载  
+if ( commLv2 == null ) {  
+// 加载评论列表布局, 并且获取评论ListView,inflate函数直接返回ListView对象  
+  commLv2 = (ListView)listStub2.inflate();  
+} else {  
+// ViewStub已经加载  
+}  

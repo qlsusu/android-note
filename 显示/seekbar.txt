@@ -1,0 +1,2 @@
+自定义seekbar（进度条）
+	http://www.cnblogs.com/skywang12345/archive/2013/06/15/3123562.html

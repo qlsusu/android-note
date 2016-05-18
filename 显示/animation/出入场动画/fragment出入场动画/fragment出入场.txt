@@ -1,0 +1,8 @@
+FragmentTransaction transaction = fragmentManager.beginTransaction();
+transaction.setCustomAnimations(R.anim.frag_push_left_in, R.anim.frag_push_left_out);
+参见：my/fragmentdemo
+说明：setCustomAnimations() must be called before add(), replace(), or any other action method, or the animation will not run
+
+原生的版本
+如果使用了原生的fragment，参见：android recipes v4/1_11_TransitionAnimations/NativeActivity.java
+	其主要设置了style，参见：values-v11中的NativeFragmentTheme

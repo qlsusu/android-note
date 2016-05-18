@@ -1,0 +1,4 @@
+设置背景透明
+	view.setBackgroundColor(0x00000000);
+	
+或者使用：@android:color/transparent	

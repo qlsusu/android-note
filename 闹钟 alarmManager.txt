@@ -1,0 +1,38 @@
+参见：
+Android AlarmManager的一些问题
+	http://mycoding.iteye.com/blog/1172055
+
+
+除了设置闹钟外，
+可以用来进程保活：每隔一段时间来通知一下app
+	缺点：当进程被杀死后，好像也得不到通知了
+	
+----------------------------用法	
+//得到AlarmManager实例  
+AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+Intent intent = new Intent(MyContext.getInstance().getContext(), DaemonReceiver.class);  
+PendingIntent pi = PendingIntent.getBroadcast(MyContext.getInstance().getContext(), 0, intent, 0);  
+//根据当前时间预设一个警报  
+//        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+HEART_BEAT_INTERVAL, pi);  
+//另外一种设置时间的方式
+am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+HEART_BEAT_INTERVAL,   
+		HEART_BEAT_INTERVAL, pi);  
+
+----------------------------类型		
+public static final int ELAPSED_REALTIME
+//当系统进入睡眠状态时，这种类型的闹铃不会唤醒系统。直到系统下次被唤醒才传递它，该闹铃所用的时间是相对时间，是从系统启动后开始计时的,包括睡眠时间，可以通过调用SystemClock.elapsedRealtime()获得。系统值是3    (0x00000003)。
+
+public static final int ELAPSED_REALTIME_WAKEUP
+//能唤醒系统，用法同ELAPSED_REALTIME，系统值是2 (0x00000002) 。
+
+public static final int RTC
+//当系统进入睡眠状态时，这种类型的闹铃不会唤醒系统。直到系统下次被唤醒才传递它，该闹铃所用的时间是绝对时间，所用时间是UTC时间，可以通过调用 System.currentTimeMillis()获得。系统值是1 (0x00000001) 。
+
+public static final int RTC_WAKEUP
+//能唤醒系统，用法同RTC类型，系统值为 0 (0x00000000) 。
+
+如果使用ELAPSED_REALTIME_WAKEUP类型 应该调用SystemClock.elapsedRealtime()获取相对时间在加上你设定的延迟时间
+	如：alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+5000, sender);   
+如果使用RTC_WAKEUP类型 应该调用System.currentTimeMillis()获取从1970.1.1号以来的时间在加上你设定的延迟时间
+	如：alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, sender);  

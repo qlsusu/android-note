@@ -1,0 +1,4 @@
+dpi：density per inch
+
+尺寸
+160dp = 1英寸。320 dp = 2英寸

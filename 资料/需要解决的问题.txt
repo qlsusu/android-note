@@ -1,0 +1,48 @@
+高焕堂android应用软件架构设计，查看资料日期
+Android核心分析http://blog.csdn.net/maxleng/archive/2010/06/13/5670052.aspx
+1.	
+2.	Android如何通过content provider构建媒体文件数据库二_albertChen的 ...
+2009年1月11日 ... Android如何通过content provider构建媒体文件数据库二 ... 而在应用程序中是找不到删除文件的代码，这个困扰了我两天，在程序中加log，分析源代码， ...
+hi.baidu.com/albertchen521/.../5a182ed811109cee39012fba.html - 网页快照
+Google搜索contentreslover.notifychange
+查看此连载文章
+1.	Android文章连载之：第三章第三节：数据存储与获取（6）-北京顶嵌嵌入 ...
+2009年11月9日 ... 这就意味要实现query(), update(), insert(), 和 delete() 方法，你可能需
+
+1.	O'Reilly Linux系列书籍导读
+
+文章出处：http://www.limodev.cn/blog
+http://www.easyandroid.com
+
+Android内核的简单分析
+http://blog.chinaunix.net/u2/85263/showart_1729098.html
+
+Android内核和驱动篇-Android内核介绍
+http://www.cnblogs.com/leaven/archive/2010/01/10/1643429.html
+
+javaeye
+ 
+http://www.zxhwolfe.com/
+
+eoe的用户iceskysl，其个人网站：http://iceskysl.1sters.com/
+http://www.eoeandroid.com/search.php?searchid=544&orderby=lastpost&ascdesc=desc&searchsubmit=yes
+
+android123
+
+qiaoakai的博客android学习
+
+后面：
+Eoe的教程
+高焕堂
+	36技
+
+eoe?Android开发社区 ? Android实例教程 ? 新版Android开发教程&笔记
+新版Android开发教程&笔记
+
+http://yinter.javaeye.com/category/85132
+http://www.cnblogs.com/jacktu/category/115008.html
+http://www.cnblogs.com/jacktu/archive/2009/09/04/1560085.html
+http://www.androidres.com/index.php/2009/05/07/android-log-tutorials/
+	查看androidres
+
+source.android.com/source/download.html

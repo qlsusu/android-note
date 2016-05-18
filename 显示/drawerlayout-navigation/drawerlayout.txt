@@ -1,0 +1,37 @@
+参见：
+android recipe v4/2_17_DrawerLayout
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0925/1713.html
+	
+drawerLayout带有滑动（在屏幕的左边缘 向右滑动）的功能
+包含了 content 和 navigation
+
+编程打开关闭drawer
+DrawerLayout.closeDrawer方法用于隐藏侧边菜单，
+DrawerLayout.openDrawer方法用于展开侧边菜单
+
+DrawerListener
+drawerLayout左侧菜单（或者右侧）的展开与隐藏可以被DrawerLayout.DrawerListener的实现监听到，这样你就可以在菜单展开与隐藏反生的时刻做一些希望做的事情，比如更新actionbar菜单等。
+
+ActionBarDrawerToggle
+如果你的activity有actionbar的话，还是建议你用ActionBarDrawerToggle来监听，ActionBarDrawerToggle实现了DrawerListener，所以他能做DrawerListener可以做的任何事情，
+同时他还能将drawerLayout的展开和隐藏与actionbar的app 图标关联起来，当展开与隐藏的时候图标有一定的平移效果，点击图标的时候还能展开或者隐藏菜单。
+mDrawerToggle = new ActionBarDrawerToggle(
+        this,                  /* host Activity */
+        mDrawerLayout,         /* DrawerLayout object */
+        R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+        R.string.drawer_open,  /* "open drawer" description for accessibility */
+        R.string.drawer_close  /* "close drawer" description for accessibility */
+        ) {
+    public void onDrawerClosed(View view) {
+        getActionBar().setTitle(mTitle);
+        invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+    }
+    public void onDrawerOpened(View drawerView) {
+        getActionBar().setTitle(mDrawerTitle);
+        invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+    }
+};
+mDrawerLayout.setDrawerListener(mDrawerToggle);
+// 注意：只有设置了如下，标题左边的 切换图标 才能显示出来
+getSupportActionBar().setHomeButtonEnabled(true);
+getSupportActionBar().setDisplayHomeAsUpEnabled(true);

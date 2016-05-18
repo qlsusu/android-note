@@ -1,0 +1,948 @@
+<html>
+<head>
+<title> Fields and Methods </title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="objtypes.html">Prev</a> | <a href="refs.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="11201"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 4 chapter</font>
+</h1>
+</div>
+<a name="11202"></a>
+<h1>Fields and Methods </h1>
+<hr><p>
+
+<p>
+  <a name="11203"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">N</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">ow</font> that you know how the JNI lets native code access primitive types and reference types such as strings and arrays, the next step will be to learn how to interact with fields and methods in arbitrary objects. In addition to accessing fields, this includes making calls to methods implemented in the Java programming language from native code, commonly known as performing <em>callbacks</em> from native code.</font>
+</p>
+
+
+<p>
+  <a name="30287"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We will begin by introducing the JNI functions that support field access and method callbacks. Later in this chapter we will discuss how to make such operations more efficient by using a simple but effective caching technique. In the last section, we will discuss the performance characteristics of calling native methods as well as accessing fields and calling methods from native code.</font>
+</p>
+
+<a name="30289"></a>
+<h2>4.1    Accessing Fields</h2>
+
+<p>
+  <a name="30290"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The Java programming language supports two kinds of fields. Each instance of a class has its own copy of the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">instance fields</font> of the class, whereas all instances of a class share the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">static fields</font> of the class. </font>
+</p>
+
+
+<p>
+  <a name="27587"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI provides functions that native code can use to get and set instance fields in objects and static fields in classes. Let us first look at an example program that illustrates how to access instance fields from a native method implementation.</font>
+</p>
+
+
+<p>
+  <a name="49106"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49107"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49108"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49109"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49110"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="59284"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49111"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49112"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49113"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="4454"> </a>class InstanceFieldAccess {
+<a name="4456"> </a>    private String s;
+<a name="4457"> </a>
+<a name="4458"> </a>    private native void accessField();
+<a name="4459"> </a>    public static void main(String args[]) {
+<a name="4460"> </a>        InstanceFieldAccess c = new InstanceFieldAccess();
+<a name="4462"> </a>        c.s = "abc";
+<a name="4463"> </a>        c.accessField();
+<a name="4464"> </a>        System.out.println("In Java:");
+<a name="4466"> </a>        System.out.println("  c.s = \"" + c.s + "\"");
+<a name="4467"> </a>    }
+<a name="4468"> </a>    static {
+<a name="4469"> </a>        System.loadLibrary("InstanceFieldAccess");
+<a name="4470"> </a>    }
+<a name="4471"> </a>}
+</pre>
+
+<p>
+  <a name="26769"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>InstanceFieldAccess</code> class defines an instance field <code>s</code>. The <code>main</code> method creates an object, sets the instance field, and then calls the native method <code>InstanceFieldAccess.accessField</code>. As we will see shortly, the native method prints out the existing value of the instance field and then sets the field to a new value. The program prints the field value again after the native method returns, demonstrating that the field value has indeed changed.</font>
+</p>
+
+
+<p>
+  <a name="4478"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Here is the implementation of the <code>InstanceFieldAccess</code>.<code>accessField</code> native method. </font>
+</p>
+
+<pre>
+<a name="4483"> </a>JNIEXPORT void JNICALL 
+<a name="5461"> </a>Java_InstanceFieldAccess_accessField(JNIEnv *env, jobject obj)
+<a name="4484"> </a>{
+<a name="4486"> </a>    jfieldID fid;   /* store the field ID */
+<a name="30180"> </a>    jstring jstr;
+<a name="30181"> </a>    const char *str;
+<a name="27673"> </a>
+<a name="55997"> </a>    /* Get a reference to obj&#39;s class */
+<a name="55998"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, obj);
+<a name="55999"> </a>
+<a name="4491"> </a>    printf("In C:\n");
+<a name="30165"> </a>
+<a name="30176"> </a>    /* Look for the instance field s in cls */
+<a name="4500"> </a>    fid = (*env)-&gt;GetFieldID(env, cls, "s",
+<a name="27676"> </a>                             "Ljava/lang/String;");
+<a name="4501"> </a>    if (fid == NULL) {
+<a name="4502"> </a>        return; /* failed to find the field */
+<a name="9679"> </a>    }
+<a name="34012"> </a>
+<a name="55908"> </a>
+<a name="55909"> </a>
+<a name="55983"> </a>
+<a name="27677"> </a>    /* Read the instance field s */
+<a name="4503"> </a>    jstr = (*env)-&gt;GetObjectField(env, obj, fid);
+<a name="4504"> </a>    str = (*env)-&gt;GetStringUTFChars(env, jstr, NULL);
+<a name="10937"> </a>    if (str == NULL) {
+<a name="10938"> </a>        return; /* out of memory */
+<a name="10939"> </a>    }
+<a name="4505"> </a>    printf("  c.s = \"%s\"\n", str);
+<a name="4506"> </a>    (*env)-&gt;ReleaseStringUTFChars(env, jstr, str);
+<a name="4507"> </a>
+<a name="27680"> </a>    /* Create a new string and overwrite the instance field */
+<a name="4508"> </a>    jstr = (*env)-&gt;NewStringUTF(env, "123");
+<a name="55912"> </a>    if (jstr == NULL) {
+<a name="55913"> </a>        return; /* out of memory */
+<a name="55987"> </a>    }
+<a name="55988"> </a>    (*env)-&gt;SetObjectField(env, obj, fid, jstr);
+<a name="55989"> </a>}
+</pre>
+
+<p>
+  <a name="8340"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Running the <code>InstanceFieldAccess</code> class with the <code>InstanceFieldAccess</code> native library produces the following output:</font>
+</p>
+
+<pre>
+<a name="8341"> </a>In C:
+<a name="8343"> </a>  c.s = "abc"
+<a name="8344"> </a>In Java:
+<a name="8346"> </a>  c.s = "123"
+</pre>
+<a name="4513"></a>
+<h3>4.1.1    Procedure for Accessing an Instance Field</h3>
+
+<p>
+  <a name="4514"> </a><font face="Arial, Verdana, Helvetica, sans-serif">To access an instance field, the native method follows a two-step process. First, it calls <code>GetFieldID</code> to obtain the <em>field ID</em> from the class reference, field name, and field descriptor:</font>
+</p>
+
+<pre>
+<a name="4518"> </a>fid = (*env)-&gt;GetFieldID(env, cls, "s", "Ljava/lang/String;");
+</pre>
+
+<p>
+  <a name="4519"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The example code obtains the class reference <code>cls</code> by calling <code>GetObjectClass</code> on the instance reference <code>obj</code>, which is passed as the second argument to the native method implementation.</font>
+</p>
+
+
+<p>
+  <a name="26153"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Once you have obtained the field ID, you can pass the object reference and the field ID to the appropriate instance field access function:</font>
+</p>
+
+<pre>
+<a name="4522"> </a>jstr = (*env)-&gt;GetObjectField(env, obj, fid);
+</pre>
+
+<p>
+  <a name="4523"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Because strings and arrays are special kinds of objects, we use <code>GetObjectField</code> to access the instance field that is a string. Besides <code>Get/SetObjectField</code>, the JNI also supports other functions such as <code>GetIntField</code> and <code>SetFloatField</code> for accessing instance fields of primitive types.</font>
+</p>
+
+<a name="24726"></a>
+<h3>4.1.2    Field Descriptors</h3>
+
+<p>
+  <a name="4525"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You might have noticed that in the previous section we used a specially encoded C string <code>"Ljava/lang/String;"</code> to represent a field type in the Java programming language. These C strings are called<em> JNI field descriptors</em>.</font>
+</p>
+
+
+<p>
+  <a name="4527"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The content of the string is determined by the declared type of the field. For example, you represent an <code>int</code> field with <code>"I"</code>, a <code>float</code> field with <code>"F"</code>, a <code>double</code> field with <code>"D"</code>, a <code>boolean</code> field with <code>"Z"</code>, and so on.</font>
+</p>
+
+
+<p>
+  <a name="34022"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The descriptor for a reference type, such as <code>java.lang.String</code>, begins with the letter <code>L</code>, is followed by the JNI class descriptor (<a href="objtypes.html#27791">&#167;3.3.5</a>), and is terminated by a semicolon. The <code>&#34;.&#34;</code> separators in fully qualified class names are changed to <code>&#34;/&#34;</code> in JNI class descriptors. Thus, you form the field descriptor for a field with type <code>java.lang.String</code> as follows:</font>
+</p>
+
+<pre>
+<a name="4529"> </a>"Ljava/lang/String;"
+</pre>
+
+<p>
+  <a name="26333"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Descriptors for array types consist of the <code>&#34;[&#34;</code> character, followed by the descriptor of the component type of the array. For example, <code>"[I"</code> is the descriptor for the <code>int[]</code> field type. Section <a href="types.html#70113">12.3.3</a> contains the details of field descriptors and their matching types in the Java programming language.</font>
+</p>
+
+
+<p>
+  <a name="4538"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can use the <code>javap</code> tool (shipped with JDK or Java 2 SDK releases) to generate the field descriptors from class files. Normally <code>javap</code> prints out the method and field types in a given class. If you specify the <code>-s</code> option (and the <code>-p</code> option for exposing private members), <code>javap</code> prints JNI descriptors instead:</font>
+</p>
+
+<pre>
+<a name="4539"> </a>javap -s -p InstanceFieldAccess
+</pre>
+
+<p>
+  <a name="4540"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This gives you output containing the JNI descriptors for the field <code>s</code>:</font>
+</p>
+
+<pre>
+<a name="4541"> </a>...
+<a name="4543"> </a>s Ljava/lang/String;
+<a name="4544"> </a>...
+</pre>
+
+<p>
+  <a name="26343"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Using the <code>javap</code> tool helps eliminate mistakes that can occur from deriving JNI descriptor strings by hand.</font>
+</p>
+
+<a name="30222"></a>
+<h3>4.1.3    Accessing Static Fields</h3>
+
+<p>
+  <a name="30223"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Accessing static fields is similar to accessing instance fields. Let us look at a minor variation of the <code>InstanceFieldAccess</code> example:</font>
+</p>
+
+
+<p>
+  <a name="49116"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="30010"> </a>class StaticFielcdAccess {
+<a name="30011"> </a>    private static int si;
+<a name="49052"> </a>
+<a name="49053"> </a>    private native void accessField();
+<a name="49054"> </a>    public static void main(String args[]) {
+<a name="30016"> </a>        StaticFieldAccess c = new StaticFieldAccess();
+<a name="30017"> </a>        StaticFieldAccess.si = 100;
+<a name="30019"> </a>        c.accessField();
+<a name="30020"> </a>        System.out.println("In Java:");
+<a name="30021"> </a>        System.out.println("  StaticFieldAccess.si = " + si);
+<a name="30023"> </a>    }
+<a name="30024"> </a>    static {
+<a name="30025"> </a>        System.loadLibrary("StaticFieldAccess");
+<a name="30026"> </a>    }
+<a name="30027"> </a>}
+</pre>
+
+<p>
+  <a name="30028"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>StaticFieldAccess</code> class contains a static integer field <code>si</code>. The <code>Static-FieldAccess.main</code> method creates an object, initializes the static field, and then calls the native method <code>StaticFieldAccess.accessField</code>. As we will see shortly, the native method prints out the existing value of the static field and then sets the field to a new value. To verify that the field has indeed changed, the program prints the static field value again after the native method returns.</font>
+</p>
+
+
+<p>
+  <a name="30029"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Here is the implementation of the <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">StaticFieldAccess</font>.<code>accessField</code> native method.</font>
+</p>
+
+<pre>
+<a name="30030"> </a>JNIEXPORT void JNICALL 
+<a name="30031"> </a>Java_StaticFieldAccess_accessField(JNIEnv *env, jobject obj)
+<a name="30032"> </a>{
+<a name="30033"> </a>    jfieldID fid;   /* store the field ID */
+<a name="30036"> </a>    jint si;
+<a name="30037"> </a>
+<a name="30038"> </a>    /* Get a reference to obj&#39;s class */
+<a name="30039"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, obj);
+<a name="30040"> </a>
+<a name="30041"> </a>    printf("In C:\n");
+<a name="30042"> </a>
+<a name="30043"> </a>    /* Look for the static field si in cls */
+<a name="30044"> </a>    fid = (*env)-&gt;GetStaticFieldID(env, cls, "si", "I");
+<a name="30045"> </a>    if (fid == NULL) {
+<a name="30046"> </a>        return; /* field not found */
+<a name="30047"> </a>    }
+<a name="30048"> </a>    /* Access the static field si */
+<a name="30049"> </a>    si = (*env)-&gt;GetStaticIntField(env, cls, fid);
+<a name="30050"> </a>    printf("  StaticFieldAccess.si = %d\n", si);
+<a name="30051"> </a>    (*env)-&gt;SetStaticIntField(env, cls, fid, 200);
+<a name="30071"> </a>}
+</pre>
+
+<p>
+  <a name="30072"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Running the program with the native library produces the following output:</font>
+</p>
+
+<pre>
+<a name="30073"> </a>In C:
+<a name="30074"> </a>  StaticFieldAccess.si = 100
+<a name="30076"> </a>In Java:
+<a name="30077"> </a>  StaticFieldAccess.si = 200
+</pre>
+
+<p>
+  <a name="30080"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are two differences between how you access a static field and how you access an instance field:</font>
+</p>
+
+<ol><font face="Arial, Verdana, Helvetica, sans-serif">
+<li>You call <code>GetStaticFieldID</code> for static fields, as opposed to <code>GetFieldID</code> for 
+instance fields. <code>GetStaticFieldID</code> and <code>GetFieldID</code> have the same return type 
+<code>jfieldID</code>.
+</font><li><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</ol><a name="26010"></a>
+<h2>4.2    Calling Methods</h2>
+
+<p>
+  <a name="27621"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There are several kinds of methods in the Java programming language. <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Instance methods</font> must be invoked on a specific instance of a class, whereas <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">static methods</font> may be invoked independent of any instance. We will defer the discussion of <em>constructors</em> to the next section.</font>
+</p>
+
+
+<p>
+  <a name="30333"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI supports a complete set of functions that allow you to perform callbacks from native code. The example program below contains a native method that in turn calls an instance method implemented in the Java programming language.</font>
+</p>
+
+<pre>
+<a name="26012"> </a>class InstanceMethodCall {
+<a name="26013"> </a>    private native void nativeMethod();
+<a name="26014"> </a>    private void callback() {
+<a name="26015"> </a>        System.out.println("In Java");
+<a name="26016"> </a>    }
+<a name="26017"> </a>    public static void main(String args[]) {
+<a name="26018"> </a>        InstanceMethodCall c = new InstanceMethodCall();
+<a name="26019"> </a>        c.nativeMethod();
+<a name="26020"> </a>    }
+<a name="30574"> </a>    static {
+<a name="30575"> </a>        System.loadLibrary("InstanceMethodCall");
+<a name="30576"> </a>    }
+<a name="26024"> </a>}
+</pre>
+
+<p>
+  <a name="49123"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="49124"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="26025"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Here is the implementation of the native method:</font>
+</p>
+
+<pre>
+<a name="26026"> </a>JNIEXPORT void JNICALL 
+<a name="26027"> </a>Java_InstanceMethodCall_nativeMethod(JNIEnv *env, jobject obj)
+<a name="26029"> </a>{
+<a name="26030"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, obj);
+<a name="26031"> </a>    jmethodID mid = 
+<a name="26032"> </a>        (*env)-&gt;GetMethodID(env, cls, "callback", "()V");
+<a name="26033"> </a>    if (mid == NULL) {
+<a name="26034"> </a>        return; /* method not found */
+<a name="26035"> </a>    }
+<a name="34039"> </a>    printf("In C\n");
+<a name="26036"> </a>    (*env)-&gt;CallVoidMethod(env, obj, mid);
+<a name="26037"> </a>}
+</pre>
+
+<p>
+  <a name="26038"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Running the above program produces the following output:</font>
+</p>
+
+<pre>
+<a name="26039"> </a>In C
+<a name="49094"> </a>In Java
+</pre>
+<a name="49095"></a>
+<h3>4.2.1    Calling Instance Methods</h3>
+
+<p>
+  <a name="49096"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>Java_</code><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">InstanceMethodCall</font><code>_nativeMethod</code> implementation illustrates the two steps required to call an instance method:</font>
+</p>
+
+<a name="26043"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>The native method first calls the JNI function <code>GetMethodID</code>. <code>GetMethodID</code> performs a lookup for the method in the given class. The lookup is based on the name and type descriptor of the method. If the method does not exist, <code>GetMethodID</code> returns <code>NULL</code>. At this point, an immediate return from the native method causes a <code>NoSuchMethodError</code> to be thrown in the code that called <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">InstanceMethodCall.nativeMethod</font>.</font><a name="26044"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>The native method then calls <code>CallVoidMethod</code>. <code>CallVoidMethod</code> invokes an instance method that has the return type <code>void</code>. You pass the object, the method ID, and the actual arguments (though in the above example there are none) to <code>CallVoidMethod</code>. </font>
+</ul>
+<p>
+  <a name="30353"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Besides the <code>CallVoidMethod</code> function, the JNI also supports method invocation functions with other return types. For example, if the method you called back returned a value of type <code>int</code>, then your native method would use <code>CallIntMethod</code>. Similarly, you can use <code>CallObjectMethod</code> to call methods that return objects, which include <code>java.lang.String</code> instances and arrays.</font>
+</p>
+
+
+<p>
+  <a name="30379"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can use <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Call&lt;Type&gt;Method</font> family of functions to invoke interface methods as well. You must derive the method ID from the interface type. The following code segment, for example, invokes the <code>Runnable.run</code> method on a <code>java.lang.Thread</code> instance:</font>
+</p>
+
+<pre>
+<a name="30385"> </a>jobject thd = ...; /* a java.lang.Thread instance */
+<a name="30392"> </a>jmethodID mid;
+<a name="30389"> </a>jclass runnableIntf = 
+<a name="49133"> </a>    (*env)-&gt;FindClass(env, "java/lang/Runnable");
+<a name="30394"> </a>if (runnableIntf == NULL) {
+<a name="30395"> </a>    ... /* error handling */
+<a name="30396"> </a>}
+<a name="30388"> </a>mid = (*env)-&gt;GetMethodID(env, runnableIntf, "run", "()V");
+<a name="30397"> </a>if (mid == NULL) {
+<a name="30399"> </a>    ... /* error handling */
+<a name="30398"> </a>}
+<a name="30401"> </a>(*env)-&gt;CallVoidMethod(env, thd, mid);
+<a name="30402"> </a>... /* check for possible exceptions */
+</pre>
+
+<p>
+  <a name="30406"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We have seen in Section <a href="objtypes.html#27791">3.3.5</a> that the <code>FindClass</code> function returns a reference to a named class. Here we also use it to obtain a reference to a named interface.</font>
+</p>
+
+<a name="26046"></a>
+<h3>4.2.2    Forming the Method Descriptor</h3>
+
+<p>
+  <a name="26047"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI uses descriptor strings to denote method types in a way similar to how it denotes field types. A method descriptor combines the argument types and the return type of a method. The argument types appear first and are surrounded by one pair of parentheses. Argument types are listed in the order in which they appear in the method declaration. There are no separators between multiple argument types. If a method takes no arguments, this is represented with an empty pair of parentheses. Place the method's return type immediately after the right closing parenthesis for the argument types.</font>
+</p>
+
+
+<p>
+  <a name="26319"> </a><font face="Arial, Verdana, Helvetica, sans-serif">For example, "<code>(I)V</code>" denotes a method that takes one argument of type <code>int</code> and has return type <code>void</code>. "<code>()D</code>" denotes a method that takes no arguments and returns a <code>double</code>. Do not let C function prototypes such as "<code>int f(void)</code>" mislead you to thinking that "<code>(V)I</code>" is a valid method descriptor. Use "<code>()I</code>" instead.</font>
+</p>
+
+
+<p>
+  <a name="56007"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Method descriptors may involve class descriptors (<a href="types.html#65751">&#167;12.3.2</a>). For example, the method:</font>
+</p>
+
+<pre>
+<a name="55919"> </a>native private String getLine(String);
+</pre>
+
+<p>
+  <a name="55920"> </a><font face="Arial, Verdana, Helvetica, sans-serif">has the following descriptor:</font>
+</p>
+
+<pre>
+<a name="26050"> </a>"(Ljava/lang/String;)Ljava/lang/String;"
+</pre>
+
+<p>
+  <a name="26051"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Descriptors for array types begin with the <code>&#34;[</code><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">&#34;</font> character, followed by the descriptor of the array element type. For example, the method descriptor of:</font>
+</p>
+
+<pre>
+<a name="59289"> </a>public static void main(String[] args);
+</pre>
+
+<p>
+  <a name="59294"> </a><font face="Arial, Verdana, Helvetica, sans-serif">is as follows:</font>
+</p>
+
+<pre>
+<a name="26052"> </a>"([Ljava/lang/String;)V"
+</pre>
+
+<p>
+  <a name="26053"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Section <a href="types.html#70136">12.3.4</a> gives a complete description of how to form JNI method descriptors. You can use the <code>javap</code> tool to print out JNI method descriptors. For example, by running:</font>
+</p>
+
+<pre>
+<a name="26054"> </a>javap -s -p InstanceMethodCall
+</pre>
+
+<p>
+  <a name="26055"> </a><font face="Arial, Verdana, Helvetica, sans-serif">you obtain the following output:</font>
+</p>
+
+<pre>
+<a name="30371"> </a>...
+<a name="26060"> </a>private callback ()V
+<a name="26061"> </a>public static main ([Ljava/lang/String;)V
+<a name="26062"> </a>private native nativeMethod ()V
+<a name="26065"> </a>...
+</pre>
+
+<p>
+  <a name="26066"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>-s</code> flag informs <code>javap</code> to output JNI descriptor strings rather than types as they appear in the Java programming language. The <code>-p</code> flag causes <code>javap</code> to include information about the private members of the class in its output.</font>
+</p>
+
+<a name="26103"></a>
+<h3>4.2.3    Calling Static Methods</h3>
+
+<p>
+  <a name="26104"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The previous example demonstrates how native code calls an instance method. Similarly, you can perform callbacks to static methods from native code by following these steps:</font>
+</p>
+
+<a name="26105"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>Obtain the method ID using <code>GetStaticMethodID</code>, as opposed to <code>GetMethodID</code>.</font><a name="26106"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Pass the class, method ID, and arguments to one of the family of static method invocation functions: <code>CallStaticVoidMethod</code>, <code>CallStaticBooleanMethod</code>, and so on.</font>
+</ul>
+<p>
+  <a name="26107"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There is a key difference between the functions that allow you to call static methods and the functions that allow you to call instance methods. The former takes a class reference as the second argument, whereas the latter takes an object reference as the second argument. For example, you pass the class reference to <code>CallStaticVoidMethod</code>, but pass an object reference to <code>CallVoidMethod</code>.</font>
+</p>
+
+
+<p>
+  <a name="26363"> </a><font face="Arial, Verdana, Helvetica, sans-serif">At the Java programming language level, you can invoke a static method <code>f</code> in class <code>Cls</code> using two alternative syntaxes: eithe<code>r Cls.f o</code>r <code>obj.f</code> where <code>obj</code> is an instance of <code>Cls</code>. (The latter is the recommended programming style, however.) In the JNI, you must always specify the class reference when issuing static method calls from native code.</font>
+</p>
+
+
+<p>
+  <a name="30440"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Let us look at an example that makes a callback to a static method from native code. It is a slight variation of the earlier <code>InstanceMethodCall</code> example:</font>
+</p>
+
+<pre>
+<a name="30408"> </a>class StaticMethodCall {
+<a name="30409"> </a>    private native void nativeMethod();
+<a name="30410"> </a>    private static void callback() {
+<a name="30411"> </a>        System.out.println("In Java");
+<a name="30412"> </a>    }
+<a name="30413"> </a>    public static void main(String args[]) {
+<a name="30414"> </a>        StaticMethodCall c = new StaticMethodCall();
+<a name="30415"> </a>        c.nativeMethod();
+<a name="30416"> </a>    }
+<a name="30417"> </a>    static {
+<a name="30418"> </a>        System.loadLibrary("StaticMethodCall");
+<a name="30419"> </a>    }
+<a name="30420"> </a>}
+</pre>
+
+<p>
+  <a name="30421"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Here is the implementation of the native method:</font>
+</p>
+
+<pre>
+<a name="30422"> </a>JNIEXPORT void JNICALL 
+<a name="30423"> </a>Java_StaticMethodCall_nativeMethod(JNIEnv *env, jobject obj)
+<a name="30424"> </a>{
+<a name="30425"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, obj);
+<a name="30426"> </a>    jmethodID mid = 
+<a name="30427"> </a>        (*env)-&gt;GetStaticMethodID(env, cls, "callback", "()V");
+<a name="30428"> </a>    if (mid == NULL) {
+<a name="30429"> </a>        return;  /* method not found */
+<a name="34131"> </a>    }
+<a name="30430"> </a>    printf("In C\n");
+<a name="30431"> </a>    (*env)-&gt;CallStaticVoidMethod(env, <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">cls</font>, mid);
+<a name="30433"> </a>}
+</pre>
+
+<p>
+  <a name="30452"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Make sure that you pass <code>cls</code> (highlighted in bold), as opposed to <code>obj</code>, to <code>CallStaticVoidMethod</code>. Running the above program produces the following expected output:</font>
+</p>
+
+<pre>
+<a name="30434"> </a>In C
+<a name="30435"> </a>In Java
+</pre>
+<a name="26109"></a>
+<h3>4.2.4    Calling Instance Methods of a Superclass</h3>
+
+<p>
+  <a name="26110"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can call instance methods which were defined in a superclass but that have been overridden in the class to which the object belongs. The JNI provides a set of <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">CallNonvirtual</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">&lt;</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Type</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">&gt;</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">Method</font> functions for this purpose. To call a instance method defined in a superclass, you do the following:</font>
+</p>
+
+<a name="26111"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>Obtain the method ID from a reference to the superclass using <code>GetMethodID</code>, as opposed to <code>GetStaticMethodID</code>.</font><a name="26112"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Pass the object, superclass, method ID, and arguments to one of the family of nonvirtual invocation functions, such as <code>CallNonvirtualVoidMethod</code>, <code>CallNonvirtualBooleanMethod</code>, and so on.</font>
+</ul>
+<p>
+  <a name="26113"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It is relatively rare that you will need to invoke the instance methods of a superclass. This facility is similar to calling an overridden superclass method, say <code>f</code>, using the following construct in the Java programming language:</font>
+</p>
+
+<pre>
+<a name="26114"> </a>super.f();
+</pre>
+
+<p>
+  <a name="30471"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>CallNonvirtualVoidMethod</code> can also be used to invoke constructors, as the next section will illustrate.</font>
+</p>
+
+<a name="26254"></a>
+<h2>4.3    Invoking Constructors</h2>
+
+<p>
+  <a name="26863"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In the JNI, constructors may be invoked following steps similar to those used for calling instance methods. To obtain the method ID of a constructor, pass <code>"&lt;init&gt;"</code> as the method name and <code>"V"</code> as the return type in the method descriptor. You can then invoke the constructor by passing the method ID to JNI functions such as <code>NewObject</code>. The following code implements the equivalent functionality of the JNI function <code>NewString</code>, which constructs a <code>java.lang.String</code> object from the Unicode characters stored in a C buffer:</font>
+</p>
+
+<pre>
+<a name="26865"> </a>jstring
+<a name="26867"> </a>MyNewString(JNIEnv *env, jchar *chars, jint len)
+<a name="26868"> </a>{
+<a name="26904"> </a>    jclass stringClass;
+<a name="29980"> </a>    jmethodID cid;
+<a name="26872"> </a>    jcharArray elemArr;
+<a name="26906"> </a>    jstring result;
+<a name="26877"> </a>
+<a name="26885"> </a>    stringClass = (*env)-&gt;FindClass(env, "java/lang/String");
+<a name="26886"> </a>    if (stringClass == NULL) {
+<a name="34137"> </a>        return NULL; /* exception thrown */
+<a name="26889"> </a>    }
+<a name="26932"> </a>/* Get the method ID for the String(char[]) constructor */
+<a name="26883"> </a>    cid = (*env)-&gt;GetMethodID(env, stringClass,
+<a name="26884"> </a>                              "&lt;init&gt;", "([C)V");
+<a name="26890"> </a>    if (cid == NULL) {
+<a name="34145"> </a>        return NULL; /* exception thrown */
+<a name="26893"> </a>    }
+<a name="26894"> </a>
+<a name="26935"> </a>    /* Create a char[] that holds the string characters */
+<a name="26878"> </a>    elemArr = (*env)-&gt;NewCharArray(env, len);
+<a name="26879"> </a>    if (elemArr == NULL) {
+<a name="34153"> </a>        return NULL; /* exception thrown */
+<a name="26881"> </a>    }
+<a name="26902"> </a>    (*env)-&gt;SetCharArrayRegion(env, elemArr, 0, len, chars);
+<a name="26895"> </a>
+<a name="26936"> </a>    /* Construct a java.lang.String object */
+<a name="26901"> </a>    result = (*env)-&gt;NewObject(env, stringClass, cid, elemArr);
+<a name="26896"> </a>
+<a name="26937"> </a>    /* Free local references */
+<a name="26900"> </a>    (*env)-&gt;DeleteLocalRef(env, elemArr);
+<a name="55936"> </a>    (*env)-&gt;DeleteLocalRef(env, stringClass);
+<a name="26897"> </a>    return result;
+<a name="26869"> </a>}
+</pre>
+
+<p>
+  <a name="26907"> </a><font face="Arial, Verdana, Helvetica, sans-serif">This function is complex enough to deserve careful explanation. First, <code>FindClass</code> returns a reference to the <code>java.lang.String</code> class. Next, <code>GetMethodID</code> returns the method ID for the string constructor, <code>String(char[] chars)</code>. We then call <code>NewCharArray</code> to allocate a character array that holds all the string elements. The JNI function <code>NewObject</code> invokes the constructor specified by the method ID.  The <code>NewObject</code> function takes as arguments the reference to the class to be constructed, the method ID of the constructor, and the arguments that need to be passed to the constructor.</font>
+</p>
+
+
+<p>
+  <a name="26913"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>DeleteLocalRef</code> call allows the virtual machine to free the resources used by local references <code>elemArr</code> and <code>stringClass</code>. Section <a href="refs.html#27570">5.2.1</a> will provide a detailed description of when and why you should call <code>DeleteLocalRef</code>. </font>
+</p>
+
+
+<p>
+  <a name="26929"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Strings are objects. This example highlights the point further. The example also leads to a question, however. Given that we can implement equivalent functionality using other JNI functions, why does the JNI provide built-in functions such as <code>NewString</code>? The reason is that the built-in string functions are far more efficient than calling the <code>java.lang.String</code> API from native code. String is the most frequently used type of objects, one that deserves special support in the JNI.</font>
+</p>
+
+
+<p>
+  <a name="26919"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It is also possible to invoke constructors using the <code>CallNonvirtualVoidMethod</code> function. In this case, the native code must first create an <em>uninitialized</em> object by calling the <code>AllocObject</code> function. The single <code>NewObject</code> call above:</font>
+</p>
+
+<pre>
+<a name="26947"> </a>result = (*env)-&gt;NewObject(env, stringClass, cid, elemArr);
+</pre>
+
+<p>
+  <a name="26948"> </a><font face="Arial, Verdana, Helvetica, sans-serif">may be replaced by an <code>AllocObject</code> call followed by a <code>CallNonvirtualVoidMethod</code> call:</font>
+</p>
+
+<pre>
+<a name="26942"> </a>result = (*env)-&gt;AllocObject(env, stringClass);
+<a name="26949"> </a>if (result) {
+<a name="26951"> </a>    (*env)-&gt;CallNonvirtualVoidMethod(env, result, stringClass,
+<a name="26961"> </a>                                     cid, elemArr);
+<a name="26962"> </a>    /* we need to check for possible exceptions */
+<a name="26952"> </a>    if ((*env)-&gt;ExceptionCheck(env)) {
+<a name="26959"> </a>        (*env)-&gt;DeleteLocalRef(env, result);
+<a name="26957"> </a>        result = NULL;
+<a name="26958"> </a>    }
+<a name="26950"> </a>}
+</pre>
+
+<p>
+  <a name="26960"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><code>AllocObject</code> creates an uninitialized object, and must be used with care so that a constructor is called at most once on each object. The native code should not invoke a constructor on the same object multiple times.</font>
+</p>
+
+
+<p>
+  <a name="26910"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Occasionally you may find it useful to allocate an uninitialized object first and call the constructor sometime later. In most cases, however, you should use <code>NewObject</code> and avoid the more error-prone <code>AllocObject/CallNonvirtualVoidMethod</code> pair.</font>
+</p>
+
+<a name="26855"></a>
+<h2>4.4    Caching Field and Method IDs</h2>
+
+<p>
+  <a name="26384"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Obtaining field and method IDs requires symbolic lookups based on the name and descriptor of the field or method. Symbolic lookups are relatively expensive. In this section, we introduce a technique that can be used to reduce this overhead.</font>
+</p>
+
+
+<p>
+  <a name="26385"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The idea is to compute field and method IDs and cache them for repeated uses later. There are two ways to cache field and method IDs, depending upon whether caching is performed at the point of use of the field or method ID, or in the static initializer of the class that defines the field or method.</font>
+</p>
+
+<a name="26390"></a>
+<h3>4.4.1    Caching at the Point of Use</h3>
+
+<p>
+  <a name="26440"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Field and method IDs may be cached at the point where native code accesses the field values or performs method callbacks. The following implementation of the <code>Java_InstanceFieldAccess_accessField</code> function caches the field ID in static variables so that it need not be recomputed upon each invocation of the <code>InstanceFieldAccess.accessField</code> method. </font>
+</p>
+
+
+<p>
+  <a name="49158"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="26441"> </a>JNIEXPORT void JNICALL 
+<a name="26400"> </a>Java_InstanceFieldAccess_accessField(JNIEnv *env, jobject obj)
+<a name="26401"> </a>{
+<a name="26455"> </a>    static jfieldID <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s </font>= NULL; /* cached field ID for s */
+<a name="26456"> </a>
+<a name="26402"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, obj);
+<a name="26404"> </a>    jstring jstr;
+<a name="26405"> </a>    const char *str;
+<a name="26461"> </a>
+<a name="26499"> </a>    if (<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s</font> == NULL) {
+<a name="26494"> </a>        <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s</font> = (*env)-&gt;GetFieldID(env, cls, "s", 
+<a name="26495"> </a>                                   "Ljava/lang/String;");
+<a name="26496"> </a>        if (<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s</font> == NULL) {
+<a name="34187"> </a>            return; /* exception already thrown */
+<a name="26498"> </a>        }
+<a name="26492"> </a>    }
+<a name="26484"> </a>
+<a name="26462"> </a>    printf("In C:\n");
+<a name="26423"> </a>
+<a name="30516"> </a>    jstr = (*env)-&gt;GetObjectField(env, obj, <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s</font>);
+<a name="26424"> </a>    str = (*env)-&gt;GetStringUTFChars(env, jstr, NULL);
+<a name="26425"> </a>    if (str == NULL) {
+<a name="26426"> </a>        return; /* out of memory */
+<a name="26427"> </a>    }
+<a name="26428"> </a>    printf("  c.s = \"%s\"\n", str);
+<a name="26429"> </a>    (*env)-&gt;ReleaseStringUTFChars(env, jstr, str);
+<a name="26430"> </a>
+<a name="26431"> </a>    jstr = (*env)-&gt;NewStringUTF(env, "123");
+<a name="55959"> </a>    if (jstr == NULL) {
+<a name="55960"> </a>        return; /* out of memory */
+<a name="55961"> </a>    }
+<a name="26432"> </a>    (*env)-&gt;SetObjectField(env, obj, <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">fid_s</font>, jstr);
+<a name="30523"> </a>}
+</pre>
+
+<p>
+  <a name="30524"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The highlighted static variable <code>fid_s</code> stores the precomputed field ID for <code>InstanceFieldAccess.s</code>. The static variable is initialized to <code>NULL</code>. When the <code>InstanceFieldAccess.accessField</code> method is called for the first time, it computes the field ID and caches it in the static variable for later use.</font>
+</p>
+
+
+<p>
+  <a name="26508"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You may notice that there is an obvious race condition in the above code. Multiple threads may call the <code>InstanceFieldAccess.accessField</code> method at the same time and compute the same field ID concurrently. One thread may overwrite the static variable <code>fid_s</code> computed by another thread. Luckily, although this race condition leads to duplicated work in multiple threads, it is otherwise harmless. The field IDs computed by multiple threads for the same field in the same class will necessarily be the same.</font>
+</p>
+
+
+<p>
+  <a name="26522"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Following the same idea, we may also cache the method ID for the <code>java.lang.String</code> constructor in the earlier <code>MyNewString</code> example:</font>
+</p>
+
+<pre>
+<a name="26977"> </a>jstring
+<a name="26978"> </a>MyNewString(JNIEnv *env, jchar *chars, jint len)
+<a name="26979"> </a>{
+<a name="26980"> </a>    jclass stringClass;
+<a name="26981"> </a>    jcharArray elemArr;
+<a name="26982"> </a><code>    static jmethodID </code><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">cid</font><code> = NULL;
+</code><a name="26983"> </a>    jstring result;
+<a name="27043"> </a>
+<a name="27037"> </a>    stringClass = (*env)-&gt;FindClass(env, "java/lang/String");
+<a name="27039"> </a>    if (stringClass == NULL) {
+<a name="34202"> </a>        return NULL; /* exception thrown */
+<a name="27042"> </a>    }
+<a name="26984"> </a>
+<a name="30633"> </a>    /* Note that cid is a static variable */
+<a name="26985"> </a>    if (<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">cid</font> == NULL) {
+<a name="27030"> </a>        /* Get the method ID for the String constructor */
+<a name="26992"> </a>        <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">cid</font> = (*env)-&gt;GetMethodID(env, stringClass,
+<a name="26993"> </a>                                  "&lt;init&gt;", "([C)V");
+<a name="26994"> </a>        if (<font  size="2" face="Arial, Verdana, Helvetica, sans-serif">cid</font> == NULL) {
+<a name="34210"> </a>            return NULL; /* exception thrown */
+<a name="27031"> </a>        }
+<a name="26997"> </a>    }
+<a name="26998"> </a>
+<a name="26999"> </a>    /* Create a char[] that holds the string characters */
+<a name="27000"> </a>    elemArr = (*env)-&gt;NewCharArray(env, len);
+<a name="27001"> </a>    if (elemArr == NULL) {
+<a name="34218"> </a>        return NULL; /* exception thrown */
+<a name="27004"> </a>    }
+<a name="27005"> </a>    (*env)-&gt;SetCharArrayRegion(env, elemArr, 0, len, chars);
+<a name="27006"> </a>
+<a name="27007"> </a>    /* Construct a java.lang.String object */
+<a name="27008"> </a>    result = (*env)-&gt;NewObject(env, stringClass, cid, elemArr);
+<a name="27009"> </a>
+<a name="27010"> </a>    /* Free local references */
+<a name="27011"> </a>    (*env)-&gt;DeleteLocalRef(env, elemArr);
+<a name="55970"> </a>    (*env)-&gt;DeleteLocalRef(env, stringClass);
+<a name="27012"> </a>    return result;
+<a name="34231"> </a>}
+</pre>
+
+<p>
+  <a name="34232"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We compute the method ID for the <code>java.lang.String</code> constructor when <code>MyNewString</code> is called for the first time. The highlighted static variable <code>cid</code> caches the result.</font>
+</p>
+
+<a name="26395"></a>
+<h3>4.4.2    Caching in the Defining Class's Initializer</h3>
+
+<p>
+  <a name="26660"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When we cache a field or method ID at the point of use we must introduce a check to detect whether the IDs have already been cached. Not only does this approach incur a small performance impact on the "fast path" when the IDs have already been cached, but it could lead to duplication of caching and checking as well. For example, if multiple native methods all require access to the same field, then they all need a check to compute and cache the corresponding field ID. </font>
+</p>
+
+
+<p>
+  <a name="26661"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In many situations it is more convenient to initialize the field and method IDs required by a native method before the application can have a chance to invoke the native method. The virtual machine always executes the static initializer of a class before it invokes any of the methods in that class. Thus a suitable place for computing and caching field or method IDs is in the static initializer of the class that defines the fields or methods.</font>
+</p>
+
+
+<p>
+  <a name="26220"> </a><font face="Arial, Verdana, Helvetica, sans-serif">For example, to cache the method ID for <code>InstanceMethodCall.callback</code> we introduce a new native method <code>initIDs</code>, called from the static initializer of the <code>InstanceMethodCall</code> class:</font>
+</p>
+
+<pre>
+<a name="26222"> </a>class <code>InstanceMethodCall</code> {
+<a name="26223"> </a>    private static native void initIDs();
+<a name="26224"> </a>    private native void nativeMethod();
+<a name="26225"> </a>    private void callback() {
+<a name="26226"> </a>        System.out.println("In Java");
+<a name="26227"> </a>    }
+<a name="26228"> </a>    public static void main(String args[]) {
+<a name="26229"> </a>        <code>InstanceMethodCall</code> c = new <code>InstanceMethodCall</code>();
+<a name="26230"> </a>        c.nativeMethod();
+<a name="26231"> </a>    }
+<a name="26232"> </a>    static {
+<a name="26233"> </a>        System.loadLibrary("<code>InstanceMethodCall</code>");
+<a name="26234"> </a>        initIDs();
+<a name="26235"> </a>    }
+<a name="26236"> </a>}
+</pre>
+
+<p>
+  <a name="26237"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Compared to the original code in Section <a href="fldmeth.html#26010">4.2</a>, the above program contains two extra lines (highlighted in bold font). The implementation of <code>initIDs</code> simply computes and caches the method ID for <code>InstanceMethodCall.callback</code>:</font>
+</p>
+
+<pre>
+<a name="26238"> </a>jmethodID MID_<code>InstanceMethodCall</code>_callback;
+<a name="26239"> </a>
+<a name="26240"> </a>JNIEXPORT void JNICALL 
+<a name="26241"> </a>Java_<code>InstanceMethodCall</code>_initIDs(JNIEnv *env, jclass cls)
+<a name="26242"> </a>{
+<a name="26243"> </a>    MID_<code>InstanceMethodCall</code>_callback =
+<a name="26244"> </a>        (*env)-&gt;GetMethodID(env, cls, "callback", "()V");
+<a name="26245"> </a>}
+</pre>
+
+<p>
+  <a name="26246"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The virtual machine runs the static initializer, and in turn calls the <code>initIDs</code> method, before executing any other methods (such as <code>nativeMethod</code> or <code>main</code>) in the <code>InstanceMethodCall</code> class. With the method ID is already cached in a global variable, the native implementation of <code>InstanceMethodCall.nativeMethod</code> no longer needs to perform a symbolic lookup:</font>
+</p>
+
+<pre>
+<a name="26247"> </a>JNIEXPORT void JNICALL 
+<a name="26248"> </a>Java_InstanceMethodCall_nativeMethod(JNIEnv *env, jobject obj)
+<a name="26250"> </a>{
+<a name="26251"> </a>    printf("In C\n");
+<a name="26252"> </a>    (*env)-&gt;CallVoidMethod(env, obj,
+<a name="30562"> </a>                           MID_<code>InstanceMethodCall</code>_callback);
+<a name="26253"> </a>}
+</pre>
+<a name="12479"></a>
+<h3>4.4.3    Comparison between the Two Approaches to Caching IDs</h3>
+
+<p>
+  <a name="26684"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Caching IDs at the point of use is the reasonable solution if the JNI programmer does not have control over the source of the class that defines the field or method. For example, in the <code>MyNewString</code> example, we cannot inject a custom <code>initIDs</code> native method into the <code>java.lang.String</code> class in order to precompute and cache the method ID for the <code>java.lang.String</code> constructor.</font>
+</p>
+
+
+<p>
+  <a name="26689"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Caching at the point of use has a number of disadvantages when compared with caching in the static initializer of the defining class.</font>
+</p>
+
+<a name="26695"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>As explained before, caching at the point of use requires a check in the execution fast path and may also require duplicated checks and initialization of the same field or method ID. </font><a name="26696"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Method and field IDs are only valid until the class is unloaded. If you cache field and method IDs at the point of use you must make sure that the defining class will not be unloaded and reloaded as long as the native code still relies on the value of the cached ID. (The next chapter will show how you can keep a class from being unloaded by creating a reference to that class using the JNI.) On the other hand, if caching is done in the static initializer of the defining class, the cached IDs will automatically be recalculated when the class is unloaded and later reloaded.</font>
+</ul>
+<p>
+  <a name="26697"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Thus, where feasible, it is preferable to cache field and method IDs in the static initializer of their defining classes.</font>
+</p>
+
+<a name="30642"></a>
+<h2>4.5    Performance of JNI Field and Method Operations</h2>
+
+<p>
+  <a name="38470"> </a><font face="Arial, Verdana, Helvetica, sans-serif">After learning how to cache field and method IDs to enhance performance, you might wonder: What are the performance characteristics of accessing fields and calling methods using the JNI? How does the cost of performing a callback from native code (a native/Java callback) compare with the cost of calling a native method (a Java/native call), and with the cost of calling a regular method (a Java/Java call)?</font>
+</p>
+
+
+<p>
+  <a name="30650"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The answer to this question no doubt depends on how efficiently the underlying virtual machine implements the JNI. It is thus impossible to give an exact account of performance characteristics that is guaranteed to apply to a wide variety of virtual machine implementations. Instead, we will analyze the inherent cost of native method calls and JNI field and method operations and provide a general performance guideline for JNI programmers and implementors.</font>
+</p>
+
+
+<p>
+  <a name="30659"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Let us start by comparing the cost of Java/native calls with the cost of Java/Java calls. Java/native calls are potentially slower than Java/Java calls for the following reasons:</font>
+</p>
+
+<a name="30670"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>Native methods most likely follow a different calling convention than that used by Java/Java calls inside the Java virtual machine implementation. As a result, the virtual machine must perform additional operations to build arguments and set up the stack frame before jumping to a native method entry point.</font><a name="30687"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>It is common for the virtual machine to inline method calls. Inlining Java/native calls is a lot harder than inlining Java/Java calls.</font>
+</ul>
+<p>
+  <a name="30945"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We estimate that a typical virtual machine may execute a Java/native call roughly two to three times slower than it executes a Java/Java call. Because a Java/Java call takes just a few cycles, the added overhead will be negligible unless the native method performs trivial operations. It is also possible to build virtual machine implementations with Java/native call performance close or equal to that of Java/Java calls. (Such virtual machine implementations, for example, may adopt the JNI calling convention as the internal Java/Java calling convention.)</font>
+</p>
+
+
+<p>
+  <a name="30946"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The performance characteristics of a native/Java callback is technically similar to a Java/native call. In theory, the overhead of native/Java callbacks could also be within two to three times of Java/Java calls. In practice, however, native/Java callbacks are relatively infrequent. Virtual machine implementations do not usually optimize the performance of callbacks. At the time of this writing many production virtual machine implementations are such that the overhead of a native/Java callback can be as much as ten times higher than a Java/Java call.</font>
+</p>
+
+
+<p>
+  <a name="30723"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The overhead of field access using the JNI lies in the cost of calling through the <code>JNIEnv</code>. Rather than directly dereferencing objects, the native code has to perform a C function call which in turn dereferences the object. The function call is necessary because it isolates the native code from the internal object representation maintained by the virtual machine implementation. The JNI field access overhead is typically negligible because a function call takes only a few cycles.</font>
+</p>
+
+
+<p>
+  <a name="31302"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="objtypes.html">Prev</a> | <a href="refs.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

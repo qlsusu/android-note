@@ -1,0 +1,2 @@
+android 双卡手机发短信/判断手机是否为双卡
+	http://blog.csdn.net/xyz_lmn/article/details/7900439

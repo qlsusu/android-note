@@ -1,0 +1,20 @@
+﻿adb启动不起来，在eclipse中
+参见：http://stackoverflow.com/questions/5703550/my-eclipse-adb-server-didnt-ack-failed-to-start-daemon
+	带截图的那个
+	
+--------------------------------------------解决：adb server is out of date. killing...
+现象：
+C:\Users\xxxx>adb start-server
+adb server is out of date.  killing...
+ADB server didn't ACK
+* failed to start daemon *
+
+C:\Users\xxxx>adb nodaemon server
+cannot bind 'tcp:5037'
+
+C:\Users\xxxxxx>netstat -ano | findstr "5037"
+  TCP    127.0.0.1:5037         0.0.0.0:0              LISTENING       4236
+  TCP    127.0.0.1:5037         127.0.0.1:49422        ESTABLISHED     4236
+  TCP    127.0.0.1:49422        127.0.0.1:5037         ESTABLISHED     3840
+  
+打开任务管理器kill掉4236 这个进程。ok

@@ -1,0 +1,107 @@
+显示Web网页:
+
+  1. Uri uri = Uri.parse("http://www.android123.com.cn");
+  2. Intent it = new Intent(Intent.ACTION_VIEW,uri);
+  3. startActivity(it);
+
+显示Google地图:
+
+  1. Uri uri = Uri.parse("geo:38.899533,-77.036476");
+  2. Intent it = new Intent(Intent.Action_VIEW,uri);
+  3. startActivity(it);
+
+Maps路径规划:
+
+  1. Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr=startLat%20startLng&daddr=endLat%20endLng&hl=en");
+  2. Intent it = new Intent(Intent.ACTION_VIEW,URI);
+  3. startActivity(it);
+
+拨打电话:
+
+  1. Uri uri = Uri.parse("tel:xxxxxx");
+  2. Intent it = new Intent(Intent.ACTION_DIAL, uri);   
+  3. startActivity(it);   
+
+  1. Uri uri = Uri.parse("tel.xxxxxx");
+  2. Intent it =new Intent(Intent.ACTION_CALL,uri);
+
+注意需要权限 <uses-permission id="android.permission.CALL_PHONE" />
+
+发送SMS/MMS
+
+  1. Intent it = new Intent(Intent.ACTION_VIEW);
+  2. it.putExtra("sms_body", "android开发网欢迎您");
+  3. it.setType("vnd.android-dir/mms-sms");
+  4. startActivity(it);   
+
+发送短信
+
+  1. Uri uri = Uri.parse("smsto:10086");
+  2. Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+  3. it.putExtra("sms_body", "10086"); //正文为10086
+  4. startActivity(it);   
+
+发送彩信
+
+  1. Uri uri = Uri.parse("content://media/external/images/media/10"); //该Uri根据实际情况修改，external代表外部存储即sdcard
+  2. Intent it = new Intent(Intent.ACTION_SEND);
+  3. it.putExtra("sms_body", "android123.com.cn"); 
+  4. it.putExtra(Intent.EXTRA_STREAM, uri);
+  5. it.setType("image/png");
+  6. startActivity(it);
+
+发送Email
+
+  2. Uri uri = Uri.parse("mailto:android123@163.com");
+  3. Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+  4. startActivity(it);
+
+  1. Intent it = new Intent(Intent.ACTION_SEND);
+  2. it.putExtra(Intent.EXTRA_EMAIL, "android123@163.com");
+	 it.putExtra(Intent.EXTRA_SUBJECT, "[50AH] Feedback");
+  3. it.putExtra(Intent.EXTRA_TEXT, "android开发网测试");
+  4. it.setType("text/plain");// 或者为 message/rfc822
+  5. startActivity(Intent.createChooser(it, "选择一个Email客户端"));   
+
+  1. Intent it=new Intent(Intent.ACTION_SEND);   
+  2. String[] tos={"android123@163.com"};     //发送到 
+  3. String[] ccs={"ophone123@163.com"};    //抄送
+  4. it.putExtra(Intent.EXTRA_EMAIL, tos);   
+  5. it.putExtra(Intent.EXTRA_CC, ccs);   
+  6. it.putExtra(Intent.EXTRA_TEXT, "正文");   
+  7. it.putExtra(Intent.EXTRA_SUBJECT, "标题");   
+  8. it.setType("message/rfc822");    //编码类型
+  9. startActivity(Intent.createChooser(it, "选择一个Email客户端"));
+
+Email添加附件
+
+  1. Intent it = new Intent(Intent.ACTION_SEND);
+  2. it.putExtra(Intent.EXTRA_SUBJECT, "正文");
+  3. it.putExtra(Intent.EXTRA_STREAM, "file:///sdcard/nobody.mp3"); //附件为sd卡上的nobody MP3文件
+  4. sendIntent.setType("audio/mp3");
+  5. startActivity(Intent.createChooser(it, "选择一个Email客户端"));
+
+播放多媒体
+
+  1.   
+  2. Intent it = new Intent(Intent.ACTION_VIEW);
+  3. Uri uri = Uri.parse("file:///sdcard/nobody.mp3");
+  4. it.setDataAndType(uri, "audio/mp3");
+  5. startActivity(it);
+
+  1. Uri uri = Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, "1"); //从系统内部的MediaProvider索引中调用播放
+  2. Intent it = new Intent(Intent.ACTION_VIEW, uri);
+  3. startActivity(it);   
+
+Uninstall卸载程序
+
+  1. Uri uri = Uri.fromParts("package", packageName, null); //packageName为包名，比如com.android123.apkInstaller
+  2. Intent it = new Intent(Intent.ACTION_DELETE, uri);
+  3. startActivity(it);
+
+Installer安装APK
+  这里安装APK文件的方法参考 http://www.android123.com.cn/kaifafaq/487.html 一文里面包含两种方法
+
+查看应用详情
+	Uri uri = Uri.parse("market://details?id=" + getPackageName());
+    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

@@ -1,0 +1,5 @@
+gradle的当前最高版本
+gradle version：2.10
+android plugin version: 2.1.0-alpha1
+	参见：http://developer.android.com/tools/revisions/gradle-plugin.html
+	不过，这个版本都比较低

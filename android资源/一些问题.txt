@@ -1,0 +1,17 @@
+----------------------------------------------------------------------------一些问题
+materail更个的滚动条如何实现
+	参考：pulltorefresh-demo的material style
+
+scroller是什么
+	http://www.imooc.com/video/4382
+如何默认布局孩子
+	参考pulltorefresh来完成
+
+recyclerview中
+	如何才能使用wrap_content
+	如何一直显示滚动条
+activity的切换动画
+	效果同 网易云音乐中的 activity切换
+	参加：apidemo
+layout中 添加孩子动画
+	参见：apidemo

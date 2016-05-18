@@ -1,0 +1,4 @@
+http://android-mirror.bugly.qq.com 端口：8080
+	其余的，不要进行设置
+
+参见：http://www.androiddevtools.cn/

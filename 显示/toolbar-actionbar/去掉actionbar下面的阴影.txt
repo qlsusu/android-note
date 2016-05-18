@@ -1,0 +1,6 @@
+<style name="AppTheme" parent="AppBaseTheme">
+	<item name="android:windowContentOverlay">@null</item>
+</style>
+
+这样设置应该ok，即使在真机5.0+上，也通过
+以防万一：actionBar.setElevation(0);

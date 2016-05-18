@@ -1,0 +1,3 @@
+参见：
+Android 查看本机外网IP
+	http://blog.csdn.net/fontlose/article/details/6591274

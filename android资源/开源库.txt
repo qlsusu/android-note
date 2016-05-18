@@ -1,0 +1,49 @@
+-------------------一些开源库
+https://github.com/JakeWharton
+
+Android 开源库获取途径整理
+	http://www.trinea.cn/android/android-open-project-summary/
+
+!!!_!!!一些开源库的效果：
+	https://github.com/Trinea/android-open-project
+
+!!!_!!!http://p.codekk.com/
+	国人办的
+	每天更新
+
+!!!_!!!一个group，提供了一些很棒的效果
+	https://github.com/Yalantis
+	
+http://android-libs.com/
+https://github.com/codepath/android_guides/wiki/Must-Have-Libraries
+https://android-arsenal.com/
+http://alamkanak.github.io/android-libraries-and-resources/
+
+Android酷炫实用的开源框架（UI框架）
+	花开的chart用到的开源库就从这里找到
+	http://www.androidchina.net/1992.html
+
+2015年十大热门Android开源新项目
+	http://android.jobbole.com/82311/
+
+包含了一些控件
+	http://controlsandroid.com/
+
+Android Development : zero to one
+https://cod3boy.gitbooks.io/android/content/index.html
+其中介绍来源库的
+	https://cod3boy.gitbooks.io/android/content/libraries.html
+一些ui组件（包含列表的滑动时，顶端item的停留）
+	http://blog.csdn.net/feiduclear_up/article/details/41541407
+
+https://github.com/lgvalle/
+https://github.com/saulmm?tab=repositories
+	translation system,
+	design lib(coordinate等)
+
+-------------------具体	
+图表（包含了 line, bar, stackbar）
+williamchart
+
+点击fab，展开一个entrylist，整体背景为灰色
+materialSheetFab

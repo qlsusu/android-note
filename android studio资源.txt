@@ -1,0 +1,82 @@
+http://www.android-studio.org/
+http://tools.android-studio.org/
+http://forum.android-studio.org/forum.php
+http://www.aswifter.com/
+https://plus.google.com/+AndroidDevelopers/posts/ECrb9VQW9XP	
+http://segmentfault.com/blog/stormzhang
+
+加快as的编译速度
+http://www.liaohuqiu.net/posts/speed-up-your-build/
+	pulltorefreshulatra作者的文章
+
+资料
+http://android.jobbole.com/77635/
+常用功能
+	http://ask.android-studio.org/?/article/23
+基本设置
+	http://ask.android-studio.org/?/article/14
+
+----------问题
+移动一个module到其他目录中
+因为该module还有可能被其他项目所引用
+或者，他就不可能被引用，如lib项目和 如何使用该lib的工程
+----------------
+
+不自动报错的问题
+
+导入开源项目的注意事项，check build-tool的版本号，gradle的版本号等，语法等
+	
+
+Project和Module
+Project，代表一个workspace。一个Project可以包含多个Module
+	Studio一个窗口只能有一个project
+Module，就相当于eclipse中的工程
+
+PS: 这个选择并下载2.25G的组件是studio的一个bug，评论里有人提醒，感谢这位同学。如果网速不行想跳过这步的可以在bin目录的idea.properties增加一行：disable.android.first.run=true就行了，mac平台的右键安装包->Show Package Contents 就找到bin目录了。）
+
+如何设置工程依赖
+如果让一个module具备library性质
+
+
+如何自动生成getter setter
+如何自动实现接口方法
+
+如何设置eclipse快捷键
+
+Gradle同步 
+在你项目运行或者更改Gradle配置的时候都要点击下这个按钮，会下载相应的依赖
+
+如何自动更新
+如何高亮错误的提示
+如何自动修正错误
+
+代码补全
+忽略大小写
+	搜索code completion
+		case sensitive completion中，选择none
+
+为什么要设置nullable
+
+鼠标放置在代码上，给出提示
+搜索，quick doc on mouse move
+
+项目选项
+cmd+;
+
+快捷键
+一个变量（如在方法中定义的局部变量）：cmd+shift+g
+
+如何自定义快捷键：
+
+android上有用的博客
+https://github.com/android-cn/android-dev-cn
+
+项目和module的概念
+
+单个变量的高亮
+
+textwrangler的color schema
+
+如何引入其他的module（在其他工程下面）
+
+不用每次都下载gradle

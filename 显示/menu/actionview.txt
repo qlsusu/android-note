@@ -1,0 +1,32 @@
+res/menu/xxx.xml中
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:appcompat="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_add"
+        android:title="Add Item"
+        android:icon="@android:drawable/ic_menu_add"
+        appcompat:showAsAction="always|collapseActionView"
+        appcompat:actionLayout="@layout/view_action" />
+</menu>
+
+展开actionview:
+点击menu_add时，将会出现actionview，layout为view_action
+
+关闭actionview:
+MenuItemCompat.collapseActionView(addItem)
+
+展开/关闭actionview时的监听
+MenuItemCompat.setOnActionExpandListener(addItem, new MenuItemCompat.OnActionExpandListener() { 
+	@Override
+	public boolean onMenuItemActionExpand(MenuItem item) {
+		//Must return true to have item expand
+		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemActionCollapse(MenuItem item) {
+		mFirstOption.setChecked(false);
+		mSecondOption.setChecked(false);
+		//Must return true to have item collapse
+		return true;
+	}
+});

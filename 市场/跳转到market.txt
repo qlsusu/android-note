@@ -1,0 +1,4 @@
+根据包名跳转到market，如：https://play.google.com/store/apps/details?id=com.ql.mindnote
+参见
+	http://www.cnblogs.com/SkyD/archive/2011/01/04/1925117.html
+	my/gotoMarket

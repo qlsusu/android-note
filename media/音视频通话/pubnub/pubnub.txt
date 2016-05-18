@@ -1,0 +1,234 @@
+对当前的界面进行截图
+
+--视频流不显示
+--关闭时，显示视频流
+--开启时，不显示小的本地窗口
+
+点击event后，两方可以看到图片
+一方只能看，不能操作图片
+左右滑动图片
+点击图片	
+
+在展示图片时，去掉video的传递
+
+
+如何展示视频
+	VideoRendererGui.setView(videoView, null);//其中videoview是一个glsurface
+	
+	localRender = VideoRendererGui.create(0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, true);
+	
+	localVideoSource = pcFactory.createVideoSource(capturer, this.rtcClient.videoConstraints());
+	localVideoTrack = pcFactory.createVideoTrack(VIDEO_TRACK_ID, localVideoSource);
+	AudioSource audioSource = pcFactory.createAudioSource(this.rtcClient.audioConstraints());
+	AudioTrack localAudioTrack = pcFactory.createAudioTrack(AUDIO_TRACK_ID, audioSource);
+	MediaStream mediaStream = pcFactory.createLocalMediaStream(username+"-"+LOCAL_MEDIA_STREAM_ID);
+	mediaStream.addTrack(localVideoTrack);
+	mediaStream.addTrack(localAudioTrack);
+	// 这里的localstream就是 上面的mediastream
+	localStream.videoTracks.get(0).addRenderer(new VideoRenderer(localRender));
+	
+	VideoRendererGui.update(localRender, 72, 65, 25, 25, VideoRendererGui.ScalingType.SCALE_ASPECT_FIT, true);
+	
+	--
+	
+	remoteRender = VideoRendererGui.create(0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
+	remoteStream.videoTracks.get(0).addRenderer(new VideoRenderer(remoteRender));
+	VideoRendererGui.update(remoteRender, 0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
+	
+	本地流的构建
+	 // We start out with an empty MediaStream object, created with help from our PeerConnectionFactory
+        //  Note that LOCAL_MEDIA_STREAM_ID can be any string
+        
+	
+	
+	
+
+
+选择文件
+	视频流不显示
+	--向对方的channel中发送指令
+	关闭时，显示视频流
+	操作：
+	开启
+		点击
+		滑动
+		
+
+
+
+---------------------------------------------
+需要讨论
+	--关闭某一个流
+	挂断
+		自己挂断
+		服务器根据时间到了，自动挂断双方
+数据共享
+	传送文件
+		发送文件的封装
+			发送方，将文件分割
+				连续发送
+			接收方，将文件进行组装
+		发送100个文件，每个文件1M，是否会挂
+		-----------
+		进行pcclient的抽象
+		进行抽象，再基于该抽象构建工程
+		---
+		
+		http://www.programcreek.com/java-api-examples/index.php?api=org.webrtc.PeerConnection
+			需要配置signalparams??
+			 new MediaConstraints.KeyValuePair("RtpDataChannels", "true"));
+		
+		--一方可以发送
+			另外一个可以接受
+		发送一个几M的文件
+			中间会调用多次 observer接口？
+		对方可以发送
+		发送几个文件
+		在建立连接之后，再创建datachannel
+		任何一方都能够通过该channel发送数据
+	涉及的指令
+是否可以正常挂断
+--音视频切换
+音频声音变大
+一方的app进程杀死时，另外一方需要挂断
+一方stop时，需要自动挂断
+为什么小米的初始化又卡了
+使用最新版本的webrtc库
+
+测试
+使用tune，在家，和xuyi进行视频通信，能看到xuyi的视频
+
+一些参数设置（会不会效果好点）
+	http://www.rtcmulticonnection.org/docs/mediaConstraints/
+
+111Mb
+
+webrtc优化
+	http://blog.csdn.net/perfectpdl/article/category/1295593
+	http://www.cnblogs.com/lingyunhu/tag/webrtc%20android%20ios/default.html?page=2
+	VideoSource允许方法开启、停止设备捕获视频。这在为了延长电池寿命而禁止视频捕获的情况下比较有用。
+	使用新版本的libjingle库
+
+--listenon处，channel为自己的
+--如果是被叫客户端，那么不进行连接
+--整体日志打印
+	主叫
+	被叫
+	--
+	是否有debug
+--修改的工程可以运行
+--
+--不要更新了iceserver
+--有音频
+--
+--对方应答了之后，才进入到通话界面
+--打完之后，下次再打，可以通
+--xuyi打我不行
+--哪些地方用到startactivity的，考虑使用finish
+--我打xuyi，要很久后，才进入到video界面
+--我挂断后，对方能收到hangup消息
+--通话记录没有
+
+--mainactivity中
+	在onstop的时候，取消订阅channel
+	在onresume的时候，进行订阅 channel
+--
+从视频切换到只音频，再切换进来
+--
+--调整pnrtc逻辑，方便点
+--
+--让两方都可以看到视频
+--使用一个非用户id的channel的名字
+	不能使用非用户名称的channel
+--设置最大的连接数为1
+--有什么地方在用这个默认的key
+--如何用自己的key，而不是demo的
+--通话了一段时间后，连接是否自动断开
+基于两个不同的key，两个user是否可以相互发现
+音频流加上
+--
+channel中，能否用filter
+	虽然我订阅了某个channel，但是我只能收到该channel上 特定类型的消息
+呼叫控制用channel了吗?
+设置监听对方的user
+--
+音频传递
+媒体传递
+
+
+没有视频传递
+16.55-
+
+什么时候订阅了channal，什么时候得到对方的地址
+
+
+
+学习pubnub订阅api
+mPubNub.hereNow用来查看一个用户是否在线？
+	它在登陆的时候通知自己在线？
+
+
+public void subscribe(String paramString, Callback paramCallback)
+    throws PubnubException
+  {
+    subscribe(paramString, paramCallback, "0");
+  }
+  
+  
+  
+
+------------------------------------类结构
+service@jianyueyun.com; Jyy20150814$
+
+PnRTCClient
+	Main WebRTC Signaling class, holds all functions to set up PeerConnection
+	has all the functions for signaling with WebRTC protocols, 
+	including SDP Offer Options known as MediaConstraints
+		PnSignalingParams
+			holds all the constraints for a PeerConnection, Video, and Audio, as well as the list of ICE Servers.		
+PnPeerConnectionClient
+	PeerConnection manager for PnRTCClient
+PnPeer
+	PubNub Peer object to hold information on PeerConnection
+-----
+PnRTCListener
+	Callback listener for various WebRTC and PeerConnection.Observer events.
+	一个实现子类：me.kevingleason.androidrtc.VideoChatActivity$DemoRTCListener
+	如何添加：pnRTCClient.attachRTCListener(new DemoRTCListener());
+-----
+如何连接用户
+pnRTCClient.connect(user);
+
+------
+获得连接中的数据？？？？？？
+其中statsreport.value中有 name,value
+peer.pc.getStats(new StatsObserver() {
+	@Override
+	public void onComplete(StatsReport[] reports) {
+		// TODO Auto-generated method stub
+	}
+}, null);
+
+------------------------------------
+如何使用它的webrtc接口
+	https://www.pubnub.com/docs/android-java/pubnub-java-sdk
+	https://github.com/pubnub/android-webrtc-api
+android示例工程
+	https://github.com/GleasonK/AndroidRTC
+服务器端
+	https://github.com/stephenlb/webrtc-sdk
+	
+控制台
+	https://admin.pubnub.com/
+
+如何让自己的 pub-key和sub-key生效
+	选择对应的app和key
+	在application add-ons中，打开presence
+
+sdk文档
+https://www.pubnub.com/docs/android-java/pubnub-java-sdk	
+
+资料：
+http://www.pubnub.com/blog/building-a-webrtc-video-and-voice-chat-application/
+https://www.pubnub.com/
+https://www.pubnub.com/pricing/

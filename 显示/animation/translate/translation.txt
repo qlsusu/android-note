@@ -1,0 +1,10 @@
+几种方式：
+通过改变布局：margin
+通过改变tranlsationx/y
+通过viewparent.scrollto/by 改变mscrollx/y
+	为什么是viewparent，因为：如果是自身的scrollto/by，只会改变自身的可视区域，并不会改变自身的位置
+通过offsettopandbottom/offsetleftandright 来改变mtop/mbottom mleft/mright
+重新layout
+	本质上，也是：自身view.layout()
+
+view的移动范围为father的空间（且 要去掉father.padding）

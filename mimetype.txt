@@ -1,0 +1,3 @@
+²Î¼û£º
+	http://www.feedforall.com/mime-types.htm
+	http://www.iana.org/assignments/media-types/index.html

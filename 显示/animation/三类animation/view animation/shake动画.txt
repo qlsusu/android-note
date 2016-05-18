@@ -1,0 +1,6 @@
+<translate
+	android:duration="50"
+	android:fromXDelta="0"
+	android:repeatCount="11"
+	android:repeatMode="reverse"
+	android:toXDelta="30%" />

@@ -1,0 +1,30 @@
+有一个默认的behaivor
+
+效果：
+参见：/Users/qlong/_study/_data/android/-笔记-141104/显示/FloatingActionButton/anchor效果图.gif
+
+伪代码：
+@CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
+public class FloatingActionButton extends ImageButton {
+    ...
+
+    public static class Behavior 
+        extends CoordinatorLayout.Behavior<FloatingActionButton> {
+
+        private boolean updateFabVisibility(
+           CoordinatorLayout parent, AppBarLayout appBarLayout, 
+           FloatingActionButton child {
+
+           if (a long condition) {
+                // If the anchor's bottom is below the seam, 
+                // we'll animate our FAB out
+                child.hide();
+            } else {
+                // Else, we'll animate our FAB back in
+                child.show();
+            }
+        }
+    }
+
+    ...
+}

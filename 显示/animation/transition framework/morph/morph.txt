@@ -1,0 +1,6 @@
+如何使用：
+
+Intent login = PopupActivity.getStartIntent(this, PopupActivity.MORPH_TYPE_BUTTON);
+ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation
+		(MorphTransitionsActivity.this, view, getString(R.string.transition_morph_view));
+startActivity(login, options.toBundle());

@@ -1,0 +1,24 @@
+监听wifi的打开和关闭，以及 wifi是否连上了网络，以及 比较慢的ConnectivityManager.CONNECTIVITY_ACTION
+	http://blog.csdn.net/h3c4lenovo/article/details/9627781
+
+android的sdk中 android.net.wifi封装了 针对于wifi操作的 api
+主要如下：
+1. WifiManager
+	wifi连接统一管理类，获取WIFI网卡的状态
+2. WifiInfo
+	wifi无线连接的描述，包括（接入点，网络连接状态，隐藏的接入点，IP地址，连接速度，MAC地址，网络ID，信号强度等信息）
+3. WifiConfiguration
+	Wifi网络的配置，包括安全设置等，在我们连通一个wifi 接入点的时候，需要获取到的一些信息
+4. ScanResult
+	主要用来描述已经检测出的接入点，包括接入点的地址，接入点的名称，身份认证，频率，信号强度等信息。其实就是通过wifi 硬件的扫描来获取一些周边的wifi 热点的信息。
+5. wifi监听
+	参见：
+		/cailing2/ConnectionReciever
+		http://www.cnblogs.com/wanghafan/archive/2013/01/10/2855096.html
+		http://blog.csdn.net/lvron/article/details/7098771
+	监听wifi的打开和关闭，以及 wifi是否连上了网络，以及 比较慢的ConnectivityManager.CONNECTIVITY_ACTION
+		http://blog.csdn.net/h3c4lenovo/article/details/9627781
+	监听变化：wifi的状态（开发/关闭）
+	监听变化：wifi的连接（正在连接/已经连接/断开连接）
+	判断正在使用什么网络：
+		connManager.getNetworkInfo(ConnectivityManager.TYPE_XXX).getState();

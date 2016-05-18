@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="itcast"> <!-- 为样式定义一个全局唯一的名字-->
+        <item name="android:textSize">18px</item> <!-- name属性为样式要用在的View控件持有的属性 -->
+        <item name="android:textColor">#0000CC</item>
+    </style>
+    <style name="subitcast" parent="@style/itcast">
+        <item name="android:textColor">#FF0000</item><!-- 如果父样式的值不符合你的需求，你也可以对它进行修改 -->
+    </style>
+</resources>
+
+<!--
+	在其他地方引用该style
+    <TextView style="@style/itcast" .....  />
+-->
+

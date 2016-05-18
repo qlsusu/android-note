@@ -1,0 +1,578 @@
+<html>
+<head>
+<title> Traps and Pitfalls</title>
+</head>
+<body BGCOLOR=#eeeeff text=#000000 LINK=#0000ff VLINK=#000077 ALINK=#ff0000>
+ 
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="stubs.html">Prev</a> | <a href="part3.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<hr><br>
+ 
+<div align="right">
+<h1 align="left">
+  <a name="25705"> </a><font color="#663300" face="Arial, Verdana, Helvetica, sans-serif">Chapter 10 chapter</font>
+</h1>
+</div>
+<a name="25706"></a>
+<h1>Traps and Pitfalls</h1>
+<hr><p>
+
+<p>
+  <a name="12503"> </a><font face="Arial, Verdana, Helvetica, sans-serif"><font  size="7" face="Arial, Verdana, Helvetica, sans-serif">T</font><font  size="2" face="Arial, Verdana, Helvetica, sans-serif">o</font> highlight the important techniques covered in previous chapters, this chapter covers a number of mistakes commonly made by JNI programmers. Each mistake described here has occurred in real-world projects. </font>
+</p>
+
+<a name="25943"></a>
+<h2>10.1    Error Checking</h2>
+
+<p>
+  <a name="12209"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The most common mistake when writing native methods is forgetting to check whether an error condition has occurred. Unlike the Java programming language, native languages do not offer standard exception mechanisms. The JNI does not rely on any particular native exception mechanism (such as C++ exceptions). As a result, programmers <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">are required</font> to perform explicit checks after every JNI function call that could possibly raise an exception. Not all JNI functions raise exceptions, but most can. Exception checks are tedious, but are necessary to ensure that the application using native methods is robust.</font>
+</p>
+
+
+<p>
+  <a name="25404"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The tediousness of error checking greatly emphasizes the need to limit native code to those well-defined subsets of an application where it is necessary to use the JNI (<a href="pitfalls.html#12212">&#167;10.5</a>).</font>
+</p>
+
+<a name="11223"></a>
+<h2>10.2    Passing Invalid Arguments to JNI Functions</h2>
+
+<p>
+  <a name="29984"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI functions do not attempt to detect or recover from invalid arguments. If you pass <code>NULL</code> or <code>(jobject)0xFFFFFFFF</code> to a JNI function that expects a reference, the resulting behavior is undefined. In practice this could either lead to incorrect results or virtual machine crashes. Java 2 SDK release 1.2 provides you with a command-line option <code>-Xcheck:jni</code>. This option instructs the virtual machine to detect and report many, though not all, cases of native code passing illegal arguments to JNI functions. Checking the validity of arguments incurs a significant amount of overhead and thus is not enabled by default.</font>
+</p>
+
+
+<p>
+  <a name="29992"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Not checking the validity of arguments is a common practice in C and C++ libraries. Code that uses the library is responsible for making sure that all the arguments passed to library functions are valid. If, however, you are used to the Java programming language, you may have to adjust to this particular aspect of the lack of safety in JNI programming.</font>
+</p>
+
+<a name="29158"></a>
+<h2>10.3    Confusing <font  size="4" face="Arial, Verdana, Helvetica, sans-serif">jclass</font> with <font  size="4" face="Arial, Verdana, Helvetica, sans-serif">jobject</font></h2>
+
+<p>
+  <a name="12227"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The differences between instance references (a value of the <code>jobject</code> type) and class references (a value of the <code>jclass</code> type) can be confusing when first using the JNI.</font>
+</p>
+
+
+<p>
+  <a name="25439"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Instance references correspond to arrays and instances of <code>java.lang.Object</code> or one of its subclasses. Class references correspond to <code>java.lang.Class</code> instances, which represent class types.</font>
+</p>
+
+
+<p>
+  <a name="25502"> </a><font face="Arial, Verdana, Helvetica, sans-serif">An operation such as<code> GetFieldID</code>, which takes a <code>jclass</code>, is a class operation<font  size="2" face="Arial, Verdana, Helvetica, sans-serif"> </font>because it gets the field descriptor from a class. In contrast, <code>GetIntField</code>, which takes a <code>jobject</code>, is an instance operation because it gets the value of a field from an instance. The association of <code>jobject</code> with instance operations and the association of <code>jclass</code> with class operations are consistent across all JNI functions, so it is easy to remember that class operations are distinct from instance operations.</font>
+</p>
+
+<a name="30066"></a>
+<h2>10.4    Truncating <font  size="4" face="Arial, Verdana, Helvetica, sans-serif">jboolean</font> Arguments</h2>
+
+<p>
+  <a name="25504"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A <code>jboolean</code> is an 8-bit unsigned C type that can store values from 0 to 255. The value 0 corresponds to the constant <code>JNI_FALSE</code>, and the values from 1 to 255 correspond to <code>JNI_TRUE</code>. But 32-bit or 16-bit values greater than 255 whose lower 8 bits are 0 pose a problem.</font>
+</p>
+
+
+<p>
+  <a name="25537"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Suppose you have defined a function <code>print</code> that takes an argument <code>condition</code> whose type is <code>jboolean</code>:</font>
+</p>
+
+<pre>
+<a name="24918"> </a>void print(jboolean condition)
+<a name="24919"> </a>{
+<a name="24920"> </a>	/* C compilers generate code that truncates condition
+<a name="25525"> </a>      to its lower 8 bits. */
+<a name="25524"> </a>    if (condition) {
+<a name="24921"> </a>        printf("true\n");
+<a name="24927"> </a>    } else {
+<a name="24928"> </a>        printf("false\n");
+<a name="28998"> </a>    }
+<a name="24923"> </a>}
+</pre>
+
+<p>
+  <a name="24926"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There is nothing wrong with the previous definition. However, the following innocent-looking call to <code>print</code> will produce a somewhat unexpected result:</font>
+</p>
+
+<pre>
+<a name="24929"> </a>int n = 256; /* the value 0x100, whose lower 8 bits are all 0 */
+<a name="24930"> </a>print(n);
+</pre>
+
+<p>
+  <a name="24931"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We passed a non-zero value (256) to <code>print</code> expecting that it would represent true. But because all bits other than the lower 8 are truncated, the argument evaluates to 0. The program prints "<code>false</code>," contrary to expectations.</font>
+</p>
+
+
+<p>
+  <a name="25562"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A good rule of thumb when coercing integral types, such as <code>int</code>, to <code>jboolean</code> is always to evaluate conditions on the integral type, thereby avoiding inadvertent errors during coercion. You can rewrite the call to <code>print</code> as follows:</font>
+</p>
+
+<pre>
+<a name="24940"> </a>n = 256;
+<a name="24941"> </a>print (n ? JNI_TRUE : JNI_FALSE);
+</pre>
+<a name="12212"></a>
+<h2>10.5    Boundaries between Java Application and Native Code</h2>
+
+<p>
+  <a name="12217"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A common question when designing a Java application supported by native code is "What, and how much, should be in native code?" The boundaries between the native code and the rest of the application written in the Java programming language are application-specific, but there are some generally applicable principles:</font>
+</p>
+
+<a name="25592"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><ul>
+<li>Keep the boundaries <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">simple</font>. Complex control flow that goes back and forth between the Java virtual machine and native code can be hard to debug and maintain. Such control flow also gets in the way of optimizations performed by high-performance virtual machine implementations. For example, it is much easier for a virtual machine implementation to inline methods defined in the Java programming language than to inline native methods defined in C and C++.</font><a name="25630"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Keep the code on the native code side <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">minimal</font>. There are compelling reasons to do so. Native code is neither portable nor type-safe. Error checking in native code is tedious (<a href="pitfalls.html#25943">&#167;10.1</a>). It is good software engineering to keep such parts to a minimum.</font><a name="25633"> </a>
+<font face="Arial, Verdana, Helvetica, sans-serif"><li>Keep native code <font  size="2" face="Arial, Verdana, Helvetica, sans-serif">isolated</font>. In practice, this could mean that all native methods are in the same package or in the same class, isolated from the rest of the application. The package or the class containing native methods essentially becomes the "porting layer" for the application.</font>
+</ul>
+<p>
+  <a name="25666"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI provides access to virtual machine functionality such as class loading, object creation, field access, method calls, thread synchronization, and so forth. It is sometimes tempting to express complex interactions with Java virtual machine functionality in native code, when in fact it is simpler to accomplish the same task in the Java programming language. The following example shows why "Java programming in native code" is bad practice. Consider a simple statement that creates a new thread written in the Java programming language:</font>
+</p>
+
+<pre>
+<a name="12181"> </a><code>new JobThread().start();
+</code></pre>
+
+<p>
+  <a name="12182"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The same statement can also be written in native code:</font>
+</p>
+
+<pre>
+<a name="12183"> </a><code>/* Assume these variables are precomputed and cached:
+</code><a name="12185"> </a> <code>*     Class_JobThread:  the class "JobThread"
+</code><a name="12186"> </a><code> *     MID_Thread_init:  method ID of constructor
+</code><a name="12187"> </a><code> *     MID_Thread_start: method ID of Thread.start()
+</code><a name="12188"> </a><code> */ 
+</code><a name="12189"> </a>aThreadObject = 
+<a name="12190"> </a>    (*env)-&gt;NewObject(env, Class_JobThread, MID_Thread_init);
+<a name="12191"> </a>if (aThreadObject == NULL) {
+<a name="12192"> </a>    ... /* out of memory */
+<a name="36893"> </a>}
+<a name="12193"> </a>(*env)-&gt;CallVoidMethod(env, aThreadObject, MID_Thread_start);
+<a name="12194"> </a>if ((*env)-&gt;ExceptionOccurred(env)) {
+<a name="12195"> </a>    ... /* thread did not start */
+<a name="36903"> </a>}
+</pre>
+
+<p>
+  <a name="12196"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The native code is much more complex than its equivalent written in the Java programming language despite the fact that we have omitted the lines of code needed for error checks.</font>
+</p>
+
+
+<p>
+  <a name="12197"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Rather than writing a complex segment of native code manipulating the Java virtual machine, it is often preferable to define an auxiliary method in the Java programming language and have the native code issue a callback to the auxiliary method.</font>
+</p>
+
+<a name="11226"></a>
+<h2>10.6    Confusing IDs with References</h2>
+
+<p>
+  <a name="30007"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI exposes objects as references. Classes, strings, and arrays are special types of references. The JNI exposes methods and fields as IDs. An ID is not a reference. Do not call a class reference a "class ID" or a method ID a "method reference."</font>
+</p>
+
+
+<p>
+  <a name="56182"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="56183"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="36910"> </a><font face="Arial, Verdana, Helvetica, sans-serif">References are virtual machine resources that can be managed explicitly by native code. The JNI function <code>DeleteLocalRef</code>, for example, allows native code to delete a local reference. In contrast, field and method IDs are managed by the virtual machine and remain valid until their defining class is unloaded. Native code cannot explicitly delete a field or method ID before the the virtual machine unloads the defining class.</font>
+</p>
+
+
+<p>
+  <a name="36913"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Native code may create multiple references that refer to the same object. A global and a local reference, for example, may refer to the same object. In contrast, a unique field or method ID is derived for the same <em>definition</em> of a field or a method. If class <code>A</code> defines method <code>f</code> and class <code>B</code> inherits <code>f</code> from <code>A</code>, the two <code>GetMethodID</code> calls in the following code always return the same result:</font>
+</p>
+
+<pre>
+<a name="36920"> </a>jmethodID MID_A_f = (*env)-&gt;GetMethodID(env, A, "f", "()V");
+<a name="36921"> </a>jmethodID MID_B_f = (*env)-&gt;GetMethodID(env, B, "f", "()V");
+</pre>
+<a name="29161"></a>
+<h2>10.7    Caching Field and Method IDs</h2>
+
+<p>
+  <a name="36947"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Native code obtains field or method IDs from the virtual machine by specifying the name and type descriptor of the field or method as strings (<a href="fldmeth.html#30289">&#167;4.1</a>, <a href="fldmeth.html#26010">&#167;4.2</a>). Field and method lookups using name and type strings are slow. It often pays off to cache the IDs. Failure to cache field and method IDs is a common performance problem in native code.</font>
+</p>
+
+
+<p>
+  <a name="36955"> </a><font face="Arial, Verdana, Helvetica, sans-serif">In some cases caching IDs is more than a performance gain. A cached ID may be necessary to ensure that the correct field or method is accessed by native code. The following example illustrates how the failure to cache a field ID can lead to a subtle bug:</font>
+</p>
+
+<pre>
+<a name="25801"> </a>class C {
+<a name="12275"> </a>    private int i;
+<a name="12276"> </a>    native void f();
+<a name="12277"> </a>}
+</pre>
+
+<p>
+  <a name="25804"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Suppose that the native method <code>f</code> needs to obtain the value of the field <code>i</code> in an instance of <code>C</code>. A straightforward implementation that does not cache an ID accomplishes this in three steps: 1) get the class of the object; 2) look up the field ID for <code>i</code> from the class reference; and 3) access the field value based on the object reference and field ID:</font>
+</p>
+
+
+<p>
+  <a name="46740"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="46741"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="46746"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="25805"> </a>// No field IDs cached. 
+<a name="25808"> </a>JNIEXPORT void JNICALL
+<a name="12284"> </a>Java_C_f(JNIEnv *env, jobject this) {
+<a name="25812"> </a>    jclass cls = (*env)-&gt;GetObjectClass(env, this);
+<a name="12288"> </a>    ... /* error checking */
+<a name="25830"> </a>    jfieldID fid = (*env)-&gt;GetFieldID(env, cls, "i", "I");
+<a name="12300"> </a>    ... /* error checking */
+<a name="12301"> </a>    ival = (*env)-&gt;GetIntField(env, this, fid);
+<a name="12306"> </a>    ... /* ival now has the value of this.i */
+<a name="12283"> </a>}
+</pre>
+
+<p>
+  <a name="12278"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The code works fine until we define another class <code>D</code> as a subclass of <code>C</code>, and declare a private field also named "<code>i</code>" in <code>D</code>:</font>
+</p>
+
+<pre>
+<a name="25895"> </a>// Trouble in the absence of ID caching
+<a name="25898"> </a>class D extends C {
+<a name="12319"> </a>    private int i;
+<a name="12322"> </a>    D() {
+<a name="12324"> </a>        f(); // inherited from C
+<a name="12323"> </a>    }
+<a name="12321"> </a>}
+</pre>
+
+<p>
+  <a name="12316"> </a><font face="Arial, Verdana, Helvetica, sans-serif">When <code>D</code>'s constructor calls <code>C.f</code>, the native method receives an instance of <code>D</code> as the <code>this</code> argument, <code>cls</code> refers to the <code>D</code> class, and <code>fid</code> represents <code>D.i</code>. At the end of the native method, <code>ival</code> contains the value of <code>D.i</code>, instead of <code>C.i</code>. This might not be what you expected when implementing native method <code>C.f</code>.</font>
+</p>
+
+
+<p>
+  <a name="12327"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The solution is to compute and cache the field ID at the time when you are certain that you have a class reference to <code>C</code>, not <code>D</code>. Subsequent accesses from this cached ID will always refer to the right field <code>C.i</code>. Here is the corrected version:</font>
+</p>
+
+<pre>
+<a name="12385"> </a>// Version that caches IDs in static initializers
+<a name="25864"> </a>class C {
+<a name="12331"> </a>    private int i;
+<a name="12332"> </a>    native void f();
+<a name="12343"> </a>    private static native void initIDs();
+<a name="12344"> </a>    static {
+<a name="12345"> </a>        initIDs(); // Call an initializing native method
+<a name="25860"> </a>    }
+<a name="25863"> </a>}
+</pre>
+
+<p>
+  <a name="36968"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The modified native code is:</font>
+</p>
+
+
+<p>
+  <a name="46747"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="46748"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="46749"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="46750"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="12375"> </a>static jfieldID FID_C_i;
+<a name="12376"> </a>
+<a name="12358"> </a>JNIEXPORT void JNICALL
+<a name="12359"> </a>Java_C_initIDs(JNIEnv *env, jclass cls) {
+<a name="25872"> </a>    /* Get IDs to all fields/methods of C that
+<a name="25891"> </a>       native methods will need. */
+<a name="25887"> </a>    FID_C_i = (*env)-&gt;GetFieldID(env, cls, "i", "I");
+<a name="25868"> </a>}
+<a name="25894"> </a>
+<a name="12367"> </a>JNIEXPORT void JNICALL
+<a name="12368"> </a>Java_C_f(JNIEnv *env, jobject this) {
+<a name="12372"> </a>    ival = (*env)-&gt;GetIntField(env, this, FID_C_i);
+<a name="12373"> </a>    ... /* ival is always C.i, not D.i */
+<a name="12374"> </a>}
+</pre>
+
+<p>
+  <a name="12390"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The field ID is computed and cached in <code>C</code>'s static initializer. This guarantees that the field ID for <code>C.i</code> will be cached, and thus the native method implementation <code>Java_C_f</code> will read the value of <code>C.i</code> independent of the actual class of the <code>this</code> object.</font>
+</p>
+
+
+<p>
+  <a name="29157"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Caching may be needed for some method calls as well. If we change the above example slightly so that classes <code>C</code> and <code>D</code> each have their own definition of a <em>private</em> method <code>g</code>, <code>f</code> needs to cache the method ID of <code>C.g</code> to avoid accidentally calling <code>D.g</code>. Caching is not needed for making correct virtual method calls. Virtual methods by definition dynamically bind to the instance on which the method is invoked. Thus you can safely use the <code>JNU_CallMethodByName</code> utility function (<a href="exceptions.html#26354">&#167;6.2.3</a>) to call virtual methods. The previous example tells us, however, why we do not define a similar <code>JNU_GetFieldByName</code> utility function.</font>
+</p>
+
+<a name="30032"></a>
+<h2>10.8    Terminating Unicode Strings</h2>
+
+<p>
+  <a name="36195"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Unicode strings obtained from <code>GetStringChars</code> or <code>GetStringCritical</code> are not <code>NULL</code>-terminated. Call <code>GetStringLength</code> to find out the number of 16-bit Unicode characters in a string. Some operating systems, such as Windows NT, expect two trailing zero byte values to terminate Unicode strings. You cannot pass the result of <code>GetStringChars</code> to Windows NT APIs that expect a Unicode string. You must make another copy of the string and insert the two trailing zero byte values.</font>
+</p>
+
+<a name="36197"></a>
+<h2>10.9    Violating Access Control Rules</h2>
+
+<p>
+  <a name="36198"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI does not enforce class, field, and method access control restrictions that can be expressed at the Java programming language level through the use of modifiers such as <code>private</code> and <code>final</code>. It is possible to write native code to access or modify fields of an object even though doing so at the Java programming language level would lead to an <code>IllegalAccessException</code>. JNI's permissiveness was a conscious design decision, given that native code can access and modify any memory location in the heap anyway.</font>
+</p>
+
+
+<p>
+  <a name="24958"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Native code that bypasses source-language-level access checks may have undesirable effects on program execution. For example, an inconsistency may be created if a native method modifies a <code>final</code> field after a just-in-time (JIT) compiler has inlined accesses to the field. Similarly, native methods should not modify immutable objects such as fields in instances of <code>java.lang.String</code> or <code>java.lang.Integer</code>. Doing so may lead to breakage of invariants in the Java platform implementation.</font>
+</p>
+
+<a name="11227"></a>
+<h2>10.10    Disregarding Internationalization</h2>
+
+<p>
+  <a name="12400"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Strings in the Java virtual machine consist of Unicode characters, whereas native strings are typically in a locale-specific encoding. Use utility functions such as <code>JNU_NewStringNative</code> (<a href="other.html#26021">&#167;8.2.1</a>) and <code>JNU_GetStringNativeChars</code> (<a href="other.html#26043">&#167;8.2.2</a>) to translate between Unicode <code>jstrings</code> and locale-specific native strings of the underlying host environment. Pay special attention to message strings and file names, which typically are internationalized. If a native method gets a file name as a <code>jstring</code>, the file name must be translated to a native string before being passed to a C library routine.</font>
+</p>
+
+
+<p>
+  <a name="25968"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The following native method, <code>MyFile.open</code>, opens a file and returns the file descriptor as its result:</font>
+</p>
+
+<pre>
+<a name="25969"> </a>JNIEXPORT jint JNICALL
+<a name="56165"> </a>Java_MyFile_open(JNIEnv *env, jobject self, jstring name,
+<a name="56171"> </a>                 jint mode)
+<a name="25970"> </a>{
+<a name="25984"> </a>    jint result;
+<a name="25971"> </a>    char *cname = JNU_GetStringNativeChars(env, name);
+<a name="25980"> </a>    if (cname == NULL) {
+<a name="25981"> </a>        return 0;
+<a name="25982"> </a>    }
+<a name="25983"> </a>    result = open(cname, mode);
+<a name="25985"> </a>    free(cname);
+<a name="25986"> </a>    return result;
+<a name="25987"> </a>}
+</pre>
+
+<p>
+  <a name="25992"> </a><font face="Arial, Verdana, Helvetica, sans-serif">We translate the <code>jstring</code> argument using the <code>JNU_GetStringNativeChars</code> function because the <code>open</code> system call expects the file name to be in the locale-specific encoding.</font>
+</p>
+
+<a name="29163"></a>
+<h2>10.11    Retaining Virtual Machine Resources</h2>
+
+<p>
+  <a name="26011"> </a><font face="Arial, Verdana, Helvetica, sans-serif">A common mistake in native methods is forgetting to free virtual machine resources. Programmers need to be particularly careful in code paths that are only executed when there is an error. The following code segment, a slight modification of an example in Section <a href="exceptions.html#26383">6.2.2</a>, misses a <code>ReleaseStringChars</code> call:</font>
+</p>
+
+<pre>
+<a name="26017"> </a>JNIEXPORT void JNICALL
+<a name="56174"> </a>Java_pkg_Cls_f(JNIEnv *env, jclass cls, jstring jstr)
+<a name="26018"> </a>{
+<a name="26019"> </a>    const jchar *cstr =
+<a name="56173"> </a>        (*env)-&gt;GetStringChars(env, jstr, NULL);
+<a name="26020"> </a>    if (cstr == NULL) {
+<a name="26021"> </a>        return;
+<a name="26022"> </a>    }
+<a name="26023"> </a>    ...
+<a name="26024"> </a>    if (...) { /* exception occurred */
+<a name="26025"> </a>        /* misses a ReleaseStringChars call */
+<a name="26039"> </a>        return;
+<a name="26027"> </a>    }
+<a name="26028"> </a>    ...
+<a name="26029"> </a>    /* normal return */
+<a name="26030"> </a>    (*env)-&gt;ReleaseStringChars(env, jstr, cstr);
+<a name="26031"> </a>}
+</pre>
+
+<p>
+  <a name="26040"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Forgetting to call the <code>ReleaseStringChars</code> function may cause either the <code>jstring</code> object to be pinned indefinitely, leading to memory fragmentation, or the C copy to be retained indefinitely, a memory leak.</font>
+</p>
+
+
+<p>
+  <a name="28912"> </a><font face="Arial, Verdana, Helvetica, sans-serif">There must be a corresponding <code>ReleaseStringChars</code> call whether or not <code>GetStringChars</code> has made a copy of the string. The following code fails to release virtual machine resources properly:</font>
+</p>
+
+
+<p>
+  <a name="52874"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52875"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52876"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52877"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52878"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52879"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52880"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+<p>
+  <a name="52881"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+<pre>
+<a name="28945"> </a>/* The isCopy argument is misused here! */
+<a name="28948"> </a>JNIEXPORT void JNICALL
+<a name="56192"> </a>Java_pkg_Cls_f(JNIEnv *env, jclass cls, jstring jstr)
+<a name="28922"> </a>{
+<a name="28936"> </a>    jboolean isCopy;
+<a name="28923"> </a>    const jchar *cstr = (*env)-&gt;GetStringChars(env, jstr,
+<a name="28939"> </a>                                               &amp;isCopy);
+<a name="28924"> </a>    if (cstr == NULL) {
+<a name="28925"> </a>        return;
+<a name="28926"> </a>    }
+<a name="28927"> </a>    ... /* use cstr */
+<a name="28944"> </a>    /* This is wrong. Always need to call ReleaseStringChars. */
+<a name="28928"> </a>    if (isCopy) {
+<a name="28942"> </a>        (*env)-&gt;ReleaseStringChars(env, jstr, cstr);
+<a name="28943"> </a>    }
+<a name="28935"> </a>}
+</pre>
+
+<p>
+  <a name="28951"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The call to <code>ReleaseStringChars</code> is still needed even when <code>isCopy</code> is <code>JNI_FALSE</code> so that the virtual machine will unpin the <code>jstring</code> elements.</font>
+</p>
+
+<a name="11229"></a>
+<h2>10.12    Excessive Local Reference Creation</h2>
+
+<p>
+  <a name="12412"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Excessive local reference creation causes programs to retain memory unnecessarily. An unnecessary local reference wastes memory both for the referenced object and for the reference itself.</font>
+</p>
+
+
+<p>
+  <a name="12417"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Pay special attention to long-running native methods, local references created in loops, and utility functions. Take advantage of the new <code>Push/PopLocalFrame</code> functions in Java 2 SDK release 1.2 to manage local references more effectively. Refer to Section <a href="refs.html#27570">5.2.1</a> and Section <a href="refs.html#27592">5.2.2</a> for a more detailed discussion of this problem.</font>
+</p>
+
+
+<p>
+  <a name="46670"> </a><font face="Arial, Verdana, Helvetica, sans-serif">You can specify the <code>-verbose:jni</code> option in Java 2 SDK 1.2 to ask the virtual machine to detect and report excessive local reference creation. Suppose that you run a class <code>Foo</code> with this option:</font>
+</p>
+
+<pre>
+<a name="46708"> </a>% java -verbose:jni Foo
+</pre>
+
+<p>
+  <a name="46705"> </a><font face="Arial, Verdana, Helvetica, sans-serif">and the output contains the following:</font>
+</p>
+
+<pre>
+<a name="46683"> </a>***ALERT: JNI local ref creation exceeded capacity 
+<a name="46702"> </a>          (creating: 17, limit: 16).
+<a name="46684"> </a>        at Baz.g (Native method)
+<a name="46728"> </a>        at Bar.f (Compiled method)
+<a name="46685"> </a>        at Foo.main (Compiled method)
+</pre>
+
+<p>
+  <a name="46723"> </a><font face="Arial, Verdana, Helvetica, sans-serif">It is likely that the native method implementation for <code>Baz.g</code> fails to manage local references properly.</font>
+</p>
+
+<a name="11231"></a>
+<h2>10.13    Using Invalid Local References</h2>
+
+<p>
+  <a name="26426"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Local references are valid only inside a single invocation of a native method. Local references created in a native method invocation are freed automatically after the native function that implements the method returns. Native code should not store a local reference in a global variable and expect to use it in later invocations of the native method.</font>
+</p>
+
+
+<p>
+  <a name="12441"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Local references are valid only within the thread in which they are created. You should not pass a local reference from one thread to another. Create a global reference when it is necessary to pass a reference across threads.</font>
+</p>
+
+<a name="11233"></a>
+<h2>10.14    Using the <font  size="4" face="Arial, Verdana, Helvetica, sans-serif">JNIEnv</font> across Threads</h2>
+
+<p>
+  <a name="12442"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The <code>JNIEnv</code> pointer, passed as the first argument to every native method, can only be used in the thread with which it is associated. It is wrong to cache the <code>JNIEnv</code> interface pointer obtained from one thread, and use that pointer in another thread. Section <a href="other.html#26206">8.1.4</a> explains how you can obtain the <code>JNIEnv</code> interface pointer for the current thread.</font>
+</p>
+
+<a name="11234"></a>
+<h2>10.15    Mismatched Thread Models</h2>
+
+<p>
+  <a name="12464"> </a><font face="Arial, Verdana, Helvetica, sans-serif">The JNI works only if the host native code and the Java virtual machine implementation share the same thread model (<a href="other.html#29406">&#167;8.1.5</a>). For example, programmers cannot attach native platform threads to an embedded Java virtual machine implemented using a user thread package.</font>
+</p>
+
+
+<p>
+  <a name="12488"> </a><font face="Arial, Verdana, Helvetica, sans-serif">On Solaris, Sun ships a virtual machine implementation that is based on a user thread package known as <em>Green threads</em>. If your native code relies on Solaris native thread support, it will not work with a Green-thread-based Java virtual machine implementation. You need a virtual machine implementation that is designed to work with Solaris native threads. Native threads support in Solaris JDK release 1.1 requires a separate download. The native threads support is bundled with Solaris Java 2 SDK release 1.2.</font>
+</p>
+
+
+<p>
+  <a name="12479"> </a><font face="Arial, Verdana, Helvetica, sans-serif">Sun's virtual machine implementation on Win32 supports native threads by default, and can be easily embedded into native Win32 applications.</font>
+</p>
+
+
+<p>
+  <a name="25723"> </a><font face="Arial, Verdana, Helvetica, sans-serif"></font>
+</p>
+
+
+
+<hr>
+<!-- This inserts footnotes--><p>
+<table border="0" width="100%">
+<tr>
+<td><a href="bookTOC.html;">Contents</a> | <a href="stubs.html">Prev</a> | <a href="part3.html">Next</a> | <a href="bookIX.html">Index</a></td>
+<td align=right><i>The Java Native Interface<br>
+Programmer's Guide and Specification</i>
+</td></tr></table>
+<p>
+<font size="-1"><i><a href="copyright.html">Copyright</a> &#169 2002 Sun Microsystems, Inc.
+All rights reserved</i>
+<br>
+Please send any comments or corrections to <a href="mailto:jni@java.sun.com">jni@java.sun.com</a>
+</font>
+</body></html>

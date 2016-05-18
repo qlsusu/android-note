@@ -1,0 +1,27 @@
+参见：
+http://blog.csdn.net/aigestudio/article/details/41316141
+http://blog.csdn.net/iispring/article/details/50472485
+
+我们用S代表源像素，源像素的颜色值可表示为[Sa, Sc]，Sa表示源像素的Alpha值，Sc表示源像素的color（即是RGB）。
+我们用D代表目标像素，目标像素的颜色值可表示为[Da, Dc]，Da表示目标像素的Alpha值，Dc表示目标像素的RGB。
+其中，先画圆（目标），再画矩形（源），结果[Ra, Rc]体现的效果是：源的绘制区域上的效果
+
+CLEAR：[0, 0]
+SRC：[Sa, Sc]
+DST：[Da, Dc]
+SRC_OVER：[Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc]
+DST_OVER：[Sa + (1 - Sa)*Da, Rc = Dc + (1 - Da)*Sc]
+SRC_IN：[Sa * Da, Sc * Da]
+DST_IN：[Sa * Da, Sa * Dc]
+	只在源图像和目标图像相交的地方绘制目标图像
+SRC_OUT：[Sa * (1 - Da), Sc * (1 - Da)]
+DST_OUT：[Da * (1 - Sa), Dc * (1 - Sa)]
+SRC_ATOP：[Da, Sc * Da + (1 - Sa) * Dc]
+DST_ATOP：[Sa, Sa * Dc + Sc * (1 - Da)]
+XOR：[Sa + Da - 2 * Sa * Da, Sc * (1 - Da) + (1 - Sa) * Dc]
+DARKEN：[Sa + Da - Sa*Da, Sc*(1 - Da) + Dc*(1 - Sa) + min(Sc, Dc)]
+LIGHTEN：[Sa + Da - Sa*Da, Sc*(1 - Da) + Dc*(1 - Sa) + max(Sc, Dc)]
+MULTIPLY：[Sa * Da, Sc * Dc]
+SCREEN：[Sa + Da - Sa * Da, Sc + Dc - Sc * Dc]
+ADD：Saturate(S + D)
+OVERLAY：Saturate(S + D)

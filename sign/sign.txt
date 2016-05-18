@@ -1,0 +1,6 @@
+如何构建签名：
+eclipse中，右键项目，android tool，export signed application package, 选择项目，create new keystore
+	注意保存位置
+	
+如何签名：
+run.bat

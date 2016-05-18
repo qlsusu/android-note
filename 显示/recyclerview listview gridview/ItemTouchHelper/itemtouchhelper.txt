@@ -1,0 +1,55 @@
+参见：
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0630/3123.html
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0724/3219.html
+https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.9q92yap5h
+myas/Android-ItemTouchHelper-Demo-master
+
+----------------------------------------
+
+用来做什么：item的移动（通过drag），消失（通过swipe）
+
+在recyclerview.jar的什么版本中：recyclerview-v7:22.2.1
+	说明：当前的eclipse版本中，只支持22.1.1，所以，该功能不能在eclipse中使用
+
+如何使用
+// 创建callback
+ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+// 创建itemtouchhelper
+ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+// 关联到recyclerview
+mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+// 触发
+对于drag
+	mItemTouchHelper.startDrag(viewHolder);
+	或者，通过长按来触发，当isLongPressDragEnabled()返回true
+对于swipe
+	由系统根据手势来决定，不用我们手动指定
+
+ItemTouchHelper.Callback
+当itemtouchhelper的一些关键操作被触发等，会通知它
+getMovementFlags
+	通知指定dragFlags和swipeFlags 来表明：recyclerview支持在什么方向上触发 drag和swipe
+onSelectedChanged
+	当item被选择状态发生时
+		（要么item要开始move，要么要开始swipe，或者，
+		item已经完成了 之前的move/swipe，并完成了恢复（如：你拖动item到列表底部 并持续往下很远很远，松手时，该item要从很远很远的位置 动画恢复到 底部））
+	可以通过actionstate来查看item的状态
+onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target)
+	当item移动到了一个新的位置
+	adapter应该在此 来调整底层数据，并notifyItemMoved
+onSwiped(RecyclerView.ViewHolder viewHolder, int i)	
+	当item要移除时
+	adapter应该在此 来调整底层数据，并notifyItemRemoved
+onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
+	在执行move和swipe的过程中，来绘制当前被操作的item
+		如：这个item要被删除（如果通过左右swipe的方式），则，在swipe的过程中，应该改变它的alpha和translationx，如：
+			final float alpha = ALPHA_FULL - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
+            viewHolder.itemView.setAlpha(alpha);
+            viewHolder.itemView.setTranslationX(dX);
+clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
+	可以认为 当item完成了 之前的move/swipe的回调
+--
+isLongPressDragEnabled()
+	长按时，是否可触发drag
+isItemViewSwipeEnabled()

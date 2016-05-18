@@ -1,0 +1,10 @@
+------------------在运行的时候，切换语言（非在设置中，设置语言）
+参见：
+Android App 多语言切换
+	http://laobie.github.io/android/2016/05/14/switch-language-on-android-app.html
+
+Resources resources = getContext().getResources();
+Configuration config = resources.getConfiguration();
+// 应用中用户选择的语言
+config.locale = Locale.ENGLISH;
+resources.updateConfiguration(config, dm);

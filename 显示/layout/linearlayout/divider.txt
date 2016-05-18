@@ -1,0 +1,35 @@
+在水平的linearlayout中，添加3个孩子，为了使得每个孩子之间有间隔，可以设置中间孩子的margin left/right
+但是这样的方法所带来的问题是，当隐藏了中间的孩子后，第一和第三个孩子 中间就没有间隔了
+
+如何解决：
+为linearlayout设置divider，孩子不需要设置margin
+这样，删除中间孩子，左右两个孩子还是有间隔（数值为：divider）
+参见：http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0105/2266.html
+
+-----------------------------代码
+1.定义drawable
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+ 
+    <size
+        android:width="@dimen/spacing_medium"
+        android:height="@dimen/spacing_medium" />
+ 
+    <solid android:color="@android:color/transparent" />
+ 
+</shape>
+
+2.在layout.xml中设置divider
+<LinearLayout
+	android:id="@+id/buttons_container"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:divider="@drawable/spacer_medium"
+	android:orientation="horizontal"
+	android:showDividers="middle">
+
+	<!-- Buttons -->
+
+</LinearLayout>
+

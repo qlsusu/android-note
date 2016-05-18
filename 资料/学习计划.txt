@@ -1,0 +1,35 @@
+高焕堂的书
+  
+      第1本: <<Android應用框架與雲端程式設計 36技>>
+                     -- 新版增加100多頁關於雲端程式設計的內容。
+  
+      第2本: <<Android應用軟體與JNI架構設計>>
+                     -- 新版增加100多頁關於JNI設計的雕龍神技。
+
+      第3本: <<Android物件導向技術與執行緒模式>>
+                     -- 新版增加100多頁關於執行緒模式的內容。
+
+      第4本: <<Android招式之美>>
+	
+	第5本：Android的贏家密碼
+
+c语言的学习，每天1ch代码
+android英文书的例子学习（三本），每天1章代码
+	andvanced看到serviceex
+每天学习高焕堂新书的1章
+看java/c整合的ppt的6页
+最新课程的ppt下载，或者，根据最新课程的章节来学习（5个帖子）
+	http://www.android1.net/Topic.aspx?BoardID=32&TopicID=2530
+重新制定好的学习参考资料，本质上是check流（当自己感觉到需要补入新的营养时）：如commware的网站，stackflow，android1,android123,eoe等等
+：将公司的flow书签发回
+
+高焕堂的新版块：android - 云 （www.android1.net）
+	http://www.android1.net/Board.aspx?BoardID=31&GroupID=0
+
+android doc-resource
+
+
+-----其他关注资料
+eoe推出了新的特刊
+csdn推出了android培训课程：android os的原理与应用开发高级课程
+android/ophone开发完全讲义

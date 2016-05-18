@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/close"
+		android:title="Close"
+		<!-- By default, the order of the items in the menu is determined by the order in which they appear in the menu XML -->
+		<!-- This is a 0-based index of the order for the items associated with the current category. -->
+		android:orderInCategory="3"
+		android:icon="@drawable/eject" />
+	<item android:id="@+id/no_icon"
+		android:orderInCategory="2"
+		android:title="Sans Icon" />
+	<item android:id="@+id/disabled"
+		android:orderInCategory="4"
+		<!--  Disabled items and groups appear in the menu but cannot be selected -->
+		android:enabled="false"
+		android:title="Disabled" />
+	<group android:id="@+id/other_stuff"
+		<!-- Groups can provide an android:menuCategory attribute to specify a different category to use for items in that group. -->
+		android:menuCategory="secondary"
+		android:visible="false">
+		<item android:id="@+id/later"
+			android:orderInCategory="0"
+			android:title="2nd-To-Last" />
+		<item android:id="@+id/last"
+			android:orderInCategory="1"
+			android:title="Last" />
+	</group>
+	<item android:id="@+id/submenu"
+		android:orderInCategory="3"
+		android:title="A Submenu">
+		<menu>				
+			<item android:id="@+id/non_ghost"
+				android:title="Non-Ghost"
+				android:visible="true"
+				<!-- single letters (android:alphabeticShortcut) or numbers (android:numericShortcut) -->
+				android:alphabeticShortcut="n" />
+			<item android:id="@+id/ghost"
+				android:title="A Ghost"
+				android:visible="false"
+				android:alphabeticShortcut="g" />
+		</menu>
+	</item>
+</menu>

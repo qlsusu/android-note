@@ -1,0 +1,21 @@
+ObjectAnimator
+作用于myObj.属性x
+用法：ObjectAnimator.ofFloat(myObj, 属性x, 目标值).setXXX().start()
+	其中，属性x可以使用 字符串的形式，也可以使用Property<T, float的形式>
+原理：
+	根据frame刷新率，通过 myObj的set/get方法 来
+		set用于设置新值
+		get用于获得原始值
+		
+一个例子：
+public static final Property<View, Float> SCALE_X = new FloatProperty<View>("scaleX") {
+	@Override
+	public void setValue(View object, float value) {
+		object.setScaleX(value);
+	}
+
+	@Override
+	public Float get(View object) {
+		return object.getScaleX();
+	}
+};

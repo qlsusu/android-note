@@ -1,0 +1,69 @@
+参见：
+android开发游记：RecyclerView无法添加onItemClickListener最佳的高效解决方案
+	http://blog.csdn.net/liaoinstan/article/details/51200600
+
+方法：
+1.在onbindviewholder中来进行设置，如：
+	holder.root.setonclicklistener
+
+------------------
+	
+2.mRecyclerView.addOnItemTouchListener(recyclerview.onitemtouchlistener)
+相比于上一种方法，有波纹效果
+其中，在onInterceptTouchEvent中判断motionevent是否为click事件类型，后进行处理
+
+recyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(recyclerView) {
+      @Override
+      public void onItemClick(RecyclerView.ViewHolder vh) {
+        //item点击事件
+      }
+});
+
+public abstract class OnRecyclerItemClickListener implements RecyclerView.OnItemTouchListener{
+    private GestureDetectorCompat mGestureDetector;
+    private RecyclerView recyclerView;
+
+    public OnRecyclerItemClickListener(RecyclerView recyclerView){
+        this.recyclerView = recyclerView;
+        mGestureDetector = new GestureDetectorCompat(recyclerView.getContext(),new ItemTouchHelperGestureListener());
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        mGestureDetector.onTouchEvent(e);
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        mGestureDetector.onTouchEvent(e);
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
+
+    private class ItemTouchHelperGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (child!=null) {
+                RecyclerView.ViewHolder vh = recyclerView.getChildViewHolder(child);
+                onItemClick(vh);
+            }
+            return true;
+        }
+
+        @Override
+    	public void onLongPress(MotionEvent e) {
+            View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (child!=null) {
+                RecyclerView.ViewHolder vh = recyclerView.getChildViewHolder(child);
+                onItemLongClick(vh);
+            }
+        }
+	}
+	
+    public abstract void onItemClick(RecyclerView.ViewHolder vh);
+  	public abstract void onItemLongClick(RecyclerView.ViewHolder vh);
+}

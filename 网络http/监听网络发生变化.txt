@@ -1,0 +1,13 @@
+<receiver
+   android:name="com.ray.ray.receiver.ConnectionChangeReceiver"
+   android:label="NetworkConnection" >
+   <intent-filter>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="android.intent.action.USER_PRESENT" />
+   </intent-filter>
+</receiver>
+
+当网络发生变化时，receiver会收到通知
+后，进一步判断是mobile还是wifi在连接，参见nettool2
+
+参见：http://www.cnblogs.com/rayray/archive/2013/03/25/2965474.html

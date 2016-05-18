@@ -1,0 +1,54 @@
+参见：
+最全面的AndroidStudio配置指南总结-包括护眼模式
+	http://blog.csdn.net/mynameishuangshuai/article/details/51332790
+Android Studio 小技巧合集
+	带gif动画
+	https://laobie.github.io/android/2016/02/14/android-studio-tips.html
+【移动开发必须要弄明白的问题】详解Eclipse转Android Studio
+	http://www.imooc.com/article/2640
+Android Studio安装配置笔记
+	http://unclechen.github.io/2015/06/01/Android-Studio%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/
+
+如何修改一个工程（非module）的名字
+	修改目录的名字
+	修改.iml的名字
+	修改.idea/.name的内容
+如何修改一个module的名字
+	修改目录的名字
+	修改.iml的名字
+
+如何添加module
+	将module文件夹拷贝到工程下，在工程的setting.gradle中 添加响应的module
+如何删除module
+	工程的setting.gradle中，去掉对应的module
+
+不显示右边的竖线
+Settings –> Editor –> General ->Appearance ，勾选 Show right margin (configured in Code Style options) 。
+
+选择channel来更新（dev还是stable）
+appearance & behavior - system setting - updates
+
+设置选中行的颜色
+editor - colors&fonts - general
+	editor-caret now: A4D0F0
+
+
+Android Studio自动导包：
+File→Settings→Editor→General→Auto Import→Java→切换“Insert imports on paste”为“All”→勾选“Add unambigious imports on the fly”；
+
+find action：cmd+3
+	用于未指定快捷键的action，如：build
+
+27. 切换器（The Switcher）
+描述：该快捷键基本上就是IDE的alt+tab/cmd+tab命令。你可以用它在导航tab或者面板切换。一旦打开这个窗口，只要一直按着ctrl键，你可以通过对应的数字或者字母快捷键快速选择。你也可以通过backspace键来关闭一个已选中的tab或者面板。
+
+快捷键：Ctrl + Tab
+
+查看方法的签名
+
+
+
+代码自动补全
+
+依赖本地aar
+本地maven

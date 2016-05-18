@@ -1,0 +1,25 @@
+参考：
+https://dl-ssl.google.com/android/repository/repository-10.xml
+https://dl-ssl.google.com/android/repository/addon.xml
+https://dl-ssl.google.com/android/repository/repository-7.xml
+https://dl-ssl.google.com/android/repository/repository-8.xml
+
+platform, sample, platform tools, build tools, tools, source, support library, extra采用如下形式：
+http://dl-ssl.google.com/android/repository/android-21_r01.zip
+http://dl-ssl.google.com/android/repository/samples-20_r02.zip
+http://dl-ssl.google.com/android/repository/platform-tools_r21-macosx.zip
+http://dl-ssl.google.com/android/repository/build-tools_r21.0.1-macosx.zip
+http://dl-ssl.google.com/android/repository/tools_r23.0.5-macosx.zip
+http://dl-ssl.google.com/android/repository/sources-21_r01.zip
+http://dl-ssl.google.com/android/repository/support_r21.zip
+http://dl-ssl.google.com/android/repository/google_play_services_6171000_r21.zip
+
+android sdk, adt(eclipse的最新版本为：24.0.2)等采用如下形式
+http://dl.google.com/android/android-sdk_r22.6.2-windows.zip
+http://dl.google.com/android/adt-23.0.7.zip
+
+哪些平台：
+macosx, windows, linux
+
+一个备份（不是最新）：
+http://downloads.puresoftware.org/files/android/

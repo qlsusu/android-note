@@ -1,0 +1,15 @@
+下载：
+1.进入https://android.googlesource.com
+git下载，如：git clone https://android.googlesource.com/platform/packages/apps/Email
+2.通过eclipse的adt工具，可以下载较新的源码，其会放入sources文件夹内（而非platform/android-版本号/sources文件夹下）
+--
+另外一种方式：
+http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/
+
+查看：
+通过在build class path中为制定的jar（如android-2.1.jar）attach source code来查看源码
+
+
+--旧的方式
+将源码解压并放入
+	\android-sdk-windows-1.5_r2\platforms\android-1.5\sources

@@ -1,0 +1,19 @@
+一般位于appbarlayout中，如：
+	<android.support.design.widget.AppBarLayout ...>
+		<android.support.v7.widget.Toolbar ... />
+ 
+		<android.support.design.widget.TabLayout
+			android:id="@+id/tabLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+ 
+	</android.support.design.widget.AppBarLayout>
+
+
+添加tab项
+tabLayout.addTab(tabLayout.newTab().setText("内容简介"));
+
+和viewpager进行关联：
+tabLayout.setupWithViewPager(viewpager);
+
+tablayout中元素的名字：FragmentPagerAdapter.getPageTitle(int position)

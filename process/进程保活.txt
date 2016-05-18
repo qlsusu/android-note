@@ -1,0 +1,19 @@
+------------------------------MarsDaemon
+
+参见：
+Android 进程常驻 - MarsDaemon 使用说明
+	http://blog.csdn.net/marswin89/article/details/50917098
+	https://github.com/Marswin/MarsDaemon
+	
+其方式 并不是 使用一个带有icon的service（提升其级别为foreground）
+效果上
+	通过ddms来杀死进程（无论是process1还是process2），无论当时的app是否 不在前台，进程(process1和process2)立刻被重新创建(则，service1.oncreate方法会再被调用)
+	设包名为com.ql.xxx，则此刻，一共有3个进程：com.ql.xxx, com.ql.xxx:process1, com.ql.xxx:process2，则，杀死进程com.ql.xxx，该进程不会被再自动创建
+		一种方式是，设定当前app中就只存在两个进程process1和process2，通过设置<application>中的属性：android:process＝":process1"
+缺点：
+	对于华为荣耀6，android版本4.4.2，app在启动时，会崩溃
+	对于小米note，android版本6.0.1，通过系统本身的进程管理来杀死，不失效（进程不再重启）
+	
+------------------------------其他进程保活的手段
+http://blog.csdn.net/marswin89/article/details/50917098
+参见：my/cailing3-busynow2中的com.ql.tool.daemon.Service1

@@ -1,0 +1,32 @@
+对于缩放中心(a,b) 来进行缩放，本质上：
+先translate(a,b)，后进行scale，再translate(-a,-b)
+
+截图中，对应的代码为：
+------------------------缩放中心为(0,0)
+// 将坐标系原点移动到画布正中心
+canvas.translate(mWidth / 2, mHeight / 2);
+
+RectF rect = new RectF(0,-400,400,0);   // 矩形区域
+
+mPaint.setColor(Color.BLACK);           // 绘制黑色矩形
+canvas.drawRect(rect,mPaint);
+
+canvas.scale(0.5f,0.5f);                // 画布缩放
+
+mPaint.setColor(Color.BLUE);            // 绘制蓝色矩形
+canvas.drawRect(rect,mPaint);
+
+------------------------缩放中心为(200,0)
+// 将坐标系原点移动到画布正中心
+canvas.translate(mWidth / 2, mHeight / 2);
+
+RectF rect = new RectF(0,-400,400,0);   // 矩形区域
+
+mPaint.setColor(Color.BLACK);           // 绘制黑色矩形
+canvas.drawRect(rect,mPaint);
+
+canvas.scale(0.5f,0.5f,200,0);          // 画布缩放  <-- 缩放中心向右偏移了200个单位
+										// 本质上为：先scale，后translate
+
+mPaint.setColor(Color.BLUE);            // 绘制蓝色矩形
+canvas.drawRect(rect,mPaint);

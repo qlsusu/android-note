@@ -1,0 +1,8 @@
+参见：
+http://blog.csdn.net/feiduclear_up/article/details/49080587
+http://blog.csdn.net/yanbober/article/details/46361191
+
+三类窗口
+应用窗口：所谓应用窗口指的就是该窗口对应一个Activity，因此，要创建应用窗口就必须在Activity中完成了。
+子窗口：所谓子窗口指的是必须依附在某个父窗口之上。
+系统窗口：所谓系统窗口指的是由系统进程创建，不依赖于任何应用或者不依附在任何父窗口之上。

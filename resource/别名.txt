@@ -1,0 +1,6 @@
+例子：
+如，在values-sw720dp/下 定义layout.xml
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="main" type="layout">@layout/main_tablet</item>
+</resources>
+这样，你的代码中，只用基于r.layout.main来进行编程（并不需要考虑：xxx情况下，应该使用r.layout.main_tablet）

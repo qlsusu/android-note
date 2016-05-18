@@ -1,0 +1,25 @@
+其WAV文件所占容量=采样频率×采样位数×声道×时间 / 8
+	1字节=8bit
+	
+wav的开源库
+	https://code.google.com/p/musicg/
+		android兼容
+	http://www.labbookpages.co.uk/audio/wavFiles.html
+	
+android中的音效教程
+	http://www.droidnova.com/creating-sound-effects-in-android-part-1,570.html
+	
+For example if the .wav file was at 44.1KHz, that means for every second there are 44100 data in the array.
+
+startIndex = mark*frequency;
+endIndex = currentPosition*frequence;
+writeWav(audioArray, startIndex, endIndex, file);
+	
+	
+	numberOfReadBytes是每次读了多少数据
+	totalReadByte是总共读了多少数据
+	
+	audiobuffer是每次录音实际数据	
+	totalByteBuffer是44之后的数据
+	
+	

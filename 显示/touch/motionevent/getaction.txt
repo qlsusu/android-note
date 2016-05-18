@@ -1,0 +1,10 @@
+getAction获得的int值的组成部分：
+	pointer的index,和
+	事件类型
+	
+如：getAction()为：0x0105
+则：getActionMasked()代表了事件类型
+	getaction & ACTION_MASK(0xff)=0x0005
+则：getActionIndex()代表了pointer的index
+	getaction & ACTION_POINTER_INDEX_MASK(0xff00) >> ACTION_POINTER_INDEX_SHIFT(8)
+	=0x0100>>8=0x01

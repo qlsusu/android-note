@@ -1,0 +1,11 @@
+GridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout)
+orientation：代表方向，
+可以为LinearLayoutManager.VERTICAL，LinearLayoutManager.HORIZONTAL
+如果为VERTICAL，代表：根据spancount来填充行，后再填充列（垂直）
+如果为HORIZONTAL，代表：根据spancount来填充列，后再填充行（水平）
+
+GridLayoutManager.SpanSizeLookup
+方法：public int getSpanSize(int position) {
+spansize：如果方向为水平，代表：对应位置的item，占了整行的几分之几
+	如：spanCount为3，当前item的spanSize为3，则该item占用了 一整行
+	又如：count为3，一个item的size为2，一个item的size为1，则这两个item分别占用了行的 2/3和1/3

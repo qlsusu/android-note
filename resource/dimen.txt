@@ -1,0 +1,8 @@
+getDimension()是基于当前DisplayMetrics进行转换，获取指定资源id对应的尺寸。这个函数的返回值是float
+getDimensionPixelSize()与getDimension()功能类似，不同的是将结果转换为int，并且小数部分四舍五入。
+getDimensionPixelOffset()与getDimension()功能类似，不同的是将结果转换为int，并且偏移转换（offset conversion，函数命名中的offset是这个意思）是直接截断小数位，即取整（其实就是把float强制转化为int，注意不是四舍五入哦）。
+如:
+	如果getDimension()返回结果是20.5f，
+	那么getDimensionPixelSize()返回结果就是21，
+	getDimensionPixelOffset()返回结果就是20。
+	

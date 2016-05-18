@@ -1,0 +1,62 @@
+1. layout manager (RecyclerView has to know how to arrange items)
+	如：LinearLayoutManager就是listview, GridLayoutManager就是gridview
+2. adapter (to provide items).
+	对于每个itemview，adapter的onBindViewHolder只会被调用一次
+
+方法签名：
+public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) 
+public void onBindViewHolder(final TextViewHolder holder, final int position)
+
+在eclipse中，最高使用版本:
+/Users/qlong/_study/android/android-sdk-macosx/extras/android/m2repository/com/android/support/recyclerview-v7/22.1.1/recyclerview-v7-22.1.1.aar.zip Folder中的classes.jar
+适配的support-v4：22.2.1
+适配的support-v7：22.2.1
+
+oncreateviewholder和onbindviewholder的调用时机
+设总共20个item，第一次能显示出5个
+则oncreateviewholder总共会被调用 5+3次
+
+显示滚动条：android:scrollbars="vertical"
+不显示滚动条：android:scrollbars="none"
+
+onscrolled中，如果判断 第一个可见item 和 有多少个可见的item：
+LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+firstVisibleItem=layoutManager.findFirstVisibleItemPosition();
+visibleItemCount=layoutManager.findLastVisibleItemPosition()-firstVisibleItem+1;
+--
+如何判断已经到达bottom：
+http://www.cnblogs.com/tianzhijiexian/p/4397552.html
+
+多个itemviewtype
+	参见：com.jianyueyun.homework.teacher.course.ui.CheckNextWorkFrag.initHeaderNotesView()
+	添加header和footer（参见：http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0722/3214.html）
+在public int getItemViewType(int position)中返回特定的类型
+而后，public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType)会被合适调用，在其中返回合适的viewholder
+在public void onBindViewHolder(final TextViewHolder holder, final int position)中，拿合适的viewholder来进一步构建
+附带着，如果时gridlayoutmanager，则构建合适的spansize
+
+根据x/y（其中，x/y针对于 recyclerview的左上顶点，如：event.getx()）找到item
+View child = recyclerView.findChildViewUnder(x,y);
+
+根据item view来找到item holder
+recyclerView.getChildViewHolder(child);
+
+-------------------
+
+setHasFixedSize(true);
+如果recyclerview的宽高都固定，那么设置。其会避免onbindview的重复调用
+
+fullylinearlayoutmanager 和 scrollview中嵌套recyclerview
+参见:
+	http://www.cnblogs.com/tianzhijiexian/p/4469516.html
+		包含了linear,grid, StaggeredGridLayout
+	http://frank-zhu.github.io/android/2015/02/26/android-recyclerview-part-3/
+在layoutmanager.onmeasure中，来丈量recyclerview的宽高
+	遍历所有孩子，叠加所有孩子的宽高，来作为自身的宽高
+		如：是垂直的list，则第一个孩子的宽为recyclerview的宽，所有孩子的高为recyclerview的高
+缺点：其会导致recyclerview中的itemview不能被复用，则会导致性能低下
+		
+OnScrollListener.onScrolled的调用时机：
+即使没有调用recyclerview.smoothScrollToPosition或scrollToPosition，onScrolled也会被调用，此刻：
+linearLayoutManager.findFirstVisibleItemPosition();为0
+recyclerView.getChildAt(firstVisibleItem).getTop()为0

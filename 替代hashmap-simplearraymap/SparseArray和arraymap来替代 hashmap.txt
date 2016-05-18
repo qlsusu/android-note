@@ -1,0 +1,19 @@
+参见：
+Android内存优化（使用SparseArray和ArrayMap代替HashMap）
+	http://blog.csdn.net/u010687392/article/details/47809295
+SimpleArrayMap源码(你还是只会用HashMap么？)
+	http://www.jianshu.com/p/dfa75d3ba1d3
+
+他们作为hashmap的替代方案
+
+SparseArray只能存储key为int类型的数据
+SparseArray在存储和读取数据时候，使用的是二分查找法
+	也就是在put添加数据的时候，会使用二分查找法和之前的key比较当前我们添加的元素的key的大小，然后按照从小到大的顺序排列好，
+	所以，SparseArray存储的元素都是按元素的key值从小到大排列好的。 
+
+同样的对于arraymap
+
+什么时候使用
+数据量不大，最好在千级以内
+如果key的类型已经确定为int类型，那么使用SparseArray，因为它避免了自动装箱的过程，如果key为long类型，它还提供了一个LongSparseArray来确保key为long类型时的使用
+如果key类型为其它的类型，则使用ArrayMap

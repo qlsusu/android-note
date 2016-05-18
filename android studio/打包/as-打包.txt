@@ -1,0 +1,18 @@
+参见：
+Android Studio Gradle实践之多渠道自动化打包+版本号管理
+	http://unclechen.github.io/2015/10/22/Android-Studio-Gradle%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%A4%9A%E6%B8%A0%E9%81%93%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85+%E7%89%88%E6%9C%AC%E5%8F%B7%E7%AE%A1%E7%90%86/
+
+------------------------------------如何打包
+选择gradle视图，选择app，选择tasks/build/assembleDebug
+APK生成位置：工程路径/app/build/outputs/apk
+
+------------------------------------productflavor
+可以用来多渠道打包
+
+例子：
+在app的build.gradle中，android下，如：
+	productFlavors {
+        Xiaomi {
+            applicationId "com.ql.myAndroidXiaomi"
+        }
+    }

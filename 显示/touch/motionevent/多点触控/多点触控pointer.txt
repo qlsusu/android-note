@@ -1,0 +1,24 @@
+参见：
+Android MotionEvent详解
+	http://ztelur.github.io/2016/03/16/Android-MotionEvent%E8%AF%A6%E8%A7%A3/
+
+一个pointer就代表一个触摸点，每个pointer都有自己的事件类型，也有自己的横轴坐标值。
+一个MotionEvent对象中可能会存储多个pointer的相关信息，每个pointer都会有一个自己的id和index。
+	获得index：event.getActionIndex();
+pointer的id在整个事件流中是不会发生变化的，但是index会发生变化。
+	根据index得到id：id = event.getPointerId(index)
+	根据id得到index：index = event.findPointerIndex(id);
+	
+---------------多点触控时，事件产生顺序：
+先产生一个ACTION_DOWN事件，代表用户的第一个手指接触到了屏幕。
+再产生一个ACTION_POINTER_DOWN事件，代表用户的第二个手指接触到了屏幕。
+很多的ACTION_MOVE事件，但是在这些MotionEvent对象中，都保存着两个触摸点滑动的信息
+	int index = event.findPointerIndex(mActivePointerId);
+	int secondaryIndex = MotionEventCompat.findPointerIndex(event,mSecondaryPointerId);
+	final float x = MotionEventCompat.getX(event,index);
+	final float y = MotionEventCompat.getY(event,index);
+	final float secondX = MotionEventCompat.getX(event,secondaryIndex);
+	final float secondY = MotionEventCompat.getY(event,secondaryIndex);
+一个ACTION_POINTER_UP事件，代表用户的一个手指离开了屏幕。
+如果用户剩下的手指还在滑动时，就会产生很多ACTION_MOVE事件。
+一个ACTION_UP事件，代表用户的最后一个手指离开了屏幕

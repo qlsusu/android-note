@@ -1,0 +1,12 @@
+参见：
+http://blog.csdn.net/aigestudio/article/details/41799811
+
+用Bitmap对绘制的图形进行渲染着色
+
+例子
+BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+paint.setShader(bitmapShader);
+canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
+
+说明：
+显示上，先执行y的mode，在执行x的mode

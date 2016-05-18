@@ -1,0 +1,2 @@
+当用户解锁时，会发出事件：
+android.intent.action.USER_PRESENT

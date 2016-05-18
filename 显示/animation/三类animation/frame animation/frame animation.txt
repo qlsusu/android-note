@@ -1,0 +1,36 @@
+参见：
+android之动画（一）通过AnimationDrawable控制逐帧动画
+	http://blog.csdn.net/chenzheng_java/article/details/6273954
+
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/rocket_thrust1" android:duration="200" />
+    <item android:drawable="@drawable/rocket_thrust2" android:duration="200" />
+    <item android:drawable="@drawable/rocket_thrust3" android:duration="200" />
+</animation-list>
+
+xml位置：res/drawable/
+
+java代码
+	AnimationDrawable rocketAnimation;
+
+	public void onCreate(Bundle savedInstanceState) {
+	  super.onCreate(savedInstanceState);
+	  setContentView(R.layout.main);
+
+	  ImageView rocketImage = (ImageView) findViewById(R.id.rocket_image);
+	  rocketImage.setBackgroundResource(R.drawable.rocket_thrust);
+	  rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
+	}
+
+	public boolean onTouchEvent(MotionEvent event) {
+	  if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		rocketAnimation.start();
+		return true;
+	  }
+	  return super.onTouchEvent(event);
+	}
+
+start最快被允许调用的时机
+If you want to play the animation immediately, without requiring interaction, then you might want to call it from the onWindowFocusChanged() method in your Activity, which will get called when Android brings your window into focus.
+It's important to note that the start() method called on the AnimationDrawable cannot be called during the onCreate() method of your Activity, because the AnimationDrawable is not yet fully attached to the window. 

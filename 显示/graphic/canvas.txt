@@ -1,0 +1,17 @@
+参考：
+http://blog.csdn.net/iispring/article/details/49770651
+my/canvasdemo
+
+绘图有三个基本要素：Canvas、绘图坐标系以及Paint
+Canvas是画布，拥有drawXXX(如drawcircle, drawrect等)方法
+	和bitmap的关系：
+		一个Canvas对象一定是结合了一个Bitmap对象
+		Canvas虽然内部保持了一个Bitmap，但是它本身并不代表那个Bitmap，而更像是一个图层。
+		我们对这个图层的平移旋转和缩放等等操作，并不影响内部的Bitmap，仅仅是改变了该图层相对于内部Bitmap 的坐标位置、比例和方向而已。
+Paint决定了绘制的图形的一些外观，比如是绘制的图形的颜色，再比如是绘制圆面还是圆的轮廓线等
+
+------------------------------------
+
+drawBitmap(Bitmap bitmap, Rect src, RectF dst, Paint paint)
+src确定了 要绘制bitmap的哪部分，是针对于bitmap坐标系
+dst确定了 将该bitmap部分 绘制到什么位置，是针对于绘图坐标系

@@ -1,0 +1,9 @@
+decorview
+当前activity的底层容器，是一个framelayout
+结构为：（参见：decorview示例.png）
+	上面状态栏，下面导航栏（对应于没有实体按键的 back等按键所占用的区域），中间是 actionbar(viewstub形式)+内容栏
+	内容栏是一个framelayout，其id为Window.ID_ANDROID_CONTENT（即是：android.R.id.content）
+		如何获得：com.ql.tool.ViewTool.getRoot(View)
+activity.setcontentview(myview)，实际上是将myview 作为第一个孩子 添加到内容栏中
+
+通过：activity.getwindow().getdecorview()获得

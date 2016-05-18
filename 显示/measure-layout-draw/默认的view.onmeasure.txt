@@ -1,0 +1,50 @@
+// 可以看出，getSuggestedMinimumXXX()用在spec为 unspecified 的时候
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+			getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+}
+
+public static int getDefaultSize(int size, int measureSpec) {
+	int result = size;
+	int specMode = MeasureSpec.getMode(measureSpec);
+	int specSize = MeasureSpec.getSize(measureSpec);
+
+	switch (specMode) {
+	case MeasureSpec.UNSPECIFIED:
+		result = size;
+		break;
+	case MeasureSpec.AT_MOST:
+	case MeasureSpec.EXACTLY:
+		result = specSize;
+		break;
+	}
+	return result;
+}
+
+----------------------------------
+
+
+//另外一种好的方式，其中contentsize为一个默认的size
+private int getMeasurement(int measureSpec, int contentSize) {
+	int specSize = MeasureSpec.getSize(measureSpec);
+	switch (MeasureSpec.getMode(measureSpec)) {
+		case MeasureSpec.AT_MOST:
+			return Math.min(specSize, contentSize);
+		case MeasureSpec.UNSPECIFIED:
+			return contentSize;
+		case MeasureSpec.EXACTLY:
+			return specSize;
+		default:
+			return 0;
+	}
+}
+
+protected int getSuggestedMinimumWidth() {
+	return (mBackground == null) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());
+}
+
+drawable的
+public int getMinimumWidth() {
+	final int intrinsicWidth = getIntrinsicWidth();
+	return intrinsicWidth > 0 ? intrinsicWidth : 0;
+}

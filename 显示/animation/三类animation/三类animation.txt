@@ -1,0 +1,7 @@
+几类动画：
+property动画，property animation
+	如：改变alpha属性
+view动画，tween animation
+	如：translate scale 旋转 透明度
+frame动画，frame animation
+	不停的播放图片

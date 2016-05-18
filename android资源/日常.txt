@@ -1,0 +1,352 @@
+将笔记上传到百度云
+
+
+像alfred的打开程序
+	https://github.com/Wox-launcher/Wox
+windows上 同一应用的不同窗口的切换软件
+	vistaswitcher
+	topdesk
+		http://soft.zol.com.cn/90/901005.html
+搜索
+	everything
+	google desktop search
+仿照mac分栏
+	
+
+
+带走
+	--资料的更新内容
+	--project-as
+	--as的设置
+		不包含快捷键
+
+--------
+投递简历给小米
+
+
+
+
+
+
+
+------	
+
+
+https://twitter.com/kenshinX77
+https://twitter.com/Fahluangman	
+	
+完成plan-prepare中的内容
+
+----------
+
+记录
+进程如何保活
+
+
+
+整理chrome
+当本地的maven再依赖于另外一个libraray，app可以吗
+
+周五：
+更新简历，在51job和猎聘网上
+监视内存，view的层次是否正确
+温习整个android内容
+
+
+
+自动build library模块
+
+整理android stuido资源和gradle
+使用aar
+构建本地maven库
+
+lib1的文件发生改变
+lib1又依赖了lib2
+	app运行不行，缺少lib2库
+lib1中依赖了jar
+--
+构建本地maven库
+	参见：
+		http://blog.bugtags.com/2016/01/27/embrace-android-studio-maven-deploy/
+		https://github.com/kevinho/Embrace-Android-Studio-Demo/tree/master/S4-MavenDeploy
+	不修改local respotory有影响吗
+		如何修改：http://blog.csdn.net/wanghantong/article/details/36427433
+	验证：
+		修改了文件后，使用同一个version，可以上传到本地成功吗
+		删除本地的上传，重新上传，可以成功吗
+		app中，可以体现新上传的maven代码效果吗
+笔记记录：如何使用本地的aar
+	也许最大的问题，就是 所依赖的aar虽然它可以设置依赖，如：jar或者module。app也依赖了那个aar，编译也不会有问题，但是在运行时，却报告：app缺少 aar所依赖的jar
+记录：module中，依赖的第三方库会变成本地库，位置为：/Users/qlong/.gradle/caches/modules-2/files-2.1/io.pristine/libjingle/11139
+--
+maven学习：
+	其中的scope是什么意思
+
+gradle中的compile和testcompile是什么意思
+--
+如何打包aar
+--	
+
+记录as中有意义的文章
+
+
+--launchmode的例子做完，并且总结
+
+整理hosts
+记录github项目
+如何使得hosts生效
+如何使用那个工具
+手机也能用上hosts
+
+
+
+
+投资人的角色
+加亲自乐园的qq，看空间
+
+
+
+安装截图上的软件
+屏蔽掉截图
+
+
+整理
+library中，整理每个库都有什么知识点，进行学习
+学习google sample中的示例
+
+
+--------------------------------------------
+
+http://go.netsh.org/link/cmd3
+
+升级text编辑器
+
+safari的收藏夹
+
+
+整理toho
+发送huakai-demo的客户端事项
+--HYPERswitch正常使用
+--ss账号
+刷机：cm
+	备份data
+安装可以运行windows软件的环境
+	可以打开好压
+
+申请google账户时用的信用卡
+https://wallet.google.com/manage/w/0/#addressBook:
+
+https://221.226.177.30/svn/3qii/3Payer_SDK_发布-之前测试/印尼/paysdk_android_商户APK接入文档_150131.doc
+--重新安装手机程序
+安装searchit,mindnote,输入法，虾米，音乐，文件管理器，yingsuo，绿色首位，xpose，手电筒，
+翻墙shadowsocks
+还原bill中的内容
+	中文名
+--闹钟，日历
+google账户
+更新应用
+
+
+--更新版本
+--手机root
+--更换字体？
+升级chrome
+
+--登陆flyme
+--play服务
+--可以root
+--绿色守卫
+--xpose
+--翻墙
+发送huakai到ss
+
+--google
+--app
+--桌面整理
+--应用分类
+--书签到魅族浏览器上
+
+
+爸爸空间中的问题：
+http://support.qq.com/cgi-bin/content_new?fid=46&tid=14195634763427064&start=0&num=20&order=0&pn=1&gb=3&g_tk=2076678660&skey=@XqcFhbO1C
+
+
+
+mytool和mytoolandroid中jsontool的对比
+huakai客户端使用新的jsontool
+huakai新的流程
+
+实验机器上，checkbox的颜色和效果
+
+修改安卓的字体教程：
+DroidSansFallback.ttf
+
+<family>
+        <fileset>
+            <file lang="zh-Hans">NotoSansHans-Regular.otf</file>
+        </fileset>
+    </family>
+    <family>
+        <fileset>
+            <file lang="zh-Hant">NotoSansHant-Regular.otf</file>
+        </fileset>
+    </family>
+
+back按键时，关闭cut
+rootlist为什么不显示广告
+ad id有问题
+
+一会记录
+设节点为完成，当line和节点平级，然后line成为节点的孩子，则，line消失，但是节点变成了 非完成
+
+--填写中文
+发布应用到中国的商店
+	将地址告诉妞
+	将地址告诉sunfang
+--导出记事
+	日常
+	mindnote外
+	hua外
+--记录android资料网站
+发布应用到
+	安卓市场
+	360市场
+	腾讯
+	csdn
+在论坛上发文
+使用google analytics
+
+刷机
+toss
+noteit
+付款地址发生改变
+searchit
+adtense地址变更
+
+找不到下述，ho找
+	my/transform
+	my/myview中，matrix和graphics.camera的使用
+touch笔记的补充：关于longclicker
+	当onlongclicker返回true，或者false，ontouch还会调用吗？(move事件的传递)
+移动的方式：
+	margin
+	offsettop/bottom
+	scrollby
+canvas的教程：http://blog.csdn.net/qinjuning/article/details/6936783
+	
+note中的事项
+
+刷机
+备份资料
+都装了什么程序
+root
+绿色守卫
+监控流量的
+通讯录
+输入法
+联系人
+	qq通讯录
+mindnote，searchit，jiaoyu
+必备软件
+ROM刷入
+
+
+--开发者注册确认
+	账单
+	网站本身
+csdn的资料网址整理
+
+--能够自动刷新吗
+
+图片的现实分辨率
+坐标变换
+
+
+
+开发者的网页放入收藏夹
+chrome收藏夹分割线
+goagentx使用
+
+
+
+有没有好的 记事本软件
+	自动换行
+	编码转换
+	文本切换快捷键
+更新iphoto
+
+实验swift中的笔记中的？
+将之前的代码放到mac上
+
+将paysdk发送到ss
+style中的学习笔记 发送到ss
+	http://www.cnblogs.com/angeldevil/p/3479431.html
+
+
+
+Yet Another Drag and Go
+Search by Image (by Google)
+Fatkun图片批量下载
+APK downloader
+
+
+最大化窗口快捷键，去掉该软件
+将代码发送
+如果当前还有activity，如何杀死进程
+android刷到老版本
+
+最大化窗口 软件，找到，恢复cmd+click
+
+手机唯一号码 IMEI和 手机型号
+
+－－
+印象笔记的163账号
+
+
+
+
+
+ithoughts中，导入和导出
+--cross over
+
+
+--
+
+
+
+
+
+
+
+带走
+带走支付流程
+pay prop
+
+
+构建一个基本的项目
+构建基本流程
+
+
+
+
+
+联网错误，自动重连
+参见talkingface中的nettool，并更新mytool（桌面和android版本）
+
+
+记录jface.text插件位置
+http://blog.csdn.net/afgasdg/article/details/24247863
+
+
+
+com.sq.pay.PayActivity.back()中，还告诉payid是什么
+
+
+整理 学习.txt
+将其中的 新技术内容 放入到 一些新技术.txt中
+	
+将安卓的资料拷贝入U盘（并标注日期）
+将花开的代码拷贝入U盘（并标注日期）
+
+查看pro android 5是否有计划准备价值
+整理 mindnote和ithoughts中，有哪些需要整理的

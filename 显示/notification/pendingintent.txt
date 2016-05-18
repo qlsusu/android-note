@@ -1,0 +1,4 @@
+FLAG_UPDATE_CURRENT:
+notifyBuilder
+//	需要使用FLAG_UPDATE_CURRENT，否则，如果使用0的话，新构建的intent中的extra会被之前的extra所覆盖
+	.setContentIntent(PendingIntent.getActivity(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT))

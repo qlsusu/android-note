@@ -1,0 +1,22 @@
+参见：
+http://blog.csdn.net/olevin/article/details/35392061
+http://blog.csdn.net/klpchan/article/details/9749569
+http://blog.csdn.net/guolin_blog/article/details/18234477
+http://blog.csdn.net/guolin_blog/article/details/25466665
+
+actionbar的高度：
+在某个layout的view中
+	android:layout_height="?attr/actionBarSize"
+		该属性来自于appcompatv7。如果版本支持，也可以使用?android:attr/actionBarSize
+在4.x时期，为48dp
+--
+修改actionbar的高度：在style中，<item name="actionBarSize">48dp</item>
+	或者 android:actionBarSize
+
+关于自定义 Tab Indicator，参见：http://hukai.me/android-training-course-in-chinese/basics/actionbar/styling.html
+
+覆盖叠加overlay
+在主题中添加：<item name="android:windowActionBarOverlay">true</item>
+
+6.0主题
+仍然可以使用actionbaractivity

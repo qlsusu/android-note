@@ -1,0 +1,8 @@
+layer
+canvas是支持图层layer渲染这种技术的，canvas默认就有一个layer，当我们平时调用canvas的各种drawXXX()方法时，其实是把所有的东西都绘制到canvas这个默认的layer上面。
+
+我们还可以通过canvas.saveLayer()新建一个layer（其会返回一个int类型的layerID），新建的layer放置在canvas默认layer的上部，
+之后，我们所有的绘制操作都绘制到了我们新建的layer上，而不是canvas默认的layer。
+该layer的所有像素的初始ARGB值都是(0，0，0，0)，即是完全透明的。
+
+在我们对该layer绘制完成后，可以通过canvas.restoreToCount(layerID)或者canvas.restore()把这个layer绘制到canvas默认的layer上去，这样就完成了一个layer的绘制工作。

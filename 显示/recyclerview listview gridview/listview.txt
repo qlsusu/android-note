@@ -1,0 +1,7 @@
+-------------------------------------------------listview
+可以控制listview的滚动：list.setSelectionFromTop
+根据触控坐标，得到当前item的position：pointToPosition(x, y);
+得到当前的item view：getChildAt(pointToPosition(x, y) - getFirstVisiblePosition());
+
+分割线为虚线：
+http://blog.163.com/smilecatflower_18z/blog/static/19262704520111093592584/

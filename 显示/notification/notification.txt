@@ -1,0 +1,7 @@
+Android 通知栏Notification的整合 全面学习 （一个DEMO让你完全了解它）
+	http://blog.csdn.net/vipzjyno1/article/details/25248021
+	
+5.0时代，要求，通知栏的图标中，只包含了 白色和透明色
+	参见：5.0时代通知栏图标示例
+
+制作图标：https://romannurik.github.io/AndroidAssetStudio/index.html

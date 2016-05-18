@@ -1,0 +1,7 @@
+my/talkingtom中 com.oooo3d.lib.animation.player.AnimationPlayer.start()
+
+当一个audio要重复播放时（如：点击一次播放一下），那么在播放时，需要：stop, prepare,	seekto。而在prepare时，可能会抛出异常，如果这样，则创建一个新的mediaplayer: release, new
+根据res来创建mp，不需要prepare。但是，如果根据外部的文件创建mp，则需要prepare
+参见：
+	google doc-framework topics-media
+	talkingtom中的animationitem

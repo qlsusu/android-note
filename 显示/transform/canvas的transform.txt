@@ -1,0 +1,17 @@
+参见：
+Canvas之画布操作
+	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B3%5DCanvas_Convert.md
+
+canvas的matrix
+当一个view最终确定了posotion，那么canvas.matrix就是该position相对于(0,0)的平移
+	如matrix：
+		1,0,0,
+		0,1,126,
+		0,0,1,
+	该matrix将左乘
+		x,
+		y,
+		1,
+	代表着该view被丈量后，其坐标是(0,126)
+canvas的concat(m)代表着：canvas.getmatrix * m
+	可能不对（老版本）：m左乘canvas.getmatrix

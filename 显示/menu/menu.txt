@@ -1,0 +1,33 @@
+使得activity.oncreateoptionmenu再次被调用
+注意：不要在其中再次调用invalidmenu（android4.0.x上出现stackoverflow）
+
+如果继承自actionbaractivity，而菜单又想总是可见时：
+android:showAsAction="always" 变为
+app:showAsAction="always"，并声明命名空间xmlns:app="http://schemas.android.com/apk/res-auto"
+
+为菜单的item设置view，如
+1. layout：
+<?xml version="1.0" encoding="utf-8"?>
+<!--menu_item_view.xml-->
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="?attr/actionBarSize"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/btn_default_light"
+    android:src="@drawable/ic_inbox_white" />
+2. 代码设置	
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    inboxMenuItem = menu.findItem(R.id.action_inbox);
+    inboxMenuItem.setActionView(R.layout.menu_item_view);
+    return true;
+}
+
+如果一个imageview，想要有类似menu的...的样式，那么
+<ImageView
+	android:id="@+id/context"
+	style="@style/Widget.AppCompat.Light.ActionButton.Overflow"
+	android:layout_width="?android:attr/listPreferredItemHeightSmall"
+	android:layout_height="match_parent"
+	android:clickable="true"
+	android:focusable="false"/>

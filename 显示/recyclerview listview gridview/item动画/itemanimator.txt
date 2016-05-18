@@ -1,0 +1,24 @@
+参见：
+http://coderrobin.com/2015/02/11/Android-RecyclerView使用/
+https://github.com/wasabeef/recyclerview-animators
+https://github.com/dkmeteor/RecyclerViewAnimator
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0712/3175.html
+
+------------------------------------
+
+mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+如果你还是用 notifyDataSetChanged() 来通告数据集变更的话，你只会看到全部列表项一起淡出再淡入的效果
+
+动画也可以具体到：某一项的增加、删除、移动、变更
+	notifyItemInserted(position) - 有一个新项插入到了 position 位置
+	notifyItemRangeInserted(position, count) - 在 position 位置插入了 count 个新项目
+	notifyItemRemoved(position)
+	notifyItemRangeRemoved(position, count)
+	notifyItemChanged(position)
+	notifyItemMoved(from, to)
+	...
+
+item的 添加/删除 动画：
+先在指定位置 添加/删除 条目，后
+recyclerview.notifyItemInserted(positionToAdd); 
+recyclerview.notifyItemRemoved(position); 

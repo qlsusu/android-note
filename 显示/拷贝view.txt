@@ -1,0 +1,5 @@
+参见：
+my/talkingface中ViewTool.copyView
+my/viewcopy
+	拷贝view（简单的view和layout）
+	拷贝invisible和gone view

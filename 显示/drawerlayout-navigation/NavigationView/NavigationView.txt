@@ -1,0 +1,35 @@
+参见：
+ANDROID – NAVIGATION DRAWER 實作
+	http://blog.mosil.biz/2013/12/android-navigation-drawer/#brief_introduction_navigation_drawer
+ANDROID – TOOLBAR 上的 NAVIGATION DRAWER
+	http://blog.mosil.biz/2014/10/navigation-drawer-on-toolbar/
+ANDROID – NAVIGATION DRAWER 中取出 HEADERVIEW 的議題
+	http://blog.mosil.biz/2015/10/android-attr-of-header-of-navigation-drawer-is-nullable/
+Android Material Design之Toolbar与Palette实践(有导航栏，滑动的颜色，tablayout)
+	http://blog.csdn.net/bbld_/article/details/41439715		 
+
+指定drawer中的头部:
+app:headerLayout="@layout/layout_drawer_header"
+
+---------------------
+
+指定drawer中的菜单选项：
+app:menu="@menu/drawer"
+可以同时设置icon和text
+
+响应navigationview的菜单的点击
+navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+	@Override
+	public boolean onNavigationItemSelected(MenuItem menuItem) {
+		menuItem.setChecked(true);
+		//关闭抽屉侧滑菜单
+		drawerLayout.closeDrawers();
+		return true;
+	}
+});
+
+菜单项的字体颜色
+<--正常状态下字体颜色和icon颜色-->
+<item name="android:textColorPrimary">@android:color/darker_gray</item>
+<--选中状态icon的颜色和字体颜色-->
+ <item name="colorPrimary">@color/accent_material_light</item>

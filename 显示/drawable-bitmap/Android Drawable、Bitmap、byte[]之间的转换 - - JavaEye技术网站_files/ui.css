@@ -1,0 +1,79 @@
+#editor_switch {
+  border-bottom:1px solid #36a;
+  height: 25px;
+  margin-bottom: 12px;
+}
+
+#editor_switch li {
+  margin: 0 5px;
+  list-style: none;
+  float:left;
+}
+
+#editor_switch li a {
+  display:block;
+  color: black;
+  text-decoration:none;
+  background: #ddd;
+  padding:0.25em 1em;
+  border: 1px solid #36a;
+  border-bottom: none;
+}
+
+#editor_switch li a:hover,
+#editor_switch li a:active,
+#editor_switch li a.activetab:link,
+#editor_switch li a.activetab:visited {
+  background:#fff;
+}
+
+#editor_wrapper {
+  width: 100%;
+}
+
+#bbcode_emotions {
+  width: 120px;
+  float: left;
+  text-align: center;
+  padding: 20px;
+}
+
+#bbcode_emotions img {
+  padding: 5px;
+  width: 19px;
+  cursor: pointer;
+}
+
+#bbcode_controllers {
+  float: left;
+}
+
+#bbcode_toolbar input {
+  background-color: #efefef;
+  color:#000000;
+  font-family:Verdana,Arial,Helvetica,sans-serif;
+  font-size:11px;
+  margin: 0 5px 5px 0;
+  padding: 0 4px;
+}
+
+#bbcode_tooltip {
+  background-color: #dee3e7; 
+  padding: 5px;
+}
+
+#button_bold {
+  font-weight: bold;
+}
+
+#button_italic {
+  font-style: italic;
+}
+
+#button_underline {
+  text-decoration: underline;
+}
+
+#preview p {
+    margin: 0 !important;
+}

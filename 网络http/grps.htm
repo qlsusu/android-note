@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Android中使用cmwap接入点访问互联网的问题及解决办法 - 短裤党 - ITeye技术网站</title>
+    <meta name="description" content="//检查网络 是否正常      private boolean checkNet(){       ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);         netWrokInfo = manager.getActiveNetworkInfo();      ...">
+    <meta name="keywords" content="互联网, Android, 网络应用, 网络协议, 中国移动 Android中使用cmwap接入点访问互联网的问题及解决办法">
+    <link rel="shortcut icon" href="http://gundumw100.iteye.com/images/favicon.ico" type="image/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="http://gundumw100.iteye.com/open_search.xml" title="ITeye">
+    <link href="http://gundumw100.iteye.com/rss" rel="alternate" title="短裤党" type="application/rss+xml">
+    <link href="grps_files/blog.css" media="screen" rel="stylesheet" type="text/css">
+<link href="grps_files/blue.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="grps_files/ga.js" async="" type="text/javascript"></script><script src="grps_files/application.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="grps_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="grps_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="grps_files/hotkey.js" type="text/javascript"></script>
+  <script src="grps_files/code_favorites.js" type="text/javascript"></script>
+<script src="grps_files/weiboshare.js" type="text/javascript"></script>
+  <style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style></head>
+  <body>
+    <div id="header">
+      <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+  <a href="#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>
+  <div class="quick_menu" style="display:none;">
+    <a target="_blank" href="http://job.iteye.com/iteye">招聘</a>
+    <a href="http://www.iteye.com/search">搜索</a>
+  </div>
+</div>
+
+      <div id="user_nav">
+      <a href="http://gundumw100.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://gundumw100.iteye.com/login">登录</a>
+    <a href="http://gundumw100.iteye.com/signup" class="nobg">注册</a>
+  </div>
+
+    </div>
+
+    <div id="page">
+      <div id="branding" class="clearfix">
+        <div id="blog_name">
+          <h1><a href="http://gundumw100.iteye.com/">短裤党</a></h1>
+        </div>
+        <div id="fd"></div>
+        <div id="blog_navbar">
+          <ul>
+            <li class="blog_navbar_for"><a href="http://gundumw100.iteye.com/"><strong>博客</strong></a></li>
+            <li><a href="http://gundumw100.iteye.com/weibo">微博</a></li>
+            <li><a href="http://gundumw100.iteye.com/album">相册</a></li>
+            <li><a href="http://gundumw100.iteye.com/link">收藏</a></li>
+            <li><a href="http://gundumw100.iteye.com/blog/guest_book">留言</a></li>
+            <li><a href="http://gundumw100.iteye.com/blog/profile">关于我</a></li>
+          </ul>
+    
+          <div class="search">
+            <form action="/blog/search" method="get">
+              <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text">
+              <input class="submit_search" value="" type="submit">
+            </form>
+          </div> 
+          <div id="fd"></div>         
+        </div>
+      </div>
+      
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="blog_main">
+  <div class="blog_title">
+    <h3>
+      <a href="http://gundumw100.iteye.com/blog/858228">Android中使用cmwap接入点访问互联网的问题及解决办法</a>
+      <em class="actions">      </em>
+    </h3>
+    <ul class="blog_categories"><strong>博客分类：</strong> <li><a href="http://gundumw100.iteye.com/category/74186">android</a></li> </ul>
+        <div class="news_tag"><a href="http://www.iteye.com/blogs/tag/%E4%BA%92%E8%81%94%E7%BD%91">互联网</a><a href="http://www.iteye.com/blogs/tag/Android">Android</a><a href="http://www.iteye.com/blogs/tag/%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8">网络应用</a><a href="http://www.iteye.com/blogs/tag/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">网络协议</a><a href="http://www.iteye.com/blogs/tag/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8">中国移动</a>&nbsp;</div>
+  </div>
+
+  <div id="blog_content" class="blog_content">
+    <div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=%2F%2F%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%20%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8%0A%20%20%20%20private%20boolean%20checkNet()%7B%0A%20%20%20%0AConnectivityManager%20manager%20%3D%20(ConnectivityManager)%20getSystemService(CONNECTIVITY_SERVICE)%3B%20%20%0A%20%20%20%0AnetWrokInfo%20%3D%20manager.getActiveNetworkInfo()%3B%20%20%0A%20%20%20%20%20%20%20if%20(netWrokInfo%20%3D%3D%20null%20%7C%7C%20!netWrokInfo.isAvailable())%20%7B%20%0A%20%20%20%20%20%20%20%20%20%20%20Toast.makeText(this%2C%20%22%E5%BD%93%E5%89%8D%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E7%94%A8%EF%BC%8C%E8%AF%B7%E5%BC%80%E5%90%AF%5Cn%E7%BD%91%E7%BB%9C%22%2C%20Toast.LENGTH_LONG).show()%3B%0A%20%20%20%20%20%20%20%20%20%20%20return%20false%3B%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20else%20if(netWrokInfo.getTypeName().equals(%22MOBILE%22)%26%20netWrokInfo.getExt%20raInfo().equals(%22cmwap%22))%7B%0A%20%20%20%20%20%20%20%20%20%20%20Toast.makeText(this%2C%20%22cmwap%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E7%94%A8%EF%BC%8C%E8%AF%B7%E9%80%89%E6%8B%A9cmnet%E7%BD%91%E7%BB%9C%22%2C%20Toast.LENGTH_LONG).show()%3B%0A%20%20%20%20%20%20%20%20%20%20%20return%20false%3B%0A%20%20%20%20%20%20%20%7Delse%7B%0A%20%20%20%20%20%20%20%0Areturn%20true%3B%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span class="comment">//检查网络&nbsp;是否正常</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">boolean</span><span>&nbsp;checkNet(){&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>ConnectivityManager&nbsp;manager&nbsp;=&nbsp;(ConnectivityManager)&nbsp;getSystemService(CONNECTIVITY_SERVICE);&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>netWrokInfo&nbsp;=&nbsp;manager.getActiveNetworkInfo();&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(netWrokInfo&nbsp;==&nbsp;</span><span class="keyword">null</span><span>&nbsp;||&nbsp;!netWrokInfo.isAvailable())&nbsp;{&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Toast.makeText(<span class="keyword">this</span><span>,&nbsp;</span><span class="string">"当前的网络不可用，请开启\n网络"</span><span>,&nbsp;Toast.LENGTH_LONG).show();&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;</span><span class="keyword">false</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span><span>&nbsp;</span><span class="keyword">if</span><span>(netWrokInfo.getTypeName().equals(</span><span class="string">"MOBILE"</span><span>)&amp;&nbsp;netWrokInfo.getExt&nbsp;raInfo().equals(</span><span class="string">"cmwap"</span><span>)){&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Toast.makeText(<span class="keyword">this</span><span>,&nbsp;</span><span class="string">"cmwap网络不可用，请选择cmnet网络"</span><span>,&nbsp;Toast.LENGTH_LONG).show();&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;</span><span class="keyword">false</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span><span>{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span><span class="keyword">return</span><span>&nbsp;</span><span class="keyword">true</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="0" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">//检查网络 是否正常
+    private boolean checkNet(){
+   
+ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);  
+   
+netWrokInfo = manager.getActiveNetworkInfo();  
+       if (netWrokInfo == null || !netWrokInfo.isAvailable()) { 
+           Toast.makeText(this, "当前的网络不可用，请开启\n网络", Toast.LENGTH_LONG).show();
+           return false;
+       }
+       else if(netWrokInfo.getTypeName().equals("MOBILE")&amp; netWrokInfo.getExt raInfo().equals("cmwap")){
+           Toast.makeText(this, "cmwap网络不可用，请选择cmnet网络", Toast.LENGTH_LONG).show();
+           return false;
+       }else{
+       
+return true;
+       }
+    }</pre>
+<br>/**
+<br>*Android 使用cmwap GPRS 方式联网
+<br>*/
+<br>CMWAP和CMNET只是中国移动为其划分的两个GPRS接入方式。中国移动对CMWAP作了一定的限制，主要表现在CMWAP接入时只能访问
+ GPRS网络内的IP（10.*.*.*），而无法通过路由访问Internet，我们用CMWAP浏览Internet上的网页 
+就是通过WAP网关协议或它提供的HTTP代理服务实现的。 因此，只有满足以下两个条件的应用 才能在中国移动的CMWAP接入方式下正常工作： 
+<br>1.应用程序 的网络请求基于HTTP协议。
+<br>2.应用程序 支持HTTP代理协议或WAP网关协议。 
+<br>这也就是为什么我们的G1无法正常用CMWAP的原因。
+<br>一句话：CMWAP是移动限制的，理论上只能上WAP网，而CMNET可以用GPRS浏览WWW
+<br>方法一:
+<br><div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=URL%20url%20%3D%20new%20URL(%22http%3A%2F%2F10.0.0.172%2Fimg%2Fbaidu_logo.gif%22)%3B%20%20%0AHttpURLConnection%20conn%20%3D%20(HttpURLConnection)%20url.openConnection()%3B%20%20%0Aconn.setRequestProperty(%22X-Online-Host%22%2C%20%22www.baidu.com%22)%3B%20%20%0Aconn.setDoInput(true)%3B%20%20%0Aconn.connect()%3B%20%20%0AInputStream%20is%20%3D%20conn.getInputStream()%3B%20%20%0Abitmap%20%3D%20BitmapFactory.decodeStream(is)%3B%20%20%0Ais.close()%3B%20%20%0Aconn.disconnect()%3B%20%20" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span>URL&nbsp;url&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;URL(</span><span class="string">"http://10.0.0.172/img/baidu_logo.gif"</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>HttpURLConnection&nbsp;conn&nbsp;=&nbsp;(HttpURLConnection)&nbsp;url.openConnection();&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>conn.setRequestProperty(<span class="string">"X-Online-Host"</span><span>,&nbsp;</span><span class="string">"www.baidu.com"</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>conn.setDoInput(<span class="keyword">true</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>conn.connect();&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>InputStream&nbsp;is&nbsp;=&nbsp;conn.getInputStream();&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>bitmap&nbsp;=&nbsp;BitmapFactory.decodeStream(is);&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>is.close();&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>conn.disconnect();&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="1" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">URL url = new URL("http://10.0.0.172/img/baidu_logo.gif");  
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+conn.setRequestProperty("X-Online-Host", "www.baidu.com");  
+conn.setDoInput(true);  
+conn.connect();  
+InputStream is = conn.getInputStream();  
+bitmap = BitmapFactory.decodeStream(is);  
+is.close();  
+conn.disconnect();  </pre>
+<br>方法二:
+<br>CODE:
+<br><div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=package%20org.apache.http.examp%20les.client%3B%0A%0Aimport%20org.apache.http.Header%3B%0Aimport%20org.apache.http.HttpEntity%3B%0Aimport%20org.apache.http.HttpHost%3B%0Aimport%20org.apache.http.HttpResponse%3B%0Aimport%20org.apache.http.client.HttpClient%3B%0Aimport%20org.apache.http.client.methods.HttpGet%3B%0Aimport%20org.apache.http.conn.params.ConnRoutePNames%3B%0Aimport%20org.apache.http.impl.client.DefaultHttpClient%3B%0Aimport%20org.apache.http.util.EntityUtils%3B%0A%0Apublic%20class%20ClientExecuteProxy%20%7B%0A%0A%20%20%20%20public%20static%20void%20main(String%20%5B%5D%20args)throws%20Exception%20%7B%0A%0A%20%20%20%20%20%20%20%20HttpHost%20proxy%20%3D%20new%20HttpHost(%20%2210.0.0.172%22%2C%2080%2C%20%22http%22)%3B%0A%20%20%20%20%20%20%20%20HttpHost%20target%20%3D%20new%20HttpHost(%22YOUR_TARGET_IP%22%2C%2080%2C%20%22http%22)%3B%20%20%20%20%20%20%20%20%0A%0A%20%20%20%20%20%20%20%20DefaultHttpClient%20httpclient%20%3D%20new%20DefaultHttpClient()%3B%0A%20%20%20%20%20%20%20%20httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY%2C%20proxy)%3B%0A%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20HttpGet%20req%20%3D%20new%20HttpGet(%22%2F%22)%3B%0A%0A%20%20%20%20%20%20%20%20System.out.println(%22executing%20request%20to%20%22%20%2B%20target%20%2B%20%22%20via%20%22%20%2B%20proxy)%3B%0A%20%20%20%20%20%20%20%20HttpResponse%20rsp%20%3D%20httpclient.execute(target%2C%20req)%3B%0A%20%20%20%20%20%20%20%20HttpEntity%20entity%20%3D%20rsp.getEntity()%3B%0A%0A%20%20%20%20%20%20%20%20System.out.println(%22----------------------------------------%22)%3B%0A%20%20%20%20%20%20%20%20System.out.println(rsp.getStatusLine())%3B%0A%20%20%20%20%20%20%20%20Header%5B%5D%20headers%20%3D%20rsp.getAllHeaders()%3B%0A%20%20%20%20%20%20%20%20for%20(int%20i%20%3D%200%3B%20i%3Cheaders.length%3B%20i%2B%2B)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(headers)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20System.out.println(%22----------------------------------------%22)%3B%0A%0A%20%20%20%20%20%20%20%20if%20(entity%20!%3D%20null)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(EntityUtils.toString(entity))%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20When%20HttpClient%20instance%20is%20no%20longer%20needed%2C%20%0A%20%20%20%20%20%20%20%20%2F%2F%20shut%20down%20the%20connection%20manager%20to%20ensure%0A%20%20%20%20%20%20%20%20%2F%2F%20immediate%20deallocation%20of%20all%20system%20resources%0A%20%20%20%20%20%20%20%20httpclient.getConnectionManager().shutdown()%3B%20%20%20%20%20%20%20%20%0A%20%20%20%20%7D%0A%0A%7D" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span class="keyword">package</span><span>&nbsp;org.apache.http.examp&nbsp;les.client;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.Header;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.HttpEntity;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.HttpHost;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.HttpResponse;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.client.HttpClient;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.client.methods.HttpGet;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.conn.params.ConnRoutePNames;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.impl.client.DefaultHttpClient;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;org.apache.http.util.EntityUtils;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;ClientExecuteProxy&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">static</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;main(String&nbsp;[]&nbsp;args)</span><span class="keyword">throws</span><span>&nbsp;Exception&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpHost&nbsp;proxy&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;HttpHost(&nbsp;</span><span class="string">"10.0.0.172"</span><span>,&nbsp;</span><span class="number">80</span><span>,&nbsp;</span><span class="string">"http"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpHost&nbsp;target&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;HttpHost(</span><span class="string">"YOUR_TARGET_IP"</span><span>,&nbsp;</span><span class="number">80</span><span>,&nbsp;</span><span class="string">"http"</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DefaultHttpClient&nbsp;httpclient&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;DefaultHttpClient();&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,&nbsp;proxy);&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpGet&nbsp;req&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;HttpGet(</span><span class="string">"/"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"executing&nbsp;request&nbsp;to&nbsp;"</span><span>&nbsp;+&nbsp;target&nbsp;+&nbsp;</span><span class="string">"&nbsp;via&nbsp;"</span><span>&nbsp;+&nbsp;proxy);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpResponse&nbsp;rsp&nbsp;=&nbsp;httpclient.execute(target,&nbsp;req);&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpEntity&nbsp;entity&nbsp;=&nbsp;rsp.getEntity();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"----------------------------------------"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(rsp.getStatusLine());&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Header[]&nbsp;headers&nbsp;=&nbsp;rsp.getAllHeaders();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>&nbsp;(</span><span class="keyword">int</span><span>&nbsp;i&nbsp;=&nbsp;</span><span class="number">0</span><span>;&nbsp;i&lt;headers.length;&nbsp;i++)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(headers);&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"----------------------------------------"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(entity&nbsp;!=&nbsp;</span><span class="keyword">null</span><span>)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(EntityUtils.toString(entity));&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;When&nbsp;HttpClient&nbsp;instance&nbsp;is&nbsp;no&nbsp;longer&nbsp;needed,&nbsp;</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;shut&nbsp;down&nbsp;the&nbsp;connection&nbsp;manager&nbsp;to&nbsp;ensure</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;immediate&nbsp;deallocation&nbsp;of&nbsp;all&nbsp;system&nbsp;resources</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;httpclient.getConnectionManager().shutdown();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="2" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">package org.apache.http.examp les.client;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+public class ClientExecuteProxy {
+
+    public static void main(String [] args)throws Exception {
+
+        HttpHost proxy = new HttpHost( "10.0.0.172", 80, "http");
+        HttpHost target = new HttpHost("YOUR_TARGET_IP", 80, "http");        
+
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
+        
+        HttpGet req = new HttpGet("/");
+
+        System.out.println("executing request to " + target + " via " + proxy);
+        HttpResponse rsp = httpclient.execute(target, req);
+        HttpEntity entity = rsp.getEntity();
+
+        System.out.println("----------------------------------------");
+        System.out.println(rsp.getStatusLine());
+        Header[] headers = rsp.getAllHeaders();
+        for (int i = 0; i&lt;headers.length; i++) {
+            System.out.println(headers);
+        }
+        System.out.println("----------------------------------------");
+
+        if (entity != null) {
+            System.out.println(EntityUtils.toString(entity));
+        }
+
+        // When HttpClient instance is no longer needed, 
+        // shut down the connection manager to ensure
+        // immediate deallocation of all system resources
+        httpclient.getConnectionManager().shutdown();        
+    }
+
+}</pre>
+<br>
+<br><span style="font-size: x-large;">在Android上建立GPRS连接</span>
+<br><div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=%20%20%20%20private%20boolean%20openDataConnection()%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20Set%20up%20data%20connection.%0A%20%20%20%20%20%20%20%20DataConnection%20conn%20%3D%20DataConnection.getInstance()%3B%20%20%20%20%20%20%20%20%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(connectMode%20%3D%3D%200)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ret%20%3D%20conn.openConnection(mContext%2C%20%22cmwap%22%2C%20%22cmwap%22%2C%20%22cmwap%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ret%20%3D%20conn.openConnection(mContext%2C%20%22cmnet%22%2C%20%22%22%2C%20%22%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%7D%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span class="keyword">private</span><span>&nbsp;</span><span class="keyword">boolean</span><span>&nbsp;openDataConnection()&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;Set&nbsp;up&nbsp;data&nbsp;connection.</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;DataConnection&nbsp;conn&nbsp;=&nbsp;DataConnection.getInstance();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(connectMode&nbsp;==&nbsp;</span><span class="number">0</span><span>)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret&nbsp;=&nbsp;conn.openConnection(mContext,&nbsp;<span class="string">"cmwap"</span><span>,&nbsp;</span><span class="string">"cmwap"</span><span>,&nbsp;</span><span class="string">"cmwap"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="keyword">else</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret&nbsp;=&nbsp;conn.openConnection(mContext,&nbsp;<span class="string">"cmnet"</span><span>,&nbsp;</span><span class="string">""</span><span>,&nbsp;</span><span class="string">""</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="3" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">    private boolean openDataConnection() {
+        // Set up data connection.
+        DataConnection conn = DataConnection.getInstance();        
+
+            if (connectMode == 0) {
+                ret = conn.openConnection(mContext, "cmwap", "cmwap", "cmwap");
+            } else {
+                ret = conn.openConnection(mContext, "cmnet", "", "");
+            }
+
+    }
+</pre>
+<br>
+<br><a href="http://www.cnblogs.com/-OYK/archive/2012/03/17/2403241.html" target="_blank">android下实现WAP和NET的自适应</a>
+<br><div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=import%20java.net.HttpURLConnection%3B%0Aimport%20java.net.InetSocketAddress%3B%0Aimport%20java.net.URL%3B%0A%2F**%0A%20*%20%20%E4%B8%8B%E8%BD%BD%E5%99%A8%0A%20*%2F%0Apublic%20class%20DownloadUtil%20%7B%0A%20private%20static%20final%20String%20TAG%20%3D%20%22Downloader%22%3B%0A%20%2F**%0A%20%20*%20%40return%20InputStream%20%E4%B8%8B%E8%BD%BD%0A%20%20*%2F%0A%20public%20static%20HttpURLConnection%20download(String%20url)%20%7B%0A%20%20HttpURLConnection%20conn%20%3D%20null%3B%0A%20%20try%20%7B%0A%20%20%20String%20proxyHost%20%3D%20android.net.Proxy.getDefaultHost()%3B%0A%20%20%20if%20(proxyHost%20!%3D%20null)%20%7B%2F%2F%E5%A6%82%E6%9E%9C%E6%98%AFwap%E6%96%B9%E5%BC%8F%EF%BC%8C%E8%A6%81%E5%8A%A0%E7%BD%91%E5%85%B3%0A%20%20%20%20java.net.Proxy%20p%20%3D%20new%20java.net.Proxy(java.net.Proxy.Type.HTTP%2C%20new%20InetSocketAddress(%0A%20%20%20%20%20%20android.net.Proxy.getDefaultHost()%2C%20android.net.Proxy.getDefaultPort()))%3B%0A%20%20%20%20conn%20%3D%20(HttpURLConnection)%20new%20URL(url).openConnection(p)%3B%0A%20%20%20%7D%20else%20%7B%0A%20%20%20%20conn%20%3D%20(HttpURLConnection)%20new%20URL(url).openConnection()%3B%0A%20%20%20%7D%0A%20%20%20%2F%2F%20conn.setReadTimeout(5000)%3B%0A%20%20%20conn.setConnectTimeout(10000)%3B%0A%20%20%20conn.setRequestMethod(%22GET%22)%3B%0A%20%20%20conn.setRequestProperty(%0A%20%20%20%20%20%22Accept%22%2C%0A%20%20%20%20%20%22image%2Fgif%2C%20image%2Fjpeg%2C%20image%2Fpjpeg%2C%20image%2Fpjpeg%2C%20application%2Fx-shockwave-flash%2C%20application%2Fxaml%2Bxml%2C%20application%2Fvnd.ms-xpsdocument%2C%20application%2Fx-ms-xbap%2C%20application%2Fx-ms-application%2C%20application%2Fvnd.ms-excel%2C%20application%2Fvnd.ms-powerpoint%2C%20application%2Fmsword%2C%20*%2F*%22)%3B%0A%20%20%20conn.setRequestProperty(%22Accept-Language%22%2C%20%22zh-CN%22)%3B%0A%20%20%20conn.setRequestProperty(%22Referer%22%2C%20url)%3B%0A%20%20%20conn.setRequestProperty(%22Charset%22%2C%20%22UTF-8%22)%3B%0A%20%20%20conn.setRequestProperty(%0A%20%20%20%20%20%22User-Agent%22%2C%0A%20%20%20%20%20%22Mozilla%2F4.0%20(compatible%3B%20MSIE%208.0%3B%20Windows%20NT%205.2%3B%20Trident%2F4.0%3B%20.NET%20CLR%201.1.4322%3B%20.NET%20CLR%202.0.50727%3B%20.NET%20CLR%203.0.04506.30%3B%20.NET%20CLR%203.0.4506.2152%3B%20.NET%20CLR%203.5.30729)%22)%3B%0A%20%20%20conn.setRequestProperty(%22Connection%22%2C%20%22Keep-Alive%22)%3B%0A%20%20%20conn.connect()%3B%0A%20%20%20if%20(conn.getResponseCode()%20%3D%3D%20HttpURLConnection.HTTP_OK)%20%7B%0A%20%20%20%20return%20conn%3B%0A%20%20%20%7D%0A%20%20%7D%20catch%20(Exception%20e)%20%7B%0A%20%20%20e.printStackTrace()%3B%0A%20%20%7D%0A%20%20return%20null%3B%0A%20%7D%0A%7D%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span class="keyword">import</span><span>&nbsp;java.net.HttpURLConnection;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;java.net.InetSocketAddress;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">import</span><span>&nbsp;java.net.URL;&nbsp;&nbsp;</span></span></li><li><span><span class="comment">/**</span>&nbsp;</span></li><li><span><span class="comment">&nbsp;*&nbsp;&nbsp;下载器</span>&nbsp;</span></li><li><span><span class="comment">&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;DownloadUtil&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">static</span><span>&nbsp;</span><span class="keyword">final</span><span>&nbsp;String&nbsp;TAG&nbsp;=&nbsp;</span><span class="string">"Downloader"</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;<span class="comment">/**</span>&nbsp;</span></li><li><span><span class="comment">&nbsp;&nbsp;*&nbsp;@return&nbsp;InputStream&nbsp;下载</span>&nbsp;</span></li><li><span><span class="comment">&nbsp;&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">static</span><span>&nbsp;HttpURLConnection&nbsp;download(String&nbsp;url)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;HttpURLConnection&nbsp;conn&nbsp;=&nbsp;<span class="keyword">null</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;<span class="keyword">try</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;String&nbsp;proxyHost&nbsp;=&nbsp;android.net.Proxy.getDefaultHost();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(proxyHost&nbsp;!=&nbsp;</span><span class="keyword">null</span><span>)&nbsp;{</span><span class="comment">//如果是wap方式，要加网关</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;java.net.Proxy&nbsp;p&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;java.net.Proxy(java.net.Proxy.Type.HTTP,&nbsp;</span><span class="keyword">new</span><span>&nbsp;InetSocketAddress(&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android.net.Proxy.getDefaultHost(),&nbsp;android.net.Proxy.getDefaultPort()));&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;conn&nbsp;=&nbsp;(HttpURLConnection)&nbsp;<span class="keyword">new</span><span>&nbsp;URL(url).openConnection(p);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;}&nbsp;<span class="keyword">else</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;conn&nbsp;=&nbsp;(HttpURLConnection)&nbsp;<span class="keyword">new</span><span>&nbsp;URL(url).openConnection();&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;conn.setReadTimeout(5000);</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setConnectTimeout(<span class="number">10000</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestMethod(<span class="string">"GET"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Accept"</span><span>,&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"image/gif,&nbsp;image/jpeg,&nbsp;image/pjpeg,&nbsp;image/pjpeg,&nbsp;application/x-shockwave-flash,&nbsp;application/xaml+xml,&nbsp;application/vnd.ms-xpsdocument,&nbsp;application/x-ms-xbap,&nbsp;application/x-ms-application,&nbsp;application/vnd.ms-excel,&nbsp;application/vnd.ms-powerpoint,&nbsp;application/msword,&nbsp;*/*"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(<span class="string">"Accept-Language"</span><span>,&nbsp;</span><span class="string">"zh-CN"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(<span class="string">"Referer"</span><span>,&nbsp;url);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(<span class="string">"Charset"</span><span>,&nbsp;</span><span class="string">"UTF-8"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"User-Agent"</span><span>,&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Mozilla/4.0&nbsp;(compatible;&nbsp;MSIE&nbsp;8.0;&nbsp;Windows&nbsp;NT&nbsp;5.2;&nbsp;Trident/4.0;&nbsp;.NET&nbsp;CLR&nbsp;1.1.4322;&nbsp;.NET&nbsp;CLR&nbsp;2.0.50727;&nbsp;.NET&nbsp;CLR&nbsp;3.0.04506.30;&nbsp;.NET&nbsp;CLR&nbsp;3.0.4506.2152;&nbsp;.NET&nbsp;CLR&nbsp;3.5.30729)"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.setRequestProperty(<span class="string">"Connection"</span><span>,&nbsp;</span><span class="string">"Keep-Alive"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;conn.connect();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(conn.getResponseCode()&nbsp;==&nbsp;HttpURLConnection.HTTP_OK)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;conn;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;}&nbsp;<span class="keyword">catch</span><span>&nbsp;(Exception&nbsp;e)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;e.printStackTrace();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;</span><span class="keyword">null</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;}&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="4" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.URL;
+/**
+ *  下载器
+ */
+public class DownloadUtil {
+ private static final String TAG = "Downloader";
+ /**
+  * @return InputStream 下载
+  */
+ public static HttpURLConnection download(String url) {
+  HttpURLConnection conn = null;
+  try {
+   String proxyHost = android.net.Proxy.getDefaultHost();
+   if (proxyHost != null) {//如果是wap方式，要加网关
+    java.net.Proxy p = new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(
+      android.net.Proxy.getDefaultHost(), android.net.Proxy.getDefaultPort()));
+    conn = (HttpURLConnection) new URL(url).openConnection(p);
+   } else {
+    conn = (HttpURLConnection) new URL(url).openConnection();
+   }
+   // conn.setReadTimeout(5000);
+   conn.setConnectTimeout(10000);
+   conn.setRequestMethod("GET");
+   conn.setRequestProperty(
+     "Accept",
+     "image/gif, image/jpeg, image/pjpeg, image/pjpeg, application/x-shockwave-flash, application/xaml+xml, application/vnd.ms-xpsdocument, application/x-ms-xbap, application/x-ms-application, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*");
+   conn.setRequestProperty("Accept-Language", "zh-CN");
+   conn.setRequestProperty("Referer", url);
+   conn.setRequestProperty("Charset", "UTF-8");
+   conn.setRequestProperty(
+     "User-Agent",
+     "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)");
+   conn.setRequestProperty("Connection", "Keep-Alive");
+   conn.connect();
+   if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+    return conn;
+   }
+  } catch (Exception e) {
+   e.printStackTrace();
+  }
+  return null;
+ }
+}
+</pre>
+<br>
+<br><span style="font-size: x-large;">Android 判断网络状态</span>
+<br>在使用Android连接网络的时候，并不是每次都能连接到网络，在这个时候，我们最好是在程序启动的时候对网络的状态进行一下判断，如果没有网络则进行即时提醒用户进行设置。
+<br>要判断网络状态，首先需要有相应的权限，下面为权限代码：
+<br>即允许访问网络状态：
+<br>&lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"&gt;&lt;/uses-permission&gt;
+<br>下面为判断代码：
+<br><div id="" class="dp-highlighter"><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="grps_files/clipboard_new.swf" flashvars="clipboard=private%20boolean%20NetWorkStatus()%20%7B%0A%0Aboolean%20netSataus%20%3D%20false%3B%0A%20%20%20%20%20%20%20%20ConnectivityManager%20cwjManager%20%3D%20(ConnectivityManager)%20getSystemService(Context.CONNECTIVITY_SERVICE)%3B%0A%0A%20%20%20%20%20%20%20%20cwjManager.getActiveNetworkInfo()%3B%0A%0Aif%20(cwjManager.getActiveNetworkInfo()%20!%3D%20null)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20netSataus%20%3D%20cwjManager.getActiveNetworkInfo().isAvailable()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0Aif%20(netSataus)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Builder%20b%20%3D%20new%20AlertDialog.Builder(this).setTitle(%22%E6%B2%A1%E6%9C%89%E5%8F%AF%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.setMessage(%22%E6%98%AF%E5%90%A6%E5%AF%B9%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE%EF%BC%9F%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20b.setPositiveButton(%22%E6%98%AF%22%2C%20new%20DialogInterface.OnClickListener()%20%7B%0Apublic%20void%20onClick(DialogInterface%20dialog%2C%20int%20whichButton)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Intent%20mIntent%20%3D%20new%20Intent(%22%2F%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ComponentName%20comp%20%3D%20new%20ComponentName(%0A%22com.android.settings%22%2C%0A%22com.android.settings.WirelessSettings%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20mIntent.setComponent(comp)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20mIntent.setAction(%22android.intent.action.VIEW%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20startActivityForResult(mIntent%2C0)%3B%20%20%2F%2F%20%E5%A6%82%E6%9E%9C%E5%9C%A8%E8%AE%BE%E7%BD%AE%E5%AE%8C%E6%88%90%E5%90%8E%E9%9C%80%E8%A6%81%E5%86%8D%E6%AC%A1%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C%EF%BC%8C%E5%8F%AF%E4%BB%A5%E9%87%8D%E5%86%99%E6%93%8D%E4%BD%9C%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%9C%A8%E8%BF%99%E9%87%8C%E4%B8%8D%E5%86%8D%E9%87%8D%E5%86%99%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D).setNeutralButton(%22%E5%90%A6%22%2C%20new%20DialogInterface.OnClickListener()%20%7B%0Apublic%20void%20onClick(DialogInterface%20dialog%2C%20int%20whichButton)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20dialog.cancel()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D).show()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0Areturn%20netSataus%3B%0A%20%20%20%20%7D%0A%2F%2F%E9%80%9A%E8%BF%87%E4%B8%8A%E9%9D%A2%E7%9A%84%E4%BB%A3%E7%A0%81%E5%8D%B3%E5%8F%AF%E5%AE%8C%E6%88%90%E5%AF%B9%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81%E7%9A%84%E5%88%A4%E6%96%AD%EF%BC%81%E5%85%B7%E4%BD%93%E6%80%8E%E4%B9%88%E8%87%AA%E5%B7%B1%E9%80%89%E6%8B%A9%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE%EF%BC%8C%E8%BF%98%E6%B2%A1%E6%9C%89%E5%BC%84%E6%98%8E%E7%99%BD%EF%BC%8C%E7%AD%89%E5%BC%84%E6%98%8E%E7%99%BD%E4%BA%86%EF%BC%8C%E5%86%8D%E5%86%99%EF%BC%81%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="15" width="14">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="grps_files/icon_star.png" alt="收藏代码"><img class="spinner" src="grps_files/spinner.gif" style="display:none"></a></div></div><ol class="dp-j" start="1"><li><span><span class="keyword">private</span><span>&nbsp;</span><span class="keyword">boolean</span><span>&nbsp;NetWorkStatus()&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">boolean</span><span>&nbsp;netSataus&nbsp;=&nbsp;</span><span class="keyword">false</span><span>;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConnectivityManager&nbsp;cwjManager&nbsp;=&nbsp;(ConnectivityManager)&nbsp;getSystemService(Context.CONNECTIVITY_SERVICE);&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cwjManager.getActiveNetworkInfo();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">if</span><span>&nbsp;(cwjManager.getActiveNetworkInfo()&nbsp;!=&nbsp;</span><span class="keyword">null</span><span>)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netSataus&nbsp;=&nbsp;cwjManager.getActiveNetworkInfo().isAvailable();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">if</span><span>&nbsp;(netSataus)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Builder&nbsp;b&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;AlertDialog.Builder(</span><span class="keyword">this</span><span>).setTitle(</span><span class="string">"没有可用的网络"</span><span>)&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setMessage(<span class="string">"是否对网络进行设置？"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.setPositiveButton(<span class="string">"是"</span><span>,&nbsp;</span><span class="keyword">new</span><span>&nbsp;DialogInterface.OnClickListener()&nbsp;{&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;onClick(DialogInterface&nbsp;dialog,&nbsp;</span><span class="keyword">int</span><span>&nbsp;whichButton)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intent&nbsp;mIntent&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Intent(</span><span class="string">"/"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ComponentName&nbsp;comp&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;ComponentName(&nbsp;&nbsp;</span></span></li><li><span><span class="string">"com.android.settings"</span><span>,&nbsp;&nbsp;</span></span></li><li><span><span class="string">"com.android.settings.WirelessSettings"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mIntent.setComponent(comp);&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mIntent.setAction(<span class="string">"android.intent.action.VIEW"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;startActivityForResult(mIntent,<span class="number">0</span><span>);&nbsp;&nbsp;</span><span class="comment">//&nbsp;如果在设置完成后需要再次进行操作，可以重写操作代码，在这里不再重写</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}).setNeutralButton(<span class="string">"否"</span><span>,&nbsp;</span><span class="keyword">new</span><span>&nbsp;DialogInterface.OnClickListener()&nbsp;{&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;onClick(DialogInterface&nbsp;dialog,&nbsp;</span><span class="keyword">int</span><span>&nbsp;whichButton)&nbsp;{&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dialog.cancel();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}).show();&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span><span class="keyword">return</span><span>&nbsp;netSataus;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li><span><span class="comment">//通过上面的代码即可完成对网络状态的判断！具体怎么自己选择网络进行设置，还没有弄明白，等弄明白了，再写！</span><span>&nbsp;&nbsp;</span></span></li></ol></div><pre title="Android中使用cmwap接入点访问互联网的问题及解决办法" pre_index="5" source_url="http://gundumw100.iteye.com/blog/858228" codeable_type="Blog" codeable_id="858228" style="display: none;" name="code" class="java">private boolean NetWorkStatus() {
+
+boolean netSataus = false;
+        ConnectivityManager cwjManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        cwjManager.getActiveNetworkInfo();
+
+if (cwjManager.getActiveNetworkInfo() != null) {
+            netSataus = cwjManager.getActiveNetworkInfo().isAvailable();
+        }
+
+if (netSataus) {
+            Builder b = new AlertDialog.Builder(this).setTitle("没有可用的网络")
+                    .setMessage("是否对网络进行设置？");
+            b.setPositiveButton("是", new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int whichButton) {
+                    Intent mIntent = new Intent("/");
+                    ComponentName comp = new ComponentName(
+"com.android.settings",
+"com.android.settings.WirelessSettings");
+                    mIntent.setComponent(comp);
+                    mIntent.setAction("android.intent.action.VIEW");
+                    startActivityForResult(mIntent,0);  // 如果在设置完成后需要再次进行操作，可以重写操作代码，在这里不再重写
+                }
+            }).setNeutralButton("否", new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            }).show();
+        }
+
+return netSataus;
+    }
+//通过上面的代码即可完成对网络状态的判断！具体怎么自己选择网络进行设置，还没有弄明白，等弄明白了，再写！
+</pre>
+  </div>
+
+  
+
+
+  <iframe src="grps_files/794.htm" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+  
+  <div id="bottoms" class="clearfix">
+    
+    <div id="share_weibo">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="grps_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="grps_files/tec.jpg"></a>
+    </div>
+  </div>
+
+  <div class="blog_nav">
+    <div class="pre_next">
+      <a href="http://gundumw100.iteye.com/blog/858233" class="next" title="Message,MessageQueue,Looper,Handler详解+实例">Message,MessageQueue,Looper,Handler详解 ...</a>
+      |
+      <a href="http://gundumw100.iteye.com/blog/857563" class="pre" title="Android ANR介绍与避免">Android ANR介绍与避免</a>
+    </div>
+  </div>
+  <div class="blog_bottom">
+    <ul>
+      <li>2011-01-03 22:03</li>
+      <li>浏览 2444</li>
+      <li><a href="#comments">评论(0)</a></li>
+      
+      
+      <li>分类:<a href="http://www.iteye.com/blogs/category/mobile">移动开发</a></li>      
+      <li class="last"><a href="http://www.iteye.com/wiki/blog/858228" target="_blank" class="more">相关推荐</a></li>
+    </ul>
+  </div>
+
+  <div class="blog_comment">
+    <h5>评论</h5>
+    <a id="comments" name="comments"></a>
+    
+    
+    
+  </div>
+
+  <div class="blog_comment">
+    <h5>发表评论</h5>
+            <p style="text-align:center; margin-top:30px;margin-bottom:0px;"><a href="http://gundumw100.iteye.com/login" style="background-color:white;"> <img src="grps_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"></a><a href="http://gundumw100.iteye.com/login">  您还没有登录,请您登录后再发表评论 </a></p>
+      </div>
+</div>
+
+
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+  $$('#main .blog_content pre[name=code]').each(function(pre, index){ // blog content
+    var post_id = 858228;
+    var location = window.location;
+    source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+    pre.writeAttribute('codeable_id', post_id);
+    pre.writeAttribute('codeable_type', "Blog");
+    pre.writeAttribute('source_url', source_url);
+    pre.writeAttribute('pre_index', index);
+    pre.writeAttribute('title', 'Android中使用cmwap接入点访问互联网的问题及解决办法');
+  });
+  $$('#main .blog_comment > div').each(function(comment){// comment
+    var post_id = comment.id.substr(2);
+    $$("#"+comment.id+" pre[name=code]").each(function(pre, index){
+      var location = window.location;
+      source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+      source_url += "#" + comment.id;
+      pre.writeAttribute('codeable_id', post_id);
+      pre.writeAttribute('codeable_type', "BlogComment");
+      pre.writeAttribute('source_url', source_url);
+      pre.writeAttribute('pre_index', index);
+      pre.writeAttribute('title', 'Android中使用cmwap接入点访问互联网的问题及解决办法');
+    });
+  });
+  code_favorites_init();
+
+  fix_image_size($$('div.blog_content img'), 700);
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'BlogComment'},
+      onSuccess:function(response){editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+
+  new WeiboShare({share_buttons: $('share_weibo'), img_scope: $('blog_content')});
+</script>
+
+
+
+
+        </div>
+
+        <div id="local">
+          <div class="local_top"></div>
+          <div id="blog_owner">
+  <div id="blog_owner_logo"><a href="http://gundumw100.iteye.com/"><img alt="gundumw100的博客" class="logo" src="grps_files/7b9db6f2-9873-327d-8213-526e2ee80b07.jpg" title="gundumw100的博客: 短裤党"></a></div>
+  <div id="blog_owner_name">gundumw100</div>
+</div>
+
+          <div id="blog_actions">
+            <ul>
+              <li>浏览: 789410 次</li>
+              <li>性别: <img alt="Icon_minigender_1" src="grps_files/icon_minigender_1.gif" title="男"></li>
+              <li>来自: 上海</li>
+              <li><img src="grps_files/offline.gif"></li>
+              
+            </ul>
+          </div>
+          <div id="user_visits" class="clearfix">
+            <h5>最近访客 <span style="font-weight:normal;font-size:12px;padding-left:30px;"><a href="http://gundumw100.iteye.com/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://netkidfan.iteye.com/" target="_blank"><img alt="netkidfan的博客" class="logo" src="grps_files/user-logo-thumb.gif" title="netkidfan的博客: "></a></div>
+                <div class="left"><a href="http://netkidfan.iteye.com/" target="_blank" title="netkidfan">netkidfan</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://dylinshi126.iteye.com/" target="_blank"><img alt="dylinshi126的博客" class="logo" src="grps_files/user-logo-thumb.gif" title="dylinshi126的博客: "></a></div>
+                <div class="left"><a href="http://dylinshi126.iteye.com/" target="_blank" title="dylinshi126">dylinshi126</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://wyb522.iteye.com/" target="_blank"><img alt="wyb522的博客" class="logo" src="grps_files/user-logo-thumb.gif" title="wyb522的博客: wyb522"></a></div>
+                <div class="left"><a href="http://wyb522.iteye.com/" target="_blank" title="wyb522">wyb522</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://silenc89.iteye.com/" target="_blank"><img alt="silenc89的博客" class="logo" src="grps_files/user-logo-thumb.gif" title="silenc89的博客: "></a></div>
+                <div class="left"><a href="http://silenc89.iteye.com/" target="_blank" title="silenc89">silenc89</a></div>
+              </div>
+            
+          </div>
+
+          
+
+                      <div id="blog_menu">
+              <h5>文章分类</h5>
+              <ul>
+                <li><a href="http://gundumw100.iteye.com/">全部博客 (677)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/186300">WindowsPhone (0)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74186">android (90)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/156626">android基础 (22)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/156628">android进阶 (101)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/156629">android高级 (0)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/156627">android拾遗 (47)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/156622">android动画&amp;效果 (44)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/166625">LUA (5)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74173">j2me (32)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74172">jQuery (39)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74174">spring (26)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74175">hibernate (20)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74176">struts (26)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74177">tomcat (9)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74178">javascript+css+html (62)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74179">jsp+servlet+javabean (14)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74277">java (37)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74181">velocity+FCKeditor (13)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74182">linux+批处理 (9)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74183">mysql (19)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74185">MyEclipse (9)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/74191">ajax (7)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/81861">wap (8)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/83127">j2ee+apache (24)</a></li>
+                
+                  <li><a href="http://gundumw100.iteye.com/category/76210">其他 (13)</a></li>
+                
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>社区版块</h5>
+              <ul>
+                <li><a href="http://gundumw100.iteye.com/blog/news">我的资讯</a> (0)</li>
+                <li>
+                  <a href="http://gundumw100.iteye.com/blog/post">我的论坛</a> (203)
+                </li>
+                <li><a href="http://gundumw100.iteye.com/blog/answered_problems">我的问答</a> (122)</li>
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>存档分类</h5>
+              <ul>
+                
+                  <li><a href="http://gundumw100.iteye.com/blog/monthblog/2012-09">2012-09</a> (1)</li>
+                
+                  <li><a href="http://gundumw100.iteye.com/blog/monthblog/2012-08">2012-08</a> (1)</li>
+                
+                  <li><a href="http://gundumw100.iteye.com/blog/monthblog/2012-07">2012-07</a> (1)</li>
+                
+                <li><a href="http://gundumw100.iteye.com/blog/monthblog_more">更多存档...</a></li>
+              </ul>
+            </div>
+            
+            
+              <div id="comments_top">
+                <h5>评论排行榜</h5>
+                <ul>
+                  
+                    <li><a href="http://gundumw100.iteye.com/blog/1544679" title="Gallery组件实现循环显示图像">Gallery组件实现循环显示图像</a></li>
+                  
+                    <li><a href="http://gundumw100.iteye.com/blog/1299953" title="仿扇形菜单动画效果">仿扇形菜单动画效果</a></li>
+                  
+                    <li><a href="http://gundumw100.iteye.com/blog/1289348" title="自定义ProgressBar的加载效果">自定义ProgressBar的加载效果</a></li>
+                  
+                    <li><a href="http://gundumw100.iteye.com/blog/1546381" title="仿人人网右边可推出的效果（带拖动）">仿人人网右边可推出的效果（带拖动）</a></li>
+                  
+                    <li><a href="http://gundumw100.iteye.com/blog/1420725" title="解决TextView排版自动换行问题">解决TextView排版自动换行问题</a></li>
+                  
+                </ul>
+              </div>
+            
+
+            <div id="guest_books">
+              <h5>最新评论</h5>
+              <ul>
+                
+                <li>
+                  <a href="http://mynamelzk.iteye.com/" target="_blank" title="mynamelzk">mynamelzk</a>： 
+                  谢谢，都是很重要的知识点<br>
+                  <a href="http://gundumw100.iteye.com/blog/1162182#bc2284200">使用TableLayout应该注意的地方</a>
+                </li>
+                
+                <li>
+                  <a href="http://lvning10086.iteye.com/" target="_blank" title="lvning10086">lvning10086</a>： 
+                  图片会挤压啊怎么办呢？<br>
+                  <a href="http://gundumw100.iteye.com/blog/1546381#bc2282757">仿人人网右边可推出的效果（带拖动）</a>
+                </li>
+                
+                <li>
+                  <a href="http://zhengxuan008.iteye.com/" target="_blank" title="崮rz教隍">崮rz教隍</a>： 
+                  学习了。！！<br>
+                  <a href="http://gundumw100.iteye.com/blog/1164066#bc2282311">懒加载的Scrollview</a>
+                </li>
+                
+                <li>
+                  <a href="http://etjnety.iteye.com/" target="_blank" title="etjnety">etjnety</a>： 
+                  顶，太给力了，学习了<br>
+                  <a href="http://gundumw100.iteye.com/blog/1182109#bc2281198">Android播放GIF动画</a>
+                </li>
+                
+                <li>
+                  <a href="http://a173060244.iteye.com/" target="_blank" title="a173060244">a173060244</a>： 
+                  楼主，太感谢了。找了这个很久了<br>
+                  <a href="http://gundumw100.iteye.com/blog/1546381#bc2278942">仿人人网右边可推出的效果（带拖动）</a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="local_bottom"></div>
+          
+        </div>
+      </div>
+
+      <div id="footer" class="clearfix">
+        <div id="copyright">
+          <hr>
+          声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br>
+          © 2003-2012 ITeye.com.   All rights reserved.  [ 京ICP证110151号  京公网安备110105010620 ]
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="grps_files/a.gif" height="0" width="0">
+
+    
+  
+
+<iframe src="grps_files/e.htm" style="position: absolute; width: 100px; height: 1px; z-index: -10240; visibility: hidden;"></iframe></body></html>

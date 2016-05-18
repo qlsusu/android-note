@@ -1,0 +1,32 @@
+参见：http://developer.android.com/guide/topics/resources/drawable-resource.html
+
+尺寸
+intrinsicwidth/height（内部大小）
+	如drawable是绘制一个图片，那么这个内部大小 就是 图片的大小
+	默认下，为-1
+真实大小
+	通过getbounds来获得，一般来说，它和view的尺寸相同
+
+几类：
+bitmapdrawable
+shapedrawable
+layerdrawable
+levellistdrawable
+	通过改变level的值，来呈现level对应的drawable
+		imageView.setImageLevel(1) 或者 imageView.getDrawable().setLevel(++i)
+	参见：http://blog.csdn.net/lonelyroamer/article/details/8242919
+transitiondrawable
+	用于实现两个drawable之间的淡入淡出的效果
+	通过：starttransition和reversetransition
+等
+
+IntrinsicWidth原始尺寸
+哪些有原始尺寸，如：bitmapdrawable
+	该尺寸，要看图片在哪个dpi级别的drawable文件夹下，并进行了相应的缩放
+	如：new BitmapDrawable(getResources(),bitmap).getIntrinsicWidth()
+哪些无原始尺寸，如：shapedrawable
+
+自定义drawable
+参见：b21 p262
+
+绘制到canvas上：drawable.draw()

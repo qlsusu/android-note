@@ -1,0 +1,28 @@
+参见：
+mytoolandroid下callmanager.endcall方法
+	参见：http://blog.sina.com.cn/s/blog_a28e3dd901018wky.html
+	ITelephony.aidl需要放入到 com.android.internal.telephony下
+	需要声明如下receiver
+ 		<receiver
+            android:name="com.ql.tool.CallManager$PhoneStatReceiver">
+            <intent-filter android:priority="1000" > 
+				<action android:name="android.intent.action.PHONE_STATE" /> 
+				<action android:name="android.intent.action.NEW_OUTGOING_CALL" /> 
+			</intent-filter> 
+        </receiver>
+	需要声明如下权限：
+		<!-- 来电监听 -->
+	    <!-- 添加访问手机电话状态的权限 -->
+		<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+		<!-- 拨打电话权限 -->
+		<uses-permission android:name="android.permission.CALL_PHONE" />
+		<!-- 监听手机去电的权限 -->
+		<uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+		<!-- 在SDCard中创建与删除文件权限 -->
+		<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+		<!-- 往SDCard写入数据权限 -->
+		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />   
+	
+http://www.juapk.com/thread-2083-1-1.html
+http://www.mobile-open.com/2015/86038.html
+http://bbs.9ria.com/thread-215517-1-1.html

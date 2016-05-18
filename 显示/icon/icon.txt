@@ -1,0 +1,17 @@
+google的
+http://google.github.io/material-design-icons/
+	预览
+https://github.com/google/material-design-icons
+https://www.google.com/design/icons/
+
+http://www.androidicons.com/
+
+生成icon（如：让文字变成icon）
+https://romannurik.github.io/AndroidAssetStudio/index.html
+
+use the icons in any size, color and variation
+https://github.com/mikepenz/Android-Iconics
+
+图标生成器
+http://bitdroid.de/Android-Material-Icon-Generator/
+

@@ -1,0 +1,29 @@
+参见：http://blog.csdn.net/iispring/article/details/49835061
+图形的渲染可分为两种：软件渲染和硬件渲染。
+软件渲染是靠CPU计算各种坐标并绘制，主要是占用内存；
+硬件渲染是靠GPU，主要占用显存，一般的3D图形程序（OpenGL、DirectX）都是GPU加速的。
+	View中的Canvas的绘图操作会使用GPU
+	
+如果App的AndroidManifest.xml文件中定义的 targetSdkVersion大于或等于14（Android 4.0），那么Android会默认为App启用GPU渲染2D图形
+
+显式地启用或禁用GPU渲染，并且可以从多个Application、Activity、Window、View多个级别对其进行控制。
+
+在运行时不能通过代码为某个View启用GPU硬件加速。
+
+判断是否处于硬件加速中
+Canvas.isHardwareAccelerated() 
+我们在View的onDraw回调方法中可以得到Canvas对象，如果Canvas的isHardwareAccelerated()方法返回true，那么表示当前Canvas是用GPU硬件加速渲染的，如果返回false就表示是用软件渲染的。
+
+通过硬件层提高Android动画的性能
+	http://www.devtf.cn/?p=1195
+默认，是关闭硬件加速的
+
+不使用硬件加速
+view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+	让一个view不使用硬件加速
+	为什么：可能该view使用了 诸如AvoidXfermode等不支持硬件加速的东西（则，在硬件加速的环境下，就不能呈现效果）
+		如：mPaint.setMaskFilter(new BlurMaskFilter(20, BlurMaskFilter.Blur.SOLID)); 
+可以在androidmanifest.xml中，设置android:hardwareAccelerated为false（不推荐！！！）
+
+You can also disable for the entire Activity or Application with android:hardwareAccelerated="false" in the manifest, 
+but it is often best to disable acceleration in as few places as possible to get the best performance.

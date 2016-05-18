@@ -1,0 +1,21 @@
+paint的方法
+setAntiAlias: 		设置画笔的锯齿效果。 
+setColor: 			设置画笔颜色 
+setARGB:  			设置画笔的a,r,p,g值。 
+setAlpha:  			设置Alpha值 
+setTextSize: 		设置字体尺寸。 
+setStyle:  
+	* 1.Paint.Style.STROKE：				描边 
+	* 2.Paint.Style.FILL_AND_STROKE：	描边并填充 
+	* 3.Paint.Style.FILL：				填充 
+setStrokeWidth:		设置描边的粗细，单位：像素px 
+getColor:  			得到画笔的颜色 
+getAlpha:  			得到画笔的Alpha值。
+
+高级技巧
+setColorFilter(ColorFilter filter)
+	设置滤镜，如：使用一个颜色矩阵，混合后产生一个新的颜色
+setXfermode(Xfermode xfermode)
+	通过混合 目标和源图形（目标的颜色 和 源的颜色，通过某种算法得到一个新的颜色）
+setShader(Shader shader)
+	设置着色器，你已经定义了图形，那么使用 更加高级的着色功能 来填充你的图形，如：用一个bitmap和tilemode来进行填充

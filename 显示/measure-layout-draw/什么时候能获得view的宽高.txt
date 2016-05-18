@@ -1,0 +1,4 @@
+onlayout时
+handler.postrunnable中
+view.onsizechanged
+activity.onWindowFocusChanged

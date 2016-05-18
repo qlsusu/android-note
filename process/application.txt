@@ -1,0 +1,5 @@
+如何自定义
+<application
+	android:name="com.sq.ring.application.MyApplication"
+	
+一个app有几个进程，application就会被创建几次

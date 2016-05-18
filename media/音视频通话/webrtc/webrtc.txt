@@ -1,0 +1,85 @@
+http://wldandan.github.io/blog/categories/webrtc/
+	介绍webrtc的基本概念
+http://www.webrtc.org/
+
+https://github.com/webrtc
+https://github.com/webrtc/samples
+
+http://w3c.github.io/mediacapture-main/
+
+Signaling
+WebRTC使得浏览器之间能够点对点通信，但是作为浏览器的一端，茫茫大海，如何知道另一端在哪里？怎么能通过网络连接到对端？如何知道是否能够连接成功？所以，即便是点对点通信，依然需要服务器协助双方建立连接。
+不过此时的服务器，其职责更多的是 交换元数据，如编解码机制、数据加密、流量控制等信息。
+
+stun和trun
+http://my.oschina.net/mye/blog/129921?fromerr=awSRRO9M
+http://www.cnblogs.com/ishangs/p/3816689.html
+
+下面两个参数可以提高 视频的传输效率
+	参见：http://www.haomou.net/2014/08/04/2014_Html5_canvas_video/
+videoConstraints.mandatory.add(new MediaConstraints.KeyValuePair("minFrameRate","15"));
+videoConstraints.mandatory.add(new MediaConstraints.KeyValuePair("maxFrameRate","25"));
+
+w3c
+http://w3c.github.io/webrtc-pc/
+
+
+编译和简单使用
+使用pubnub的android中的例子，查看gradle中的依赖，在android studio中编译完毕后，再放入到eclipse中
+	https://github.com/GleasonK/AndroidRTC
+	查看libjingle的最新版本：http://mvnrepository.com/artifact/io.pristine/libjingle
+--
+https://tech.appear.in/2015/05/25/Introduction-to-WebRTC-on-Android/
+	使用pristineio编译好的版本
+	翻译：http://www.devtf.cn/?p=669
+https://github.com/pristineio/webrtc-build-scripts
+--
+https://github.com/pristineio/apprtc-android
+http://tech.pristine.io/build-android-apprtc/
+http://tech.pristine.io/developing-with-webrtc/
+
+使用：
+https://tech.appear.in/2015/05/25/Introduction-to-WebRTC-on-Android/
+https://github.com/pchab/AndroidRTC
+	https://github.com/pchab/ProjectRTC
+
+--
+一些问题，也包含了一些资源
+	http://stackoverflow.com/questions/31457679/a-few-questions-about-webrtc-on-android
+--
+https://github.com/webrtc/apprtc
+官方资料
+	https://docs.google.com/document/d/1idl_NYQhllFEFqkGQOLv8KBK8M3EVzyvxnKkHl4SuM8/edit
+https://webrtc.github.io/samples/
+
+例子
+https://www.webrtc-experiment.com/
+https://github.com/muaz-khan?tab=repositories
+------------------------------------
+
+
+http://wldandan.github.io/blog/2014/01/02/webrtc-the-revolution-of-media-communication/
+
+RTP
+realtime transport protocol
+
+http://blog.csdn.net/bairui_allen/article/details/8692499
+
+webrtc
+http://simonguest.com/2013/08/06/building-a-webrtc-client-for-android/
+https://github.com/webrtc/apprtc
+http://www.cnblogs.com/cther/p/4604599.html
+https://webrtc.github.io/samples/
+--
+http://www.cnblogs.com/lingyunhu/p/3578218.html
+https://segmentfault.com/a/1190000000436544
+--
+
+
+http://www.jianshu.com/p/c55ecf5a3fcf
+https://docs.google.com/document/d/1tn1t6LW2ffzGuYTK3366w1fhTkkzsSvHsBnOHoDfRzY/edit?pli=1#
+https://code.google.com/p/webrtc/
+
+http://www.looky.cc/
+
+https://github.com/fyhertz/libstreaming

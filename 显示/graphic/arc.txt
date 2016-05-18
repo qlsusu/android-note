@@ -1,0 +1,11 @@
+
+paint = new Paint();
+paint.setAntiAlias(true);
+paint.setStyle(Paint.Style.FILL_AND_STROKE);
+paint.setStrokeWidth(strokeWidth);
+paint.setColor(color);
+
+// 需要考虑strokeWidth，否则圆边缘会被截断一部分
+oval.set(strokeWidth, strokeWidth, size-strokeWidth, size-strokeWidth);
+
+canvas.drawArc(oval, startDegree, sweep, useCenter, paint);

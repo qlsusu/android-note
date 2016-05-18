@@ -1,0 +1,41 @@
+参见：
+http://blog.csdn.net/feiduclear_up/article/details/46439005
+
+Palette从图像中提取突出的颜色，这样能够把色值赋给ActionBar、或者其它，能够让界面整个色调统一，效果见上图（Palette）。
+
+颜色类型：
+Palette.Swatch a = palette.getVibrantSwatch();//有活力
+Palette.Swatch b = palette.getDarkVibrantSwatch();//有活力 暗色
+Palette.Swatch c = palette.getLightVibrantSwatch();//有活力 亮色
+Palette.Swatch d = palette.getMutedSwatch();//柔和
+Palette.Swatch e = palette.getDarkMutedSwatch();//柔和 暗色
+Palette.Swatch f = palette.getLightMutedSwatch();//柔和 亮色
+
+颜色值：
+int color1 = a.getBodyTextColor();//内容颜色
+int color2 = a.getTitleTextColor();//标题颜色
+int color3 = a.getRgb();//rgb颜色
+
+//异步，因为可能会耗时
+Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {  
+	@Override  
+	public void onGenerated(Palette palette) {  
+		 Palette.Swatch vibrant =  
+				 palette.getVibrantSwatch();  
+		  if (vibrant != null) {  
+			 
+				  int rgb = vibrant.getRgb();
+				  int titleTextColor = vibrant.getTitleTextColor();
+				  int bodyTextColor = vibrant.getBodyTextColor();
+		  }  
+	}  
+});
+	
+Palette palette = Palette.generate(bitmap); 
+if (palette.getLightVibrantColor() != null) { 
+  name.setBackgroundColor(palette.getLightVibrantColor().getRgb()); 
+  getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getLightVibrantColor().getRgb())); 
+  // getSupportActionBar(). 
+
+} 
+

@@ -1,0 +1,761 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0057)http://blog.csdn.net/kuku20092009/article/details/6740865 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Android Matrix理论与应用详解 - kuku20092009的专栏 - 博客频道 - CSDN.NET</title>
+
+<meta name="description" content="Matrix学习——基础知识以前在线性代数中学习了矩阵，对矩阵的基本运算有一些了解，前段时间在使用GDI+的时候再次学习如何使用矩阵来变化图像，看了之后在这里总结说明。首先大家看看下面这个3 x 3的矩阵，这个矩阵被分割成4部分。为什么分割成4部分，在后面详细说明">
+<script type="text/javascript" async="" src="./Android Matrix理论与应用详解_files/getnl"></script><script type="text/javascript" async="" src="./Android Matrix理论与应用详解_files/ga.js"></script><script src="./Android Matrix理论与应用详解_files/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/ad.js"></script>
+<link rel="Stylesheet" type="text/css" href="./Android Matrix理论与应用详解_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/kuku20092009/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./Android Matrix理论与应用详解_files/default.css">
+<style type="text/css">#yddContainer{display:block;font-family:Microsoft YaHei;position:relative;width:100%;height:100%;top:-4px;left:-4px;font-size:12px;border:1px solid}#yddTop{display:block;height:22px}#yddTopBorderlr{display:block;position:static;height:17px;padding:2px 28px;line-height:17px;font-size:12px;color:#5079bb;font-weight:bold;border-style:none solid;border-width:1px}#yddTopBorderlr .ydd-sp{position:absolute;top:2px;height:0;overflow:hidden}.ydd-icon{left:5px;width:17px;padding:0px 0px 0px 0px;padding-top:17px;background-position:-16px -44px}.ydd-close{right:5px;width:16px;padding-top:16px;background-position:left -44px}#yddKeyTitle{float:left;text-decoration:none}#yddMiddle{display:block;margin-bottom:10px}.ydd-tabs{display:block;margin:5px 0;padding:0 5px;height:18px;border-bottom:1px solid}.ydd-tab{display:block;float:left;height:18px;margin:0 5px -1px 0;padding:0 4px;line-height:18px;border:1px solid;border-bottom:none}.ydd-trans-container{display:block;line-height:160%}.ydd-trans-container a{text-decoration:none;}#yddBottom{position:absolute;bottom:0;left:0;width:100%;height:22px;line-height:22px;overflow:hidden;background-position:left -22px}.ydd-padding010{padding:0 10px}#yddWrapper{color:#252525;z-index:10001;background:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ab20.png);}#yddContainer{background:#fff;border-color:#4b7598}#yddTopBorderlr{border-color:#f0f8fc}#yddWrapper .ydd-sp{background-image:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ydd-sprite.png)}#yddWrapper a,#yddWrapper a:hover,#yddWrapper a:visited{color:#50799b}#yddWrapper .ydd-tabs{color:#959595}.ydd-tabs,.ydd-tab{background:#fff;border-color:#d5e7f3}#yddBottom{color:#363636}#yddWrapper{min-width:250px;max-width:400px;}</style></head>
+<body>
+<script src="./Android Matrix理论与应用详解_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./Android Matrix理论与应用详解_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><em>包俗</em><a href="http://my.csdn.net/my/notifications" class="notice_num" id="header_notice_num" target="_blank">0</a>我的：<a href="http://my.csdn.net/my/letter" target="_blank">收件箱<span id="header_letter_num"></span></a><a href="http://download.csdn.net/my" class="red" target="_top">资源</a><a href="http://write.blog.csdn.net/" class="red" target="_top">博客</a><a href="http://my.csdn.net/" target="_top">空间</a><a href="https://passport.csdn.net/account/profile" target="_blank">设置</a>|<a href="https://passport.csdn.net/help/faq" target="_blank">帮助</a>|<a href="https://passport.csdn.net/account/logout" target="_top">退出</a></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank">首页</a></li>
+<li><a href="http://news.csdn.net/" target="_blank">业界</a></li>
+<li><a href="http://mobile.csdn.net/" target="_blank">移动</a></li>
+<li><a href="http://cloud.csdn.net/" target="_blank">云计算</a></li>
+<li><a href="http://sd.csdn.net/" target="_blank">研发</a></li>
+<li><a href="http://bbs.csdn.net/" target="_blank">论坛</a></li>
+<li><a href="http://blog.csdn.net/" target="_blank">博客</a></li>
+<li><a href="http://download.csdn.net/" target="_blank">下载</a></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);">更多</a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/kuku20092009">kuku20092009的专栏</a></h1>
+            <h2></h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/kuku20092009?viewmode=contents"><span><img src="./Android Matrix理论与应用详解_files/ico_list.gif">目录视图</span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/kuku20092009?viewmode=list"><span><img src="./Android Matrix理论与应用详解_files/ico_summary.gif">摘要视图</span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/kuku20092009/rss/list"><span><img src="./Android Matrix理论与应用详解_files/ico_rss.gif">订阅</span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "kuku20092009";
+    var blog_address = "http://blog.csdn.net/kuku20092009";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "qlsusu";
+</script>
+        
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8687376" target="_blank">
+<font color="blue">2013年7月微软MVP申请开始啦！ 
+   </font></a>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8664620" target="_blank"><font color="blue">CSDN博客移动开发排行榜 
+</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8699892" target="_blank"><font color="blue">写“书评”赢下载分！ 
+
+
+</font></a>
+
+<br>
+
+
+
+
+
+<a href="http://bbs.csdn.net/topics/390397409" target="_blank">
+<font color="red">【有奖提问】CSDN论坛第1期专家问答开始
+
+
+ </font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8717564" target="_blank">
+<font color="red">来极客头条，赢下载积分
+ </font></a>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/390393217" target="_blank">
+<font color="red">下载频道3月领任务~赚下载分！ 
+  </font></a>
+
+
+</div><div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Repost"></span>
+    <h3>
+        <span class="link_title"><a href="./Android Matrix理论与应用详解_files/Android Matrix理论与应用详解.htm">
+        Android Matrix理论与应用详解
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/kuku20092009/article/category/844175">Android</a> 
+        </span>
+    <span class="link_postdate">2011-09-01 20:46</span>
+    <span class="link_view" title="阅读次数">2972人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">评论</a>(7)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;Android Matrix理论与应用详解&#39;,&#39;6740865&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" onclick="javascript:report(6740865,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://blog.csdn.net/tag/details.html?tag=matrix" target="_blank">matrix</a><a href="http://blog.csdn.net/tag/details.html?tag=android" target="_blank">android</a><a href="http://blog.csdn.net/tag/details.html?tag=transformation" target="_blank">transformation</a><a href="http://blog.csdn.net/tag/details.html?tag=float" target="_blank">float</a><a href="http://blog.csdn.net/tag/details.html?tag=%e5%9b%be%e5%bd%a2" target="_blank">图形</a><a href="http://blog.csdn.net/tag/details.html?tag=c" target="_blank">c</a></div>
+
+
+    
+<div id="article_content" class="article_content">
+
+<span>Matrix学习——基础知识</span>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+以前在线性代数中学习了矩阵，对矩阵的基本运算有一些了解，前段时间在使用GDI+的时候再次学习如何使用矩阵来变化图像，看了之后在这里总结说明。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+首先大家看看下面这个3 x 3的矩阵，这个矩阵被分割成4部分。为什么分割成4部分，在后面详细说明。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/3-x-3.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img src="./Android Matrix理论与应用详解_files/Composite-Change-Matrix.JPG" alt=""></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+首先给大家举个简单的例子：现设点P0（x0， y0）进行平移后，移到P（x，y），其中x方向的平移量为△x，y方向的平移量为△y，那么，点P（x，y）的坐标为：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+x = x0&nbsp; + △x<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+y = y0&nbsp; + △y</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+采用矩阵表达上述如下：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Translate.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image002" border="0" alt="clip_image002" src="./Android Matrix理论与应用详解_files/2712776_1299902418UDoE.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+上述也类似与图像的平移，通过上述矩阵我们发现，只需要修改矩阵右上角的2个元素就可以了。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+我们回头看上述矩阵的划分：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Area.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image003" border="0" alt="clip_image003" src="./Android Matrix理论与应用详解_files/2712776_1299902429NkaC.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+为了验证上面的功能划分，我们举个具体的例子：现设点P0（x0 ，y0）进行平移后，移到P（x，y），其中x放大a倍，y放大b倍，</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+矩阵就是：<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Scale.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image004" border="0" alt="clip_image004" src="./Android Matrix理论与应用详解_files/2712776_1299902429pxvv.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a>，按照类似前面“平移”的方法就验证。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+图像的旋转稍微复杂：现设点P0（x0， y0）旋转θ角后的对应点为P（x， y）。通过使用向量，我们得到如下：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+x0 = r cosα<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+y0 = r sinα</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+x = r cos(α+θ) = x0 cosθ - y0 sinθ<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+y = r sin(α+θ) = x0 sinθ + y0 cosθ</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+于是我们得到矩阵：<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image005" border="0" alt="clip_image005" src="./Android Matrix理论与应用详解_files/2712776_1299902430vWGS.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+如果图像围绕着某个点(a ，b)旋转呢？则先要将坐标平移到该点，再进行旋转，然后将旋转后的图像平移回到原来的坐标原点，在后面的篇幅中我们将详细介绍。</p>
+&nbsp; Matrix学习——如何使用Matrix
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+上一篇幅<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">Matrix学习——基础知识</strong>，从高等数学方面给大家介绍了Matrix，本篇幅我们就结合Android 中的android.graphics.Matrix来具体说明，还记得我们前面说的<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">图像旋转</strong>的矩阵：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image005[1]" border="0" alt="clip_image005[1]" src="./Android Matrix理论与应用详解_files/2712776_1299902430cO0D.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+从最简单的旋转90度的是：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-90-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image006" border="0" alt="clip_image006" src="./Android Matrix理论与应用详解_files/2712776_129990243093mD.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+在android.graphics.Matrix中有对应旋转的函数：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Matrix matrix = new Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setRotate(90);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Test.Log(MAXTRIX_TAG,”setRotate(90):%s” , matrix.toString());</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-90-Android.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image007" border="0" alt="clip_image007" src="./Android Matrix理论与应用详解_files/2712776_12999024428ygs.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+查看运行后的矩阵的值（通过Log输出）：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-90-Android-log.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image008" border="0" alt="clip_image008" src="./Android Matrix理论与应用详解_files/2712776_1299902447fsvP.jpg" width="650" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+与上面的公式基本完全一样（android.graphics.Matrix采用的是浮点数，而我们采用的整数）。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+有了上面的例子，相信大家就可以亲自尝试了。通过上面的例子我们也发现，我们也可以直接来初始化矩阵，比如说要旋转30度：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-30-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"></a><a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-30-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image010" border="0" alt="clip_image010" src="./Android Matrix理论与应用详解_files/2712776_1299902451Zvzw.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+前面给大家介绍了这么多，下面我们开始介绍<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">图像的镜像</strong>，分为2种：水平镜像、垂直镜像。先介绍如何实现垂直镜像，什么是垂直镜像就不详细说明。图像的垂直镜像变化也可以用矩阵变化的表示，设点P0（x0 ，y0 ）进行镜像后的对应点为P（x ，y ），图像的高度为fHeight，宽度为fWidth，原图像中的P0（x0
+ ，y0 ）经过垂直镜像后的坐标变为（x0 ，fHeight- y0）；<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+x = x0<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+y = fHeight – y0<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+推导出相应的矩阵是：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/%E5%9E%82%E7%9B%B4%E9%95%9C%E5%83%8F-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image011" border="0" alt="clip_image011" src="./Android Matrix理论与应用详解_files/2712776_1299902451SnPQ.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">final</strong><span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">float</strong><span>&nbsp;</span>f[]
+ = {1.0F,0.0F,0.0F,0.0F,-1.0F,120.0F,0.0F,0.0F,1.0F};<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Matrix matrix =<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">new</strong><span>&nbsp;</span>Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setValues(f);</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+按照上述方法运行后的结果：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/%E5%9E%82%E7%9B%B4%E9%95%9C%E5%83%8F-Android.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image012" border="0" alt="clip_image012" src="./Android Matrix理论与应用详解_files/2712776_1299902464SXK9.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+至于水平镜像采用类似的方法，大家可以自己去试试吧。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+实际上，使用下面的方式也可以实现垂直镜像：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Matrix matrix =<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">new</strong><span>&nbsp;</span>Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setScale (1.0，-1.0);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.postTraslate(0, fHeight);</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+这就是我们将在后面的篇幅中详细说明。</p>
+&nbsp; Matrix学习——图像的复合变化
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">Matrix学习——基础知识</strong>篇幅中，我们留下一个话题：如果图像围绕着某个点P(a，b)旋转，则先要将坐标系平移到该点，再进行旋转，然后将旋转后的图像平移回到原来的坐标原点。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+我们需要3步：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+1.<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">平移</strong>——将坐标系平移到点P(a，b)；</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+2.<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">旋转</strong>——以原点为中心旋转图像；</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+3.<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">平移</strong>——将旋转后的图像平移回到原来的坐标原点；</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+相比较前面说的图像的几何变化（基本的图像几何变化），这里需要<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">平移——旋转——平移</strong>，这种需要多种图像的几何变化就叫做图像的复合变化。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">设对给定的图像依次进行了基本变化F1、F2、F3…..、Fn，它们的变化矩阵分别为T1、T2、T3…..、Tn，图像复合变化的矩阵T可以表示为：T = TnTn-1…T1。</strong></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+按照上面的原则，围绕着某个点(a，b)旋转θ的变化矩阵序列是：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="./Android Matrix理论与应用详解_files/Composite-Change-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image013" border="0" alt="clip_image013" src="./Android Matrix理论与应用详解_files/2712776_1299902490mmBv.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+按照上面的公式，我们列举一个简单的例子：围绕（100，100）旋转30度(sin 30 = 0.5 ，cos 30 = 0.866)<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">float</strong><span>&nbsp;</span>f[]= { 0.866F,&nbsp; -0.5F, 63.4F,0.5F, 0.866F,-36.6F,0.0F,&nbsp;&nbsp;&nbsp; 0.0F,&nbsp; 1.0F };<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix =<span>&nbsp;</span><strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">new</strong><span>&nbsp;</span>Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setValues(f);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+旋转后的图像如下：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-100-100-Android.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image014" border="0" alt="clip_image014" src="./Android Matrix理论与应用详解_files/2712776_1299902492asWp.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Android为我们提供了更加简单的方法，如下：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+Matrix matrix = new Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setRotate(30，100，100);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+矩阵运行后的实际结果：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Rotate-30-100-100-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image015" border="0" alt="clip_image015" src="./Android Matrix理论与应用详解_files/2712776_1299902493VtSL.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+与我们前面通过公式获取得到的矩阵完全一样。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+在这里我们提供另外一种方法，也可以达到同样的效果：<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+float a = 100.0F,b = 100.0F;<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix = new Matrix();<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.setTranslate(a,b);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.preRotate(30);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+matrix.preTranslate(-a,-b);<span>&nbsp;</span><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+将在后面的篇幅中为大家详细解析</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+通过类似的方法，我们还可以得到：<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">相对点P(a，b)的比例[sx,sy]变化矩阵</strong></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Pab-Scale.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image016" border="0" alt="clip_image016" src="./Android Matrix理论与应用详解_files/2712776_1299902493tH6v.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+Matrix学习——Preconcats or Postconcats?
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+从最基本的高等数学开始，Matrix的基本操作包括：+、*。Matrix的乘法不满足交换律，也就是说A*B ≠B*A。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+还有2种常见的矩阵：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Identity-Inverse.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image017" border="0" alt="clip_image017" src="./Android Matrix理论与应用详解_files/2712776_1299902496nxDm.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+有了上面的基础，下面我们开始进入主题。由于矩阵不满足交换律，所以用矩阵B乘以矩阵A，需要考虑是左乘（B*A），还是右乘（A*B）。在Android的android.graphics.Matrix中为我们提供了类似的方法，也就是我们本篇幅要说明的Preconcats matrix 与 Postconcats&nbsp; matrix。下面我们还是通过具体的例子还说明：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Preconcats-Postconcats-Example.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image018" border="0" alt="clip_image018" src="./Android Matrix理论与应用详解_files/2712776_1299902498VO10.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+通过输出的信息，我们分析其运行过程如下：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://img1.51cto.com/attachment/201103/12/2712776_1299902518gIdq.jpg" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image019" border="0" alt="clip_image019" src="./Android Matrix理论与应用详解_files/2712776_1299902547Pfsi.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+看了上面的输出信息。我们得出结论：<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">Preconcats matrix相当于右乘矩阵，Postconcats&nbsp; matrix相当于左乘矩阵</strong>。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+上一篇幅中，我们说到：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/equal.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image020" border="0" alt="clip_image020" src="./Android Matrix理论与应用详解_files/2712776_1299902555mRLY.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+其晕死过程的详细分析就不在这里多说了。</p>
+&nbsp; Matrix学习——错切变换
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px"></strong></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+什么是<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">图像的错切变换</strong>（Shear transformation）？我们还是直接看图片错切变换后是的效果：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Shear-Transformation.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image021" border="0" alt="clip_image021" src="./Android Matrix理论与应用详解_files/2712776_1299902566xkgy.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Shear-Matrix-Result.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image022" border="0" alt="clip_image022" src="./Android Matrix理论与应用详解_files/2712776_12999025929ftj.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+对图像的错切变换做个总结：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Shear-Matrix.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image023" border="0" alt="clip_image023" src="./Android Matrix理论与应用详解_files/2712776_1299902600keoa.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">x = x0 + b*y0;</strong></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">y = d*x0 + y0;</strong></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Shear-Table.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image024" border="0" alt="clip_image024" src="./Android Matrix理论与应用详解_files/2712776_12999026243C1h.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+这里再次给大家介绍一个需要注意的地方：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/pre-set.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image025" border="0" alt="clip_image025" src="./Android Matrix理论与应用详解_files/2712776_1299902636LhKX.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">通过以上，我们发现Matrix的setXXXX()函数，在调用时调用了一次reset()，这个在复合变换时需要注意。</strong></p>
+&nbsp; Matrix学习——对称变换（反射）
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+什么是对称变换？具体的理论就不详细说明了，图像的镜像就是对称变换中的一种。</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Symmetry.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image026" border="0" alt="clip_image026" src="./Android Matrix理论与应用详解_files/2712776_1299902640iGmV.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+利用上面的总结做个具体的例子，产生与直线y= – x对称的反射图形，代码片段如下：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Symmetry-Example.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image027" border="0" alt="clip_image027" src="./Android Matrix理论与应用详解_files/2712776_1299902651mPtb.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+当前矩阵输出是：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Symmetry-Matrix-Output.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image028" border="0" alt="clip_image028" src="./Android Matrix理论与应用详解_files/2712776_1299902652WdMN.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+图像变换的效果如下：</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<a href="http://www.moandroid.com/wp-content/uploads/2010/04/Symmetry-Android.JPG" target="\&#39;_blank\&#39;" style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; color:rgb(120,157,32); text-decoration:none; padding-top:0px"><img title="clip_image029" border="0" alt="clip_image029" src="./Android Matrix理论与应用详解_files/2712776_1299902658wVPs.jpg" style="padding-bottom:0px; border-right-width:0px; margin:0px; padding-left:0px; padding-right:0px; border-top-width:0px; border-bottom-width:0px; vertical-align:top; border-left-width:0px; padding-top:0px"></a></p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+<strong style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px"><br style="padding-bottom:0px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+</strong></p>
+&nbsp; 附：三角函数公式
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+两角和公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a+b)=sinacosb+cosasinb</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a-b)=sinacosb-sinbcosa </p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(a+b)=cosacosb-sinasinb</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(a-b)=cosacosb+sinasinb</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan(a+b)=(tana+tanb)/(1-tanatanb)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan(a-b)=(tana-tanb)/(1+tanatanb)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cot(a+b)=(cotacotb-1)/(cotb+cota) </p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cot(a-b)=(cotacotb+1)/(cotb-cota)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+倍角公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan2a=2tana/[1-(tana)^2]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos2a=(cosa)^2-(sina)^2=2(cosa)^2 -1=1-2(sina)^2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin2a=2sina*cosa</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+半角公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a/2)=√((1-cosa)/2) sin(a/2)=-√((1-cosa)/2)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(a/2)=√((1+cosa)/2) cos(a/2)=-√((1+cosa)/2)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan(a/2)=√((1-cosa)/((1+cosa)) tan(a/2)=-√((1-cosa)/((1+cosa))</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cot(a/2)=√((1+cosa)/((1-cosa)) cot(a/2)=-√((1+cosa)/((1-cosa)) </p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan(a/2)=(1-cosa)/sina=sina/(1+cosa)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+和差化积</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+2sinacosb=sin(a+b)+sin(a-b)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+2cosasinb=sin(a+b)-sin(a-b) )</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+2cosacosb=cos(a+b)-sin(a-b)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+-2sinasinb=cos(a+b)-cos(a-b)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sina+sinb=2sin((a+b)/2)cos((a-b)/2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cosa+cosb=2cos((a+b)/2)sin((a-b)/2)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tana+tanb=sin(a+b)/cosacosb</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+积化和差公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a)sin(b)=-1/2*[cos(a+b)-cos(a-b)]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(a)cos(b)=1/2*[cos(a+b)+cos(a-b)]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a)cos(b)=1/2*[sin(a+b)+sin(a-b)]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+诱导公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(-a)=-sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(-a)=cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(pi/2-a)=cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(pi/2-a)=sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(pi/2+a)=cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(pi/2+a)=-sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(pi-a)=sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(pi-a)=-cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(pi+a)=-sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(pi+a)=-cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tga=tana=sina/cosa</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+万能公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sin(a)= (2tan(a/2))/(1+tan^2(a/2))</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cos(a)= (1-tan^2(a/2))/(1+tan^2(a/2))</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tan(a)= (2tan(a/2))/(1-tan^2(a/2))</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+其它公式</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+a*sin(a)+b*cos(a)=sqrt(a^2+b^2)sin(a+c) [其中，tan(c)=b/a]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+a*sin(a)-b*cos(a)=sqrt(a^2+b^2)cos(a-c) [其中，tan(c)=a/b]</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+1+sin(a)=(sin(a/2)+cos(a/2))^2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+1-sin(a)=(sin(a/2)-cos(a/2))^2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+其他非重点三角函数</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+csc(a)=1/sin(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sec(a)=1/cos(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+双曲函数</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+sinh(a)=(e^a-e^(-a))/2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+cosh(a)=(e^a+e^(-a))/2</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+tgh(a)=sinh(a)/cosh(a)</p>
+<p style="padding-bottom:15px; margin:0px; padding-left:0px; padding-right:0px; padding-top:0px">
+&nbsp;</p>
+
+</div>
+<div class="share_buttons" id="sharePanel"><span>分享到：</span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到腾讯微博"></a></div>
+<!--192.168.1.236-->
+<div class="article_next_prev">
+    <li class="prev_article"><span>上一篇：</span><a href="http://blog.csdn.net/kuku20092009/article/details/6740853">Android对图像进行各种对称显示（以矩形为例）</a></li>
+    <li class="next_article"><span>下一篇：</span><a href="http://blog.csdn.net/kuku20092009/article/details/6740923">一个游戏程序员的学习资料</a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen"><iframe id="ad_frm_0" frameborder="0" scrolling="no" src="./Android Matrix理论与应用详解_files/ad(1).htm" style="border-width: 0px; overflow: hidden; width: 732px; height: 95px;"></iframe></div>
+<script type="text/javascript">
+    new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head">查看评论<a name="comments"></a></div>
+<div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_2524079"><dt class="comment_head" floor="6">6楼 <span class="user"><a class="username" href="http://blog.csdn.net/xingchenxiao" target="_blank">xingchenxiao</a> <span class="ptime">2013-02-01 14:13发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2524079" username="xingchenxiao"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/xingchenxiao" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_xingchenxiao.jpg" width="40" height="40"></a></dd><dd class="comment_body">楼主啊，我在百度地图上做一个当前位置的图标箭头的旋转功能，另外我在当前位置周围画了一个圆，发现以圆心旋转的时候图片中心会偏离圆心，另外我还做了个实验，以图片中心旋转的时候，旋转到90,180,270,360，图片中心会回到原点，其他的角度会稍微偏离原点，不知道是怎么回事啊</dd></dl><dl class="comment_item comment_topic" id="comment_item_2520737"><dt class="comment_head" floor="5">5楼 <span class="user"><a class="username" href="http://blog.csdn.net/mioscar" target="_blank">mioscar</a> <span class="ptime">2013-01-29 16:23发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2520737" username="mioscar"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/mioscar" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_mioscar.jpg" width="40" height="40"></a></dd><dd class="comment_body">说的要“汗”一下了，可惜好多年没有用过了，都忘了。</dd></dl><dl class="comment_item comment_topic" id="comment_item_2450264"><dt class="comment_head" floor="4">4楼 <span class="user"><a class="username" href="http://blog.csdn.net/user26926" target="_blank">user26926</a> <span class="ptime">2012-11-29 17:54发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2450264" username="user26926"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/user26926" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_user26926.jpg" width="40" height="40"></a></dd><dd class="comment_body">神分析啊... .  求这方面 除了数学书（高数和代数）还要看什么之类的数 楼主求分享啊....</dd></dl><dl class="comment_item comment_topic" id="comment_item_2430780"><dt class="comment_head" floor="3">3楼 <span class="user"><a class="username" href="http://blog.csdn.net/oney139" target="_blank">oney139</a> <span class="ptime">2012-11-13 09:29发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2430780" username="oney139"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/oney139" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_oney139.jpg" width="40" height="40"></a></dd><dd class="comment_body">你转自哪最好说一下...</dd></dl><dl class="comment_item comment_topic" id="comment_item_2254439"><dt class="comment_head" floor="2">2楼 <span class="user"><a class="username" href="http://blog.csdn.net/iamkila" target="_blank">iamkila</a> <span class="ptime">2012-06-14 11:10发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2254439" username="iamkila"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/iamkila" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_iamkila.jpg" width="40" height="40"></a></dd><dd class="comment_body">终于感觉到大学的数学能派上点用场了，学习了 ，楼主</dd></dl><dl class="comment_item comment_topic" id="comment_item_2026176"><dt class="comment_head" floor="1">1楼 <span class="user"><a class="username" href="http://blog.csdn.net/quhao3100590" target="_blank">quhao3100590</a> <span class="ptime">2011-11-21 11:00发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2026176" username="quhao3100590"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/quhao3100590" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_quhao3100590.jpg" width="40" height="40"></a></dd><dd class="comment_body">好东西，谢谢楼主</dd><dl class="comment_item comment_reply" id="comment_item_2077213"><dt class="comment_head" floor="1">Re: <span class="user"><a class="username" href="http://blog.csdn.net/kuku20092009" target="_blank">kuku20092009</a> <span class="ptime">2012-01-10 15:47发表</span>  <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2077213" username="kuku20092009"> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/kuku20092009" target="_blank"><img src="./Android Matrix理论与应用详解_files/3_kuku20092009.jpg" width="40" height="40"></a></dd><dd class="comment_body">回复quhao3100590：好东西就要拿出来分享的，呵呵！</dd></dl></dl><div class="clear"></div></div>
+<div id="comment_bar" style="display: none;"></div>
+<div id="comment_form"><a name="commentbox"></a><a name="reply"></a><a name="quote"></a><form action="http://blog.csdn.net/kuku20092009/comment/submit?id=6740865" method="post" onsubmit="return subform(this);"><div class="commentform"><div class="panel_head">发表评论</div><ul><li class="left">用 户 名：</li><li class="right">qlsusu</li></ul><ul><li class="left">评论内容：</li><li class="right" style="position:relative;"><div id="ubbtools"><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#insertcode" code="code"><img src="./Android Matrix理论与应用详解_files/code.gif" border="0" alt="插入代码" title="插入代码"></a></div><div id="lang_list" style="display:none; position:absolute;top:25px; left:0px;"><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#html">HTML/XML</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#javascript">JavaScript</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#css">CSS</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#php">PHP</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#csharp">C#</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#cpp">C++</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#java">Java</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#python">Python</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#ruby">Ruby</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#vb">Visual Basic</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#delphi">Delphi</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#sql">SQL</a><a href="http://blog.csdn.net/kuku20092009/article/details/6740865#plain">其它</a></div><textarea class="comment_content" name="comment_content" id="comment_content" style="width: 400px; height: 200px;"></textarea></li></ul><ul><input type="hidden" id="comment_replyId" name="comment_replyId"><input type="hidden" id="comment_userId" name="comment_userId" value="521203"><input type="hidden" id="commentId" name="commentId" value=""><input type="submit" class="comment_btn" value="提交">&nbsp;&nbsp;<span id="tip_comment" style="color: Red; display: none;"></span></ul></div></form></div>
+<div class="announce">* 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '6740865';
+    var commentscount = 7;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/comment.js"></script>
+<div id="ad_bot"><iframe id="ad_frm_1" frameborder="0" scrolling="no" src="./Android Matrix理论与应用详解_files/ad(2).htm" style="border-width: 0px; overflow: hidden; width: 732px; height: 170px;"></iframe></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top" style="display: none;">
+<a id="d-top-a" href="http://blog.csdn.net/kuku20092009/article/details/6740865#" title="回到顶部">
+<img src="./Android Matrix理论与应用详解_files/top.png" alt="TOP"></a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var d_top=$('#d-top');
+        document.onscroll=function(){
+            var scrTop=(document.body.scrollTop||document.documentElement.scrollTop);
+            if(scrTop>500){
+                d_top.show();
+            }else{
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function(){
+            scrollTo(0,0);
+            this.blur();
+            return false;
+        });
+    });
+</script>
+
+
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+    <ul class="panel_head"><span>个人资料</span></ul>
+    <ul class="panel_body profile">
+        <div id="blog_userface">
+            <a href="http://my.csdn.net/kuku20092009" target="_blank">
+            <img src="./Android Matrix理论与应用详解_files/1_kuku20092009.jpg" title="访问我的空间" style="max-width:90%">
+            </a>
+            <br>
+            <span><a href="http://my.csdn.net/kuku20092009" class="user_name" target="_blank">kuku20092009</a></span>
+        </div>
+<div class="interact">
+<!--<a href="#" class="attented" title="已关注"></a>-->
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+<a href="javascript:void(0);" class="letter" onclick="loginto(1)" title="[发私信]"></a>
+</div>
+        <div id="blog_medal">
+        <div id="bms_box"></div></div>
+        <ul id="blog_rank">
+            <li>访问：<span>8522次</span></li>
+            <li>积分：<span>208分</span></li>
+            <li>排名：<span>千里之外</span></li>
+        </ul>
+        <ul id="blog_statistics">
+            <li>原创：<span>11篇</span></li>
+            <li>转载：<span>4篇</span></li>
+            <li>译文：<span>0篇</span></li>
+            <li>评论：<span>8条</span></li>
+        </ul>
+    </ul>
+</div>
+<script type="text/javascript">
+    var _blogger = 'kuku20092009';
+</script>
+
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="submit" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+    <ul class="panel_head"><span>文章分类</span></ul>
+    <ul class="panel_body">
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/684556">j2ee</a><span>(0)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/684557">j2me</a><span>(3)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/684558">Linux</a><span>(0)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/794640">Lwuit</a><span>(0)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/684560">计算机方面的杂类</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/684555">计算机网络</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/844175">Android</a><span>(6)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/865658">数据结构与算法 in game</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/kuku20092009/article/category/868264">心情</a><span>(1)</span>
+        </li>
+    </ul>
+</div><div id="panel_Archive" class="panel">
+    <ul class="panel_head"><span>文章存档</span></ul>
+    <ul class="panel_body">
+        <div id="archive_list"><li><a href="http://blog.csdn.net/kuku20092009/article/month/2012/01">2012年01月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2011/12">2011年12月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2011/09">2011年09月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2011/08">2011年08月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2011/07">2011年07月</a><span>(2)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/kuku20092009/article/month/2011/03">2011年03月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2010/05">2010年05月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/kuku20092009/article/month/2009/03">2009年03月</a><span>(1)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+    </ul>
+</div>
+<div id="hotarticls" class="panel">
+    <ul class="panel_head"><span>阅读排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="./Android Matrix理论与应用详解_files/Android Matrix理论与应用详解.htm" title="Android Matrix理论与应用详解">Android Matrix理论与应用详解</a><span>(2972)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/7176836" title="android中需要读取assets目录下a.txt文件并进行解析">android中需要读取assets目录下a.txt文件并进行解析</a><span>(1368)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/5567225" title="ARP协议在IP协议中的工作过程">ARP协议在IP协议中的工作过程</a><span>(952)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792236" title="Android游戏中获取电话的状态来进行游戏的暂停和继续">Android游戏中获取电话的状态来进行游戏的暂停和继续</a><span>(623)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6740853" title="Android对图像进行各种对称显示（以矩形为例）">Android对图像进行各种对称显示（以矩形为例）</a><span>(538)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792223" title="Android 游戏中数据的存储（上）">Android 游戏中数据的存储（上）</a><span>(327)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6740923" title="一个游戏程序员的学习资料">一个游戏程序员的学习资料</a><span>(215)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/3954455" title="汇编总结(一)">汇编总结(一)</a><span>(181)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6683203" title="坦克大战中的几个难点总结">坦克大战中的几个难点总结</a><span>(146)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792228" title="Android中游戏的存储（下）----好久不见">Android中游戏的存储（下）----好久不见</a><span>(136)</span>
+        </li>
+    </ul>
+</div>
+<div id="hotarticls2" class="panel">
+    <ul class="panel_head"><span>评论排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="./Android Matrix理论与应用详解_files/Android Matrix理论与应用详解.htm" title="Android Matrix理论与应用详解">Android Matrix理论与应用详解</a><span>(7)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6740853" title="Android对图像进行各种对称显示（以矩形为例）">Android对图像进行各种对称显示（以矩形为例）</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/7168134" title="2011年最后一天，留给自己的">2011年最后一天，留给自己的</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792236" title="Android游戏中获取电话的状态来进行游戏的暂停和继续">Android游戏中获取电话的状态来进行游戏的暂停和继续</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792228" title="Android中游戏的存储（下）----好久不见">Android中游戏的存储（下）----好久不见</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6792223" title="Android 游戏中数据的存储（上）">Android 游戏中数据的存储（上）</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6740923" title="一个游戏程序员的学习资料">一个游戏程序员的学习资料</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/3954455" title="汇编总结(一)">汇编总结(一)</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6683203" title="坦克大战中的几个难点总结">坦克大战中的几个难点总结</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/kuku20092009/article/details/6683168" title="诺基亚手机有多少个系列?">诺基亚手机有多少个系列?</a><span>(0)</span>
+        </li>
+    </ul>
+</div>
+<div id="homepageArticles" class="panel">
+    <ul class="panel_head"><span>推荐文章</span></ul>
+    <ul class="panel_body" id="ad_commend">
+    <iframe id="ad_frm_2" frameborder="0" scrolling="no" src="./Android Matrix理论与应用详解_files/ad.htm" style="border-width: 0px; overflow: hidden; width: 182px; height: 200px;"></iframe></ul>
+</div>
+<script type="text/javascript">
+    new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/xingchenxiao" class="user_name">xingchenxiao</a>:
+楼主啊，我在百度地图上做一个当前位置的图标箭头的旋转功能，另外我在当前位置周围画了一个圆，发现以圆心...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/mioscar" class="user_name">mioscar</a>:
+说的要“汗”一下了，可惜好多年没有用过了，都忘了。
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/user26926" class="user_name">user26926</a>:
+神分析啊... .  求这方面 除了数学书（高数和代数）还要看什么之类的数 楼主求分享啊....
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/oney139" class="user_name">oney139</a>:
+你转自哪最好说一下...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/iamkila" class="user_name">iamkila</a>:
+终于感觉到大学的数学能派上点用场了，学习了 ，楼主
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/kuku20092009" class="user_name">kuku20092009</a>:
+@quhao3100590:好东西就要拿出来分享的，呵呵！
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740865#comments">Android Matrix理论与应用详解</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/quhao3100590" class="user_name">quhao3100590</a>:
+好东西，谢谢楼主
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/kuku20092009/article/details/6740853#comments">Android对图像进行各种对称显示（以矩形为例）</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/kbest" class="user_name">kbest</a>:
+if ((anchor &amp; VCENTER) != 0) {   y_dest -= height ...
+    </p>
+    </li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/newblog.min.js"></script>
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/showblogmedal.ashx"></script>
+
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./Android Matrix理论与应用详解_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">QQ客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="http://bbs.csdn.net/forums/Service" target="_blank" class="online">论坛反馈</a> <a href="mailto:webmaster@csdn.net" class="email">联系邮箱：webmaster@csdn.net</a> <span class="phone">服务热线：400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>世纪乐知(北京)网络技术有限公司 提供技术支持</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./Android Matrix理论与应用详解_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><script type="text/javascript" charset="utf-8" src="./Android Matrix理论与应用详解_files/tracking.js"></script>
+
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./Android Matrix理论与应用详解_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./Android Matrix理论与应用详解_files/msg.popup.js"></script>
+
+
+<script type="text/javascript" src="./Android Matrix理论与应用详解_files/ad-blog.js"></script><script type="text/javascript" src="./Android Matrix理论与应用详解_files/ad-ms488.js"></script>
+
+</div>
+
+<iframe src="./Android Matrix理论与应用详解_files/stb-csdnhomepage-735-60-0325.htm" style="width: 1px; height: 1px; position: absolute; visibility: hidden;"></iframe></body></html>

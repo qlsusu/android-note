@@ -1,0 +1,66 @@
+资料：
+http://blog.csdn.net/feiduclear_up/article/details/46457433
+http://blog.mosil.biz/2014/10/android-toolbar/
+
+样式，如：
+<android.support.v7.widget.Toolbar
+	android:id="@+id/toolbar"
+	android:layout_width="match_parent"
+	android:layout_height="?attr/actionBarSize"
+	android:background="?attr/colorPrimary">
+
+	<ImageView
+		android:id="@+id/ivLogo"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:scaleType="center"
+		android:src="@drawable/img_toolbar_logo" />
+</android.support.v7.widget.Toolbar>
+
+activity的主题
+需要隐藏掉actionbar，如
+  <style name="AppTheme.Base" parent="Theme.AppCompat">
+    <item name="windowActionBar">false</item>
+    <del><item name="android:windowNoTitle">true</item></del>
+    <!-- 使用 API Level 22 編譯的話，要拿掉前綴字 -->
+    <item name="windowNoTitle">true</item>
+  </style>
+可以继承于：Theme.AppCompat.NoActionBar 或者 Theme.AppCompat.Light.NoActionBar
+
+自定义样式
+在layout.xml中，直接在Toolbar中构建view，
+	只要该view的width为fill_parent，那么会连title都覆盖掉（但是不影响菜单的ui）
+	如果view的width为wrap_content，title还会出现
+去除左边距
+	虽然在toolbar之下建立了view，width也是fill_parent，但是view的左边仍然留有空间
+	解决方法：在toolbar中增加属性设置：app:contentInsetLeft="0dp" 和 app:contentInsetStart="0dp" 
+	参见：http://stackoverflow.com/questions/32086148/when-add-a-custom-view-in-android-toolbar-there-will-be-a-marginleft
+
+充当actionbar
+setSupportActionBar(Toolbar toolbar);
+
+显示home图标（在和drawerlayout集合时，滑动时，也会有图标变化）
+getSupportActionBar().setHomeButtonEnabled(true);
+getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+菜单：
+activity中，通过onCreateOptionsMenu来构建菜单项
+toolbar.setOnMenuItemClickListener来响应菜单的点击
+对于不总是显示的菜单的 弹出style：app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+	@style/ThemeOverlay.Appcompat.Dark-->黑底白字
+	@style/ThemeOverlay.Appcompat.Light-->白底黑字
+
+actionmode
+activity.startSupportActionMode
+	而在actionbar时代，启动的actionmode: getSupportActionBar().startActionMode
+在styles.xml中，加上<item name="windowActionModeOverlay">true</item>
+
+设置Navigation：
+toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+可以和自定义layout连用，即使layout的width为fill_parent
+需要使用代码方式，因为：app:navigationIcon="" doesn’t work, while android:navigationIcon="" works only in Android Lollipop
+
+
+
+	

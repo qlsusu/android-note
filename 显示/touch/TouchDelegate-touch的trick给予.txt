@@ -1,0 +1,8 @@
+参见：android recipe v4/2_13-14_CustomTouch/TouchDelegateLayout
+
+TouchDelegate is applied to view1 (parent) to delegate all touches within the specified rectangle to view2 (child)
+效果：在view1的指定区域上的touch，将被认为是针对于view2的touch
+用法：
+Rect bounds = new Rect(0, 0, w, h);
+TouchDelegate delegate = new TouchDelegate(bounds, mButton);
+setTouchDelegate(delegate);

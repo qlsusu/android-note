@@ -1,0 +1,6 @@
+若event在 viewgroup和孩子view 的getx/y相差多少：
+final float offsetX = mScrollX - child.mLeft;
+final float offsetY = mScrollY - child.mTop;
+其中，mScrollX/Y 为viewgroup的
+
+

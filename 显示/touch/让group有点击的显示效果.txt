@@ -1,0 +1,4 @@
+让group有点击效果
+android:background="?android:attr/selectableItemBackground"
+android:clickable="true"
+android:focusable="true"

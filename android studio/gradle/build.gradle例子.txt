@@ -1,0 +1,45 @@
+参见：
+Android应用开发编译框架流程与IDE及Gradle概要
+	http://blog.csdn.net/yanbober/article/details/49408489
+
+//添加Gradle的Android构建插件，默认包含一些task和android {...}等特定元素
+apply plugin: 'com.android.application'
+//android元素用来配置Android编译特有选项
+android {
+    //！！！特别注意：我们一定要保证buildToolsVersion版本号总是高于等于compileSdkVersion版本号
+    //指定编译目标
+    compileSdkVersion 19
+    //指定编译工具版本，可以通过SDK Manager查看
+    buildToolsVersion "19.0.0"
+    //defaultConfig元素用来配置核心设置和AndroidManifest.xml文件的动态配置，这里的值会覆盖AndroidManifest.xml文件中相对应的值。
+    //！！！特别注意：defaultConfig元素值默认应用于所有build variant，除非我们在build variant中重写这些值
+    defaultConfig {
+        //！！！App的唯一id只能在这里声明，不能在AndroidManifest.xml中
+        applicationId "com.example.my.app"
+        minSdkVersion 8
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+    //buildTypes元素用来控制如何打包编译app
+    //默认情况下编译系统定义了两中编译类型：debug和release
+    //debug类型默认会包含调试符和debug key，但是release默认不包含签名
+    buildTypes {
+        release {
+        //通过Run ProGuard进行资源混淆！！！
+            minifyEnabled true
+        //getDefaultProguardFile默认获取SDK路径下的文件，我们还可以指定一个混淆规则文件，譬如proguard-rules.pro
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+//dependencies在android元素之外且之下，该元素用来指明当前module的依赖关系，构建系统会把这些依赖加入编译classpath中
+dependencies {
+    //Module依赖，编译时会被包含进去
+    compile project(":lib")
+    //远程二进制依赖
+    compile 'com.android.support:appcompat-v7:19.0.1'
+    //本地二进制依赖
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
