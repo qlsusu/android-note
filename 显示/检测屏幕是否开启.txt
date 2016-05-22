@@ -1,0 +1,21 @@
+方法1：
+/**
+ * 检测屏幕是否开启
+ *
+ * @param context 上下文
+ * @return 是否屏幕开启
+ */
+public static boolean isScreenOn(Context context) {
+    Context appContext = context.getApplicationContext();
+    PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+        return pm.isInteractive();
+    } else {
+        // noinspection all
+        return pm.isScreenOn();
+    }
+}
+
+方法2：
+通过监听系统广播, 判断屏幕的亮灭, 即Intent.ACTION_SCREEN_ON或Intent.ACTION_SCREEN_OFF.

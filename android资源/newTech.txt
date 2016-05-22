@@ -26,7 +26,7 @@ Android创建桌面快捷方式几种方法
 	http://m.cr173.com/w/19597
 
 事件总线：EventBus、Otto
-ORM框架：GreenDAO、Litepal
+ORM框架：GreenDAO、Litepal，Realm
 
 数据统计：友盟统计，百度统计...
 奔溃搜集：腾讯bugly、bugtags...
@@ -67,6 +67,8 @@ LessCode
 
 二维码
 http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&mid=405489196&idx=1&sn=60f385f5d3fcb97ce4813a372028817a&scene=0#wechat_redirect
+Android zxing(上)
+	http://mp.weixin.qq.com/s?__biz=MzI4MzE2MTQ5Mw==&mid=2649752097&idx=1&sn=6ade471c63b7246738e78fb4012cc98b#rd
 
 锁屏的实现
 http://blog.csdn.net/qinjuning/article/details/7558588

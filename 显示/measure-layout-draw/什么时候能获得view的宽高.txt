@@ -1,4 +1,5 @@
 onlayout时
+	因为之前，已经调用了setframe来确定了l,t,r,b
 handler.postrunnable中
 view.onsizechanged
 activity.onWindowFocusChanged

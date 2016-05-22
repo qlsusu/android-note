@@ -1,0 +1,14 @@
+参见:
+Context都没弄明白，还怎么做Android开发？
+	http://www.jianshu.com/p/94e0f9ab3f1d
+
+凡是跟UI相关的，都应该使用Activity做为Context来处理；
+其他的一些操作，Service,Activity,Application等实例都可以，
+
+getApplication()和getApplicationContext()返回的是同一个对象
+
+为什么不推荐appicationcontext来启动activity:
+一个Activity的启动必须要建立在另一个Activity的基础之上，也就是以此形成的返回栈.
+
+为什么不推荐appicationcontext来启动dialog:
+而Dialog则必须在一个Activity上面弹出（除非是System Alert类型的Dialog）

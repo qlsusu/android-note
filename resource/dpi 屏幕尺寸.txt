@@ -1,4 +1,12 @@
-dpi：density per inch
+参见：
+Android UI 开发里的尺寸单位理解
+	https://mazhuang.org/2015/04/06/dp-sp-px/
+
+dpi：dots per inch
+ppi（pixels per inch）
+
+比如，LG Nexus 5 的屏幕尺寸为 4.95 英寸，分辨率为 1920*1080，则它的对角线上的像素数为 sqrt((sqr(1920)+sqr(1080))，
+所以它的屏幕密度为 sqrt((sqr(1920)+sqr(1080))/4.95=445.03，约为 445dpi。
 
 尺寸
 160dp = 1英寸。320 dp = 2英寸

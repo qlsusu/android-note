@@ -1,35 +1,33 @@
 /**
-     * Ask one of the children of this view to measure itself, taking into
-     * account both the MeasureSpec requirements for this view and its padding
-     * and margins. The child must have MarginLayoutParams The heavy lifting is
-     * done in getChildMeasureSpec.
-     *
-     * @param child The child to measure
-     * @param parentWidthMeasureSpec The width requirements for this view
-     * @param widthUsed Extra space that has been used up by the parent
-     *        horizontally (possibly by other children of the parent)
-     * @param parentHeightMeasureSpec The height requirements for this view
-     * @param heightUsed Extra space that has been used up by the parent
-     *        vertically (possibly by other children of the parent)
-     */
-    protected void measureChildWithMargins(View child,
-            int parentWidthMeasureSpec, int widthUsed,
-            int parentHeightMeasureSpec, int heightUsed) {
-        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+ * Ask one of the children of this view to measure itself, taking into
+ * account both the MeasureSpec requirements for this view and its padding
+ * and margins. The child must have MarginLayoutParams The heavy lifting is
+ * done in getChildMeasureSpec.
+ *
+ * @param child The child to measure
+ * @param parentWidthMeasureSpec The width requirements for this view
+ * @param widthUsed Extra space that has been used up by the parent
+ *        horizontally (possibly by other children of the parent)
+ * @param parentHeightMeasureSpec The height requirements for this view
+ * @param heightUsed Extra space that has been used up by the parent
+ *        vertically (possibly by other children of the parent)
+ */
+protected void measureChildWithMargins(View child,
+		int parentWidthMeasureSpec, int widthUsed,
+		int parentHeightMeasureSpec, int heightUsed) {
+	final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
-        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
-                mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
-                        + widthUsed, lp.width);
-        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
-                mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
-                        + heightUsed, lp.height);
+	final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+			mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
+					+ widthUsed, lp.width);
+	final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+			mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
+					+ heightUsed, lp.height);
 
-        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-    }
+	child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+}
     
 ------------------------------------------------------------------------------------------
-
-参见：android.view.ViewGroup.getChildMeasureSpec(int, int, int)
 
 /**
  * Does the hard part of measureChildren: figuring out the MeasureSpec to

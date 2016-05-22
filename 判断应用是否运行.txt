@@ -1,0 +1,28 @@
+/**
+ * 检测应用是否运行
+ *
+ * @param packageName 包名
+ * @param context     上下文
+ * @return 是否存在
+ */
+public static boolean isAppAlive(String packageName, Context context) {
+    if (context == null || TextUtils.isEmpty(packageName)) {
+        return false;
+    }
+
+    ActivityManager activityManager = (ActivityManager)
+            context.getSystemService(Context.ACTIVITY_SERVICE);
+
+    if (activityManager != null) {
+        List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+        if (procInfos != null && !procInfos.isEmpty()) {
+            for (int i = 0; i < procInfos.size(); i++) {
+                if (procInfos.get(i).processName.equals(packageName)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
