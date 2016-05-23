@@ -95,13 +95,13 @@ public class BooksProvider extends ContentProvider
          sortOrder = TITLE;   
   
          Cursor c = sqlBuilder.query(   
-         booksDB,   
-         projection,   
-         selection,   
-         selectionArgs,   
-         null,   
-         null,   
-         sortOrder);   
+			 booksDB,   
+			 projection,   
+			 selection,   
+			 selectionArgs,   
+			 null,   
+			 null,   
+			 sortOrder);   
   
       //---register to watch a content URI for changes---   
       c.setNotificationUri(getContext().getContentResolver(), uri);   

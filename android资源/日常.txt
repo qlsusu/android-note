@@ -1,15 +1,5 @@
-将笔记上传到百度云
+clean my mac下载
 
-
-像alfred的打开程序
-	https://github.com/Wox-launcher/Wox
-windows上 同一应用的不同窗口的切换软件
-	vistaswitcher
-	topdesk
-		http://soft.zol.com.cn/90/901005.html
-搜索
-	everything
-	google desktop search
 仿照mac分栏
 	
 

@@ -7,3 +7,7 @@ service存在的目的：
 	进行耗时操作时，activity有可能在后台
 	则此刻activity所在进程的优先级变低，则整个进程有可能被杀死
 	则，后台操作放入到service中，来提高进程的优先级
+	
+启动service
+	我们应该总是使用显式Intent去启动Service并且不要为该Service设置任何的Intent Filter
+	从Android 5.0 (API level 21)开始，用隐式Intent调用bindService()方法，Android会抛出异常

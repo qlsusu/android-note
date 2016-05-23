@@ -10,3 +10,31 @@ sendIntent.setAction(Intent.ACTION_SEND);
 sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
 sendIntent.setType("text/plain");
 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to));
+
+intent的组成：
+参见：
+	Android中Intent概述及使用
+		http://blog.csdn.net/iispring/article/details/48417779
+Component Name、Action、Data、Category、Extras、Flags
+action:
+	自定义action时，请将你的App的包名作为该action的前缀，这是一种良好的编程习惯，例如：
+		static final String ACTION_TIMETRAVEL = "com.example.action.TIMETRAVEL";
+Data：Uri对象 和 数据的MIME类型
+	Uri：格式是<scheme>://<host>:<port>/<path>，例如content://com.example.project:200/folder/subfolder/etc
+	mime type有什么用：
+		一个Activity能够显示图片，但是不能够播放视频，显示图片的Uri和播放视频的Uri可能很类似，
+		为了不让Android误将一个含有视频Uri的Intent对象传递给一个只能显示图片的Activity，我们需要在该Activity的Intent Filter中指定MIME类型为图片（例如<data android:mimeType="image/*" ... />）
+		并且还要给Intent对象设置对应的图片类型的MIME，这样Android就会基于Uri和MIME类型将Intent传递给符合条件的组件
+	设置方法：
+		如果只设置数据的Uri，需要调用Intent对象的setData()方法；
+		如果只设置数据的MIME类型，需要调用Intent对象的setType()方法；
+		如果要同时设置数据的Uri和MIME类型，需要调用Intent对象的setDataAndType()方法。
+category：
+	CATEGORY_BROWSABLE 目标组件会允许自己通过一个链接被一个Web浏览器启动，该链接可能是一个图片链接或e-mail信息等。
+	CATEGORY_LAUNCHER 用于标识Activity是某个App的入口Activity。
+extra
+	方式：
+		putExtra(key, value)
+		创建一个Bundle对象，向该Bundle对象传入很多键值对，然后通过putExtras(Bundle)
+	自定义的extra，请确保将你的App的包名作为你的extra的前缀，例如：
+		static final String EXTRA_GIGAWATTS = "com.example.EXTRA_GIGAWATTS";
