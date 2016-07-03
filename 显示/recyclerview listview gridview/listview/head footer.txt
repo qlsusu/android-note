@@ -1,0 +1,3 @@
+对于list，如果界面上有多种item type（如：一个列表，下面是gridview）
+一种方式是 添加header
+注意：该header可以添加多次

@@ -1,0 +1,10 @@
+---------------------------------格式化字符串
+参见：
+JAVA字符串格式化-String.format()的使用
+	http://blog.csdn.net/lonely_fireworks/article/details/7962171
+
+Resources中：String getString (int id, Object... formatArgs)
+针对于：<string name="name">我叫%1$s身高%2$dCM</string>
+
+---------------------------------translatable属性（<string translatable=false）
+为false时，表示不用翻译，应该是国际化的东西，比如一些网址什么的字符串资源不用翻译

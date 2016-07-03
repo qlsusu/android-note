@@ -8,3 +8,6 @@ handler需要知道looper，通过Handler(Looper looper)来指定
 
 经过prepare()来构建mqueue和mthread
 经过loop()来开启循环（会阻塞，当从queue中取不出消息时）：从messagequeue队列中取出消息，然后进行分发
+
+------------------------主线程的handler
+new handler(looper.getmainlooper())

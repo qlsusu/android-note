@@ -1,0 +1,1 @@
+packagemanager.checksignature(binder.getcallinguid(), process.SYSTEM_UID) == packagemanager.SIGNATURE_MATCH

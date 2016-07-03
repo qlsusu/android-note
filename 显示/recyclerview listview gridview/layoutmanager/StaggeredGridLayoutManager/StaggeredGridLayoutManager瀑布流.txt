@@ -1,7 +1,10 @@
 瀑布式，
-允许itemview的宽高不统一（如，在onbindview中，设置itemview的某些子view不显示）
+允许itemview的宽高不统一（如，在onbindview中，调整itemview的高度，或，设置itemview的某些子view不显示）
 参见：com.gordonwong.materialsheetfab.sample.adapters.NotesAdapter
 可以认为是横向的gridview
+
+排列效果：
+设item1,2,3要排列，item1在左边，后item2在item1的对面（右边），item3则看当前 item1和item2谁比较低，谁低，排在谁的下面。后，再按照上述方式来排列
 
 例子：
 	RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);

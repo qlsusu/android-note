@@ -1,0 +1,1 @@
+当activity的onConfigurationChanged被调用时，fragment的onConfigurationChanged也会被调用

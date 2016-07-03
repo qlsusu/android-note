@@ -18,3 +18,7 @@ C:\Users\xxxxxx>netstat -ano | findstr "5037"
   TCP    127.0.0.1:49422        127.0.0.1:5037         ESTABLISHED     3840
   
 打开任务管理器kill掉4236 这个进程。ok
+
+
+--------------------------------------------修改默认的5037端口号
+添加环境变量：ANDROID_ADB_SERVER_PORT

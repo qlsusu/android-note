@@ -1,0 +1,8 @@
+android中，一些方法是hide类型的，该api是不能被访问的
+如何访问这些api：
+	参见：https://github.com/anggrayudi/android-hidden-api
+	将对应sdk版本的android.jar拷贝到sdk中
+
+缺陷：
+虽然api可以访问了，但是运行在设备中时，却有可能抛出异常：方法找不到
+所以，谨慎使用

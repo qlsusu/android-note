@@ -1,0 +1,14 @@
+参见：
+http://fresco-cn.org/docs/index.html#_
+https://github.com/kaedea/fresco-sample-usage
+
+------------------------------核心概念
+SimpleDraweeView
+	用于展示（xml中节点）
+hierarchy
+	改变drawable（修改展示效果）（如：展示为圆角）
+controller
+	用来控制加载
+pipeline
+	加载的具体执行
+

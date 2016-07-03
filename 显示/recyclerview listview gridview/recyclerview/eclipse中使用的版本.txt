@@ -1,0 +1,8 @@
+将recyclerview工程导入，其他工程来引用该工程
+位置：/Users/qlong/_study/android/android-sdk-macosx/extras/android/support/v7/recyclerview
+理论上，可支持recyclerview的最新版本
+
+如果仅仅使用jar，则最高使用版本:
+/Users/qlong/_study/android/android-sdk-macosx/extras/android/m2repository/com/android/support/recyclerview-v7/22.1.1/recyclerview-v7-22.1.1.aar.zip Folder中的classes.jar
+适配的support-v4：22.2.1
+适配的support-v7：22.2.1

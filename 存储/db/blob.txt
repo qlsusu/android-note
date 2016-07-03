@@ -1,0 +1,3 @@
+blob的数据，
+在提供时，就是byte[]
+在读取时，cursor.getblob返回的是byte[]

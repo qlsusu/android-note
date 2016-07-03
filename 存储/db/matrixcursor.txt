@@ -1,0 +1,2 @@
+构建时，提供列名（string[]）
+填充数据时，cursor.addrow(object[])

@@ -1,0 +1,2 @@
+用来释放bitmap
+谁创建了bitmap，就由谁来释放该bitmap

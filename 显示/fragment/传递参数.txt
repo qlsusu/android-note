@@ -1,0 +1,3 @@
+正统做法：
+通过fragment.setarguments(bundle)来传递参数，
+后，fragment.oncreate()来获得参数
