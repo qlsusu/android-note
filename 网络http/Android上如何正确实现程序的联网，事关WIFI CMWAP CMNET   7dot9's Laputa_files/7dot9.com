@@ -1,1 +1,0 @@
-try{_gnayTrack.act({"a":[],"b":[]})}catch(e){}

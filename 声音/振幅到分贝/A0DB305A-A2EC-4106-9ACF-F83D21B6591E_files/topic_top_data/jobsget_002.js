@@ -1,1 +1,0 @@
-document.write('<li><a href="http://www.csdn.net/article/2012-09-23/2810165-Disney-BartDecrem-MDCC" target=_blank>MDCC重磅讲师：鳄鱼洗澡开发者的传奇人生</a></li>');

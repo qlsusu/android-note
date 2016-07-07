@@ -1,1 +1,0 @@
-document.write('<li><a onclick="LogClickCount(this,224);" href="http://blog.csdn.net/csdnproduct" target="_blank">CSDN 产品事业部开设官方博客了！来关注我们的一举一动吧！</a></li>')
