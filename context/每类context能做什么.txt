@@ -1,6 +1,8 @@
 参见:
 Context都没弄明白，还怎么做Android开发？
 	http://www.jianshu.com/p/94e0f9ab3f1d
+Android Context完全解析，你所不知道的Context的各种细节
+	http://blog.csdn.net/guolin_blog/article/details/47028975
 
 凡是跟UI相关的，都应该使用Activity做为Context来处理；
 其他的一些操作，Service,Activity,Application等实例都可以，

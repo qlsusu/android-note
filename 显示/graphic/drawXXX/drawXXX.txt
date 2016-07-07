@@ -1,3 +1,5 @@
 参见：
+自定义View系列
+	https://github.com/GcsSloop/AndroidNote/tree/master/CustomView
 Canvas之绘制基本形状
 	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B2%5DCanvas_BasicGraphics.md
