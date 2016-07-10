@@ -1,3 +1,7 @@
+参见：
+那些值得你试试的Android竞品分析工具
+	http://www.jianshu.com/p/ba2d9eca47a2
+
 使用：fiddler
 设置：tools-fiddler option-connections-allow remote computer to connect
 参见：http://www.cnblogs.com/findyou/p/3491014.html

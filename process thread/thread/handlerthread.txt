@@ -1,0 +1,1 @@
+HandlerThread将Handler，Thread，Looper，MessageQueue几个概念相结合。

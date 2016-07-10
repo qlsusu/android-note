@@ -1,2 +1,5 @@
-ʹ��MAT(ӛ���w����)���߲鿴Memory Leak 
+参见：
+ π”√MAT(”õëõÛw∑÷Œˆ)π§æﬂ≤Èø¥Memory Leak 
 	http://lp43.blogspot.com/2011/11/mat.html
+android产品研发（十六）-->开发者选项
+	http://blog.csdn.net/qq_23547831/article/category/6251684

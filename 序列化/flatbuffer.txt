@@ -1,0 +1,9 @@
+参见：
+https://github.com/google/flatbuffers
+Google FlatBuffers——开源、跨平台的新一代序列化工具
+	http://www.cnblogs.com/lizhenghn/p/3854244.html
+安卓开发 FlatBuffers能够替代JSON 吗？
+	https://www.sdk.cn/news/4072
+
+Memory Efficient Serialization Library
+

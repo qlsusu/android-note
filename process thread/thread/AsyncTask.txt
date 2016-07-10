@@ -1,7 +1,23 @@
+参见：Android 线程的正确使用姿势
+	http://android.jobbole.com/82440/
+
+形式：
 AsyncTask<Params, Progress, Result>
+
+和thread相比，优点：
+任务的执行是有结果的
+提供 新线程和ui线程的切换
+提供一些点（本质是回调点）来 中止 任务
+
+有什么缺点：
+AsyncTask在不同的系统版本上串行与并行的执行行为不一致
+
+属于什么group：
+background group
 
 例子：
 private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+	@Override
      protected Long doInBackground(URL... urls) {
          int count = urls.length;
          long totalSize = 0;
@@ -14,11 +30,19 @@ private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
          return totalSize;
      }
 
+	@Override
      protected void onProgressUpdate(Integer... progress) {
          setProgressPercent(progress[0]);
      }
-
+     
+	@Override
      protected void onPostExecute(Long result) {
          showDialog("Downloaded " + result + " bytes");
      }
+     
+     @Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+	}
+ 
  }

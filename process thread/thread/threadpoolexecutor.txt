@@ -1,0 +1,3 @@
+public static Executor THREAD_POOL_EXECUTOR
+			= new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
+			TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);

@@ -6,6 +6,8 @@ Android内存优化之OOM
 	http://hukai.me/android-performance-oom/
 Android-Bitmap面面观
 	http://jayfeng.com/2016/03/22/Android-Bitmap%E9%9D%A2%E9%9D%A2%E8%A7%82/
+如何在安卓中使用Bitmap Pools
+	https://www.sdk.cn/news/4080
 
 有什么用：
 使用inBitmap属性可以告知Bitmap解码器去尝试使用之前那张bitmap在heap中所占据的pixel data内存区域，而不是去问内存重新申请一块区域来存放bitmap。

@@ -1,9 +1,26 @@
+
+----------------------------ui
+自定义View——雷达图(蜘蛛网图)
+	https://github.com/Idtk/Blog/blob/master/Blog/7%E3%80%81RadarChart.md
+教你一步一步实现图标无缝变形切换
+	http://blog.csdn.net/huachao1001/article/details/51702255
+一个属性实现带进度的圆形进度条
+	http://www.jianshu.com/p/25b57c849663
+----------------------------ui↑
+
+android产品研发 系列
+	http://blog.csdn.net/qq_23547831/article/category/6251684
+
 3d旋转
 https://github.com/GcsSloop/Rotate3dAnimation
+
+带有动画效果的注册控件
+	http://www.jianshu.com/p/9839a0442f7a
 
 loading
 [置顶] 一个绚丽的loading动效分析与实现！
 	http://blog.csdn.net/tianjian4592/article/details/44538605
+https://github.com/ldoublem/LoadingView
 
 热修复
 AndFix从放弃到捡起

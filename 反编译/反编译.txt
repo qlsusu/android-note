@@ -1,4 +1,6 @@
 参见：
+那些值得你试试的Android竞品分析工具
+	http://www.jianshu.com/p/ba2d9eca47a2
 http://208089151.blog.51cto.com/6377860/1302905
 
 一.反编译Apk得到Java源代码 

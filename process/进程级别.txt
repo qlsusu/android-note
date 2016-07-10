@@ -1,6 +1,0 @@
-1. foreground process 
-2. visible process 
-3. service process 
-
-4. background process 
-5. empty process

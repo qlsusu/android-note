@@ -1,0 +1,19 @@
+参见：Android 线程的正确使用姿势
+	http://android.jobbole.com/82440/
+
+Android将线程分为多个group，其中两类group尤其重要。
+	一类是default group，UI线程属于这一类。
+	另一类是background group，工作线程应该归属到这一类。
+background group当中所有的线程加起来总共也只能分配到5～10%的time slice，剩下的全部分配给default group，这样设计显然能保证UI线程绘制UI的流畅性。
+
+Android开发者需要显式的将工作线程归于background group，因为：如果一个线程在ui线程上被start，则该线程属于default group
+如何设置为background group:
+	new Thread(new Runnable() {
+	  @Override
+	  public void run() {
+		Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+	  }
+	}).start();
+
+进程的影响：
+当一个App进入后台的时候，该App所属的整个进程都将进入background group，以确保处于foreground 用户可见的新进程 能获取到尽可能多的CPU资源
