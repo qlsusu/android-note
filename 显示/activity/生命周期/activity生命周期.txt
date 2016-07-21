@@ -1,0 +1,6 @@
+oncreate-ondestroy
+	创建和销毁
+onstart-onstop
+	是否可见
+onresume-onpause
+	是否前台（可响应用户触控行为等）

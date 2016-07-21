@@ -27,5 +27,10 @@ textView.setAdapter(adapter);
 参见：https://www.aswifter.com/2015/07/31/android-edittext-add-clear-button/
 
 设置光标的颜色
-android:textCursorDrawable="@null"
-作用为：让光标颜色和text color一样
+android:textCursorDrawable=
+@null
+	让光标颜色和text color一样
+某个drawable
+	可以是一个shape，设置solid和size
+
+	

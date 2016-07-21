@@ -1,0 +1,6 @@
+参见：
+https://github.com/square/leakcanary
+LeakCanary: 让内存泄露无所遁形
+	http://www.liaohuqiu.net/cn/posts/leak-canary/
+中文说明文档
+	http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/

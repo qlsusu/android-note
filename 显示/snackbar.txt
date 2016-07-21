@@ -16,4 +16,7 @@ Snackbar.make(someView, "Hello. I am Snackbar!", Snackbar.LENGTH_SHORT)
 		Snackbar将遍历整个view tree 来寻找一个合适的父view，
 		它可能是一个coordinatorLayout也可能是window decor’s content view,随便哪一个都行。
 
+内在的view
+snackbar.snackbarlayout
+
 	

@@ -1,0 +1,5 @@
+actionmode.setcustomview
+
+效果举例：从列表中选择item，
+actionbar中可显示，选中了多少个（该view属于自定义的）
+底部可显示actionmode对应的菜单

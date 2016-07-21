@@ -1,0 +1,3 @@
+使用viewgroup中定义的attr
+clipchildren=true
+cliptopadding=true

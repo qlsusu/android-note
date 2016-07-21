@@ -29,9 +29,3 @@ Android虚拟机中把内存分为两部分，一部分为栈空间，存储一�
 将内部类改为静态内部类
 静态内部类中使用弱引用来引用外部类的成员变量
 在涉及到Context时先考虑ApplicationContext，当然它并不是万能的，对于有些地方则必须使用Activity的，如dialog
-
-
-
----------------------------------开源工具
-最新的LeakCanary开源控件，可以很好的帮助我们发现内存泄露的情况，
-更多关于LeakCanary的介绍，请看这里https://github.com/square/leakcanary(中文使用说明http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/)

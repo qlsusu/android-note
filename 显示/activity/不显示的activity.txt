@@ -1,0 +1,1 @@
+设置主题为：@android:style/Theme.nodisplay

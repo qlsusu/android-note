@@ -1,0 +1,2 @@
+为item设置icon时，可以设置selector（state list）的drawable（设置state_enable为false时的图片）
+后，运行时，menuitem.setenable(false)来呈现该图片

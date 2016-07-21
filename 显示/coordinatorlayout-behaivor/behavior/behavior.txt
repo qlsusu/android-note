@@ -1,9 +1,15 @@
 参见：
+拦截一切的CoordinatorLayout Behavior
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0224/3991.html
+一步一步深入理解CoordinatorLayout
+	http://yifeiyuan.me/2016/07/12/%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3CoordinateLayout/
 http://www.jianshu.com/p/a506ee4afecb
 https://segmentfault.com/a/1190000002888109
 https://developer.android.com/intl/zh-cn/reference/android/support/design/widget/CoordinatorLayout.Behavior.html
 CoordinatorLayout的使用如此简单
 	http://blog.csdn.net/huachao1001/article/details/51554608
+Android CoordinatorLayout、AppBarLayout、CollapsingToolbarLayout、Toolbar 等的说明和使用
+	http://blog.csdn.net/amazing7/article/details/51918623
 --
 http://saulmm.github.io/mastering-coordinator
 

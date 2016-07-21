@@ -1,3 +1,7 @@
+参见：
+深入理解 RecyclerView 系列之一：ItemDecoration
+	http://blog.piasy.com/2016/03/26/Insight-Android-RecyclerView-ItemDecoration/
+
 ----------------------用来绘制divider
 recyclerview.addItemDecoration(new DividerItemDecoration(context, orientation));
 --
