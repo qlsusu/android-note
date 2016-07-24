@@ -1,0 +1,7 @@
+参见：
+Android SystemClock
+	http://blog.csdn.net/shichaosong/article/details/8478104
+
+SystemClock.elapsedRealTime() //返回的是系统从启动到现在的时间。
+SystemClock.uptimeMillis()  // 从开机到现在的毫秒数（手机睡眠的时间不包括在内）；
+System.currentTimeMillis() // 从1970年1月1日 UTC到现在的毫秒数；

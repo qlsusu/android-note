@@ -1,13 +1,36 @@
 参见：
+Android 异步消息处理机制 让你深入理解 Looper、Handler、Message三者关系
+	http://blog.csdn.net/lmj623565791/article/details/38377229
 Handler和他的小伙伴们（上）
 	http://www.jianshu.com/p/e04698eaba88
+Android源码解析之（二）-->异步消息机制
+	http://blog.csdn.net/qq_23547831/article/details/50751687
 
 ------------------------looper
 是handler和message之前的桥梁
 handler需要知道looper，通过Handler(Looper looper)来指定
 
-经过prepare()来构建mqueue和mthread
-经过loop()来开启循环（会阻塞，当从queue中取不出消息时）：从messagequeue队列中取出消息，然后进行分发
+经过Looper.prepare()来构建一个looper对象（其中创建一个MessageQueue）来和当前线程关联（放入到threadlocal中）
+	messagequeue：不是通过list的方式，而是通过message.next的chain方式
+经过Looper.loop()来开启循环（会阻塞当前线程，当从queue中取不出消息时）：从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)）
+
+------------------------handler
+用来发送消息，处理消息
+
+发送消息
+handler.sendMessage
+	handler.enqueueMessage
+		messagequeue.enqueueMessage
 
 ------------------------主线程的handler
 new handler(looper.getmainlooper())
+
+------------------------在新线程上使用handler
+new Thread() {
+	@Override
+	public void run() {
+		Looper.prepare();
+		Handler mHandler = new Handler();
+		Looper.loop();
+	}
+}.start();

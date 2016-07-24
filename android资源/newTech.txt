@@ -1,12 +1,57 @@
+----------------------------资料合集
+《Android 开发工程师面试指南》
+	http://www.diycode.cc/wiki/androidinterview
+	https://github.com/GeniusVJR/LearningNotes
+----------------------------资料合集↑
 
 ----------------------------ui
+碎纸机动画
+https://github.com/ldoublem/PaperShredder
+
 自定义View——雷达图(蜘蛛网图)
 	https://github.com/Idtk/Blog/blob/master/Blog/7%E3%80%81RadarChart.md
 教你一步一步实现图标无缝变形切换
 	http://blog.csdn.net/huachao1001/article/details/51702255
 一个属性实现带进度的圆形进度条
 	http://www.jianshu.com/p/25b57c849663
+	
+loading
+[置顶] 一个绚丽的loading动效分析与实现！
+	http://blog.csdn.net/tianjian4592/article/details/44538605
+https://github.com/ldoublem/LoadingView	
+
+贝塞尔曲线：
+贝塞尔曲线开发的艺术
+	http://blog.csdn.net/eclipsexys/article/details/51956908
+	
+卡片
+Android 酷炫的礼物卡片控件
+	https://github.com/ldoublem/GiftCard
+
+-------------图片
+
+Fresco
+Android-Universal-Image-Loader、Glide、Fresco、Picasso
+
+设置锁屏壁纸
+	http://p.codekk.com/detail/Android/wenhuaijun/SearchPictureTool
+
+扫描二维码
+Android 扫描二维码的实现（简化zxing）
+	https://segmentfault.com/a/1190000003945592
+	
+对图片进行压缩
+tinypng
+	https://tinypng.com/
+
+对图片进行触控操作
+	https://github.com/chrisbanes/PhotoView
+
+-------------图片↑
+
 ----------------------------ui↑
+
+
 
 android产品研发 系列
 	http://blog.csdn.net/qq_23547831/article/category/6251684
@@ -17,10 +62,7 @@ https://github.com/GcsSloop/Rotate3dAnimation
 带有动画效果的注册控件
 	http://www.jianshu.com/p/9839a0442f7a
 
-loading
-[置顶] 一个绚丽的loading动效分析与实现！
-	http://blog.csdn.net/tianjian4592/article/details/44538605
-https://github.com/ldoublem/LoadingView
+
 
 热修复
 AndFix从放弃到捡起
@@ -145,24 +187,6 @@ Android-transulcent-status-bar
 
 颜色主题切换
 	https://github.com/wangdan/AisenWeiBo
-
-----------------------图像
-
-Fresco
-Android-Universal-Image-Loader、Glide、Fresco、Picasso
-
-设置锁屏壁纸
-	http://p.codekk.com/detail/Android/wenhuaijun/SearchPictureTool
-
-扫描二维码
-Android 扫描二维码的实现（简化zxing）
-	https://segmentfault.com/a/1190000003945592
-	
-对图片进行压缩
-tinypng
-	https://tinypng.com/
-
-----------------------图像↑
 
 https://github.com/AigeStudio/WheelPicker
 	仿照ios的垂直滚动选择，效果较好，爱哥实现
