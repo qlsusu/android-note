@@ -13,3 +13,10 @@ https://developer.android.com/guide/topics/resources/accessing-resources.html
 	<package_name> is the name of the package in which the resource is located (not required when referencing resources from the same package)
 	<resource_type> is the R subclass for the resource type
 	<resource_name> is either the resource filename without the extension or the android:name attribute value in the XML element (for simple values).
+	
+资源的获得：
+通过context.getresource().getXxx()
+context可以为activity，或者，applicationcontext等，但，获得的资源也携带了context的性质
+	设要获取layout资源
+	如：applicationcontext.getresource.getconfig.orientation为横向，而activity的为竖向
+	则两种方式获取的layout资源为横向 和 竖向

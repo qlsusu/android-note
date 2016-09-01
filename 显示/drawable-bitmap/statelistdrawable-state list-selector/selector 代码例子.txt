@@ -1,0 +1,14 @@
+//初始化一个空对象
+StateListDrawable stalistDrawable = new StateListDrawable();
+//获取对应的属性值 Android框架自带的属性 attr
+int pressed = android.R.attr.state_pressed;
+int window_focused = android.R.attr.state_window_focused;
+int focused = android.R.attr.state_focused;
+int selected = android.R.attr.state_selected;
+
+stalistDrawable.addState(new int []{pressed , window_focused}, getResources().getDrawable(R.drawable.pic1));
+stalistDrawable.addState(new int []{pressed , -focused}, getResources().getDrawable(R.drawable.pic2);
+stalistDrawable.addState(new int []{selected }, getResources().getDrawable(R.drawable.pic3);
+stalistDrawable.addState(new int []{focused }, getResources().getDrawable(R.drawable.pic4);
+//没有任何状态时显示的图片，我们给它设置我空集合
+stalistDrawable.addState(new int []{}, getResources().getDrawable(R.drawable.pic5);

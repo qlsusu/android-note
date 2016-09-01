@@ -14,7 +14,7 @@ my/gesturedetector
 	});
 被提供motionevent（在view.ontouch()中）
 	mGestureDetector.onTouchEvent(motionevent)
-当产生了事件后（如：单击,scroll后），会通知listener
+当产生了事件后（如：单击,scroll后），会通知SimpleOnGestureListener（其实现了OnGestureListener, OnDoubleTapListener等接口）
 
 ------------------OnGestureListener的回调
 //用户按下屏幕就会触发
@@ -41,6 +41,6 @@ public boolean onDoubleTap(MotionEvent e);
 //双击间隔中发生的动作。指触发onDoubleTap以后，在双击之间发生的其它动作
 public boolean onDoubleTapEvent(MotionEvent e);
 
-------------------以前的内容↓
+------------------------------------------------------------------------以前的内容↓
 其要被提供motionevent
 而后通过ongesturelistener/ondoubletaplistener来告诉 用户进行了什么操作

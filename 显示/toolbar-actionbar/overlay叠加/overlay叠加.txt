@@ -1,3 +1,5 @@
 参见：
 ActionBar的覆盖叠加
 	http://hukai.me/android-training-course-in-chinese/basics/actionbar/overlaying.html
+	
+requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);

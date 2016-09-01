@@ -1,0 +1,2 @@
+导航栏的高度：
+读取attr：@android:dimen/navigation_bar_height

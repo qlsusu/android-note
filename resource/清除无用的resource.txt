@@ -1,0 +1,2 @@
+参见：
+https://github.com/KeepSafe/android-resource-remover

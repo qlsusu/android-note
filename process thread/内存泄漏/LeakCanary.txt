@@ -1,6 +1,10 @@
 参见：
 https://github.com/square/leakcanary
+一个包含了leakcanary的 编译过了的lib
+	https://github.com/SOFTPOWER1991/leakcanarySample_androidStudio
 LeakCanary: 让内存泄露无所遁形
 	http://www.liaohuqiu.net/cn/posts/leak-canary/
+LeakCanary——直白的展现Android中的内存泄露
+	http://blog.csdn.net/watermusicyes/article/details/46333925
 中文说明文档
 	http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/

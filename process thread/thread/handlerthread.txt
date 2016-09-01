@@ -7,3 +7,4 @@ Handler handler = newHandler(thread.getLooper());
 handler.postXXX
 
 其默认的线程优先级为：Process.THREAD_PRIORITY_DEFAULT;
+	也可通过构造函数来指定优先级

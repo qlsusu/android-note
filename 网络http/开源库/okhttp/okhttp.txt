@@ -9,6 +9,10 @@ Android OkHttp完全解析 是时候来了解OkHttp了
 	http://blog.csdn.net/lmj623565791/article/details/47911083
 okhttp官网
 	http://square.github.io/okhttp/
+如何更高效地使用 OkHttp
+	http://www.tuicool.com/articles/b67NZz
+Android Networking I: OkHttp, Volley and Gson	
+	https://medium.com/@sotti/android-networking-i-okhttp-volley-and-gson-72004efff196
 
 --------------------------------一个全局的OkHttpClient对象
 OkHttp官方文档并建议:全局使用一个OkHttpClient

@@ -436,23 +436,7 @@ snakebar
 json
 ig-json-parser，Jackson， gson，Fastjson
 
-
-
-
 网络----------------	
-retrofit
-	用 Retrofit 2 简化 HTTP 请求
-		https://realm.io/cn/news/droidcon-jake-wharton-simple-http-retrofit-2/
-		Jake Wharton写的
-	https://github.com/square/retrofit
-	Retrofit使用教程(一)
-		http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html
-		http://blog.xuanzhangjiong.xyz/2016/02/25/%E5%AD%A6%E4%B9%A0Retrofit%E5%92%8CRxJava%E5%B0%8F%E8%AE%B0/
-okhttp	
-	https://medium.com/@sotti/android-networking-i-okhttp-volley-and-gson-72004efff196
-	如何更高效地使用 OkHttp
-		http://www.tuicool.com/articles/b67NZz
-Volley
 android-async-http
 
 kerkee

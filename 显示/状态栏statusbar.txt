@@ -7,3 +7,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 	getWindow().setStatusBarColor(color);
 }
+
+状态栏的高度：
+读取attr的值：@android:dimen/status_bar_height

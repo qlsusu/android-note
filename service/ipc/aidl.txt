@@ -1,0 +1,2 @@
+对于android studio，应该建立一个aidl文件夹 来放置aidl文件
+	其位置是和res平级的

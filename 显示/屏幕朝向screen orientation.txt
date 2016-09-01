@@ -1,17 +1,26 @@
-�����Ƿ�����������̶�
-������Ļ����ı䣺com.oooo3d.talkingtom.util.DeviceTool.listenOrientation(Context, OrientationChangeListener)
-����������̶�ǰ���£�������������ı䣬
-	��ȡӦ�����Ƕȣ�com.oooo3d.talkingtom.util.DeviceTool.getOrientationAngle()
-	����
+无论是否声明：朝向固定
+监听屏幕朝向改变：com.oooo3d.talkingtom.util.DeviceTool.listenOrientation(Context, OrientationChangeListener)
+在声明朝向固定前提下，当监听到朝向改变，
+	获取应调整角度：com.oooo3d.talkingtom.util.DeviceTool.getOrientationAngle()
+	调整
 	
-ǿ�ƿ�����Ļ����
+强制控制屏幕朝向
 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 	SCREEN_ORIENTATION_SENSOR_PORTRAIT
 		SCREEN_ORIENTATION_PORTRAIT
 	SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 		SCREEN_ORIENTATION_LANDSCAPE
 	SCREEN_ORIENTATION_UNSPECIFIED
+说明：一旦调用了setRequestedOrientation，app不再随着重力感应 来进行朝向调整
 	
-��õ�ǰ����Ļ����
-resource.getConfiguration().orientation;
-���ܵ�ȡֵΪConfiguration.ORIENTATION_LANDSCAPE, Configuration.ORIENTATION_PORTRAIT
+app的展示是 竖向的 还是 横向的：
+applicationcontext.getresource().getConfiguration().orientation;
+	虽然可以用activity.getresource()，但是此时，获得的朝向却不一定正确
+可能的取值为
+	Configuration.ORIENTATION_LANDSCAPE
+	Configuration.ORIENTATION_PORTRAIT
+
+监听朝向的改变
+在manifest.xml中配置：android:configChanges="orientation|screenSize"
+当app能响应 手机的旋转时（如：manifest中，activity 配置android:screenOrientation="sensor" 或者 不配置），onConfigurationChanged会被调用，可以通过newconfig来获得手机当前的朝向
+但此刻，activity的rootview不会被重新构建，即是：还是同一个view，只不过根据新的朝向（x/y）来重新绘制

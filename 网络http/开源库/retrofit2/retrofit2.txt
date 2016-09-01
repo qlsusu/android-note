@@ -1,0 +1,8 @@
+参见：
+用 Retrofit 2 简化 HTTP 请求
+	https://realm.io/cn/news/droidcon-jake-wharton-simple-http-retrofit-2/
+	Jake Wharton写的
+https://github.com/square/retrofit
+Retrofit使用教程(一)
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html
+	http://blog.xuanzhangjiong.xyz/2016/02/25/%E5%AD%A6%E4%B9%A0Retrofit%E5%92%8CRxJava%E5%B0%8F%E8%AE%B0/
