@@ -1,1 +1,3 @@
-fragmentmanager.executependingtransaction
+fragmentmanager.executependingtransaction()
+或者
+fragmenttransaction.commitallowingstateloss()

@@ -1,5 +1,8 @@
-参见：Android 线程的正确使用姿势
+参见：
+Android 线程的正确使用姿势
 	http://android.jobbole.com/82440/
+Android源码解析之（三）-->异步任务AsyncTask
+	http://blog.csdn.net/qq_23547831/article/details/50803849
 
 形式：
 AsyncTask<Params, Progress, Result>
@@ -11,6 +14,7 @@ AsyncTask<Params, Progress, Result>
 
 有什么缺点：
 AsyncTask在不同的系统版本上串行与并行的执行行为不一致
+有时候，该task甚至没有被真正执行
 
 属于什么group：
 background group

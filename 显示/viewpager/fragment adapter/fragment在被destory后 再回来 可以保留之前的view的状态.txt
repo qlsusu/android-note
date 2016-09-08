@@ -1,0 +1,9 @@
+参见：./FragmentPagerAdapter vs FragmentStatePagerAdapter.txt
+
+需要使用FragmentStatePagerAdapter，因为fragment不会被销毁
+因为要保存fragment.view的状态（在被destory后再回来），需要：
+在oncreate中：
+	保存rootview
+	并在被再次调用时，判断rootview是否为空。如果不为空，则直接返回rootview
+在ondestory中：
+	将rootview从当前的parent中 remove掉（因为，在下次的oncreateview，仍要返回该rootview，而该view不能 之前被添加到某个viewgroup上）

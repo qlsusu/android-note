@@ -1,0 +1,5 @@
+设置clip区域：view.setClipBounds()
+
+有什么用：
+防止过度绘制：一种情况，两个view重叠在一起，位于下面的view的一部分区域被上面的view所覆盖
+则，下层view设置clipbounds为 未重叠的区域

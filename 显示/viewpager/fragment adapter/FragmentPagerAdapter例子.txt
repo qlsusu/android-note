@@ -1,0 +1,169 @@
+参见：https://developer.android.com/reference/android/support/v4/app/FragmentPagerAdapter.html
+
+public class FragmentPagerSupport extends FragmentActivity {
+    static final int NUM_ITEMS = 10;
+
+    MyAdapter mAdapter;
+
+    ViewPager mPager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_pager);
+
+        mAdapter = new MyAdapter(getSupportFragmentManager());
+
+        mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+
+        // Watch for button clicks.
+        Button button = (Button)findViewById(R.id.goto_first);
+        button.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                mPager.setCurrentItem(0);
+            }
+        });
+        button = (Button)findViewById(R.id.goto_last);
+        button.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                mPager.setCurrentItem(NUM_ITEMS-1);
+            }
+        });
+    }
+
+    public static class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return ArrayListFragment.newInstance(position);
+        }
+    }
+
+    public static class ArrayListFragment extends ListFragment {
+        int mNum;
+
+        /**
+         * Create a new instance of CountingFragment, providing "num"
+         * as an argument.
+         */
+        static ArrayListFragment newInstance(int num) {
+            ArrayListFragment f = new ArrayListFragment();
+
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putInt("num", num);
+            f.setArguments(args);
+
+            return f;
+        }
+
+        /**
+         * When creating, retrieve this instance's number from its arguments.
+         */
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+        }
+
+        /**
+         * The Fragment's UI is just a simple text view showing its
+         * instance number.
+         */
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
+            View tv = v.findViewById(R.id.text);
+            ((TextView)tv).setText("Fragment #" + mNum);
+            return v;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            setListAdapter(new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Log.i("FragmentList", "Item clicked: " + id);
+        }
+    }
+}
+The R.layout.fragment_pager resource of the top-level fragment is:
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:padding="4dip"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1">
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout android:orientation="horizontal"
+            android:gravity="center" android:measureWithLargestChild="true"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="0">
+        <Button android:id="@+id/goto_first"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/first">
+        </Button>
+        <Button android:id="@+id/goto_last"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/last">
+        </Button>
+    </LinearLayout>
+</LinearLayout>
+The R.layout.fragment_pager_list resource containing each individual fragment's layout is:
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:drawable/gallery_thumb">
+
+    <TextView android:id="@+id/text"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/hello_world"/>
+
+    <!-- The frame layout is here since we will be showing either
+    the empty view or the list view.  -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+        <!-- Here is the list. Since we are using a ListActivity, we
+             have to call it "@android:id/list" so ListActivity will
+             find it -->
+        <ListView android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="false"/>
+
+        <!-- Here is the view to show if the list is emtpy -->
+        <TextView android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="No items."/>
+
+    </FrameLayout>
+
+</LinearLayout>

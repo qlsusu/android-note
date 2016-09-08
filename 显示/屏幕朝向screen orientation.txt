@@ -11,7 +11,8 @@ activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 	SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 		SCREEN_ORIENTATION_LANDSCAPE
 	SCREEN_ORIENTATION_UNSPECIFIED
-说明：一旦调用了setRequestedOrientation，app不再随着重力感应 来进行朝向调整
+注意：一旦调用了setRequestedOrientation，app不再随着重力感应 来进行朝向调整
+	但是此时，还是可以通过OrientationChangeListener来进行监听手机自身朝向的改变
 	
 app的展示是 竖向的 还是 横向的：
 applicationcontext.getresource().getConfiguration().orientation;
@@ -20,7 +21,7 @@ applicationcontext.getresource().getConfiguration().orientation;
 	Configuration.ORIENTATION_LANDSCAPE
 	Configuration.ORIENTATION_PORTRAIT
 
-监听朝向的改变
+acitivty在朝向发生改变时，做出反应（非重建）：
 在manifest.xml中配置：android:configChanges="orientation|screenSize"
 当app能响应 手机的旋转时（如：manifest中，activity 配置android:screenOrientation="sensor" 或者 不配置），onConfigurationChanged会被调用，可以通过newconfig来获得手机当前的朝向
-但此刻，activity的rootview不会被重新构建，即是：还是同一个view，只不过根据新的朝向（x/y）来重新绘制
+注意：此刻，activity的rootview并不会被重新构建。即是：还是同一个view，只不过根据新的朝向（x/y）来重新绘制

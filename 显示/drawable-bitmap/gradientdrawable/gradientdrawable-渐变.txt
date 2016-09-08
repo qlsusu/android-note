@@ -1,0 +1,19 @@
+参见：
+android 渐变drawable
+	http://blog.csdn.net/howlaa/article/details/38456535
+	
+一个例子：
+<?xml version="1.0" encoding="utf-8"?>  
+<shape xmlns:android="http://schemas.android.com/apk/res/android"   
+    android:shape="oval"  
+    android:useLevel="false" >
+    
+    <gradient   
+        android:type="radial"  
+        android:startColor="#ffffff"  
+        android:endColor="#ffffff"  
+        android:centerColor="#000000"  
+        android:useLevel="false"  
+        android:gradientRadius="300" />  
+
+</shape>  
