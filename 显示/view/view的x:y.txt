@@ -7,10 +7,12 @@ translationx/y默认为0
 改变translationx/y并不会导致被重新layout(猜测)
 
 在window/screen上的位置：
-View.getLocationInWindow
-对于普通activity下的view，该值和View.getLocationOnScreen的返回值相同
+View.getLocationInWindow 和 View.getLocationOnScreen
+对于普通activity下的view，这两个值相同
 	因为：此情况下，window会占据全部screen
-当view处于dialog下，该值会比View.getLocationOnScreen要小
+什么时候 getLocationInWindow 会比 getLocationOnScreen要小
+	当view处于dialog下，
+	当view处于分屏（multi window）中的 下分屏时
 --
 当activity被attach到了window上，上述方法的返回值才不会是0
 	什么时候被attach了：当activity.onWindowFocusChanged()回调被调用时

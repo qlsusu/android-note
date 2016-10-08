@@ -1,0 +1,19 @@
+参见：
+https://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+思想：
+如例子所示，提供一个数值，该数值对应了one few 还是other，后找到对应的string
+
+------------------------例子：
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="numberOfSongsAvailable">
+        <item quantity="one">Znaleziono %d piosenkę.</item>
+        <item quantity="few">Znaleziono %d piosenki.</item>
+        <item quantity="other">Znaleziono %d piosenek.</item>
+    </plurals>
+</resources>
+
+int count = getNumberOfsongsAvailable();
+Resources res = getResources();
+String songsFound = res.getQuantityString(R.plurals.numberOfSongsAvailable, count, count);

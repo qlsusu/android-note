@@ -1,0 +1,5 @@
+如要读取 ?android:attr/actionBarSize：
+	Context context;
+	TypedValue value=new TypedValue();
+	context.getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true);
+	float size=TypedValue.complexToDimension(value.data, context.getResources().getDisplayMetrics());

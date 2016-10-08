@@ -1,0 +1,5 @@
+引用语法：
+@[<package_name>:]<resource_type>/<resource_name>
+	<package_name> is the name of the package in which the resource is located (not required when referencing resources from the same package)
+	<resource_type> is the R subclass for the resource type
+	<resource_name> is either the resource filename without the extension or the android:name attribute value in the XML element (for simple values).

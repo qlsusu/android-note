@@ -1,0 +1,2 @@
+OnLayoutChangeListener
+当view的大小发生了改变，或，当view开始出现时（如split类型的action mode出现时），会通知该监听器

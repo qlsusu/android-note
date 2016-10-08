@@ -1,0 +1,6 @@
+在onresume中bind
+在onpause中unbind
+
+如果在onCreate中进行bindService，在Destroy中unBindService，当Activity暂停的时候就会出现以下异常信息：
+ Activity cn.coolspan.open.android_increment_update.MainActivity has leaked ServiceConnection cn.coolspan.open.android_increment_update.MainActivity$1@421de608 that was originally bound here
+                                                                                           android.app.ServiceConnectionLeaked: Activity cn.coolspan.open.android_increment_update.MainActivity has leaked ServiceConnection cn.coolspan.open.android_increment_update.MainActivity$1@421de608 that was originally bound here
