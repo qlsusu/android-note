@@ -1,0 +1,13 @@
+HandlerThread将Handler，Thread，Looper，MessageQueue几个概念相结合。
+
+一般用法为：
+HandlerThread thread = new HandlerThread("handler_thread");
+thread.start();//必须要调用start方法
+Handler handler = new Handler(thread.getLooper());
+handler.postXXX
+
+其默认的线程优先级为：Process.THREAD_PRIORITY_DEFAULT;
+	也可通过构造函数来指定优先级
+
+quitSafely()
+Causes the handler thread's looper to terminate as soon as all remaining messages in the message queue that are already due to be delivered have been handled

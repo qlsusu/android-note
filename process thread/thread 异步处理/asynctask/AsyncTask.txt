@@ -1,4 +1,7 @@
 参见：
+关于Android中工作者线程的思考
+    http://droidyue.com/blog/2015/12/20/worker-thread-in-android/
+    其中包含了：asynctask可能会引发内存泄漏的原因
 Android 线程的正确使用姿势
 	http://android.jobbole.com/82440/
 Android源码解析之（三）-->异步任务AsyncTask
@@ -18,6 +21,12 @@ AsyncTask在不同的系统版本上串行与并行的执行行为不一致
 
 属于什么group：
 background group
+
+可以在线程池上运行：
+executeOnExecutor(Executor, Object...)
+
+可能会内存泄漏：
+
 
 例子：
 private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {

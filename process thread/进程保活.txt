@@ -1,5 +1,4 @@
 ------------------------------MarsDaemon
-
 参见：
 Android 进程常驻 - MarsDaemon 使用说明
 	http://blog.csdn.net/marswin89/article/details/50917098

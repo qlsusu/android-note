@@ -1,4 +1,5 @@
-参见：Android 线程的正确使用姿势
+参见：
+Android 线程的正确使用姿势
 	http://android.jobbole.com/82440/
 
 Android将线程分为多个group，其中两类group尤其重要。

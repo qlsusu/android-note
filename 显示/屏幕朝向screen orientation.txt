@@ -24,4 +24,5 @@ applicationcontext.getresource().getConfiguration().orientation;
 acitivty在朝向发生改变时，做出反应（非重建）：
 在manifest.xml中配置：android:configChanges="orientation|screenSize"
 当app能响应 手机的旋转时（如：manifest中，activity 配置android:screenOrientation="sensor" 或者 不配置），onConfigurationChanged会被调用，可以通过newconfig来获得手机当前的朝向
-注意：此刻，activity的rootview并不会被重新构建。即是：还是同一个view，只不过根据新的朝向（x/y）来重新绘制
+注意：此刻，activity不会加载当前朝向对应的layout，且，当前rootview并不会被重新构建，即是：还是同一个view，只不过根据新的朝向（x/y）来重新绘制
+	但是，可以通过setcontentview来重新设置rootview

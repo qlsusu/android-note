@@ -1,4 +1,8 @@
-参见：http://developer.android.com/guide/topics/resources/drawable-resource.html
+参见：
+8.1.1 Android中的13种Drawable小结 Part 1
+	http://www.runoob.com/w3cnote/android-tutorial-drawable1.html
+	以及 part2 part3
+http://developer.android.com/guide/topics/resources/drawable-resource.html
 
 尺寸
 intrinsicwidth/height（内部大小）

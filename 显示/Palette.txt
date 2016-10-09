@@ -1,5 +1,6 @@
 参见：
-http://blog.csdn.net/feiduclear_up/article/details/46439005
+Android5.x 新控件之RecyclerView，CardView，Palette的使用
+	http://blog.csdn.net/feiduclear_up/article/details/46439005
 
 Palette从图像中提取突出的颜色，这样能够把色值赋给ActionBar、或者其它，能够让界面整个色调统一，效果见上图（Palette）。
 

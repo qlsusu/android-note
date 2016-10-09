@@ -1,0 +1,3 @@
+参见：
+关于Android中工作者线程的思考
+	http://droidyue.com/blog/2015/12/20/worker-thread-in-android/
