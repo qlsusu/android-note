@@ -17,12 +17,14 @@ protected void measureChildWithMargins(View child,
 		int parentHeightMeasureSpec, int heightUsed) {
 	final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
-	final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
-			mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
-					+ widthUsed, lp.width);
-	final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
-			mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
-					+ heightUsed, lp.height);
+	final int childWidthMeasureSpec = getChildMeasureSpec(
+			parentWidthMeasureSpec,
+			mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin + widthUsed, 
+			lp.width);
+	final int childHeightMeasureSpec = getChildMeasureSpec(
+			parentHeightMeasureSpec,
+			mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin + heightUsed, 
+			lp.height);
 
 	child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
 }

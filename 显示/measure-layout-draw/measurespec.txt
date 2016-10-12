@@ -23,7 +23,7 @@ int specMode = MeasureSpec.getMode(spec);
 int specSize = MeasureSpec.getSize(spec);
 
 通过mode和size，来构建spec
-MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+int spec = MeasureSpec.makeMeasureSpec(resultSize, resultMode);
 
 ------------------------------------
 

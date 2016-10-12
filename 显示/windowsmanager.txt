@@ -1,6 +1,6 @@
-Ê¹ÓÃwindowsmanager.layoutparam£¬ÔÚÒ»¸öactivityÖĞ¾ÓÖĞ¼ÓÈëÒ»¸öview
-ÕâÖÖ·½·¨¿ÉÒÔÊ¹µÃ£ºactivityµÄmain layoutµÄ²¼¾ÖÈÎÒâ»¯
-´úÂë£º
+ä½¿ç”¨windowsmanager.layoutparamï¼Œåœ¨ä¸€ä¸ªactivityä¸­å±…ä¸­åŠ å…¥ä¸€ä¸ªview
+è¿™ç§æ–¹æ³•å¯ä»¥ä½¿å¾—ï¼šactivityçš„main layoutçš„å¸ƒå±€ä»»æ„åŒ–
+ä»£ç ï¼š
 LayoutInflater inflater = LayoutInflater
 		.from((ActivityGroup) getParent());
 View overlay = inflater.inflate(R.layout.letter_overlay, null);

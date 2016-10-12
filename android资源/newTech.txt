@@ -120,6 +120,9 @@ Java7提供的并行执行任务框架：Fork、Join框架
 LessCode
 	https://github.com/openproject/LessCode/blob/master/README-cn.md
 --------------------工具集合↑
+
+解析源码的git库：
+	https://github.com/LittleFriendsGroup/AndroidSdkSourceAnalysis
 		
 图片处理库
  Glide, Picasso, Fresco

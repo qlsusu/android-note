@@ -1,0 +1,3 @@
+mFirstTouchTarget是用来保存ViewGroup中消费了ACTION_DOWN事件的子View
+在addTouchTarget时被赋值，
+ViewGroup通过判断所有的子View 是否可见 是否在播放动画 和 是否在点击范围内 来决定它是否能够有资格接受事件

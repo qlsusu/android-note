@@ -1,0 +1,1 @@
+如：获得ok按钮：getbutton(AlertDialog.BUTTON_POSITIVE)

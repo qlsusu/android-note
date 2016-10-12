@@ -1,0 +1,3 @@
+split类型的actionmode的view的id为：@android:id/split_action_bar
+可以通过view.getheight来获取其高度
+	但是，可能获取到的height为0，则，可以通过onlayoutchangelistener来监听该view什么时候显示
