@@ -3,6 +3,8 @@ Android内存优化之OOM 中的 如何避免OOM总结
 	http://hukai.me/android-performance-oom/
 Android面试——APP性能优化
 	http://yuweiguocn.github.io/2016/04/10/android-interview-peformance/
+Andoird优化(二)_内存优化_点进来看看不会后悔的
+	http://www.jianshu.com/p/afd4d8a6dcd6
 
 ----------------------------------需要关注的方面
 减小对象的内存占用

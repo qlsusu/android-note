@@ -1,0 +1,3 @@
+参见：
+Styling with Spannables
+	https://developer.android.com/guide/topics/resources/string-resource.html#StylingWithSpannables

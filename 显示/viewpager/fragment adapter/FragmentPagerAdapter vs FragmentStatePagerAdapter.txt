@@ -1,3 +1,9 @@
+参见：
+FragmentPagerAdapter与FragmentStatePagerAdapter区别
+	http://www.cnblogs.com/lianghui66/p/3607091.html
+Android中ViewPager使用FragmentPagerAdapter（底部圆点）
+	http://blog.csdn.net/tu_bingbing/article/details/8756935
+
 设pager有5个page，当前处于第i页（相邻页为 第i-1 和 第i+1页）
 则相邻页的fragment会被instantiateItem，而非相邻页的fragment会被destroyItem
 
@@ -11,4 +17,6 @@ instantiateItem:
 		否则，则oncreateview
 destroyItem:
 	对于FragmentPagerAdapter：fragment会被ondestoryview-ondestroy
+		在回调onDestroy()方法之前会回调onSaveInstanceState(Bundle outState)方法来保存Fragment的状态，
+		下次Fragment显示时通过onCreate(Bundle savedInstanceState)把存储的状态值取出来
 	对于FragmentStatePagerAdapter：fragment会被ondestroyview
