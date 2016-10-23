@@ -1,6 +1,7 @@
 参见：
 拦截一切的CoordinatorLayout Behavior
 	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0224/3991.html
+	需要进一步阅读，如：拦截touch，measure/layout等
 一步一步深入理解CoordinatorLayout
 	http://yifeiyuan.me/2016/07/12/%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3CoordinateLayout/
 http://www.jianshu.com/p/a506ee4afecb

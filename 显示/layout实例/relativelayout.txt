@@ -1,4 +1,8 @@
-Ò»¸ö º¢×ÓÊ¾Àı£º
+å‚è§ï¼š
+Androidä¸­RelativeLayoutå’ŒLinearLayoutæ€§èƒ½åˆ†æ
+	http://www.jianshu.com/p/8a7d059da746
+
+ä¸€ä¸ª å­©å­ç¤ºä¾‹ï¼š
 <LinearLayout
 	android:id="@+id/linearLayout1"
 	android:layout_width="wrap_content"
@@ -8,4 +12,6 @@
 	android:layout_marginLeft="-30dp"
 	android:layout_marginTop="24dp"
 	android:orientation="vertical" >
-ËµÃ÷£ºº¢×Ó±ØĞë°üº¬ÖîÈçlayout_alignParentLeftµÈ£¬´Ó¶ø¿ÉÒÔÉèÖÃÖîÈçmarginleftºÍmargintopµÈ
+è¯´æ˜ï¼šå­©å­å¿…é¡»åŒ…å«è¯¸å¦‚layout_alignParentLeftç­‰ï¼Œä»è€Œå¯ä»¥è®¾ç½®è¯¸å¦‚marginleftå’Œmargintopç­‰
+
+åœ¨æ€§èƒ½ä¸Šï¼Œè¦ä½äº linearlayout

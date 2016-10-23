@@ -2,11 +2,20 @@
 《Android 开发工程师面试指南》
 	http://www.diycode.cc/wiki/androidinterview
 	https://github.com/GeniusVJR/LearningNotes
+
+GitHub Android Libraries Top 100 简介
+	https://github.com/Freelander/Android_Data/blob/master/Android-Librarys-Top-100.md
 ----------------------------资料合集↑
 
 ----------------------------ui
 碎纸机动画
 https://github.com/ldoublem/PaperShredder
+
+毛玻璃，模糊，虚化
+在 Android 下进行实时模糊渲染
+	https://github.com/xitu/gold-miner/blob/master/TODO/a-blurring-view-for-android.md
+一种快速毛玻璃虚化效果实现
+	http://wingjay.com/2016/03/12/%E4%B8%80%E7%A7%8D%E5%BF%AB%E9%80%9F%E6%AF%9B%E7%8E%BB%E7%92%83%E8%99%9A%E5%8C%96%E6%95%88%E6%9E%9C%E5%AE%9E%E7%8E%B0/
 
 自定义View——雷达图(蜘蛛网图)
 	https://github.com/Idtk/Blog/blob/master/Blog/7%E3%80%81RadarChart.md
@@ -27,6 +36,8 @@ https://github.com/ldoublem/LoadingView
 卡片
 Android 酷炫的礼物卡片控件
 	https://github.com/ldoublem/GiftCard
+[译]React Native开源图表组件(react-native-chart-android)
+	http://www.lcode.org/react-native-chart-android/
 
 -------------图片
 
@@ -85,7 +96,13 @@ Android创建桌面快捷方式几种方法
 	http://m.cr173.com/w/19597
 
 事件总线：EventBus、Otto
-ORM框架：GreenDAO、Litepal，Realm
+
+--------------------数据库，orm
+ORM框架：
+	GreenDAO、Litepal，Realm
+	dbflow
+
+--------------------↑
 
 数据统计：友盟统计，百度统计...
 奔溃搜集：腾讯bugly、bugtags...

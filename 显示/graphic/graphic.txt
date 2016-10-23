@@ -1,0 +1,3 @@
+参见：
+自定义View系列
+	https://github.com/GcsSloop/AndroidNote/tree/master/CustomView
