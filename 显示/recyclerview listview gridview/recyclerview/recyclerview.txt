@@ -40,16 +40,6 @@ recyclerView.getChildViewHolder(child);
 
 setHasFixedSize(true);
 如果recyclerview的宽高都固定，那么设置。其会避免onbindview的重复调用
-
-fullylinearlayoutmanager 和 scrollview中嵌套recyclerview
-参见:
-	http://www.cnblogs.com/tianzhijiexian/p/4469516.html
-		包含了linear,grid, StaggeredGridLayout
-	http://frank-zhu.github.io/android/2015/02/26/android-recyclerview-part-3/
-在layoutmanager.onmeasure中，来丈量recyclerview的宽高
-	遍历所有孩子，叠加所有孩子的宽高，来作为自身的宽高
-		如：是垂直的list，则第一个孩子的宽为recyclerview的宽，所有孩子的高为recyclerview的高
-缺点：其会导致recyclerview中的itemview不能被复用，则会导致性能低下
 		
 OnScrollListener.onScrolled的调用时机：
 即使没有调用recyclerview.smoothScrollToPosition或scrollToPosition，onScrolled也会被调用，此刻：

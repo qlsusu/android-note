@@ -1,0 +1,12 @@
+当其宿主activity被重建时（如：因语言切换 而重建时），在activity重建之前，已经添加的fragment会执行重建
+
+---------------------这些重建的fragment是否会显示：
+之前通过 fragmenttransaction.add/replace 来添加的，重建的fragment并不会显示出来（虽然会调用oncreate/oncreateview）
+则这些fragment 应该被销毁。可以通过如下方式：
+	在第一次创建fragment对象，传递hostactivity，
+	在oncreate/oncreateview中，判断hostactivity是否存在，如果不存在，就认为fragment是系统重建的，则return/return null
+
+之前通过 fragment.show 来显示的，重建的fragment仍然会显示出来
+
+如果fragment是通过fragmentpageradapter来依附到viewpager上的，重建的fragment会显示
+且，如果在activity的重建中，fragmentpageradapter被提供了新的fragments，这些fragment并不会执行oncreate（就像：手动提供的新fragment 是没用的 一样）

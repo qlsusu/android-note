@@ -1,4 +1,7 @@
 参见：
+ViewPager使用详解(三):FragmentStatePagerAdapter
+	http://www.jianshu.com/p/043020843899
+	其中，列出了生命周期的方法 来进行阐述
 FragmentPagerAdapter与FragmentStatePagerAdapter区别
 	http://www.cnblogs.com/lianghui66/p/3607091.html
 Android中ViewPager使用FragmentPagerAdapter（底部圆点）
@@ -8,15 +11,15 @@ Android中ViewPager使用FragmentPagerAdapter（底部圆点）
 则相邻页的fragment会被instantiateItem，而非相邻页的fragment会被destroyItem
 
 这两个adapter的主要区别也体现在 上述的两个方法的调用效果上。即是：在销毁上
-	对于FragmentPagerAdapter：fragment需要销毁
-	对于FragmentStatePagerAdapter：fragment不需要销毁，但是view需要销毁
+	对于FragmentPagerAdapter：fragment不需要销毁，但是view需要销毁
+	对于FragmentStatePagerAdapter：fragment需要销毁
 instantiateItem:
-	对于FragmentPagerAdapter：fragment会被oncreate-oncreateview
-	对于FragmentStatePagerAdapter：
+	对于FragmentPagerAdapter：
 		fragment如果没有被创建过，则oncreate-oncreateview
 		否则，则oncreateview
+	对于FragmentStatePagerAdapter：fragment会被oncreate-oncreateview
 destroyItem:
-	对于FragmentPagerAdapter：fragment会被ondestoryview-ondestroy
+	对于FragmentPagerAdapter：fragment会被ondestroyview
+	对于FragmentStatePagerAdapter：fragment会被ondestoryview-ondestroy
 		在回调onDestroy()方法之前会回调onSaveInstanceState(Bundle outState)方法来保存Fragment的状态，
 		下次Fragment显示时通过onCreate(Bundle savedInstanceState)把存储的状态值取出来
-	对于FragmentStatePagerAdapter：fragment会被ondestroyview

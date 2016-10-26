@@ -1,0 +1,16 @@
+新版的recyclerview.jar，支持：recyclerview（垂直方向的linearlayoutmanager）在指定wrap_content的情况下，放入到scrollview，且性能不错（尽管item view没有被复用：如有n个item，则oncreateview/onbindview会瞬间调用n次）
+
+此刻，需要设置recyclerview不可scroll（为了在滑动时，有fling效果）：
+recyclerview.setnestedscrollingenable(false)，（该方式需要较高的api level）或
+自定义linearlayoutmanager，复写其中的canScrollVertically()来返回false
+
+-------------------------------------之下为以前的内容
+fullylinearlayoutmanager 和 scrollview中嵌套recyclerview
+参见:
+	http://www.cnblogs.com/tianzhijiexian/p/4469516.html
+		包含了linear,grid, StaggeredGridLayout
+	http://frank-zhu.github.io/android/2015/02/26/android-recyclerview-part-3/
+在layoutmanager.onmeasure中，来丈量recyclerview的宽高
+	遍历所有孩子，叠加所有孩子的宽高，来作为自身的宽高
+		如：是垂直的list，则第一个孩子的宽为recyclerview的宽，所有孩子的高为recyclerview的高
+缺点：其会导致recyclerview中的itemview不能被复用，则会导致性能低下

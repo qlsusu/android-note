@@ -1,6 +1,6 @@
 参见：./FragmentPagerAdapter vs FragmentStatePagerAdapter.txt
 
-需要使用FragmentStatePagerAdapter，因为fragment不会被销毁
+需要使用FragmentPagerAdapter，因为fragment不会被销毁
 因为要保存fragment.view的状态（在被destory后再回来），需要：
 在oncreate中：
 	保存rootview

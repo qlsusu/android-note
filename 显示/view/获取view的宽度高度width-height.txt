@@ -1,0 +1,20 @@
+参见：
+[Android] 获取View的宽度和高度
+	http://www.jianshu.com/p/d18f0c96acb8
+
+view.getViewTreeObserver().addOnPreDrawListener
+在onPreDraw()回调中得到宽高
+会调用多次，需要及时去除监听
+
+view.getViewTreeObserver().addOnGlobalLayoutListener
+在onGlobalLayout()回调中得到宽高
+会调用多次，需要及时去除监听
+
+view.addOnLayoutChangeListene
+在onLayoutChange()回调中得到宽高
+会调用多次，需要及时去除监听
+
+view.post()
+在runnable中得到宽高
+
+复写view.onSizeChanged这个protected方法

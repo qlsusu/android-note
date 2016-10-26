@@ -1,0 +1,1 @@
+新版本的recyclerview.jar（如：23.3.0），支持wrap_content
