@@ -1,0 +1,2 @@
+boolean	invert(Matrix inverse)
+	If this matrix can be inverted, return true and if inverse is not null, set inverse to be the inverse of this matrix.

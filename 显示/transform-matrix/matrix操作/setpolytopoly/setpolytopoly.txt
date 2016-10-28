@@ -1,0 +1,15 @@
+参见：
+关于setPolyToPoly方法 #37
+	https://github.com/GcsSloop/AndroidNote/issues/37
+Matrix详解
+	https://github.com/GcsSloop/AndroidNote/blob/master/CustomView/Advance/%5B10%5DMatrix_Method.md
+
+boolean	setPolyToPoly(float[] src, int srcIndex, float[] dst, int dstIndex, int pointCount)
+	Set the matrix such that the specified src points would map to the specified dst points.
+	src通过 坐标变换M 变换到 dst，该M是什么
+	pointcount
+		取值为：[0,4]
+		如果为1：src中的第0个点 通过坐标变换M 变换到 dst的第0个点
+		如果为2：src中的第0,1个点 通过坐标变换M 变换到 dst的第0,1个点
+		如果为3：src中的第0,1,2个点 通过坐标变换M 变换到 dst的第0,1,2个点
+		如果为4：src中的第0,1,2,3个点 通过坐标变换M 变换到 dst的第0,1,2,3个点
