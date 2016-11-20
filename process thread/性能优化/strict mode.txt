@@ -1,0 +1,13 @@
+参见：
+Android严苛模式StrictMode使用详解
+	http://blog.csdn.net/mynameishuangshuai/article/details/51742375
+
+在application.oncreate中开启strict mode
+// 针对线程的相关策略
+StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().
+	penaltyLog().build());
+// 针对VM的相关策略	
+StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().
+	detectAll().penaltyLog().penaltyDeath().build());
+
+开发者选项中开启严格模式，开启之后，如果主线程中有执行时间长的操作，屏幕则会闪烁

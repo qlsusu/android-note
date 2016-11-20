@@ -1,3 +1,0 @@
-参见：
-Android严苛模式StrictMode使用详解
-	http://blog.csdn.net/mynameishuangshuai/article/details/51742375

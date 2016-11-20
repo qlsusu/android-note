@@ -1,6 +1,0 @@
-参见：
-Android界面性能调优手册
-	https://androidtest.org/android-graphics-performance-pattens/
-
-Android系统要求每一帧都要在 16ms 内绘制完成，
-这个速度允许系统在动画和输入事件的过程中以约 60 帧每秒（ 1秒 / 0.016 = 62.5帧/秒 ）的平滑帧率来渲染。
