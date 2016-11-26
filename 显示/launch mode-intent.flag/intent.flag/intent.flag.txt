@@ -1,0 +1,3 @@
+参见：
+探索Activity之启动Intent Flag和taskAffinity
+	http://www.jianshu.com/p/c97688eb5056

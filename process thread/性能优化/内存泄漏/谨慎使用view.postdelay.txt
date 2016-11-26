@@ -1,0 +1,4 @@
+当在自定义view中，有一个耗时的操作在handlerthread中进行，如：handler(handerthread.getlooper).postdelay(runnable1)
+而当获取了结果后，可能又需要刷新view，而此刻，如果使用view.postdelay(runnable2)，可能会引发内存泄漏
+	因为handlerthread持有runnable2的引用，而runnable2持有view的引用，进而持有activity的引用（view.mcontext）
+	请使用handler(mainlooper).postdelay来代替

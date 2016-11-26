@@ -1,15 +1,17 @@
-²Î¼û£º
-http://blog.csdn.net/tu_bingbing/article/details/8917992
+å‚è§ï¼š
+Androidå±æ€§åŠ¨ç”»è¯¦è§£(ä¸€)ï¼Œå±æ€§åŠ¨ç”»åŸºæœ¬ç”¨æ³•
+	http://gold.xitu.io/post/579f0277d342d300572033b1
 http://developer.android.com/guide/topics/graphics/prop-animation.html
+http://blog.csdn.net/tu_bingbing/article/details/8917992
 
-Ïà½ÏÓÚÖ®Ç°view animationµÄÓÅµã
-½«viewÒÆ¶¯µ½Ò»¸öÎ»ÖÃ£¬¶øºó¶ÔÆäĞÂÎ»ÖÃ½øĞĞµã»÷£¬viewÄÜÏìÓ¦
+ç›¸è¾ƒäºä¹‹å‰view animationçš„ä¼˜ç‚¹
+å°†viewç§»åŠ¨åˆ°ä¸€ä¸ªä½ç½®ï¼Œè€Œåå¯¹å…¶æ–°ä½ç½®è¿›è¡Œç‚¹å‡»ï¼Œviewèƒ½å“åº”
 	view animation system is that it only modified where the View was drawn, and not the actual View itself
 	The view animation system transformed View objects by changing the way that they were drawn. T
 	his was handled in the container of each View, because the View itself had no properties to manipulate. 
 	This resulted in the View being animated, but caused no change in the View object itself. 
 		This led to behavior such as an object still existing in its original location, even though it was drawn on a different location on the screen. 
-	Îª´Ë£¬ÊôĞÔ¶¯»­ĞÂÔöÁËÒ»Ğ©ÊôĞÔ
+	ä¸ºæ­¤ï¼Œå±æ€§åŠ¨ç”»æ–°å¢äº†ä¸€äº›å±æ€§
 		translationX and translationY: 
 			These properties control where the View is located as a delta from its left and top coordinates which are set by its layout container.
 		rotation, rotationX, and rotationY: 
@@ -23,30 +25,48 @@ http://developer.android.com/guide/topics/graphics/prop-animation.html
 			x=left+translationx
 			y=top+translationy
 alpha: Represents the alpha transparency on the View. This value is 1 (opaque) by default, with a value of 0 representing full transparency (not visible).
-ÊôĞÔ¶¯»­¿ÉÒÔ¶ÔÈÎºÎ¶ÔÏóµÄÊôĞÔ½øĞĞ¶¯»­£¨¶ø²»½ö½öÊÇviewµÄ£©
+å±æ€§åŠ¨ç”»å¯ä»¥å¯¹ä»»ä½•å¯¹è±¡çš„å±æ€§è¿›è¡ŒåŠ¨ç”»ï¼ˆè€Œä¸ä»…ä»…æ˜¯viewçš„ï¼‰
 
 ----------------------------------------------------
 
-valueanimator
-Æä²»×÷ÓÃÓÚÈÎºÎ¶ÔÏó£¬½ö½öÊÇ×÷ÓÃÓÚÒ»¸öÖµ
-ÎÒÃÇ¿ÉÒÔ¼àÌı£¨Í¨¹ıanimatorupdatelistener£©¸ÃÖµµÄ ±ä»¯±ÈÀı£¨Í¨¹ıanimator.getanimatedfraction£© £¬ÔÙÒÀ¾İ¸Ã±ä»¯±ÈÀı À´Íê³ÉÆäËûÊÂÇé
+------------valueanimator
+å…¶ä¸ä½œç”¨äºä»»ä½•å¯¹è±¡ï¼Œä»…ä»…æ˜¯ä½œç”¨äºä¸€ä¸ªå€¼
+æˆ‘ä»¬å¯ä»¥ç›‘å¬ï¼ˆé€šè¿‡animatorupdatelistenerï¼‰è¯¥å€¼çš„ å˜åŒ–æ¯”ä¾‹ï¼ˆé€šè¿‡animator.getanimatedfractionï¼‰ ï¼Œå†ä¾æ®è¯¥å˜åŒ–æ¯”ä¾‹ æ¥å®Œæˆå…¶ä»–äº‹æƒ…
 
+------------ObjectAnimator
 ObjectAnimator
-×÷ÓÃÓÚmyObj.ÊôĞÔx
-ÓÃ·¨£ºObjectAnimator.ofFloat(myObj, ÊôĞÔx, Ä¿±êÖµ).setXXX().start()
-	ÊôĞÔx¿ÉÒÔÊ¹ÓÃ ×Ö·û´®µÄĞÎÊ½£¬Ò²¿ÉÒÔÊ¹ÓÃProperty<T, floatµÄĞÎÊ½>£¬²Î¼û£ºobjectanimator.property.txt
-Ô­Àí£º
-	¸ù¾İframeË¢ĞÂÂÊ£¬Í¨¹ı myObjµÄset/get·½·¨ À´
-		setÓÃÓÚÉèÖÃĞÂÖµ
-		getÓÃÓÚ»ñµÃÔ­Ê¼Öµ
+ä½œç”¨äºmyObj.å±æ€§x
+	æœ‰å“ªäº›å±æ€§å¯é€‰ï¼šhttps://developer.android.com/guide/topics/graphics/prop-animation.html#views
+ç”¨æ³•ï¼šObjectAnimator.ofFloat(myObj, å±æ€§x, ç›®æ ‡å€¼).setXXX().start()
+	å…¶ä¸­ï¼Œå±æ€§xå¯ä»¥ä½¿ç”¨ å­—ç¬¦ä¸²çš„å½¢å¼ï¼Œ
+	ä¹Ÿå¯ä»¥ä½¿ç”¨Property<T, floatçš„å½¢å¼>ï¼Œå¦‚
+		public static final Property<View, Float> SCALE_X = new FloatProperty<View>("scaleX") {
+			@Override
+			public void setValue(View object, float value) {
+				object.setScaleX(value);
+			}
 
-animatorset
+			@Override
+			public Float get(View object) {
+				return object.getScaleX();
+			}
+		};
+åŸç†ï¼š
+	æ ¹æ®frameåˆ·æ–°ç‡ï¼Œé€šè¿‡ myObjçš„set/getæ–¹æ³• æ¥
+		setç”¨äºè®¾ç½®æ–°å€¼
+		getç”¨äºè·å¾—åŸå§‹å€¼
+
+------------åŠ¨ç”»é›†åˆ
+animatorçš„é›†åˆï¼Œæ¯ä¸ªanimatorå‡å¯ä»¥ä½œç”¨äºä¸€ä¸ªå…·ä½“çš„å¯¹è±¡
 animatorset.playTogether(
 	objectAnimator1,
 	objectAnimator1,
 	,,,).start()
-»ñµÃÆäÖĞµÄÒ»¸öanimator£ºanimtorset.getChildAnimations().get(i)
-Àı×Ó£º
+å‡ ç±»playæ–¹å¼
+	playSequentially()ï¼šå¤šä¸ªåŠ¨ç”»æŒ‰é¡ºåºæ‰§è¡Œ
+	playTogether()ï¼šå‡ ä¸ªåŠ¨ç”»åŒæ—¶æ‰§è¡Œ
+è·å¾—å…¶ä¸­çš„ä¸€ä¸ªanimatorï¼šanimtorset.getChildAnimations().get(i)
+ä¾‹å­ï¼š
 	AnimatorSet bouncer = new AnimatorSet();
 	bouncer.play(bounceAnim).before(squashAnim1);
 	bouncer.play(squashAnim1).with(squashAnim2);
@@ -58,37 +78,40 @@ animatorset.playTogether(
 	AnimatorSet animatorSet = new AnimatorSet();
 	animatorSet.play(bouncer).before(fadeAnim);
 	animatorSet.start();
-Ğ§¹û:
+æ•ˆæœ:
 	1.Plays bounceAnim.
 	2.Plays squashAnim1, squashAnim2, stretchAnim1, and stretchAnim2 at the same time.
 	3.Plays bounceBackAnim.
 	4.Plays fadeAnim.
 ----
-Àı×Ó£º
+ä¾‹å­ï¼š
 	ObjectAnimator animX = ObjectAnimator.ofFloat(myView, "x", 50f);
 	ObjectAnimator animY = ObjectAnimator.ofFloat(myView, "y", 100f);
 	AnimatorSet animSetXY = new AnimatorSet();
 	animSetXY.playTogether(animX, animY);
 	animSetXY.start();
-PropertyValuesHolder°æ±¾ Àı×Ó£º
+
+å¦‚æœåŠ¨ç”»é›†ä¸­çš„æ¯ä¸ªåŠ¨ç”»éƒ½é’ˆå¯¹äºåŒä¸€ä¸ªå¯¹è±¡ï¼Œå¯ä»¥ä½¿ç”¨å¦‚ä¸‹ï¼š
+PropertyValuesHolder
 	PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", 50f);
 	PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 100f);
 	ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
-ViewPropertyAnimator°æ±¾ Àı×Ó
+ViewPropertyAnimator
 	myView.animate().x(50f).y(100f);
 
-animatorupdatelistener	
-	¼àÌı Õû¸ö¶¯»­²¥·Å¹ı³Ì
+------------animatorupdatelistener	
+	ç›‘å¬ æ•´ä¸ªåŠ¨ç”»æ’­æ”¾è¿‡ç¨‹
 	onAnimationUpdate() 
-		¸ù¾İframeË¢ĞÂÂÊ£¨Èç£º10ms/Ö¡£©£¬¾Í»á±»µ÷ÓÃÒ»´Î
-animatorlistener
-	¼àÌı ¿ªÊ¼£¬½áÊø£¬È¡Ïû£¬ÖØ¸´
-	Ò»¸öÊµÏÖ×ÓÀà£¨°üº¬ÁË¿ÕµÄ·½·¨Ìå£©£ºAnimatorListenerAdapter
+		æ ¹æ®frameåˆ·æ–°ç‡ï¼ˆå¦‚ï¼š10ms/å¸§ï¼‰ï¼Œå°±ä¼šè¢«è°ƒç”¨ä¸€æ¬¡
+
+------------animatorlistener
+	ç›‘å¬ å¼€å§‹ï¼Œç»“æŸï¼Œå–æ¶ˆï¼Œé‡å¤
+	ä¸€ä¸ªå®ç°å­ç±»ï¼ˆåŒ…å«äº†ç©ºçš„æ–¹æ³•ä½“ï¼‰ï¼šAnimatorListenerAdapter
 
 keyframe
 A Keyframe object consists of a time/value pair that lets you define a specific state at a specific time of an animation. 
 Each keyframe can also have its own interpolator to control the behavior of the animation in the interval between the previous keyframe's time and the time of this keyframe.
-Àı×Ó£º
+ä¾‹å­ï¼š
 	Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
 	Keyframe kf1 = Keyframe.ofFloat(.5f, 360f);
 	Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
@@ -98,15 +121,15 @@ Each keyframe can also have its own interpolator to control the behavior of the 
 
 ----------------------------------------------------
 
-¶¯»­Ä¬ÈÏ³ÖĞøÊ±¼ä£º300ms
-frameË¢ĞÂÂÊ£º10ms/Ö¡
+åŠ¨ç”»é»˜è®¤æŒç»­æ—¶é—´ï¼š300ms
+frameåˆ·æ–°ç‡ï¼š10ms/å¸§
 
-¿ªÊ¼£¬ÔİÍ££¬¼ÌĞø£¬Í£Ö¹
+å¼€å§‹ï¼Œæš‚åœï¼Œç»§ç»­ï¼Œåœæ­¢
 start,
 pause,
 resume,
 end
-	Ò»µ©Í£Ö¹£¬»áÁ¢¿Ìµ½´ïÖÕµã×´Ì¬
+	ä¸€æ—¦åœæ­¢ï¼Œä¼šç«‹åˆ»åˆ°è¾¾ç»ˆç‚¹çŠ¶æ€
 	
 rotate
-µ±Òª½øĞĞĞı×ªÊ±£¬Ğ§¹ûÉÏ£¬×ñÑ­µÄÊÇ ×óÊÖ¶¨Àí
+å½“è¦è¿›è¡Œæ—‹è½¬æ—¶ï¼Œæ•ˆæœä¸Šï¼Œéµå¾ªçš„æ˜¯ å·¦æ‰‹å®šç†

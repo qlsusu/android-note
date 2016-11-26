@@ -1,0 +1,33 @@
+参见:
+[译]探索Context之Context是什么
+	http://www.jianshu.com/p/c29bf9efcfc1
+Context都没弄明白，还怎么做Android开发？
+	http://www.jianshu.com/p/94e0f9ab3f1d
+Android Context完全解析，你所不知道的Context的各种细节
+	http://blog.csdn.net/guolin_blog/article/details/47028975
+
+application context
+是单例的
+getApplication()和getApplicationContext()返回的是同一个对象
+
+
+activity/service context
+创建一个Activity/Service实例时, 也会创建一个ContextImpl实例
+Acitivity是唯一的绑定了在manifast文件中定义主题Theme的Context，则，凡是跟UI相关的，都应该使用Activity做为Context来处理；
+	启动dialog（除非是System Alert类型的Dialog，可以不用activity context）
+	inflate layout
+		用其他context时，会返回一个系统默认的主题的view给你，而没有考虑你的Applicaiton本身的Theme和Style
+
+Broadcast Receiver中的Context
+onReceive()方法中传递的Context是一个ReceiverRestrictedContext实例
+它禁用了Context的registerReceiver()和bindService()
+
+ContentProvider中的Context
+getContext()方法来获取一个Context对象
+	如果ContentProvider和调用者是同一个应用进程, getContext()会返回一个Application级别的单例的Context实例; 
+	然而, 如果二者处于不同的进程, getContext()会返回一个新的代表Provider所运行的包的Context实例.
+
+--------------------------
+
+请使用activity context来启动activity:
+一个Activity的启动必须要建立在另一个Activity的基础之上，也就是以此形成的返回栈.

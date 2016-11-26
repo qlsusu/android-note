@@ -1,0 +1,4 @@
+启动activity时，将该activity放入到其声明的task中
+
+与singleTask的区别：
+其并不会像 singleTask一样，清空activity之上的其他activity
