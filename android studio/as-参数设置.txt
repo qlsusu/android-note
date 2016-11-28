@@ -1,4 +1,7 @@
 参见：
+Android Studio相见恨晚的操作锦集(9月22日更新)
+	http://www.jianshu.com/p/bc8f6bfe12c6?
+http://blog.leanote.com/post/kingleung/Android-Studio-%E5%B8%B8%E7%94%A8%E8%AE%BE%E7%BD%AE%E5%8F%8A%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%95%B4%E7%90%86
 最全面的AndroidStudio配置指南总结-包括护眼模式
 	http://blog.csdn.net/mynameishuangshuai/article/details/51332790
 Android Studio 小技巧合集
@@ -32,7 +35,6 @@ appearance & behavior - system setting - updates
 editor - colors&fonts - general
 	editor-caret now: A4D0F0
 
-
 Android Studio自动导包：
 File→Settings→Editor→General→Auto Import→Java→切换“Insert imports on paste”为“All”→勾选“Add unambigious imports on the fly”；
 
@@ -44,9 +46,49 @@ find action：cmd+3
 
 快捷键：Ctrl + Tab
 
+使用tab而不是空格
+Settings –> Editor –> Code Style ，勾选Use tab character及Smart tabs 
+
 查看方法的签名
 
+鼠标悬浮来查看doc
+Editor->General-Show quick doc on mouse move
 
+代码补全 忽略首字母大写
+editor-general-case sensitive completion: none
+代码补全提示：
+	Keymap->Main Menu->Code->Completion->Basic/smart type completion
+
+查看方法签名：
+editor-general-code completion中
+	smart type completion
+
+文件编码
+editor-file encodings
+
+不显示右部的竖线：
+Settings --> Editor --> Appearance - Show right margin
+
+检查更新：
+Settings --> System setting—>Updates
+
+Logcat 颜色
+Settings –> Editor –> Colors & Fonts –> Android Logcat 
+
+取消启动上次的项目
+Settings –> Appearance & Behavior –> System Settings 
+取消 Reopen last project on startup 
+
+护眼模式
+Editor>Colors&Fonts>General设置default text的颜色#C7EDCC（护眼绿）
+
+双击选择一行
+
+隐藏所有面板（Hide All Panels）
+Menu → Window → Active Tool Window → Hide All Windows；
+
+查找命令的命令
+find action
 
 代码自动补全
 
