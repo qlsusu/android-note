@@ -1,0 +1,83 @@
+参见：
+Android Studio 常用设置
+	http://blog.leanote.com/post/kingleung/Android-Studio-%E5%B8%B8%E7%94%A8%E8%AE%BE%E7%BD%AE%E5%8F%8A%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%95%B4%E7%90%86
+Android Studio 常用快捷键
+	http://blog.leanote.com/post/kingleung/Android-Studio-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE
+Android Studio相见恨晚的操作锦集(9月22日更新)
+	http://www.jianshu.com/p/bc8f6bfe12c6?
+50个安卓开发者应该熟悉的Android Studio技巧和资源
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/1116/6776.html
+最全面的AndroidStudio配置指南总结-包括护眼模式
+	http://blog.csdn.net/mynameishuangshuai/article/details/51332790
+Android Studio 小技巧合集
+	带gif动画
+	https://laobie.github.io/android/2016/02/14/android-studio-tips.html
+【移动开发必须要弄明白的问题】详解Eclipse转Android Studio
+	http://www.imooc.com/article/2640
+Android Studio安装配置笔记
+	http://unclechen.github.io/2015/06/01/Android-Studio%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/
+
+----------------------------------------常用
+
+show intention action
+	用于改错
+代码补全 忽略首字母大写
+	editor-general-case sensitive completion: none
+	completion basic
+		smart type
+find action
+	用于未指定快捷键的action，如：build
+next highlighted error
+--
+鼠标悬浮来查看doc
+	Editor->General-Show quick doc on mouse move
+replace in path
+	或，find in path
+护眼模式
+	Editor>Colors&Fonts>General设置default text的颜色#C7EDCC（护眼绿）
+取消启动上次的项目
+	Settings –> Appearance & Behavior –> System Settings 
+		取消 Reopen last project on startup 
+auto import
+rename
+surround with
+	如try catch等
+generate
+	如get/set等
+type/method/call hierarchy
+	类/方法/调用 层次
+----------------------------------------
+
+设置logcat的颜色
+Editor → Colors & Fonts → Android Logcat
+Assert #BA68C8
+Debug #2196F3
+Error #F44336
+Info #4CAF50
+Verbose #BBBBBB
+Warning #FF9800
+
+更新
+appearance & behavior - system setting - updates
+
+不显示右边的竖线
+Settings –> Editor –> General ->Appearance ，勾选 Show right margin (configured in Code Style options) 。
+
+设置选中行的颜色
+editor - colors&fonts - general
+	editor-caret now: A4D0F0
+
+Android Studio自动导包：
+File→Settings→Editor→General→Auto Import→Java→切换“Insert imports on paste”为“All”→勾选“Add unambigious imports on the fly”；
+
+切换器（The Switcher）
+描述：该快捷键基本上就是IDE的alt+tab/cmd+tab命令。你可以用它在导航tab或者面板切换。一旦打开这个窗口，只要一直按着ctrl键，你可以通过对应的数字或者字母快捷键快速选择。你也可以通过backspace键来关闭一个已选中的tab或者面板。
+
+使用tab而不是空格
+Settings –> Editor –> Code Style ，勾选Use tab character及Smart tabs 
+
+文件编码
+editor-file encodings
+
+隐藏所有面板（Hide All Panels）
+Menu → Window → Active Tool Window → Hide All Windows；

@@ -1,0 +1,4 @@
+如何添加module
+	将module文件夹拷贝到工程下，在工程的setting.gradle中 添加响应的module
+如何删除module
+	工程的setting.gradle中，去掉对应的module
