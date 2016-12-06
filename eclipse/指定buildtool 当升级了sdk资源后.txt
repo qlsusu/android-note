@@ -1,0 +1,2 @@
+当升级了sdk资源后，在编译时可能会出错
+需要在project.properties中指定：sdk.buildtools=23.0.2

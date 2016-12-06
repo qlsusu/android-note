@@ -1,4 +1,8 @@
 参见：
+Android Studio 小技巧/快捷键 合集
+	http://jaeger.itscoder.com/android/2016/02/14/android-studio-tips.html
+	git
+	带调试技能
 Android Studio 常用设置
 	http://blog.leanote.com/post/kingleung/Android-Studio-%E5%B8%B8%E7%94%A8%E8%AE%BE%E7%BD%AE%E5%8F%8A%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%95%B4%E7%90%86
 Android Studio 常用快捷键
@@ -28,7 +32,28 @@ show intention action
 find action
 	用于未指定快捷键的action，如：build
 next highlighted error
---
+父类的该方法 都有哪些子类的覆盖
+	keymap-implementation
+显示方法中的参数
+	keymap-parameter info
+	用于：在编写 调用方法时，鼠标点击了其他地方，再回到该方法时 进行参数提示
+添加注释：
+	keymap-fix doc comment
+定位到父类
+	keymap - super method
+在当前的文件中，查看方法的实现（无论该方法 是本类的，还是其他类的）
+	keymap-quick definition
+隐藏所有的tab
+	keymap-hide all windows
+------------
+添加书签，显示所有书签
+	bookmark
+折叠/展开 方法
+	expand
+	collapse
+逐步选中
+	extend selection
+	用于，选中 括号中的全部内容（无论多少个参数），括号中的括号的内容，类的内容
 鼠标悬浮来查看doc
 	Editor->General-Show quick doc on mouse move
 replace in path
@@ -46,6 +71,10 @@ generate
 	如get/set等
 type/method/call hierarchy
 	类/方法/调用 层次
+为gradle console设置快捷键
+移动方法/变量
+	move statement up
+
 ----------------------------------------
 
 设置logcat的颜色
