@@ -1,0 +1,14 @@
+为什么产生：在sdk的某个platform中，使用了自定义的android.jar
+现象：在开启了instant run下，运行，会报错：app:mockableAndroidJar
+
+如何解决：
+1.
+在module中新建文件夹lib，将自定义的android.jar放入lib中
+在module的build.gradle中加入
+	gradle.projectsEvaluated{
+		tasks.withType(JavaCompile){
+			options.compileArgs.add(-Xbootclasspath/p:lib/android.jar)
+		}
+	}
+
+2.或者，关闭instant run

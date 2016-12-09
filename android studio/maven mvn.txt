@@ -1,8 +1,9 @@
 参见：
 拥抱 Android Studio 之四：Maven 仓库使用与私有仓库搭建
 	http://blog.bugtags.com/2016/01/27/embrace-android-studio-maven-deploy/
-
 Gradle 修改 Maven 仓库地址
 	http://www.yrom.net/blog/2015/02/07/change-gradle-maven-repo-url/
 Maven详解之仓库------本地仓库、远程仓库
 	http://blog.csdn.net/wanghantong/article/details/36427433
+mvn地址
+	http://mvnrepository.com/
