@@ -33,44 +33,56 @@ find action
 	用于未指定快捷键的action，如：build
 next highlighted error
 父类的该方法 都有哪些子类的覆盖
-	keymap-implementation
-显示方法中的参数
-	keymap-parameter info
-	用于：在编写 调用方法时，鼠标点击了其他地方，再回到该方法时 进行参数提示
-添加注释：
-	keymap-fix doc comment
+	implementation
 定位到父类
-	keymap - super method
-在当前的文件中，查看方法的实现（无论该方法 是本类的，还是其他类的）
-	keymap-quick definition
-隐藏所有的tab
-	keymap-hide all windows
-------------
+	super method
+显示方法中的参数
+	parameter info
+	用于：在编写 调用方法时，鼠标点击了其他地方，再回到该方法时 进行参数提示
+type/method/call hierarchy
+	类/方法/调用 层次
+surround with
+	如try catch等
+generate
+	如get/set等
+rename
+在文件中搜索
+	replace
+在整个项目中搜索
+	replace in path
+高亮文件中的关键字
+	highlight usages in file
+	可以同时高亮多个关键字，如：age \= 12|age
+	后可以通过cmd(+shift)+k来查看上下一个
+添加注释：
+	fix doc comment
+选中括号中的内容
+	如果(后面是一个字母，双击括号内部不会选中括号中的内容（而是第一个字母），则在字母的左边放置空格，再双击括号内部
+跳入到大括号的 首/尾
+	有时候，双击大括号，可以选中其中的内容，但是，如果大括号内部有内部类，就会出现问题。则，设置：
+	move caret to code block
+auto import
 添加书签，显示所有书签
 	bookmark
-折叠/展开 方法
-	expand
-	collapse
-逐步选中
-	extend selection
-	用于，选中 括号中的全部内容（无论多少个参数），括号中的括号的内容，类的内容
 鼠标悬浮来查看doc
 	Editor->General-Show quick doc on mouse move
-replace in path
-	或，find in path
+------------工具设置
+隐藏所有的tab
+	hide all windows
 护眼模式
 	Editor>Colors&Fonts>General设置default text的颜色#C7EDCC（护眼绿）
 取消启动上次的项目
 	Settings –> Appearance & Behavior –> System Settings 
 		取消 Reopen last project on startup 
-auto import
-rename
-surround with
-	如try catch等
-generate
-	如get/set等
-type/method/call hierarchy
-	类/方法/调用 层次
+------------
+在当前的文件中，查看方法的实现（无论该方法 是本类的，还是其他类的）
+	quick definition
+逐步选中
+	extend selection
+	用于，选中 括号中的全部内容（无论多少个参数），括号中的括号的内容，类的内容
+折叠/展开 方法
+	expand
+	collapse
 为gradle console设置快捷键
 移动方法/变量
 	move statement up
