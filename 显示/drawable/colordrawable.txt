@@ -1,0 +1,8 @@
+ColorDrawable drawable = new ColorDrawable(0xffff2200);  
+txtShow.setBackground(drawable);  
+
+在xml中定义：
+<?xml version="1.0" encoding="utf-8"?>  
+<color  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:color="#FF0000"/>  

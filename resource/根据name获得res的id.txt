@@ -1,2 +1,6 @@
 int id=resources.getIdentifier("resource_name", "resource_type", "package_name");
 后可根据该id获取资源
+
+例子：
+resources.getIdentifier("com.ql.messenger:id/bind_service", null, null);
+或，resources.getIdentifier("bind_service", "id", "com.ql.messenger");

@@ -1,0 +1,3 @@
+参见：
+ Android Design Support Library--TextInputLayout的使用 
+	 http://blog.csdn.net/wei_smile/article/details/51284964

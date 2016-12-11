@@ -1,0 +1,11 @@
+xml：
+<?xml version="1.0" encoding="utf-8"?>  
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:dither="true"  
+    android:src="@drawable/ic_launcher"  
+    android:tileMode="mirror" />
+
+java代码：
+BitmapDrawable bitDrawable = new BitmapDrawable(bitmap);  
+bitDrawable.setDither(true);  
+bitDrawable.setTileModeXY(TileMode.MIRROR,TileMode.MIRROR);  

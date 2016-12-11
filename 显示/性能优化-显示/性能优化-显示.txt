@@ -6,3 +6,5 @@ Android App 优化之消除卡顿
 	http://www.jianshu.com/p/1fb065c806e6
 Android界面性能调优手册
 	https://androidtest.org/android-graphics-performance-pattens/
+这应该是目前最系统的 Android 界面性能调优资料了 
+	https://testerhome.com/topics/4304

@@ -1,0 +1,7 @@
+//第一种创建方式 
+Pair pair = new Pair(1, 2);
+Log.e("aa", pair.first.toString()); 
+Log.e("aa", pair.second.toString()); 
+
+//第二种创建方式 
+Pair pair2 = Pair.create("1", 2);

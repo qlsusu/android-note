@@ -58,6 +58,9 @@ tinypng
 对图片进行触控操作
 	https://github.com/chrisbanes/PhotoView
 
+在 Android 下进行实时模糊渲染
+	https://github.com/xitu/gold-miner/blob/master/TODO/a-blurring-view-for-android.md
+
 -------------图片↑
 
 ----------------------------ui↑

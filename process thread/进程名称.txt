@@ -1,0 +1,12 @@
+private String getCurrentProcessName() {
+    String currentProcessName = "";
+    int pid = android.os.Process.myPid();
+    ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+    for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
+        if (processInfo.pid == pid) {
+            currentProcessName = processInfo.processName;
+            break;
+        }
+    }
+    return currentProcessName;
+}

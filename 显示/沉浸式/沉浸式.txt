@@ -1,0 +1,25 @@
+参见：
+Android使用fitsSystemWindows属性实现–状态栏【status_bar】各版本适配方案 
+	 http://blog.csdn.net/ys408973279/article/details/49994407
+
+是什么：
+状态栏 和 actionbar 和 导航栏 是盖在 @android:id/content的上面（over方式）
+状态栏 和 导航栏 为半透明效果，那么 如果content有背景色，它们也能进行体现
+
+不是什么：
+全屏的主题
+为什么：全屏主题下，不再显示 状态栏 actionbar 导航栏
+
+有哪些方案：
+1. 在activity.super.oncreate之前，设置：
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+	    Window window = getWindow();
+	    // Translucent status bar
+	    window.setFlags(
+	            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+	            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+	}
+
+2.a. 设置 content的 paddingtop和paddingbottom
+2.b. 我们的layout.xml的根 使用 android:fitsSystemWindows="true"
+	其将会调整view的 paddingtop/paddingbottom，使得 该view不会在 状态栏/actionbar/导航栏 的下面（below）来进行绘制

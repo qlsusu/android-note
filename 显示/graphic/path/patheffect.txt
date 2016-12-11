@@ -1,1 +1,3 @@
-参见：http://blog.csdn.net/aigestudio/article/details/41447349
+参见：
+自定义控件其实很简单1/4 
+	http://blog.csdn.net/aigestudio/article/details/41447349

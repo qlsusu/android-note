@@ -1,0 +1,16 @@
+<!--pic9.xml-->  
+<!--参数依次为:引用的.9图片,是否对位图进行抖动处理-->  
+<?xml version="1.0" encoding="utf-8"?>  
+<nine-patch  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:src="@drawable/dule_pic"  
+    android:dither="true"/>  
+
+或者，使用bitmap来包装一下：
+<!--pic9.xml-->  
+<!--参数依次为:引用的.9图片,是否对位图进行抖动处理-->  
+<?xml version="1.0" encoding="utf-8"?>  
+<bitmap  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:src="@drawable/dule_pic"  
+    android:dither="true"/>

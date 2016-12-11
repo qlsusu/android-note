@@ -1,0 +1,106 @@
+参见：
+Android IPC终极指南（二、使用Messenger进行通信） - 推酷
+	http://www.tuicool.com/articles/jmmMFrz
+
+通过Messager可以在不同的进程中传递Message对象，他是一种轻量级的IPC方案，底层是用AIDL实现的，他对AIDL进行了封装，
+他一次处理一个Message，因为：根据其构造函数messenger(handler)，可知：其内部是由一个handler来处理消息的
+
+------------------------------------例子（双向messenger）
+-------------客户端
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+    private Messenger mService;
+    
+    //自身的messenger，可接收service发来的消息
+    private Messenger mGetReplyMessenger = new Messenger(new MessengerHandler());
+    private static class MessengerHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 2:
+                    Log.d(TAG,msg.getData().getString("msg"));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        	//拿到服务器的messenger
+            mService = new Messenger(iBinder);
+            Message msg = Message.obtain(null,1);
+            Bundle data = new Bundle();
+            data.putString("msg","a msg from client");
+            msg.setData(data);
+            
+            //设置client的messenger，则，服务器可以拿它来发送消息
+            msg.replyTo = mGetReplyMessenger;
+            try {
+                mService.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this,MessengerService.class);
+        bindService(intent,serviceConnection,BIND_AUTO_CREATE);
+    }
+
+}
+
+-------------服务器
+public class MessengerService extends Service {
+
+    private static final String TAG = "MessengerService";
+
+    private static class MessengerHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                
+                case 1:
+                    Log.d(TAG, msg.getData().getString("msg"));
+                    
+                    //拿到客户端的messenger
+                    Messenger messenger = msg.replyTo;
+                    Message message = Message.obtain(null, 2);
+                    Bundle data = new Bundle();
+                    data.putString("msg", "msg from server");
+                    message.setData(data);
+                    try {
+                        messenger.send(message);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
+            }
+        }
+    }
+
+    private final Messenger messenger = new Messenger(new MessengerHandler());
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return messenger.getBinder();
+    }
+
+}

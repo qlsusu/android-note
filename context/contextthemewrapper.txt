@@ -1,1 +1,4 @@
 对于toast，需要的是一个contextthemewrapper
+
+其构造为：
+public ContextThemeWrapper(Context base, @StyleRes int themeResId)

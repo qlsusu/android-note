@@ -1,4 +1,10 @@
 参见：
+如何在Android中避免创建不必要的对象
+	http://droidyue.com/blog/2016/08/01/avoid-creating-unnecesssary-objects-in-android/
+	其中也包含了一些链接，如：关于Android中工作者线程的思考
+记一场 Android 技术答疑 - 技术小黑屋
+	http://droidyue.com/blog/2016/10/24/notes-for-an-android-qa/
+	其中包含了一些链接
 Android内存优化之OOM 中的 如何避免OOM总结
 	http://hukai.me/android-performance-oom/
 Android面试——APP性能优化

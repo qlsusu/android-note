@@ -1,0 +1,44 @@
+behaivor原理：
+当view1进行了某些transform，parent能被通知，后进而委派给behaivor，后通知view2 来进行一些响应（如，也进行某些transform）
+这样，view1和view2就能进行互动了
+此种情况下，view1是dependency，view2是child（behaivor的执行者），它们都是coordinatorlayout的直接孩子
+什么优点：虽然view2根据view1的transform而transform，但是在它们自身的ontouch中 却不需要改动。协调逻辑是放在behaivor中进行的
+
+coordinatorlayout
+CoordinatorLayout所做的事情就是当成一个通信的桥梁，连接不同的view。使用Behavior对象进行通信。
+可认为是一个framelayout
+
+view1和view2都必须是coordinatorlayout的孩子
+
+view1和view2 确定关系 和 view2执行依赖响应：
+设置behavior
+	为layout.xml中的 view2，app:layout_behavior=“你的Behavior的完全限定类名”
+	--
+	或，设置CoordinatorLayout.LayoutParams.behaivor：
+		MyBehavior myBehavior = new MyBehavior();
+	    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view2.getLayoutParams();
+	    params.setBehavior(myBehavior);
+	--
+	或通过注解（如为View2设置默认的behaivor）：
+	    @CoordinatorLayout.DefaultBehavior(MyBehavior.class)
+		public class View2 extends RelativeLayout {
+		}
+view2依赖于view1
+	@Override
+	public boolean layoutDependsOn(CoordinatorLayout parent, T child, View dependency) {
+		return dependency.getId() == R.id.first;
+	}
+view2 根据view1的transform 要进行怎样的transform
+	onDependentViewChanged(CoordinatorLayout parent, T child, View dependency) 
+		其中，T是View的子类
+
+------------------------------------------------
+
+内部原理（猜测）：
+通过behaivor.layoutDependsOn来确定 当view1发生改变时（如：位置发生了改变时），要通知view2
+因为parent可以拦截孩子view的 touch，则当在view1上进行touch时，parent（coordinatorlayout）会拦截（通过onintercepttouch方式）该touch，并转发至 对view2关心的behavior上，进而触发onDependentViewChanged 以对view2进行调整
+
+behaivor可以被通知什么：
+Touch Events
+Window Insets
+Measurement 和 layout

@@ -1,0 +1,5 @@
+参见：
+mytoolandroid中com.ql.tool.DeviceTool.getDisplayMetrics(Activity)
+
+density=densityDpi/DENSITY_DEFAULT
+dp=px/density,px=dp*density

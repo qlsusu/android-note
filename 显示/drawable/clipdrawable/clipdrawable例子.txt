@@ -1,0 +1,55 @@
+--------------drawable文件：
+<?xml version="1.0" encoding="utf-8"?>
+<clip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clipOrientation="horizontal"
+    android:drawable="@mipmap/ic_bg_meizi"
+    android:gravity="left" /> 
+
+--------------layout文件：
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/clip_bg" />
+
+</LinearLayout>  
+
+--------------java文件：
+public class MainActivity extends AppCompatActivity {
+
+    private ImageView img_show;
+    private ClipDrawable cd;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0x123) {
+                cd.setLevel(cd.getLevel() + 500);
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        img_show = (ImageView) findViewById(R.id.img_show);
+        // 核心实现代码
+        cd = (ClipDrawable) img_show.getDrawable();
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.sendEmptyMessage(0x123);
+                if (cd.getLevel() >= 10000) {
+                    timer.cancel();
+                }
+            }
+        }, 0, 300);
+    }
+}

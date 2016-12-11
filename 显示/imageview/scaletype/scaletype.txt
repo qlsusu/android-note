@@ -1,0 +1,3 @@
+参见：
+[Android] ImageView.ScaleType设置图解
+	http://blog.csdn.net/larryl2003/article/details/6919513

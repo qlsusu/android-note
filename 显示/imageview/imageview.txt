@@ -1,12 +1,9 @@
-ÇëÉèÖÃimageviewµÄsrc£¬¶ø²»ÊÇbackground
-ÔÚÄ³¸öµØ·½µ÷ÓÃ£¬imageview.setmatrix...
+è¯·è®¾ç½®imageviewçš„srcï¼Œè€Œä¸æ˜¯background
+åœ¨æŸä¸ªåœ°æ–¹è°ƒç”¨ï¼Œimageview.setmatrix...
 
-µ±ÉèÖÃÁËbackground£¨Í¨¹ıÉèÖÃresid£©
-ÄÇÃ´£¬ÉèÖÃsrcÊ±£¨Í¨¹ıÉèÖÃbitmap£©£¬Í¼Æ¬ÔÚÕ¹Ê¾ÉÏ£¬»á×Ô¶¯·Å´ó£¨±¶Êı²Î¼û£ºcom.ql.tool.DeviceTool.getDisplayMetrics(Activity)µÄËµÃ÷£©
-Í¬Àí£¬¶ÔÓÚ Ò»¿ªÊ¼ÉèÖÃÁËsrc£¬¶øºóÓÖÒªÉèÖÃbackgroundµÄÇé¿ö
+å½“è®¾ç½®äº†backgroundï¼ˆé€šè¿‡è®¾ç½®residï¼‰
+é‚£ä¹ˆï¼Œè®¾ç½®srcæ—¶ï¼ˆé€šè¿‡è®¾ç½®bitmapï¼‰ï¼Œå›¾ç‰‡åœ¨å±•ç¤ºä¸Šï¼Œä¼šè‡ªåŠ¨æ”¾å¤§ï¼ˆå€æ•°å‚è§ï¼šcom.ql.tool.DeviceTool.getDisplayMetrics(Activity)çš„è¯´æ˜ï¼‰
+åŒç†ï¼Œå¯¹äº ä¸€å¼€å§‹è®¾ç½®äº†srcï¼Œè€Œååˆè¦è®¾ç½®backgroundçš„æƒ…å†µ
 --
-µ«ÊÇ£¬µ±Ã»ÓĞÉèÖÃbackground£¨Í¨¹ıÉèÖÃresid£©£¨¶øÎŞÂÛÊÇ·ñÉèÖÃÁËsrc£©£¬µ±ÉèÖÃsrcÊ±£¨Í¨¹ıbitmap£©£¬Í¼Æ¬ÔÚÕ¹Ê¾ÉÏ£¬²»»á×Ô¶¯·Å´ó
-Í¬Àí£¬¶ÔÓÚ Ã»ÓĞÉèÖÃsrc£¬¶øºóÓÖÒªÉèÖÃbackgroundµÄÇé¿ö
-
-scaletype
-²Î¼û£ºhttp://blog.csdn.net/larryl2003/article/details/6919513
+ä½†æ˜¯ï¼Œå½“æ²¡æœ‰è®¾ç½®backgroundï¼ˆé€šè¿‡è®¾ç½®residï¼‰ï¼ˆè€Œæ— è®ºæ˜¯å¦è®¾ç½®äº†srcï¼‰ï¼Œå½“è®¾ç½®srcæ—¶ï¼ˆé€šè¿‡bitmapï¼‰ï¼Œå›¾ç‰‡åœ¨å±•ç¤ºä¸Šï¼Œä¸ä¼šè‡ªåŠ¨æ”¾å¤§
+åŒç†ï¼Œå¯¹äº æ²¡æœ‰è®¾ç½®srcï¼Œè€Œååˆè¦è®¾ç½®backgroundçš„æƒ…å†µ
