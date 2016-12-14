@@ -1,0 +1,10 @@
+WebView webView = (WebView) findViewById(R.id.webview);
+class MyJsBridge {
+    @JavascriptInterface
+    public void method1() {
+    	//...
+    }
+}
+//添加js bridge
+//h5调用形式：my_js_bridge.method1
+webView.addJavascriptInterface(new MyJsBridge(), "my_js_bridge");

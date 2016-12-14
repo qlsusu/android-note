@@ -14,4 +14,3 @@ canvas的matrix
 		1,
 	代表着该view被丈量后，其坐标是(0,126)
 canvas的concat(m)代表着：canvas.getmatrix * m
-	可能不对（老版本）：m左乘canvas.getmatrix

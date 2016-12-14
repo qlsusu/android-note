@@ -1,0 +1,3 @@
+参见：
+Android中利用Camera与Matrix实现3D效果详解
+	http://www.jianshu.com/p/34e0fe5f9e31

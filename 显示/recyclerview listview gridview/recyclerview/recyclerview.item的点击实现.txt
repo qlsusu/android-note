@@ -1,4 +1,6 @@
 参见：
+RecyclerView添加onItemClickListener更佳的解决方案 
+    http://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&mid=2650820134&idx=1&sn=58103e352e5269159778d35dc36ed207&mpshare=1&scene=23&srcid=0611XpwUOtEbZGjGiqbd4li8#rd
 android开发游记：RecyclerView无法添加onItemClickListener最佳的高效解决方案
 	http://blog.csdn.net/liaoinstan/article/details/51200600
 

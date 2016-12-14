@@ -1,6 +1,8 @@
 参见：
 Android使用fitsSystemWindows属性实现–状态栏【status_bar】各版本适配方案 
 	 http://blog.csdn.net/ys408973279/article/details/49994407
+ 如何让android的actionbar浮动且透明
+	 http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2013/0713/1435.html
 
 是什么：
 状态栏 和 actionbar 和 导航栏 是盖在 @android:id/content的上面（over方式）

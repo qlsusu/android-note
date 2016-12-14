@@ -102,7 +102,10 @@ Android创建桌面快捷方式几种方法
 
 --------------------数据库，orm
 ORM框架：
-	GreenDAO、Litepal，Realm
+	GreenDAO、Litepal，
+	Realm
+		Realm Java的学习、应用、总结 
+			http://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&mid=2650820245&idx=1&sn=2942da8c553a8dabb176bdd13fe8432a&mpshare=1&scene=23&srcid=0706K6reK7CIgiw5AyzpDkAw#rd
 	dbflow
 
 --------------------↑
