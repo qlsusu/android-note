@@ -1,0 +1,15 @@
+参见：
+Android中利用Camera与Matrix实现3D效果详解
+	http://www.jianshu.com/p/34e0fe5f9e31
+	其中包含了一个 实现立体3D切换效果的例子
+
+有什么用：
+Camera可被用于计算3D变换，生成一个Matrix矩阵，用在Canvas上
+
+坐标系：
+参见：./camera坐标系.png
+是左手坐标系
+
+rotate
+x,z的旋转方向，根据左手定理
+y的旋转方向，根据右手定理

@@ -1,0 +1,20 @@
+@Override
+protected void onDraw(Canvas canvas) {
+    matrix.reset();
+    camera.save();
+    camera.rotateX(60);
+    camera.getMatrix(matrix);
+    camera.restore();
+
+    //整体的变换矩阵为：先移动到图片中心 * 进行旋转 * 再移动到图片的负中心
+    //这本质上为：绕一点 进行旋转
+    matrix.preTranslate(-getWidth()/2, -getHeight()/2);
+    matrix.postTranslate(getWidth()/2, getHeight()/2);
+
+    Options option = new Options();
+    option.inJustDecodeBounds = true;
+    BitmapFactory.decodeResource(getResources(), R.drawable.aa,option);
+    option.inSampleSize = calculateInSampleSize(option, getWidth()/2, getHeight()/2);
+    option.inJustDecodeBounds = false;
+    canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.aa,option), matrix, paint);
+}

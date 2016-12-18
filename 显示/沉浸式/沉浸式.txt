@@ -1,22 +1,23 @@
 参见：
 Android使用fitsSystemWindows属性实现–状态栏【status_bar】各版本适配方案 
-	 http://blog.csdn.net/ys408973279/article/details/49994407
- 如何让android的actionbar浮动且透明
-	 http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2013/0713/1435.html
+	http://blog.csdn.net/ys408973279/article/details/49994407
+如何让android的actionbar浮动且透明
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2013/0713/1435.html
 
 是什么：
 状态栏 和 actionbar 和 导航栏 是盖在 @android:id/content的上面（over方式）
-状态栏 和 导航栏 为半透明效果，那么 如果content有背景色，它们也能进行体现
+状态栏 和 导航栏 为半透明效果，那么 如果 @android:id/content有背景色，它们也能进行体现
 
 不是什么：
 全屏的主题
 为什么：全屏主题下，不再显示 状态栏 actionbar 导航栏
 
-有哪些方案：
+方案：
 1. 在activity.super.oncreate之前，设置：
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 	    Window window = getWindow();
-	    // Translucent status bar
+	    // 使得状态栏透明
+	    // 本质上，@android:id/content会below在 状态栏/actionbar/导航栏下面
 	    window.setFlags(
 	            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
 	            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
