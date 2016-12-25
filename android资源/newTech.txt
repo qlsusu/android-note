@@ -50,6 +50,15 @@ Android-Universal-Image-Loader、Glide、Fresco、Picasso
 扫描二维码
 Android 扫描二维码的实现（简化zxing）
 	https://segmentfault.com/a/1190000003945592
+
+fresco里的photoview :用于查看大图并随手势缩放
+	https://github.com/ongakuer/PhotoDraweeView
+
+bilibili开源的借助fresco加载图片的 
+	spannable text view : Bilibili/drawee-text-view](https://github.com/Bilibili/drawee-text-view
+
+fresco的bitmap后处理器封装
+	https://github.com/wasabeef/fresco-processors
 	
 对图片进行压缩
 tinypng

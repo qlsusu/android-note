@@ -1,3 +1,25 @@
+参见：
+java层aidl细节_ipc & ibinder-binder & aidl
+	http://blog.csdn.net/qlsusu/article/details/6077634
+Android中AIDL的基本用法
+	http://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&mid=2650821088&idx=1&sn=dc93ce1040cfe4784817952265a59d6d&chksm=80b7857eb7c00c68678f6ebe32b62c0fa96773b816edae933ae31c4a354521bc7c18ed67edf5&scene=4#wechat_redirect
+
+Android Interface Definition Language
+
+有什么用：
+在Android平台下,各个进程都占有一块自己独有的内存空间，各个进程在通常情况下只能访问自己的独有的内存空间，而不能对别的进程的内存空间进行访问。 
+进程之间如果要进行通信，就必须先把需要传递的对象分解成操作系统能够理解的基本类型，并根据你的需要封装跨边界的对象。
+而要完成这些封装工作，需要写的代码量十分地冗长而枯燥。因此Android提供了AIDL来帮助你完成这些工作。
+
+支持什么数据类型：
+所有的基本类型（int、float等）
+String
+CharSequence
+Pacelable
+List, Map
+	其中的元素类型 也必须是上树类型之一
+
+在as/eclipse中的位置：
 对于android studio，应该建立一个aidl文件夹 来放置aidl文件
 	其位置是和res平级的
 对于eclipse，该aidl文件应该放置在src中的package下

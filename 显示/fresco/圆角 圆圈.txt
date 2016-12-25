@@ -1,0 +1,2 @@
+圆圈 - 设置roundAsCircle为true
+圆角 - 设置roundedCornerRadius

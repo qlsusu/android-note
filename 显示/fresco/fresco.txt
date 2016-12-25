@@ -1,14 +1,41 @@
 参见：
-http://fresco-cn.org/docs/index.html#_
+官方文档
+	https://www.fresco-cn.org/docs/
 https://github.com/kaedea/fresco-sample-usage
+Fresco图片加载框架使用经验小结
+	http://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&mid=2650820929&idx=1&sn=914622a161e1132827b364aa86b13aca&scene=4#wechat_redirect
 
 ------------------------------核心概念
-SimpleDraweeView
-	用于展示（xml中节点）
-hierarchy
-	改变drawable（修改展示效果）（如：展示为圆角）
-controller
-	用来控制加载
-pipeline
-	加载的具体执行
+DraweeView
+	用于展示
+	SimpleDraweeView有什么属性，参见：./SimpleDraweeView.png
+DraweeHierarchy
+	负责：图片的显示效果（如，设置：erorr img, place holder，圆角，scaletype等）
+	一个例子：
+		List<Drawable> backgroundsList;
+		List<Drawable> overlaysList;
+		GenericDraweeHierarchyBuilder builder =
+		    new GenericDraweeHierarchyBuilder(getResources());
+		GenericDraweeHierarchy hierarchy = builder
+		    .setFadeDuration(300)
+		    .setPlaceholderImage(new MyCustomDrawable())
+		    .setBackgrounds(backgroundList)
+		    .setOverlays(overlaysList)
+		    .build();
+		mSimpleDraweeView.setHierarchy(hierarchy);
+	参见：
+		在JAVA代码中使用Drawees
+			https://www.fresco-cn.org/docs/using-drawees-code.html
+DraweeController
+	负责和 image loader 交互（ Fresco 中默认为 image pipeline, 当然你也可以指定别的），等其他控制
+image pipeline
+	负责图片的获取
+	ImageRequest
+		要请求什么图片
 
+------------------------------缓存
+三个缓存:
+两个内存缓存：bitmap缓存 和 未解码的图片缓存
+一个磁盘缓存
+--
+在app切换到后台时,fresco会自动清理两级的内存缓存

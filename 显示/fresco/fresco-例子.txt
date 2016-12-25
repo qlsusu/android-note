@@ -1,0 +1,9 @@
+<com.facebook.drawee.view.SimpleDraweeView
+    android:id="@+id/my_image_view"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    fresco:placeholderImage="@drawable/news_default"
+      .../>
+
+Fresco.initiliaze(context);
+simpleDraweeView.setImageURI(uri);

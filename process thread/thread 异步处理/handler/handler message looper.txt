@@ -6,7 +6,12 @@ Handler和他的小伙伴们（上）
 Android源码解析之（二）-->异步消息机制
 	http://blog.csdn.net/qq_23547831/article/details/50751687
 
+------------------------message
+Message 意为消息，发送到Handler进行处理的对象，携带描述信息和任意数据。
+MessageQueue 意为消息队列，Message的集合。
+
 ------------------------looper
+Looper用来从MessageQueue中抽取Message，发送给Handler进行处理。
 是handler和message之前的桥梁
 handler需要知道looper，通过Handler(Looper looper)来指定
 
@@ -15,7 +20,7 @@ handler需要知道looper，通过Handler(Looper looper)来指定
 经过Looper.loop()来开启循环（会阻塞当前线程，当从queue中取不出消息时）：从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)）
 
 ------------------------handler
-用来发送消息，处理消息
+用来发送消息，处理Looper抽取出来的Message
 
 发送消息
 handler.sendMessage
