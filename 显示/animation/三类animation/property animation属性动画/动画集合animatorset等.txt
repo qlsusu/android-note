@@ -1,0 +1,45 @@
+animator的集合，每个animator均可以作用于一个具体的对象
+animatorset.playTogether(
+	objectAnimator1,
+	objectAnimator1,
+	,,,).start()
+几类play方式
+	playSequentially()：多个动画按顺序执行
+	playTogether()：几个动画同时执行
+	play()：会返回一个AnimatorSet.Builder，其含有如下方法：
+		after
+		before
+		with
+获得其中的一个animator：animtorset.getChildAnimations().get(i)
+例子：
+	AnimatorSet bouncer = new AnimatorSet();
+	bouncer.play(bounceAnim).before(squashAnim1);
+	bouncer.play(squashAnim1).with(squashAnim2);
+	bouncer.play(squashAnim1).with(stretchAnim1);
+	bouncer.play(squashAnim1).with(stretchAnim2);
+	bouncer.play(bounceBackAnim).after(stretchAnim2);
+	ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, "alpha", 1f, 0f);
+	fadeAnim.setDuration(250);
+	AnimatorSet animatorSet = new AnimatorSet();
+	animatorSet.play(bouncer).before(fadeAnim);
+	animatorSet.start();
+效果:
+	1.Plays bounceAnim.
+	2.Plays squashAnim1, squashAnim2, stretchAnim1, and stretchAnim2 at the same time.
+	3.Plays bounceBackAnim.
+	4.Plays fadeAnim.
+----
+例子：
+	ObjectAnimator animX = ObjectAnimator.ofFloat(myView, "x", 50f);
+	ObjectAnimator animY = ObjectAnimator.ofFloat(myView, "y", 100f);
+	AnimatorSet animSetXY = new AnimatorSet();
+	animSetXY.playTogether(animX, animY);
+	animSetXY.start();
+
+如果动画集中的每个动画都针对于同一个对象，可以使用如下：
+PropertyValuesHolder
+	PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", 50f);
+	PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 100f);
+	ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
+ViewPropertyAnimator
+	myView.animate().x(50f).y(100f);

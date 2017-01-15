@@ -1,0 +1,3 @@
+TextView textView = null;
+Layout layout = textView.getLayout();
+boolean isOverMaxLine = layout.getEllipsisCount(textView.getLineCount() - 1) > 0;

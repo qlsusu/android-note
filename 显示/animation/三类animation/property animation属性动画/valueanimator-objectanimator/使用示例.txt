@@ -2,14 +2,15 @@ ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
 animation.setDuration(1000);
 animation.start();
 
-在100ms内，通过 改变translationx的值为100的方式 将view移动100个像素
-	objectanimator.offloat(targetview, "translationX",0,100).setduration(100).start()，或者，
-	targetview.animate().translationX(100).setDuration(100)
-		本质上，是viewpropertyanimator/viewpropertyanimatorcompat
+--------------------在100ms内，通过 改变translationx的值为100的方式 将view移动100个像素
+objectanimator.ofFloat(targetview, "translationX",0,100).setduration(100).start()，或者，
+targetview.animate().translationX(100).setDuration(100)
+	本质上，是viewpropertyanimator/viewpropertyanimatorcompat
 
-view的翻转（rotationY, 想象一个硬币在翻转，旋转方向：符合 左手定理）
+--------------------view的翻转（rotationY, 想象一个硬币在翻转，旋转方向：符合 左手定理）
 mFlipper = ObjectAnimator.ofFloat(mFlipImage, "rotationY", 0f, 360f);
 mFlipper.setDuration(1500);
+//添加监听
 mFlipper.addUpdateListener(new AnimatorUpdateListener() {
 	@Override
 	public void onAnimationUpdate(ValueAnimator animation) {

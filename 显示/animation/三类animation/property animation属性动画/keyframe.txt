@@ -1,0 +1,9 @@
+A Keyframe object consists of a time/value pair that lets you define a specific state at a specific time of an animation. 
+Each keyframe can also have its own interpolator to control the behavior of the animation in the interval between the previous keyframe's time and the time of this keyframe.
+例子：
+	Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
+	Keyframe kf1 = Keyframe.ofFloat(.5f, 360f);
+	Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
+	PropertyValuesHolder pvhRotation = PropertyValuesHolder.ofKeyframe("rotation", kf0, kf1, kf2);
+	ObjectAnimator rotationAnim = ObjectAnimator.ofPropertyValuesHolder(target, pvhRotation)
+	rotationAnim.setDuration(5000ms);

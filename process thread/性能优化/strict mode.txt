@@ -1,6 +1,14 @@
 参见：
 Android严苛模式StrictMode使用详解
 	http://blog.csdn.net/mynameishuangshuai/article/details/51742375
+doc
+	https://developer.android.com/reference/android/os/StrictMode.html
+
+作用：
+分析ui线程上的 “非法” 操作
+	如：读写文件，读写数据库
+activity内存泄漏
+等
 
 在application.oncreate中开启strict mode
 // 针对线程的相关策略

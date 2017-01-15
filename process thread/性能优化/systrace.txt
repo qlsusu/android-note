@@ -1,0 +1,9 @@
+参见：
+Android App优化之性能分析工具
+	http://www.jianshu.com/p/da2a4bfcba68
+
+有什么作用：
+告诉你，这一frame耗时了
+
+但是，
+还需要通过其他工具来进一步分析

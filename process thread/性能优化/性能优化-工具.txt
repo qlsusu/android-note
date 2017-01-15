@@ -1,0 +1,34 @@
+参见：
+Android App优化之性能分析工具
+	http://www.jianshu.com/p/da2a4bfcba68
+官方Performance Profiling Tools
+	https://developer.android.com/studio/profile/index.html
+	在ddms中，也介绍了 如traceview等工具
+正确使用Android性能分析工具——TraceView
+	http://bxbxbai.github.io/2014/10/25/use-trace-view/
+
+------------------------一个建议的推荐工具列表为：
+strictmode
+	有哪些设计实现违规了（如：在ui线程上 查询数据库了，内存泄漏了（结合HPROF dump），等）
+blockcanary
+	检测ui线程上的耗时操作
+leakcanary
+	检测内存泄漏
+view hierarchy dump for ui animator
+	观察布局中是否有多余的viewgroup
+过度绘制
+traceview
+	哪些方法耗时
+
+------------------------其他工具
+dumpsys、
+Systrace、
+Update Threads（更新线程）、
+Update Heap（更新堆）、
+Allocation Tracker（分配跟踪器）
+Battery Historian
+	来自google，通过Android系统的bugreport文件来做电量使用分析的工具
+Emmagee
+	来自网易，针对Android App的CPU, 内存, 网络, 电量等多项综合的测试分析
+AndroidDevMetrics
+	一个library, 用来检测Activity生命周期执行性能, Dagger2注入性能以及帧率性能的工具

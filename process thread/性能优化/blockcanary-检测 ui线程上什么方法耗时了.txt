@@ -1,0 +1,27 @@
+参见：
+github库
+	https://github.com/markzhai/AndroidPerformanceMonitor
+原理
+	http://blog.zhaiyifan.cn/2016/01/16/BlockCanaryTransparentPerformanceMonitor/
+
+blockcanary
+有什么用：
+检测ui线程上，哪个类的哪个方法的哪一行耗时了
+
+如何操作：
+1. 集成blockcanary
+2. 针对于自己的app，进行正常的ui操作
+3. 当耗时产生时，在通知栏产生通知
+4. 查看通知，可发现：在哪个类的哪个方法的哪一行耗时了
+
+设置耗时的时长：
+在自定义的BlockCanaryContext中
+/**
+ * Config block threshold (in millis), dispatch over this duration is regarded as a BLOCK. You may set it
+ * from performance of device.
+ *
+ * @return threshold in mills
+ */
+public int provideBlockThreshold() {
+    return 1000;
+}
