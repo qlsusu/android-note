@@ -1,4 +1,6 @@
 参见：
+Android应用开发性能优化完全分析
+	http://blog.csdn.net/yanbober/article/details/48394201
 Android App优化之性能分析工具
 	http://www.jianshu.com/p/da2a4bfcba68
 官方Performance Profiling Tools
@@ -10,6 +12,7 @@ Android App优化之性能分析工具
 ------------------------一个建议的推荐工具列表为：
 strictmode
 	有哪些设计实现违规了（如：在ui线程上 查询数据库了，内存泄漏了（结合HPROF dump），等）
+as中analyze-inspect code
 blockcanary
 	检测ui线程上的耗时操作
 leakcanary
@@ -21,14 +24,19 @@ traceview
 	哪些方法耗时
 
 ------------------------其他工具
-dumpsys、
-Systrace、
+dumpsys
+Systrace
 Update Threads（更新线程）、
 Update Heap（更新堆）、
 Allocation Tracker（分配跟踪器）
+	检测出，在执行特定逻辑时，有哪些对象被分配了
+	点击Start Tracing按钮，接着运行你想分析的代码，运行完毕后点击Get Allocations按钮，就能够看见一个已分配对象的列表
 Battery Historian
 	来自google，通过Android系统的bugreport文件来做电量使用分析的工具
 Emmagee
 	来自网易，针对Android App的CPU, 内存, 网络, 电量等多项综合的测试分析
 AndroidDevMetrics
 	一个library, 用来检测Activity生命周期执行性能, Dagger2注入性能以及帧率性能的工具
+smarttool
+	能检测cpu使用率，ui性能 联网等
+	https://github.com/wolearn/SmartTool

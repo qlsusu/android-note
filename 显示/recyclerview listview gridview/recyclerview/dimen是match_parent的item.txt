@@ -1,0 +1,1 @@
+当recyclerview采用gridlayoutmanager时，如果item采用了match_parent，那么item将评分recyclerview的整行/列

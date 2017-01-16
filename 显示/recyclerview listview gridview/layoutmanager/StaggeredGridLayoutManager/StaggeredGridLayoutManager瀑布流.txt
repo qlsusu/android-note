@@ -7,8 +7,8 @@
 设item1,2,3要排列，item1在左边，后item2在item1的对面（右边），item3则看当前 item1和item2谁比较低，谁低，排在谁的下面。后，再按照上述方式来排列
 
 例子：
-	RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
-	recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(),
-			StaggeredGridLayoutManager.VERTICAL));
-	recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
+RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
+recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(),
+		StaggeredGridLayoutManager.VERTICAL));
+recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
 	
