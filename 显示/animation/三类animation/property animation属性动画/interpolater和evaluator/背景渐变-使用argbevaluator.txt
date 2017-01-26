@@ -1,0 +1,4 @@
+ObjectAnimator animator = ObjectAnimator.ofInt(tv, "BackgroundColor", 0xffff00ff, 0xffffff00, 0xffff00ff);  
+animator.setDuration(8000);  
+animator.setEvaluator(new ArgbEvaluator());  
+animator.start();

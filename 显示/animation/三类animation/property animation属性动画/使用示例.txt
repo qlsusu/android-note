@@ -1,9 +1,5 @@
-ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
-animation.setDuration(1000);
-animation.start();
-
 --------------------在100ms内，通过 改变translationx的值为100的方式 将view移动100个像素
-objectanimator.ofFloat(targetview, "translationX",0,100).setduration(100).start()，或者，
+objectanimator.ofFloat(targetview, "translationX", 0, 100).setduration(100).start()，或者，
 targetview.animate().translationX(100).setDuration(100)
 	本质上，是viewpropertyanimator/viewpropertyanimatorcompat
 

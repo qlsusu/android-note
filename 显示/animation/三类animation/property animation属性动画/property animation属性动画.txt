@@ -1,6 +1,9 @@
 参见：
 ObjectAnimator 基本使用
 	http://wiki.jikexueyuan.com/project/android-animation/7.html
+	自定义一个property
+Animation动画详解
+	http://wiki.jikexueyuan.com/project/android-animation/
 Android属性动画详解(一)，属性动画基本用法
 	http://gold.xitu.io/post/579f0277d342d300572033b1
 google doc
@@ -15,7 +18,7 @@ Property Animation - 实解
 	This was handled in the container of each View, because the View itself had no properties to manipulate. 
 	This resulted in the View being animated, but caused no change in the View object itself. 
 		This led to behavior such as an object still existing in its original location, even though it was drawn on a different location on the screen. 
-		
+
 属性动画可以对任何对象的属性进行动画（而不仅仅是view的）
 
 ----------------------------------------------------
