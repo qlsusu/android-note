@@ -1,17 +1,3 @@
-参见：
-选择恐惧症的福音！教你认清MVC，MVP和MVVM
-	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0414/4143.html
-
-mvp
-model view presenter
-
-view（activity）用于：展示，和，向presenter发起请求
-model（mybeanmanager, mybean）封装了业务逻辑 和 数据
-presenter是view和model之间的桥梁
-	view向presenter发起请求，
-	其调用model层的逻辑，
-	通过view接口 将数据传送给view，后，view拿该数据进行更新
-
 -------------------------presenter的一个例子
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

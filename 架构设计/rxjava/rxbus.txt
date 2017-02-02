@@ -1,0 +1,7 @@
+参见：
+翻译：通过 RxJava 实现一个 Event Bus – RxBus
+	https://drakeet.me/rxbus
+Implementing an Event Bus With RxJava - RxBus
+	http://blog.kaush.co/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/
+RxBus
+	http://wuxiaolong.me/2016/04/07/rxbus/

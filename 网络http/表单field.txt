@@ -1,0 +1,3 @@
+参见：
+HTTP协议与HTML表单（再谈GET与POST的区别）
+	http://blog.csdn.net/darxin/article/details/4944225

@@ -13,6 +13,8 @@ Android Studio相见恨晚的操作锦集(9月22日更新)
 	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/1116/6776.html
 最全面的AndroidStudio配置指南总结-包括护眼模式
 	http://blog.csdn.net/mynameishuangshuai/article/details/51332790
+Android Studio 使用小技巧
+	http://wuxiaolong.me/2016/08/16/AndroidstudioGuide/
 Android Studio 小技巧合集
 	带gif动画
 	https://laobie.github.io/android/2016/02/14/android-studio-tips.html

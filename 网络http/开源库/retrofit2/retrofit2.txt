@@ -1,4 +1,15 @@
 参见：
+官网
+	http://square.github.io/retrofit/
+Android Retrofit 2.0使用
+	http://wuxiaolong.me/2016/01/15/retrofit/
+Android Retrofit 2.0 使用-补充篇
+	http://wuxiaolong.me/2016/06/18/retrofits/
+	其中介绍了：设置debug时log，离线缓存，公共参数配置，为指定接口设置request，设置cookies，传递文件等
+我们真的需要使用RxJava+Retrofit吗？
+	https://gold.xitu.io/post/584eb780128fe10058b4c38b
+Retrofit2 源码解析
+	http://bxbxbai.github.io/2015/12/13/retrofit2/
 用 Retrofit 2 简化 HTTP 请求
 	https://realm.io/cn/news/droidcon-jake-wharton-simple-http-retrofit-2/
 	Jake Wharton写的
@@ -6,3 +17,5 @@ https://github.com/square/retrofit
 Retrofit使用教程(一)
 	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html
 	http://blog.xuanzhangjiong.xyz/2016/02/25/%E5%AD%A6%E4%B9%A0Retrofit%E5%92%8CRxJava%E5%B0%8F%E8%AE%B0/
+Android实战之你应该使用哪个网络库？
+	https://segmentfault.com/a/1190000003965158

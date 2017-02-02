@@ -1,0 +1,17 @@
+参见：
+Android MVP 实例
+    http://wuxiaolong.me/2015/09/23/AndroidMVPSample/
+选择恐惧症的福音！教你认清MVC，MVP和MVVM
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0414/4143.html
+Android MVP+Retrofit+RxJava实践小结
+	http://wuxiaolong.me/2016/06/12/mvpRetrofitRxjava/
+
+mvp
+model view presenter
+
+view（activity）用于：展示，和，向presenter发起请求
+model（mybeanmanager, mybean）封装了业务逻辑 和 数据
+presenter是view和model之间的桥梁
+    view向presenter发起请求，
+    presenter充当着控制器的角色，其将请求委派给model
+    算得结果数据后，通过view接口 将数据传送给view，后，view可拿该数据进行更新

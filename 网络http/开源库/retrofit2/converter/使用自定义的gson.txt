@@ -1,0 +1,10 @@
+private static final Gson dateGson = new GsonBuilder()
+	.registerTypeAdapter(Date.class, new DateDeserializer(DATE_PATTERN1, DATE_PATTERN2))  //定义json的解析样本
+	.serializeNulls()
+	.create();
+
+private static final HttpService mGankService = new Retrofit.Builder()
+    .client(mOkHttpClient)
+    .baseUrl(BASE_URL)
+    .addConverterFactory(GsonConverterFactory.create(dateGson))
+    .build();

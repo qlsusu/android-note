@@ -1,0 +1,9 @@
+Button button = ...;
+RxView.clickEvents(button) // 以 Observable 形式来反馈点击事件
+.throttleFirst(500, TimeUnit.MILLISECONDS) //设置防抖间隔为 500ms 。本质上，也是设置了 中间的Observable.OnSubscribe
+.subscribe(new Action1<ViewClickEvent>() {
+    @Override
+    public void call(ViewClickEvent event) {
+        // Click handling
+    }
+});

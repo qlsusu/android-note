@@ -1,6 +1,0 @@
-参见：
-关于RxJava最友好的文章
-	http://www.jianshu.com/p/6fd8640046f1
-	文中也有一些链接
-给 Android 开发者的 RxJava 详解
-	https://gank.io/post/560e15be2dca930e00da1083

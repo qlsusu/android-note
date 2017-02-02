@@ -1,0 +1,61 @@
+------------------post输入内容
+{		
+    "apiInfo": {		
+        "apiName": "WuXiaolong",		
+        "apiKey": "666"		
+    }		
+}
+
+------------------service接口
+public interface ApiStores {
+    @POST("client/shipper/getCarType")
+    Call<ResponseBody> getCarType(@Body ApiInfo apiInfo);
+}
+
+------------------建立bean
+public class ApiInfo {
+   private ApiInfoBean apiInfo;
+   public ApiInfoBean getApiInfo() {
+       return apiInfo;
+   }
+   public void setApiInfo(ApiInfoBean apiInfo) {
+       this.apiInfo = apiInfo;
+   }
+   public class ApiInfoBean {
+       private String apiName;
+       private String apiKey;
+       //省略get和set方法
+   }
+}
+
+------------------调用
+private void getCarType() {
+   mRetrofit = new Retrofit.Builder()
+           .baseUrl("http://WuXiaolong.me/")
+           .addConverterFactory(GsonConverterFactory.create())
+           .build();
+   ApiStores apiStores = mRetrofit.create(ApiStores.class);
+
+   ApiInfo apiInfo = new ApiInfo();
+   ApiInfo.ApiInfoBean apiInfoBean = apiInfo.new ApiInfoBean();
+   apiInfoBean.setApiKey("666");
+   apiInfoBean.setApiName("WuXiaolong");
+   apiInfo.setApiInfo(apiInfoBean);
+   Call<ResponseBody> call = apiStores.getCarType(apiInfo);
+
+   call.enqueue(new Callback<ResponseBody>() {
+       @Override
+       public void onResponse(Response<ResponseBody> response) {
+           String body = null;//获取返回体的字符串
+           try {
+               body = response.body().string();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           Log.i("wxl", "get=" + body);
+       }
+       @Override
+       public void onFailure( Throwable t) {
+       }
+   });
+}

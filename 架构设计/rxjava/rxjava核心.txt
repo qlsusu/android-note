@@ -1,0 +1,60 @@
+参见：
+给 Android 开发者的 RxJava 详解
+	https://gank.io/post/560e15be2dca930e00da1083
+ReactiveX/RxJava文档中文版
+	https://mcxiaoke.gitbooks.io/rxdocs/content/
+	介绍了不少操作符
+官方
+	https://github.com/ReactiveX/RxJava
+官方1.x
+	https://github.com/ReactiveX/RxJava/tree/1.x
+给初学者的RxJava2.0教程(一)
+	https://gold.xitu.io/post/5848d96761ff4b0058c9d3dc
+	有一个系列的教程
+关于RxJava最友好的文章
+	http://www.jianshu.com/p/6fd8640046f1
+	文中也有一些链接
+关于RxJava最友好的文章（进阶）
+	http://www.jianshu.com/p/e61e1307e538
+
+---------------------------------基础概念
+
+什么是rxjava
+a library for composing asynchronous and event-based programs using observable sequences for the Java VM
+一个在 Java VM 上使用可观测的序列来组成异步的、基于事件的程序的库
+
+核心流程：本质上，在描绘 事件的流向：
+Subscriber 订阅 Observable
+Observable.OnSubscribe 选择在合适的时机 分发事件
+	而Observable.OnSubscribe#call 由 Observable#subscribe(Subscriber<? super T>) 来触发
+Subscriber 处理 流入的事件
+而其中，通过构建 中间的Observable（OnSubscribe和Subscriber）来加工原始事件 并转发 新事件
+
+为什么使用rxjava
+1. 通过 平铺 的方式来构建 工作流
+	链式调用，而消除嵌套
+2. 方便的线程调度
+
+角色：
+被观察者 Observable
+	构建时，需要提供OnSubscribe
+观察者 Subscriber
+订阅动作 subscribe()
+事件 onNext/onComplete等
+	参见：事件/
+
+---------------------------------OnSubscribe：
+是什么：
+当Subscriber要订阅Observable 这个动作 发生时，要做什么
+在OnSubscribe#call(Subscriber<? super T>)中，它选择在合适的时机来分发事件
+
+OnSubscribe#call 都可做什么：
+可将数据直接传递给subscriber，如：
+	subscriber.onNext("On");
+    subscriber.onNext("Off");
+    subscriber.onCompleted();
+也可
+	构建内部Subscriber，并订阅 上层Observable，
+	并在内部onsubscribe#call中，将控制流 移交给 上层的observable的onsubscribe#call处
+	后数据流 流入到 该内部subscriber中 来进行 数据的再加工，
+	加工后的数据 最终流入到 原始的subscriber中

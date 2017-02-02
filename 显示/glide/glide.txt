@@ -1,0 +1,5 @@
+参见：
+官网
+	https://github.com/bumptech/glide
+一套完整的Android通用框架 中的：glide部分中的 资料
+	http://wuxiaolong.me/2016/09/07/MyAndroidLibrary/

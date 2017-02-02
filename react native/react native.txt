@@ -3,3 +3,6 @@ React Native: 配置和起步
 	http://www.liaohuqiu.net/cn/posts/react-native-1/
 [译]React Native开源图表组件(react-native-chart-android) 
 	http://www.lcode.org/react-native-chart-android/
+给所有开发者的React Native详细入门指南（第一阶段）
+	http://www.jianshu.com/p/fa0874be0827
+	其中，包含了系列教程

@@ -1,0 +1,10 @@
+参见：
+AndroidFlux
+	https://androidflux.github.io/
+
+Flux是由facebook推出的架构理念
+
+View:视图层
+Action：view发出的事件，比如点击事件等
+Dispatcher：用来接收Actions，执行对应的回调函数
+Store:用来存放应用的状态，一旦应用发生变动(数据变化)，就提醒View更新

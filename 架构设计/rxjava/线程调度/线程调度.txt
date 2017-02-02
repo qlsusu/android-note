@@ -1,0 +1,24 @@
+哪些操作可以指定线程：
+分发事件
+处理事件
+
+默认的 线程的执行策略：
+在哪个线程调用 subscribe()，就在哪个线程生产事件；
+在哪个线程生产事件，就在哪个线程消费事件
+
+示例：
+Observable.just(1, 2, 3, 4)
+.subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
+.observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的处理事件的回调发生在主线程
+.subscribe(new Action1<Integer>() {
+    @Override
+    public void call(Integer number) {
+        Log.d(tag, "number:" + number);
+    }
+});
+
+原理：
+observeOn()
+	会构建一个Observable，内部Subscriber的onNext中，(可以认为)通过调度器来执行 下层Subscriber.onNext
+subscribeOn
+	会构建一个Observable，内部OnSubscriber的call中，(可以认为)通过调度器来执行 上层OnSubscriber.call

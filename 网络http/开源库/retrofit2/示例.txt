@@ -1,0 +1,27 @@
+//定义接口
+public interface GithubService {
+    @GET("users/{user}")
+    Call<GithubUserBean> getUser(@Path("user") String user);
+}
+
+//请求
+private void EasyRetrofit() {
+    GithubService service = GenServiceUtil.createService(GithubService.class);
+    Call<GithubUserBean> call = service.getUser(name);
+    //采用异步的方式，同步方式 使用execute
+    call.enqueue(new Callback<GithubUserBean>() {
+        @Override
+        public void onResponse(Call<GithubUserBean> call, Response<GithubUserBean> response) {
+        	//在主线程上执行
+            GithubUserBean bean = response.body();
+            loading.dismiss();
+            setUserView(bean);
+        }
+
+        @Override
+        public void onFailure(Call<GithubUserBean> call, Throwable t) {
+        	//在主线程上执行
+            loading.dismiss();
+        }
+    });
+}

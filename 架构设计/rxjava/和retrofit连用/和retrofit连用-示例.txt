@@ -1,0 +1,102 @@
+参见：
+我们真的需要使用RxJava+Retrofit吗？
+    https://gold.xitu.io/post/584eb780128fe10058b4c38b
+给 Android 开发者的 RxJava 详解 中的：RxJava 的适用场景和使用方式
+    https://gank.io/post/560e15be2dca930e00da1083#toc_22
+从零开始搭建一个项目(rxJava+Retrofit+Dagger2) --第0章
+    http://www.jianshu.com/p/8bdb2c8de8ad
+    有一系列教程
+    介绍了 和retrofit连用，flux，rxbus等
+RxJava 之 Android使用初体验
+    http://www.jianshu.com/p/ce9574619697
+    使用了：RxAndroid+OkHttp+Gson
+Android MVP+Retrofit+RxJava实践小结
+    http://wuxiaolong.me/2016/06/12/mvpRetrofitRxjava/
+
+public interface GithubService {
+    @GET("users/{user}")
+    Call<GithubUserBean> getUser(@Path("user") String user);
+
+    //Retrofit 把请求封装进 Observable ，在请求结束后调用 onNext() 或在请求失败后调用 onError()。
+    //对比下：rxRetrofitNormal 和 rxRetrofitObservable
+    @GET("users/{user}/followers")
+    Observable<List<UserFollowerBean>> followers(@Path("user") String usr);
+}
+
+private void rxRetrofitNormal() {
+    Observable.create(new Observable.OnSubscribe<GithubUserBean>() {
+        @Override
+        public void call(Subscriber<? super GithubUserBean> subscriber) {
+            Response<GithubUserBean> bean = null;
+            try {
+                GithubService service = RetrofitUtil.createService(GithubService.class);
+                Call<GithubUserBean> call = service.getUser(name);
+                //同步进行请求，非 异步enqueue
+                bean = call.execute();
+
+                subscriber.onNext(bean.body());
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                subscriber.onError(e);
+            }
+
+            subscriber.onCompleted();
+        }
+    });
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .map(new Func1<GithubUserBean, GithubUserBean>() {
+        @Override
+        public GithubUserBean call(GithubUserBean o) {
+            if (TextUtils.isEmpty(o.getBio())) {
+                o.setBio("nothing !");
+            }
+            return o;
+        }
+    })
+    .subscribe(new Subscriber<GithubUserBean>() {
+        @Override
+        public void onCompleted() {
+            loading.dismiss();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            loading.dismiss();
+        }
+
+        @Override
+        public void onNext(GithubUserBean o) {
+            setUserView(o);
+        }
+    });
+}
+
+private void rxRetrofitObservable() {
+    //需要在初始化retrofit时，addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+    GithubService service = GenServiceUtil.createService(GithubService.class);
+    Observable<List<UserFollowerBean>> myObserve = service.followers(name);
+
+    myObserve
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(new Subscriber<List<UserFollowerBean>>() {
+        @Override
+        public void onCompleted() {
+            loading.dismiss();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            loading.dismiss();
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(List<UserFollowerBean> userFollowerBeen) {
+            setFollowersView(userFollowerBeen);
+        }
+    });
+
+}

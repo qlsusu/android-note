@@ -1,0 +1,7 @@
+public final Disposable subscribe() {}
+//我只关心next事件（对其他事件如onerror等均不关心）
+public final Disposable subscribe(Consumer<? super T> onNext) {}
+public final Disposable subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError) {} 
+public final Disposable subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete) {}
+public final Disposable subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Consumer<? super Disposable> onSubscribe) {}
+public final void subscribe(Observer<? super T> observer) {}

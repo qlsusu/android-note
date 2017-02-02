@@ -1,0 +1,4 @@
+参见：
+官网
+	https://github.com/realm/realm-java
+	https://realm.io/cn/docs/java/latest/#getting-started

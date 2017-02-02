@@ -66,6 +66,8 @@ tinypng
 
 对图片进行触控操作
 	https://github.com/chrisbanes/PhotoView
+对图片进行裁剪
+	https://github.com/Yalantis/uCrop
 
 在 Android 下进行实时模糊渲染
 	https://github.com/xitu/gold-miner/blob/master/TODO/a-blurring-view-for-android.md
