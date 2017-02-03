@@ -1,0 +1,6 @@
+参见：
+Android IPC终极指南（二、使用Messenger进行通信） - 推酷
+	http://www.tuicool.com/articles/jmmMFrz
+
+通过Messager可以在不同的进程中传递Message对象，他是一种轻量级的IPC方案，底层是用AIDL实现的，他对AIDL进行了封装，
+他一次处理一个Message，因为：根据其构造函数messenger(handler)，可知：其内部是由一个handler来处理消息的

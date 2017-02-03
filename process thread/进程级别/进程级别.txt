@@ -1,0 +1,9 @@
+参见：
+Processes and Application Life Cycle
+	https://developer.android.com/guide/topics/processes/process-lifecycle.html
+Android平台App进程优先级
+	http://www.jianshu.com/p/6201dc3a447a
+Android进程生命周期与ADJ
+	http://gityuan.com/2015/10/01/process-lifecycle/
+Android进程调度之adj算法
+	http://gityuan.com/2016/08/07/android-adj/

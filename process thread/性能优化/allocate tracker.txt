@@ -1,0 +1,6 @@
+参见：
+Android性能专项测试之Allocation Tracker(Android Studio)
+	http://blog.csdn.net/itfootball/article/details/48750849
+
+allocate tracker的作用：
+在某个逻辑上，监控 分配了多少内存
