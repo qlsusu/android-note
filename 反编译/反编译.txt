@@ -22,7 +22,6 @@ JD-GUI下载地址：
 打开上面的jar文件，即可看到源代码
 
 ---------------------------------------------------------------------------------
----------------------------------------------------------------------------------
 
 二.反编译apk生成程序的源代码和图片、XML配置、语言资源等文件。
 转载自：http://blog.sina.com.cn/s/blog_5752764e0100kv34.html
@@ -30,17 +29,18 @@ apktool
 	https://code.google.com/p/android-apktool/
 	https://code.google.com/p/android-apktool/wiki/Install
 步骤：
-1.按照https://code.google.com/p/android-apktool/wiki/Install进行安装
-2.如，你要反编译abc.apk，则输入：apktool d abc.apk
-3.其会在abc.apk下产生一个文件夹 abc/
+1. 按照https://code.google.com/p/android-apktool/wiki/Install进行安装
+2. 如，你要反编译abc.apk，则输入：apktool d abc.apk
+3. 其会在abc.apk下产生一个文件夹 abc/
  
 三.将反编译完的文件重新打包成apk
- 很简单，只要输入：
-     apktood b 文件夹1（你编译出来文件夹）	 
-目标apk路径：文件夹1/dist/xxx.apk
+删除abc/original/META-INF目录，因为 其中的MANIFEST.MF可能包含了 之前的签名信息
+
+apktool b abc/（该目录即是 你上一步编译出来文件夹）
+目标apk路径：abc/dist/xxx.apk
+
 该APK是没有签名的，对其进行签名，参见：http://blog.csdn.net/aeolus1019/article/details/8121031
-如：
 生成签名(密码：somekey)：
-keytool -genkey -alias some.key -keyalg RSA -validity 20000 -keystore some.key
+	keytool -genkey -alias some.key -keyalg RSA -validity 20000 -keystore some.key
 签名：
-jarsigner -verbose -keystore some.key -signedjar laohuji-sign.apk laohuji.apk some.key
+	jarsigner -verbose -keystore some.key -digestalg SHA1 -sigalg MD5withRSA -signedjar ihc-sign.apk ihc.apk some.key
