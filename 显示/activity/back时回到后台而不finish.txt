@@ -1,0 +1,4 @@
+public boolean moveTaskToBack (boolean nonRoot)
+
+参数为false代表只有当前activity是task根，指应用启动的第一个activity时才有效;
+如果为true则忽略这个限制，任何activity都可以有效。

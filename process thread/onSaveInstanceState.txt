@@ -2,7 +2,7 @@
 
 ------------------------------------onSaveInstanceState
 什么时候被调用
-即当系统“未经你许可”时销毁了你的activity，则onSaveInstanceState会被系统调用
+即系统在“未经你许可”时销毁了你的activity 之前，onSaveInstanceState会被系统调用 以便未来的恢复
 --
 Android calls onSaveInstanceState() before the activity becomes vulnerable to being destroyed by the system, 
 	but does not bother calling it when the instance is actually being destroyed by a user action (such as pressing the BACK key)

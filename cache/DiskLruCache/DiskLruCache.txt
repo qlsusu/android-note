@@ -1,0 +1,5 @@
+参见：
+优雅的构建 Android 项目之磁盘缓存(DiskLruCache)
+    https://gold.xitu.io/post/589d2c862f301e0069b92c04
+官网
+    https://github.com/JakeWharton/DiskLruCache

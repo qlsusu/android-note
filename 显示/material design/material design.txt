@@ -33,6 +33,8 @@ https://github.com/lyfeyaj/awesome-resources
 lightsky个人blog
 	http://www.lightskystreet.com/categories/
 	http://blog.csdn.net/xushuaic/
+Android控件使用 — 12个Material Design风格控件的使用
+	http://blog.csdn.net/hebin320320/article/details/51461611
 	
 
 
