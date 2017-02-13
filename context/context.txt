@@ -5,6 +5,8 @@ Context都没弄明白，还怎么做Android开发？
 	http://www.jianshu.com/p/94e0f9ab3f1d
 Android Context完全解析，你所不知道的Context的各种细节
 	http://blog.csdn.net/guolin_blog/article/details/47028975
+Android Context 是什么？ 
+	http://blog.csdn.net/feiduclear_up/article/details/47356289
 
 application context
 是单例的

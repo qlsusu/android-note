@@ -1,0 +1,2 @@
+因为thread的生命周期 可能和 activity不同
+那么，如果thread 直接/间接 持有了activity的强引用（如：通过非静态内部类的方式，thread子类或runnable子类），则有可能会发生内存泄漏（当activity.finish时，但thread还未死亡）

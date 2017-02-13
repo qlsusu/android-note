@@ -1,6 +1,8 @@
 参见：
 使用StrictMode和MAT分析Android内存泄露
 	http://www.chenshixin.com/2015/12/06/%E4%BD%BF%E7%94%A8StrictMode%E5%92%8CMAT%E5%88%86%E6%9E%90Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98/
+android 内存泄漏（多篇文章摘录）
+	http://www.jianshu.com/p/a53197d588bf
 【译】Handler当做内部类，导致内存泄露的问题
 	http://www.jianshu.com/p/1b39416f1508
 Android内存泄漏总结

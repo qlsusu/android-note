@@ -30,15 +30,16 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-有什么问题：
+----------------有什么问题：
 mHandler是一个 内部匿名类的对象，那么该对象肯定拥有activity的引用，
 那么当activity退出时，或者，activity因为旋转而要被重建时，
 而mhandler还有message要处理，那么activity不会被释放
 	此刻的引用关系链是：Looper -> MessageQueue -> Message -> Handler（因为message的target的handler） -> Activity
 
-该怎么解决：
+----------------该怎么解决：
 	handler不要持有activity的强引用（如：使用弱引用）
-	activity在ondestroy的时候，将handler要处理的 message和callback给清除掉
+	activity在ondestroy的时候，将handler要处理的 message和callback给清除掉，如：mHandler.removeCallbacksAndMessages(null);
+    
 public class MainActivity extends AppCompatActivity {
     private MyHandler mHandler = new MyHandler(this);
     private TextView mTextView ;
