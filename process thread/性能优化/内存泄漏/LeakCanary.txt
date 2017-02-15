@@ -1,5 +1,7 @@
 参见：
 https://github.com/square/leakcanary
+Android 内存泄漏总结
+	https://yq.aliyun.com/articles/3009
 一个包含了leakcanary的 编译过了的lib
 	https://github.com/SOFTPOWER1991/leakcanarySample_androidStudio
 LeakCanary: 让内存泄露无所遁形
@@ -8,3 +10,19 @@ LeakCanary——直白的展现Android中的内存泄露
 	http://blog.csdn.net/watermusicyes/article/details/46333925
 中文说明文档
 	http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/
+
+用法：
+RefWatcher ＝ LeakCanary.install(Application) 
+	其会返回一个预定义的 RefWatcher，同时也会启用一个 ActivityRefWatcher，用于自动监控调用 Activity.onDestroy() 之后泄露的 activity。
+
+监控fragment：
+RefWatcher.watch(Fragment);
+
+工作机制：
+1.RefWatcher.watch() 创建一个 KeyedWeakReference 到要被监控的对象。
+2.然后在后台线程检查引用是否被清除，如果没有，调用GC。
+3.如果引用还是未被清除，把 heap 内存 dump 到 APP 对应的文件系统中的一个 .hprof 文件中。
+4.在另外一个进程中的 HeapAnalyzerService 有一个 HeapAnalyzer 使用HAHA 解析这个文件。
+5.得益于唯一的 reference key, HeapAnalyzer 找到 KeyedWeakReference，定位内存泄露。
+6.HeapAnalyzer 计算 到 GC roots 的最短强引用路径，并确定是否是泄露。如果是的话，建立导致泄露的引用链。
+7.引用链传递到 APP 进程中的 DisplayLeakService， 并以通知的形式展示出来。
