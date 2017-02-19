@@ -1,4 +1,3 @@
-touchslop
 系统所能识别出的被认为是滑动的最小的距离
 viewconfiguration.get().getscaledtouchslop
 

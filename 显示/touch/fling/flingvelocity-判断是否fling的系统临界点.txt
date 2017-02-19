@@ -1,0 +1,2 @@
+系统所能识别出的被认为是fling的 最小/最大速度
+ViewConfiguration#getScaledMinimumFlingVelocity / getMaximumFlingVelocity

@@ -1,19 +1,14 @@
-参见：file:///Users/qlong/_study/android/android-sdk-macosx/docs/training/animation/screen-slide.html
+参见：
+PageTransformer实现个性的ViewPager切换动画
+	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/1030/1870.html
+file:///Users/qlong/_study/android/android-sdk-macosx/docs/training/animation/screen-slide.html
 
 page间的切换动画：
 通过实现ViewPager.PageTransformer
 
-切换动画原理
-设页A在屏幕上，页B在A的右边。
-position（向左滑动）：
-	A的变化区间为：0到-1
-	B的变化区间为：1到0
-默认的切换动画（猜测）:（向左滑动）
-	对于A和B：根据position来改变A/B的left，translationx始终为0
-
 如何使用：
 	ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-	mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+	mPager.setPageTransformer(true, new DepthPageTransformer());
 一个例子：
 	public class DepthPageTransformer implements ViewPager.PageTransformer {
 		private static final float MIN_SCALE = 0.75f;

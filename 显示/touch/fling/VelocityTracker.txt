@@ -1,0 +1,20 @@
+------------------------VelocityTracker
+用于得到 滑动的速度(一段时间内，滑过的px的数目)，
+
+用途：
+在up抬起时，根据当前的速度 来判定 用户是否执行了fling（如 速度>viewconfiguration.getScaledMinimumFlingVelocity()）
+后进行相应的反馈，如：scroller.fling
+
+原理：
+构建对象（必要时）
+	VelocityTracker.obtain();
+被提供motionevent（可以在view.ontouch中）
+	addMovement(event)
+获得滑动速度
+	velocityTracker.computeCurrentVelocity(1000)
+	velocityTracker.getX/YVelocity()
+回收（如：在view.ontouch的 action_up/action_cancel中）
+	velocityTracker.clear()
+	velocityTracker.recycle();
+
+参见：VerticalLinearLayout

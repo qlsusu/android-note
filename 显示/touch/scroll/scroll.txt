@@ -1,5 +1,10 @@
 参见：
 scroll示意.png
+深入聊聊Android事件分发机制
+	http://blog.csdn.net/zhangke3016/article/details/54959569
+	其中，open和close是为了通过fling来进行 抽屉的打开和关闭
+android自定义布局中的平滑移动
+	http://blog.csdn.net/z550946941/article/details/7534971
 Android Scroll详解(一)：基础知识
 	http://ztelur.github.io/2016/03/27/Android-Scroll%E8%AF%A6%E8%A7%A3-%E4%B8%80-%EF%BC%9A%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/
 Android Scroll详解(二)：OverScroller实战
@@ -33,17 +38,17 @@ computeScroll为在滑动时的回调
 	invalidate/postinvalidate方法被调用时
 
 对layout的影响
-scroll并不会导致onlayout被调用（在onlayout中，还是正常来）
+scroll并不会导致onlayout被额外调用
 
 参见：VerticalLinearLayout
 
-判断一个view当前是否可scroll up（当一个view在y方向上，内容很多，能scroll up意味着：此刻，view的当前可见区域上部还是有内容的，可以下滑来scroll up）
+判断一个view当前是否可scroll up（当一个view在y方向上，内容很多，能scroll up意味着：此刻，view的当前可见区域上部还是有内容的，可以下滑来scroll up）：
 view.canScrollVertically(-1);
 
 ------------------------一个使用场景
 在view的touch的某个时机，来启动scroller，
 在computeScroll中，判断scroller是否滑动停止（computeScrollOffset），如果没有，根据scroller的滑动位置，来scrollto/by view，
-后，postinvalidate，来让computeScroll再被调用，则后续流程就这样被又一次执行
+后，postinvalidate，其会让computeScroll再被调用，则后续流程就这样被又一次执行
 
 参考：VerticalLinearLayout
 
