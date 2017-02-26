@@ -1,2 +1,4 @@
 A process's priority may also be increased based on other dependencies a process has to it. 
-For example, if process A has bound to a Service with the Context.BIND_AUTO_CREATE flag or is using a ContentProvider in process B, then process B's classification will always be at least as important as process A's.
+
+For example, if process A has bound to a Service with the Context.BIND_AUTO_CREATE flag or is using a ContentProvider in process B, 
+then process B's classification will always be AT LEAST AS IMPORTANT AS process A's.

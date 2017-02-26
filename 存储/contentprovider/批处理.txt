@@ -1,0 +1,7 @@
+ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation> operations)
+
+ContentProviderOperation的构建:
+ContentProviderOperation.Builder builder=ContentProviderOperation.newXXX(Uri);
+builder.withSelection("=?",new String[]{"xxx"});
+builder.withValues(ContentValues);
+ContentProviderOperation operation=builder.build();

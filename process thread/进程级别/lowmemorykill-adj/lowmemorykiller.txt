@@ -1,3 +1,7 @@
 Lowmemorykiller来进行杀进程，是一种根据阈值级别触发相应力度的内存回收的机制。
 
 adj值越大，优先级越低，adj<0的进程都是系统进程。
+
+ProcessList:
+https://github.com/android/platform_frameworks_base/blob/marshmallow-release/services/core/java/com/android/server/am/ProcessList.java
+https://github.com/android/platform_frameworks_base/blob/nougat-release/services/core/java/com/android/server/am/ProcessList.java

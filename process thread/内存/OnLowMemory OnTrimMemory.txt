@@ -1,0 +1,65 @@
+参见：
+Android 内存相关 onTrimMemory，onLowMemory，MemoryInfo()
+	http://www.cnblogs.com/sudawei/p/3527145.html
+
+----------------------------------------------------OnLowMemory
+OnLowMemory的调用时机：
+当后台程序都被杀死了，但资源还匮乏时的回调
+需要在该方法中，释放一些不必要的资源
+
+形式：
+Application.onLowMemory()
+Activity.OnLowMemory()
+Fragement.OnLowMemory()
+Service.OnLowMemory()
+ContentProvider.OnLowMemory()
+--
+Context.registerComponentCallbacks(new ComponentCallbacks() {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        
+    }
+
+    @Override
+    public void onLowMemory() {
+
+    }
+});
+
+----------------------------------------------------OnTrimMemory
+和OnLowMemory相比：
+. OnLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。
+. OnLowMemory是在最后一个后台进程被杀时调用，一般情况是low memory killer 杀进程后触发；而OnTrimMemory的触发更频繁，每次计算进程优先级时，只要满足条件，都会触发
+
+OnTrimMemory的参数值类型：
+TRIM_MEMORY_COMPLETE：内存不足，并且该进程在后台进程列表最后一个，马上就要被清理
+TRIM_MEMORY_MODERATE：内存不足，并且该进程在后台进程列表的中部。
+TRIM_MEMORY_BACKGROUND：内存不足，并且该进程是后台进程。
+TRIM_MEMORY_UI_HIDDEN：内存不足，并且该进程的UI已经不可见了。      
+TRIM_MEMORY_RUNNING_CRITICAL：内存不足(后台进程不足3个)，并且该进程优先级比较高，需要清理内存
+TRIM_MEMORY_RUNNING_LOW：内存不足(后台进程不足5个)，并且该进程优先级比较高，需要清理内存
+TRIM_MEMORY_RUNNING_MODERATE：内存不足(后台进程超过5个)，并且该进程优先级比较高，需要清理内存       
+
+形式：
+Application.onTrimMemory()
+Activity.onTrimMemory()
+Fragement.OnTrimMemory()
+Service.onTrimMemory()
+ContentProvider.OnTrimMemory()
+--
+Context.registerComponentCallbacks(new ComponentCallbacks2() {
+    @Override
+    public void onTrimMemory(int level) {
+        
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+    }
+
+    @Override
+    public void onLowMemory() {
+
+    }
+});

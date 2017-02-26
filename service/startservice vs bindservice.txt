@@ -1,0 +1,6 @@
+startService()
+调用者与服务之间没有关联，即使调用者退出，服务仍可运行，直到明显调用stopService或者stopSelf才将停止Service
+
+bindService()
+调用者与服务绑定在一起，调用者一旦退出，服务也就终止
+service.onstartCommand不会被调用

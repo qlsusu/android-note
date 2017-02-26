@@ -1,0 +1,155 @@
+思想：
+在锁屏的时候在本进程开启一个Activity，该Activity的大小是1像素，并且透明无切换动画，
+在开屏幕的时候，把这个Activity关闭掉
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        final ScreenManager screenManager = ScreenManager.getInstance(this);
+        ScreenBroadcastListener listener = new ScreenBroadcastListener(this);
+        listener.registerListener(new ScreenBroadcastListener.ScreenStateListener() {
+            @Override
+            public void onScreenOn() {
+                screenManager.finishActivity();
+            }
+
+            @Override
+            public void onScreenOff() {
+                screenManager.startActivity();
+            }
+        });
+   }
+}
+
+public class ScreenManager {
+    private Context mContext;
+
+    private WeakReference<Activity> mActivityWref;
+
+    public static ScreenManager gDefualt;
+
+    public static ScreenManager getInstance(Context pContext) {
+        if (gDefualt == null) {
+            gDefualt = new ScreenManager(pContext.getApplicationContext());
+        }
+        return gDefualt;
+    }
+    private ScreenManager(Context pContext) {
+        this.mContext = pContext;
+    }
+
+    public void setActivity(Activity pActivity) {
+        mActivityWref = new WeakReference<Activity>(pActivity);
+    }
+
+    public void startActivity() {
+		LiveActivity.actionToLiveActivity(mContext);
+    }
+
+    public void finishActivity() {
+        //结束掉LiveActivity
+        if (mActivityWref != null) {
+            Activity activity = mActivityWref.get();
+            if (activity != null) {
+                activity.finish();
+            }
+        }
+    }
+}
+
+//保活activity
+public class LiveActivity extends Activity {
+    public static final String TAG = LiveActivity.class.getSimpleName();
+
+    public static void actionToLiveActivity(Context pContext) {
+        Intent intent = new Intent(pContext, LiveActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        pContext.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+        setContentView(R.layout.activity_live);
+
+        Window window = getWindow();
+        //放在左上角
+        window.setGravity(Gravity.START | Gravity.TOP);
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        //宽高设计为1个像素
+        attributes.width = 1;
+        attributes.height = 1;
+        //起始坐标
+        attributes.x = 0;
+        attributes.y = 0;
+        window.setAttributes(attributes);
+
+        ScreenManager.getInstance(this).setActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+}
+
+//保活activity的主题
+<style name="LiveStyle">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@null</item>
+    <item name="android:windowNoTitle">true</item>
+</style>
+
+//监听 锁屏/开屏
+public class ScreenBroadcastListener {
+    private Context mContext;
+
+    private ScreenBroadcastReceiver mScreenReceiver;
+
+    private ScreenStateListener mListener;
+
+    public ScreenBroadcastListener(Context context) {
+        mContext = context.getApplicationContext();
+        mScreenReceiver = new ScreenBroadcastReceiver();
+    }
+
+    interface ScreenStateListener {
+        void onScreenOn();
+
+        void onScreenOff();
+    }
+
+    /**
+     * screen状态广播接收者
+     */
+    private class ScreenBroadcastReceiver extends BroadcastReceiver {
+        private String action = null;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            action = intent.getAction();
+            if (Intent.ACTION_SCREEN_ON.equals(action)) { // 开屏
+                mListener.onScreenOn();
+            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) { // 锁屏
+                mListener.onScreenOff();
+            }
+        }
+    }
+
+    public void registerListener(ScreenStateListener listener) {
+        mListener = listener;
+        registerListener();
+    }
+
+    private void registerListener() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        mContext.registerReceiver(mScreenReceiver, filter);
+    }
+}

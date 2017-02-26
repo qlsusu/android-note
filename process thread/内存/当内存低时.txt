@@ -1,2 +1,0 @@
-ComponentCallbacks.onLowMomory()被回调时，被要求释放一些不必要的资源
-The set of callback APIs that are common to all application components (Activity, Service, ContentProvider, and Application).

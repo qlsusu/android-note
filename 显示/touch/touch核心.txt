@@ -22,6 +22,9 @@ activity.onTouchEvent
 
 说明：
 完整传递流程：Activity（PhoneWindow）-> DecorView -> ViewGroup -> View
+view.dispatchtouchevent的返回值 意味着 是否对后续事件感兴趣
+当view.ontouch返回了true，也就意味着viewgroup.dispatchtouchevent返回了true，也就意味着 viewgroup对后续的事件感兴趣
+
 activity.dispatchTouchEvent的源码参见：b21.p144
 
 --------------------
@@ -31,11 +34,12 @@ view不再参与到 事件下发传递 的原因：
 		说明：能轮到view.ontouch被调用，说明 下层view 未对该down事件感兴趣
 	view.dispatchTouchEvent返回false，或
 	viewgroup.onInterceptTouchEvent返回true，或
-	上层view没有参与到 事件下发传递
+	上层view没有参与到 事件下发传递，或
+	view被下发了cancel事件
 
 view不再参与到 事件处理传递 的原因：
 	view没有参与到 事件下发传递，或
-	图示中，上面的view的 ontouch返回true
+	图示中，上层view的 ontouch返回true
 
 -------------------------------------------------father.onInterceptTouchEvent
 当father.onintercept返回false时，
@@ -51,7 +55,7 @@ view不再参与到 事件处理传递 的原因：
 		类型为move，则child参与该事件下发传递，但是事件类型变为cancel（同up类似），且，child不再参与后续事件的下发传递
 
 --------------------requestDisallowInterceptTouchEvent
-在view在处理down事件后（无论其对后续事件是否感兴趣），可以调用requestDisallowInterceptTouchEvent
+在view在处理down事件后（无论其对后续事件是否感兴趣），可以调用father.requestDisallowInterceptTouchEvent
 	否则，处理down事件中，即使调用了，也没有效果
 	内部含义：该方法改变了mGroupFlags，但是在每次down事件时，mGroupFlags会复原
 其导致，father.onInterceptTouchEvent不再参与后续事件的下发流程，同样father.father.onInterceptTouchEvent也不再参与
@@ -59,7 +63,7 @@ view不再参与到 事件处理传递 的原因：
 -------------------------------------------------onTouchEvent vs OnTouchListener.ontouch
 返回值代表：是否对 该事件以及后续事件 感兴趣
 如果针对于 非down(如move或up)事件，返回false，等同于：返回true，只是，activity.onTouchEvent还接着被调用（也只有activity.onTouchEvent）
-	说明：此处，ontouch还能针对于 非down事件 来处理，说明，ontouch中 针对于down事件 返回了true
+	此处，ontouch还能针对于 非down事件 来处理，意味着，ontouch中 针对于down事件 返回了true
 
 如果view参与到事件的处理传递，view的事件处理传递 顺序为：
 OnTouchListener
@@ -87,6 +91,14 @@ onLongClick的返回的true/false代表什么意思:
 view不可点击（ontouchxxx方法不执行）的条件：clickable和longclickable都为false
 
 view的longclickable默认返回false
+
+-------------------------------------------------cancel事件
+当view被下发了cancel事件，那么该view不再参与到 后续事件的下发流程中
+
+例子：
+viewgroup在dispatchtouchevent中，下发了cancel事件，而view在ontouchevent中，针对于该cancel事件返回了true
+则，间接意味着 viewgroup对后续的touch事件感兴趣，则后续事件会继续下发给viewgroup
+但，后续事件不再传递给view
 
 --------------------------------------------------------------------------以前的内容
 

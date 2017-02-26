@@ -68,6 +68,7 @@ auto import
 	bookmark
 鼠标悬浮来查看doc
 	Editor->General-Show quick doc on mouse move
+open source in new window
 ------------工具设置
 隐藏所有的tab
 	hide all windows
