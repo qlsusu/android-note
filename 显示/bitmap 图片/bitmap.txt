@@ -1,4 +1,3 @@
-加载大图片
 参见：
 mycsdn/那个大图片
 	避免oom
@@ -8,6 +7,8 @@ mycsdn/那个大图片
 	lrucache
 	decoderesource
 http://blog.csdn.net/qlsusu/article/details/7836036
+Android Training - 高效地显示Bitmap(Lesson 4 - 优化Bitmap的内存使用)
+	http://hukai.me/android-training-displaying-bitmaps-efficiently-lesson-4/
 
 尺寸
 通过decodeResource()来加载的图片，会进行缩放（当bitmapfactory.options.inScaled为true时（默认为true））

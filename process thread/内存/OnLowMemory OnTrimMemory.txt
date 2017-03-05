@@ -1,6 +1,10 @@
 参见：
+从OnTrimMemory视角谈Android代码内存优化
+    http://www.myexception.cn/android/2016638.html
 Android 内存相关 onTrimMemory，onLowMemory，MemoryInfo()
 	http://www.cnblogs.com/sudawei/p/3527145.html
+Android 应用内存优化 之 onLowMemory & onTrimMemory
+    http://www.cnblogs.com/CharlesGrant/p/5112438.html
 
 ----------------------------------------------------OnLowMemory
 OnLowMemory的调用时机：
@@ -28,17 +32,32 @@ Context.registerComponentCallbacks(new ComponentCallbacks() {
 
 ----------------------------------------------------OnTrimMemory
 和OnLowMemory相比：
+. OnLowMemory大概和 OnTrimMemory中的TRIM_MEMORY_COMPLETE级别相同
 . OnLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。
-. OnLowMemory是在最后一个后台进程被杀时调用，一般情况是low memory killer 杀进程后触发；而OnTrimMemory的触发更频繁，每次计算进程优先级时，只要满足条件，都会触发
 
 OnTrimMemory的参数值类型：
-TRIM_MEMORY_COMPLETE：内存不足，并且该进程在后台进程列表最后一个，马上就要被清理
-TRIM_MEMORY_MODERATE：内存不足，并且该进程在后台进程列表的中部。
-TRIM_MEMORY_BACKGROUND：内存不足，并且该进程是后台进程。
-TRIM_MEMORY_UI_HIDDEN：内存不足，并且该进程的UI已经不可见了。      
-TRIM_MEMORY_RUNNING_CRITICAL：内存不足(后台进程不足3个)，并且该进程优先级比较高，需要清理内存
-TRIM_MEMORY_RUNNING_LOW：内存不足(后台进程不足5个)，并且该进程优先级比较高，需要清理内存
-TRIM_MEMORY_RUNNING_MODERATE：内存不足(后台进程超过5个)，并且该进程优先级比较高，需要清理内存       
+TRIM_MEMORY_RUNNING_MODERATE：
+    表示应用程序正常运行，并且不会被杀掉。但是目前手机的内存已经有点低了，系统可能会开始根据LRU缓存规则来去杀死进程了
+    内存不足(后台进程超过5个)
+TRIM_MEMORY_RUNNING_LOW：
+    表示应用程序正常运行，并且不会被杀掉。但是目前手机的内存已经非常低了
+    内存不足(后台进程不足5个)
+TRIM_MEMORY_RUNNING_CRITICAL：
+    表示应用程序仍然正常运行，但是系统已经根据LRU缓存规则杀掉了大部分缓存的进程了
+    内存不足(后台进程不足3个)
+TRIM_MEMORY_BACKGROUND：
+    表示手机目前内存已经很低了，系统准备开始根据LRU缓存来清理进程。这个时候我们的程序在LRU缓存列表的最近位置，是不太可能被清理掉的
+TRIM_MEMORY_MODERATE：
+    表示手机目前内存已经很低了，并且我们的程序处于LRU缓存列表的中间位置，如果手机内存还得不到进一步释放的话，那么我们的程序就有被系统杀掉的风险了。
+TRIM_MEMORY_COMPLETE 
+    表示手机目前内存已经很低了，并且我们的程序处于LRU缓存列表的最边缘位置，系统会最优先考虑杀掉我们的应用程序
+--
+TRIM_MEMORY_UI_HIDDEN：
+    表示应用程序的 “所有”UI界面 被隐藏了，即用户点击了Home键或者Back键导致应用的UI界面不可见．这时候应该释放一些资源
+    和activity.onstop的相比
+        onstop仅仅代表 我们app的某个activity不可见了
+        OnTrimMemory(TRIM_MEMORY_UI_HIDDEN)是在onstop之前被调用
+    内存不足，并且该进程的UI已经不可见了
 
 形式：
 Application.onTrimMemory()
@@ -47,6 +66,7 @@ Fragement.OnTrimMemory()
 Service.onTrimMemory()
 ContentProvider.OnTrimMemory()
 --
+//非component时，也能得到 回调通知
 Context.registerComponentCallbacks(new ComponentCallbacks2() {
     @Override
     public void onTrimMemory(int level) {
@@ -58,8 +78,13 @@ Context.registerComponentCallbacks(new ComponentCallbacks2() {
 
     }
 
+    //大致跟TRIM_MEMORY_COMPLETE事件相同。
     @Override
     public void onLowMemory() {
 
     }
 });
+
+----------------------------------------------------需要释放什么
+缓存：包括一些文件缓存，图片缓存等
+动态生成和添加的View，且少数情况下才使用到的View

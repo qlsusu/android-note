@@ -12,7 +12,6 @@ application context
 是单例的
 getApplication()和getApplicationContext()返回的是同一个对象
 
-
 activity/service context
 创建一个Activity/Service实例时, 也会创建一个ContextImpl实例
 Acitivity是唯一的绑定了在manifast文件中定义主题Theme的Context，则，凡是跟UI相关的，都应该使用Activity做为Context来处理；

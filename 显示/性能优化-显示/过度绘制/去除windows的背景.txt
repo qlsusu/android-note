@@ -1,0 +1,5 @@
+设置主题:
+<item name="android:windowBackground">@null</item>
+
+或
+getWindow().setBackgroundDrawable(null);

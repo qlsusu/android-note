@@ -1,4 +1,9 @@
-﻿adb启动不起来，在eclipse中
+﻿参见：
+Android adb你真的会用吗?
+	http://www.jianshu.com/p/5980c8c282ef
+
+
+adb启动不起来，在eclipse中
 参见：http://stackoverflow.com/questions/5703550/my-eclipse-adb-server-didnt-ack-failed-to-start-daemon
 	带截图的那个
 	

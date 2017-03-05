@@ -13,6 +13,7 @@ public static int getDefaultSize(int size, int measureSpec) {
 	case MeasureSpec.UNSPECIFIED:
 		result = size;
 		break;
+	//即是：在layout.xml中 <View>如果设置了wrap_content，那么 效果同match_parent
 	case MeasureSpec.AT_MOST:
 	case MeasureSpec.EXACTLY:
 		result = specSize;

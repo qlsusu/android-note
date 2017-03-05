@@ -1,0 +1,5 @@
+参见：
+Android Studio你不知道的调试技巧
+	http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/
+［Android Studio 权威教程］断点调试和高级调试
+	http://blog.csdn.net/yy1300326388/article/details/46501871

@@ -8,6 +8,8 @@ Android App优化之性能分析工具
 	在ddms中，也介绍了 如traceview等工具
 正确使用Android性能分析工具——TraceView
 	http://bxbxbai.github.io/2014/10/25/use-trace-view/
+Android App优化之Layout怎么摆
+	http://www.jianshu.com/p/4943dae4c333
 
 ------------------------一个建议的推荐工具列表为：
 strictmode
@@ -24,6 +26,15 @@ traceview
 	哪些方法耗时
 
 ------------------------其他工具
+viewhierarchy
+Memory Monitor
+	参见：
+	Android性能优化第（二）篇---Memory Monitor检测内存泄露
+		http://www.jianshu.com/p/ef9081050f5c
+mat
+	参见：
+	Android性能优化第（三）篇---MAT比Menmery Monitor更强大
+		http://www.jianshu.com/p/2d47d1cf5ccf
 dumpsys
 Systrace
 Update Threads（更新线程）、

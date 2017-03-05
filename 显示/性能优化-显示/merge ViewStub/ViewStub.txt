@@ -23,7 +23,17 @@ ViewStub就是一个宽高都为0的一个View，它默认是不可见的，只�
 </ListView>  
 
 如果加载：
-方式1（通过setvisibility）：
+方式1（通过inflate）
+ViewStub listStub2 = (ViewStub) findViewById(R.id.stub_import) ;  
+// 成员变量commLv2为空则代表未加载  
+if ( commLv2 == null ) {  
+// 加载评论列表布局, 并且获取评论ListView,inflate函数直接返回ListView对象  
+  commLv2 = (ListView)listStub2.inflate();  
+} else {  
+// ViewStub已经加载  
+}  
+--
+方式2（通过setvisibility）：
 ViewStub listStub = (ViewStub) findViewById(R.id.stub_import);  
 // 加载评论列表布局  
 listStub.setVisibility(View.VISIBLE);  
@@ -34,14 +44,4 @@ listStub.setVisibility(View.VISIBLE);
 			   // 已经加载, 否则还没有加载  
 		}  
 	}  
-}  
---
-方式2（通过inflate）
-ViewStub listStub2 = (ViewStub) findViewById(R.id.stub_import) ;  
-// 成员变量commLv2为空则代表未加载  
-if ( commLv2 == null ) {  
-// 加载评论列表布局, 并且获取评论ListView,inflate函数直接返回ListView对象  
-  commLv2 = (ListView)listStub2.inflate();  
-} else {  
-// ViewStub已经加载  
-}  
+} 

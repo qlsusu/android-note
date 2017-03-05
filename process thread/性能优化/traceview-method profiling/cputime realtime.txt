@@ -1,0 +1,3 @@
+CPU Time 方法实际执行时间(不包括io等待时间)
+Real Time 方法开始结束时间差(包括等待时间)
+参考:http://stackoverflow.com/questions/15760447/what-is-the-meaning-of-incl-cpu-time-excl-cpu-time-incl-real-cpu-time-excl-re/17902682#17902682

@@ -1,6 +1,8 @@
 参见：
+Tools, 出来接活了--Android内存优化第三弹
+	http://www.jianshu.com/p/080473ae050b
 Android性能专项测试之Allocation Tracker(Android Studio)
 	http://blog.csdn.net/itfootball/article/details/48750849
 
-allocate tracker的作用：
-在某个逻辑上，监控 分配了多少内存
+Allocation Tracker可以协助我们分析在一个特定操作时, 有哪些对象被分配内存了. 
+这可以很方便的让我们知道方法调用的情况, 以便针对性的优化, 以提升性能和内存使用.

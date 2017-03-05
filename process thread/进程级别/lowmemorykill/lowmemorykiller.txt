@@ -1,0 +1,9 @@
+参见：
+Android——内存管理-lowmemorykiller 机制
+	http://blog.csdn.net/jscese/article/details/47317765
+Android LowMemoryKiller原理分析
+	http://gityuan.com/2016/09/17/android-lowmemorykiller/
+
+Lowmemorykiller来进行杀进程，是一种根据阈值级别触发相应力度的内存回收的机制。
+
+adj值越大，优先级越低，adj<0的进程都是系统进程。

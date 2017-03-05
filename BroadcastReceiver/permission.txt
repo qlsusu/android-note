@@ -1,0 +1,38 @@
+参见：
+Android Broadcast 和 BroadcastReceiver的权限限制
+	http://blog.csdn.net/javensun/article/details/7334230
+
+---------------------谁有权收我的广播
+含义：
+具有RECV_XXX权限的Receiver才能接收此广播要接收该广播
+
+实现：
+. 在sender app中
+1. 在Androidmanifest.xml中定义新的权限RECV_XXX，例如：
+<permission android:name = "com.android.permission.RECV_XXX"/>  
+2. 在Sender app发送广播时将此权限作为参数传入，如下：
+sendBroadcast("com.android.XXX_ACTION", "com.android.permission.RECV_XXX");  
+
+. 在receiver app中
+1. 在AndroidManifest.xml中要添加对应的RECV_XXX权限，例如：
+<uses-permission android:name="com.android.permission.RECV_XXX"></uses-permission>
+
+
+---------------------谁有权给我发广播
+含义：
+Receiver只能接收来自具有该SEND_XXX权限的应用发出的广播。
+
+.在Receiver app中
+1. 在manifest.xml中，声明权限，如：
+<permission android:name="com.android.SEND_XXX"/>  
+2. 在<receiver>中添加权限SEND_XXX的声明，如：
+<receiver android:name=".XXXReceiver"   
+          android:permission="com.android.permission.SEND_XXX">   
+    <intent-filter>  
+         <action android:name="com.android.XXX_ACTION" />   
+    </intent-filter>  
+</receiver>  
+
+.在sender app中
+1. 在AndroidManifest.xml中，声明使用该权限，如：
+<uses-permission android:name="com.android.permission.SEND_XXX"></uses-permission>  

@@ -1,0 +1,1 @@
+analyze - run inspection by name - unused resources

@@ -1,0 +1,3 @@
+在Android 2.3.3 (API level 10) 以及 之前, 一个bitmap的像素级数据是存放在native内存中，而bitmap对象本身是被存放在Dalvik heap中. 
+	而在native内存中的pixel数据不是以可以预测的方式去释放的, 则需要手动调用recycle
+在Android 3.0 (API Level 11) 以及 之后, pixel数据与bitmap对象本身一起存放在dalvik heap中，不要再手动调用recycle

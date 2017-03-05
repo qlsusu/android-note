@@ -1,0 +1,56 @@
+参见：
+Android App优化之提升你的App启动速度之实例挑战
+	http://www.jianshu.com/p/4f10c9a10ac9
+
+方式：
+. 第三方库 在新线程中 被初始化
+	如，使用intentservice
+
+. 设置windowbackground
+//定义drawable
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 底层白色 -->
+    <item android:drawable="@color/white" />
+
+    <!-- 顶层Logo居中 -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/ic_github" />
+    </item>
+</layer-list>
+
+//设置windowbackground
+<style name="SplashTheme" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/logo_splash</item>
+</style>
+
+//一个 比欢迎页还要靠前的 activity，其使用了 该主题，且不设置contentview
+public class LogoSplashActivity extends BaseActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // 注意, 这里并没有setContentView, 单纯只是用来跳转到相应的Activity.
+        // 目的是减少首屏渲染
+        if (AppPref.isFirstRunning(this)) {
+            IntroduceActivity.launch(this);
+        }
+        else {
+            MainActivity.launch(this);
+        }
+        finish();
+    }
+}
+
+<activity
+  android:name=".ui.module.main.LogoSplashActivity"
+  android:screenOrientation="portrait"
+  android:theme="@style/SplashTheme">
+  <intent-filter>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>

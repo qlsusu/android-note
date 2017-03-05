@@ -1,4 +1,6 @@
 参见：
+Android性能优化第（四）篇---Android渲染机制
+	http://www.jianshu.com/p/9ac245657127
 Android App优化, 要怎么做?
 	http://www.jianshu.com/p/f7006ab64da7
 	其中有一系列文章

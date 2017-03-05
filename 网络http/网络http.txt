@@ -1,0 +1,3 @@
+参见：
+Android App优化之网络优化
+	http://www.jianshu.com/p/d4c2c62ffc35

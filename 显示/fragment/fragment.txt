@@ -1,26 +1,28 @@
-²Î¼û£º
-http://www.cnblogs.com/lcyty/p/3383960.html
-	Fragment×Ô¶¨Òå¶¯»­¡¢¶¯»­¼àÌıÒÔ¼°¼æÈİĞÔ°üÊ¹ÓÃ
+å‚è§ï¼š
+Fragmentè‡ªå®šä¹‰åŠ¨ç”»ã€åŠ¨ç”»ç›‘å¬ä»¥åŠå…¼å®¹æ€§åŒ…ä½¿ç”¨
+	http://www.cnblogs.com/lcyty/p/3383960.html
+Squareï¼šä»ä»Šå¤©å¼€å§‹æŠ›å¼ƒFragmentå§ï¼
+	https://github.com/hehonghui/android-tech-frontier/blob/master/issue-13/Square%EF%BC%9A%E4%BB%8E%E4%BB%8A%E5%A4%A9%E5%BC%80%E5%A7%8B%E6%8A%9B%E5%BC%83Fragment%E5%90%A7%EF%BC%81.md
 
-Ò»¸öFragmentµÄÊµÀı¶¼±ØĞëÓëÒ»¸öFragmentActivity
+ä¸€ä¸ªFragmentçš„å®ä¾‹éƒ½å¿…é¡»ä¸ä¸€ä¸ªFragmentActivityå…³è”
 
-fragmentµÄÇĞ»»
-replace()Õâ¸ö·½·¨Ö»ÊÇÔÚÉÏÒ»¸öFragment²»ÔÙĞèÒªÊ±²ÉÓÃµÄ¼ò±ã·½·¨¡£
-ÕıÈ·µÄÇĞ»»·½Ê½ÊÇadd()£¬ÇĞ»»Ê±hide()£¬add()ÁíÒ»¸öFragment£»ÔÙ´ÎÇĞ»»Ê±£¬Ö»Ğèhide()µ±Ç°£¬show()ÁíÒ»¸ö¡£
-ÕâÑù¾ÍÄÜ×öµ½¶à¸öFragmentÇĞ»»²»ÖØĞÂÊµÀı»¯
+fragmentçš„åˆ‡æ¢
+replace()è¿™ä¸ªæ–¹æ³•åªæ˜¯åœ¨ä¸Šä¸€ä¸ªFragmentä¸å†éœ€è¦æ—¶é‡‡ç”¨çš„ç®€ä¾¿æ–¹æ³•ã€‚
+æ­£ç¡®çš„åˆ‡æ¢æ–¹å¼æ˜¯add()ï¼Œåˆ‡æ¢æ—¶hide()ï¼Œadd()å¦ä¸€ä¸ªFragmentï¼›å†æ¬¡åˆ‡æ¢æ—¶ï¼Œåªéœ€hide()å½“å‰ï¼Œshow()å¦ä¸€ä¸ªã€‚
+è¿™æ ·å°±èƒ½åšåˆ°å¤šä¸ªFragmentåˆ‡æ¢ä¸é‡æ–°å®ä¾‹åŒ–
 	
 ChildFragmentManager	
-Èç¹ûÒ»¸öfragmentÄÚ²¿£¬ÒªÊ¹ÓÃviewpager£¬¶øÆäÄÚ²¿ÓÖÒªÊ¹ÓÃFragmentPagerAdapter£¬ÔòFragmentPagerAdapterµÄ¹¹½¨Ê¹ÓÃfragment.getChildFragmentManager
+å¦‚æœä¸€ä¸ªfragmentå†…éƒ¨ï¼Œè¦ä½¿ç”¨viewpagerï¼Œè€Œå…¶å†…éƒ¨åˆè¦ä½¿ç”¨FragmentPagerAdapterï¼Œåˆ™FragmentPagerAdapterçš„æ„å»ºä½¿ç”¨fragment.getChildFragmentManager
 
-ÔÚ½ø³Ì±»ÏµÍ³»ØÊÕÊ±
-fragmentÒÀ¸½ÓÚactivity£¬Éè¸ÃactivityÊÇ½ø³Ì±»ÏµÍ³»ØÊÕÊ±£¬×îºóÒ»¸öactivity(»ØÊÕÊ±£¬ÈÔ´æÔÚÓÚtaskÖĞ)
-µ±½ø³Ì±»ÏµÍ³»ØÊÕ£¬ÔÙ´Î½øÈëÊ±£¬¸ÃactivityÓ¦¸Ã±»finish£¬¶øactivity.finishµÄÁ÷³ÌÖĞ£¬»áÔÙ´ÎÖØĞÂ¹¹½¨fragment£¬Ôò´Ë¿ÌÓ¦¸Ã±ÜÃâ£ºÔÚ¸ÃfragmentÊ¹ÓÃgetChildFragmentManagerÔÙÌí¼Ó×Ófragment
+åœ¨è¿›ç¨‹è¢«ç³»ç»Ÿå›æ”¶æ—¶
+fragmentä¾é™„äºactivityï¼Œè®¾è¯¥activityæ˜¯è¿›ç¨‹è¢«ç³»ç»Ÿå›æ”¶æ—¶ï¼Œæœ€åä¸€ä¸ªactivity(å›æ”¶æ—¶ï¼Œä»å­˜åœ¨äºtaskä¸­)
+å½“è¿›ç¨‹è¢«ç³»ç»Ÿå›æ”¶ï¼Œå†æ¬¡è¿›å…¥æ—¶ï¼Œè¯¥activityåº”è¯¥è¢«finishï¼Œè€Œactivity.finishçš„æµç¨‹ä¸­ï¼Œä¼šå†æ¬¡é‡æ–°æ„å»ºfragmentï¼Œåˆ™æ­¤åˆ»åº”è¯¥é¿å…ï¼šåœ¨è¯¥fragmentä½¿ç”¨getChildFragmentManagerå†æ·»åŠ å­fragment
 
-fragmentÀïÃæÔÙÇ¶Ì×fragment£¬²»Òª·ÅÔÚ ¸¸Ç×fragment¶ÔÓ¦µÄlayoutÖĞµÄ ¸ùview
+fragmenté‡Œé¢å†åµŒå¥—fragmentï¼Œä¸è¦æ”¾åœ¨ çˆ¶äº²fragmentå¯¹åº”çš„layoutä¸­çš„ æ ¹view
 
-µ±ËŞÖ÷activity±»re-createÊ±
-Èç¹ûfragment.setRetainInstance(true)ÁË£¬ÄÇÃ´¼´±ãactivityÖØĞÂ´´½¨ÁË£¬¸ÃfragmentÈÔÈ»±»±£´æÁË
-Àı×Ó:
+å½“å®¿ä¸»activityè¢«re-createæ—¶
+å¦‚æœfragment.setRetainInstance(true)äº†ï¼Œé‚£ä¹ˆå³ä¾¿activityé‡æ–°åˆ›å»ºäº†ï¼Œè¯¥fragmentä»ç„¶è¢«ä¿å­˜äº†
+ä¾‹å­:
 	class RetainFragment extends Fragment {
 		private static final String TAG = "RetainFragment";
 		public LruCache<String, Bitmap> mRetainedCache;

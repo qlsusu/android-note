@@ -1,4 +1,6 @@
 参见：
+Android性能优化的方方面面
+	http://www.jianshu.com/p/b3b09fa29f65
 如何在Android中避免创建不必要的对象
 	http://droidyue.com/blog/2016/08/01/avoid-creating-unnecesssary-objects-in-android/
 	其中也包含了一些链接，如：关于Android中工作者线程的思考
