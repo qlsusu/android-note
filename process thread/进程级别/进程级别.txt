@@ -1,4 +1,7 @@
 参见：
+Android多进程介绍
+	http://blog.spinytech.com/2016/11/15/android_multiple_process/
+	google doc中 进程级别的 中文翻译
 Processes and Application Life Cycle
 	https://developer.android.com/guide/topics/processes/process-lifecycle.html
 Android平台App进程优先级

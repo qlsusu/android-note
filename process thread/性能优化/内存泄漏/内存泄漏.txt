@@ -15,6 +15,8 @@ Android内存优化之OOM
 	http://hukai.me/android-performance-oom/
 Android中常见的内存泄漏
 	http://www.jianshu.com/p/130d3b22a386
+Android内存泄漏研究
+	http://mp.weixin.qq.com/s?__biz=MzI0MjE3OTYwMg==&mid=2649547478&idx=1&sn=fec54d62785a6f666ef9c49646871ba9&scene=21#wechat_redirect
 
 ---------------------------------什么是内存泄漏
 内存机制

@@ -93,7 +93,7 @@ view不可点击（ontouchxxx方法不执行）的条件：clickable和longclick
 view的longclickable默认返回false
 
 -------------------------------------------------cancel事件
-当view被下发了cancel事件，那么该view不再参与到 后续事件的下发流程中
+当view被下发了cancel事件，那么该view不再参与到 后续事件的下发流程中，则父viewgroup.onintercept也不会参与了
 
 例子：
 viewgroup在dispatchtouchevent中，下发了cancel事件，而view在ontouchevent中，针对于该cancel事件返回了true

@@ -1,0 +1,6 @@
+参见：
+Android 响应用户屏幕手势操作
+	http://blog.ingphone.com/android/2013/11/13/Android-%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6.html
+
+场景：
+当在popwindow的外面进行点击时，使popwindow消失

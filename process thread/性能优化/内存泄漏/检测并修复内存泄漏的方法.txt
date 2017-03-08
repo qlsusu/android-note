@@ -3,4 +3,5 @@
 3. 生成标准的hprof文件
 4. 通过MAT打开该文件，在OQL中查询出activity实例：select * from instanceof xxxActivity的完全限定类名
 5. 清除activity对象的弱引用等：右键对象，path to gcroot, exclude all phantom/weak/soft etc. references
+	或者，Merge Shortest Paths to GC Roots
 6. 查看最终谁在引用该对象
