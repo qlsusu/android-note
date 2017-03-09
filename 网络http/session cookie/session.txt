@@ -1,0 +1,43 @@
+参见：
+Session与cookie之间的关系
+	https://my.oschina.net/ITBoy/blog/23716
+
+http协议无状态
+每一个HTTP响应 只取决于 相应请求中包含的信息（即是：两个http响应之间 没有任何关系）
+
+cookie：
+有什么用：保持状态的一种方案
+服务器通过在HTTP的响应头中加上一行特殊的指示 以提示 浏览器按照指示生成相应的cookie
+在后续的 向同一服务器发送的任何请求中，都会带上这些cookies
+则当前servlet可以通过读取cookie来获得上一servlet的处理结果，则，起到了状态维持的效果
+--
+cookie规范：IETF RFC 2965 HTTP State Management Mechanism
+
+session有什么用：
+因为http请求无状态，在服务器的请求处理中，servlet2可能需要 servlet1生成的某项信息，则将该信息保存至session中（将其和sessionid关联），后servlet2根据该sessionid取出该信息
+	servlet2怎么知道该sessionid：
+		servlet1将sessionid放入到响应头中 发送给客户端，客户端在请求servlet2时，将sessionid通过 cookie/url重写的（因cookie可被人为的禁止） 方式发送过来
+			url重写：将session id直接附加在URL路径的后面，如：
+				http://...../xxx;jsessionid=ByOK ... 99zWpBng!-145788764，或
+				http://...../xxx?jsessionid=ByOK ... 99zWpBng!-145788764
+	再强调：http协议无状态，即是：servlet2 和 servlet1没有任何的关系，session信息的获取 仅仅需要告诉 sessionid
+
+session的产生:
+当服务端程序需要为 某个客户端的请求 创建一个session的时候，服务器首先检查该请求里是否已包含了session id，
+	如果包含，则说明以前已经为此客户端创建过session，服务器就根据该session id 找到对应的把session（如果找不到，可能会新建一个）
+	如果不包含，则为此客户端创建一个session并且生成一个与此对应的session id，并将其包含在响应头中 返回给客户端
+--
+session的服务器端保存：
+服务器使用一种类似于散列表的结构（也可能就是使用散列表）来保存session中的信息（key-value）
+--
+session的过期：
+除非servlet主动删除一个session，否则该session将一直保留在服务器
+则，为了将‘无用的’session删除以节省存储空间，才迫使服务器为seesion设置了一个失效时间
+--
+session cookie和persistent cookie：
+session cookie是存储于浏览器内存中的（如：关闭了一个浏览器窗口，该cookie便消失了）
+persistent cookie是持久化于客户端硬盘上的一段文本
+
+cookie vs session
+cookie将信息存储在客户端
+session将信息存储在服务器，仅留客户端一个sessionid（session的标识）
