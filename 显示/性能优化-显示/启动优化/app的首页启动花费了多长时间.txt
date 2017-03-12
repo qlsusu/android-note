@@ -1,0 +1,6 @@
+adb shell am start -W [PackageName]/[PackageName.MainActivity]
+
+WaitTime 是 startActivityAndWait 这个方法的调用耗时，
+ThisTime 是指调用过程中 最后一个Activity开始启动 到 这个Activity的startActivityAndWait 调用结束。
+TotalTime 是指调用过程中 第一个Activity开始启动 到 最后一个Activity的startActivityAndWait 调用结束。
+如果过程中只有一个 Activity ，则 TotalTime 等于 ThisTime。

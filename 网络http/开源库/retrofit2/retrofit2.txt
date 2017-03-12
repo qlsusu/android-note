@@ -6,6 +6,9 @@ Android Retrofit 2.0使用
 Android Retrofit 2.0 使用-补充篇
 	http://wuxiaolong.me/2016/06/18/retrofits/
 	其中介绍了：设置debug时log，离线缓存，公共参数配置，为指定接口设置request，设置cookies，传递文件等
+Retrofit2 完全解析 探索与okhttp之间的关系
+	http://blog.csdn.net/lmj623565791/article/details/51304204
+	鸿洋的
 我们真的需要使用RxJava+Retrofit吗？
 	https://gold.xitu.io/post/584eb780128fe10058b4c38b
 Retrofit2 源码解析

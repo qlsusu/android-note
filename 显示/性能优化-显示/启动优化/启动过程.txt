@@ -1,0 +1,2 @@
+Application的构造器方法——>attachBaseContext()——>onCreate()——>
+Activity的构造方法——>onCreate()——>配置主题中背景等属性——>onStart()——>onResume()——>测量、布局、绘制显示在界面上。

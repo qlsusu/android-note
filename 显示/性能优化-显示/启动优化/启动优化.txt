@@ -1,12 +1,36 @@
 参见：
+Android性能优化第（八）篇---App启动速度优化之耗时检测处理
+  http://www.jianshu.com/p/a0e242d57360
 Android App优化之提升你的App启动速度之实例挑战
-	http://www.jianshu.com/p/4f10c9a10ac9
+  http://www.jianshu.com/p/4f10c9a10ac9
+Android性能优化第（九）篇---App启动速度优化之启动页设计
+  http://www.jianshu.com/p/777fe2f71039
+  如果mainactivity中的界面还十分复杂，那么 将LogoSplashActivity变成logofragment，而主体view以viewstub的形式被加载，在activity真实的显示出来之后，来inflate该viewstub，并将logoframent给remove掉
+Android应用启动优化:一种DelayLoad的实现和原理(上篇)
+  http://androidperformance.com/2015/11/18/Android-app-lunch-optimize-delay-load.html
 
 方式：
-. 第三方库 在新线程中 被初始化
-	如，使用intentservice
+----------------------------第三方库的加载优化
+在新线程中来进行加载，如 使用intentservice
 
-. 设置windowbackground
+加载时机：
+. 优先级为1的在应用启动时，就开始加载
+. 优先级为2的在首页渲染完成后，开始加载
+. 优先级为3的在首页渲染完成后，延迟加载
+
+对于首页真实的渲染完成后，开始加载/延迟加载：
+getWindow().getDecorView().post(new Runnable() {
+    @Override
+    public void run() {
+        //mLoadingRunnable有可能在新线程中 进行
+        //为什么在post中还要进行post：
+          此处才是界面展现出来的时刻
+          参见：Android应用启动优化:一种DelayLoad的实现和原理(上篇)
+        myHandler.post(mLoadingRunnable);
+    }
+});
+
+----------------------------设置windowbackground
 //定义drawable
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -28,7 +52,6 @@ Android App优化之提升你的App启动速度之实例挑战
 
 //一个 比欢迎页还要靠前的 activity，其使用了 该主题，且不设置contentview
 public class LogoSplashActivity extends BaseActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

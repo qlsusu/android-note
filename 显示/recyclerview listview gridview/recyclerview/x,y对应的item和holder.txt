@@ -1,4 +1,0 @@
-View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-if (child!=null) {
-	RecyclerView.ViewHolder vh = recyclerView.getChildViewHolder(child);
-}

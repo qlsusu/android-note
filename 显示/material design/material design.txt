@@ -26,6 +26,8 @@ http://blog.csdn.net/xushuaic/article/details/40627389
 	进入Material Design时代
 http://blog.csdn.net/xushuaic/article/details/40212327
 	AppCompat V21：将 Materia Design 兼容到5.0之前的设备
+Android Design Support Library使用
+	http://mp.weixin.qq.com/s?__biz=MzI4MTQyNDg3Mg==&mid=2247483752&idx=1&sn=e5a12a53d12dbe80c27ae78af9660b12&chksm=eba827efdcdfaef999ac120869fb3b32508d76f883d1c9b2701c840834a9feef53d0ed9669a3#rd
 --
 https://github.com/lyfeyaj/awesome-resources
 	资源总结

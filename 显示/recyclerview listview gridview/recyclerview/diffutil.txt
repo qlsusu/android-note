@@ -1,0 +1,5 @@
+参见：
+使用DiffUtil高效更新RecyclerView
+	http://blog.chengdazhi.com/index.php/231
+
+那么相比直接调用adapter.notifyDataSetChange()方法，使用DiffUtil有什么优势呢？它能在收到数据集后，提高UI更新的效率，而且你也不需要自己对新老数据集进行比较了。

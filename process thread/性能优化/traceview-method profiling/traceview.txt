@@ -1,11 +1,16 @@
 参见：
 Android性能分析工具Systrace和TraceView的使用
 	http://blog.csdn.net/xiyangyang8/article/details/50545707
+Android性能优化第（六）篇---TraceView 分析图怎么看
+	http://www.jianshu.com/p/388c693c1b58
 
 有什么用：
 可以用来查看 一段时间内，各线程上的 各方法的 执行时长等参数的 统计
 
 ---------------------------如何分析：
+分析：总时长很大的函数
+通过：incl cpu time
+
 分析：调用次数不多，但每次调用却需要花费很长时间的函数。
 通过：Cpu Time/Call进行降序排序，并结合 incl cpu time
 

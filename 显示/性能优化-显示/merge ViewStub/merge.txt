@@ -1,6 +1,8 @@
 参见：
 Android布局优化之ViewStub、include、merge使用与源码分析
 	http://blog.csdn.net/bboyfeiyu/article/details/45869393
+Android性能优化第（十）篇---布局优化
+	http://www.jianshu.com/p/c0e0cca14162
 	
 效果：和include连用时，直接将其中的子元素添加到merge标签parent中，这样就保证了不会引入额外的层级
 

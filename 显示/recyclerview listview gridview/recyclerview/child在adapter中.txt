@@ -1,0 +1,8 @@
+获得child在adapter中的position
+RecyclerView#getChildAdapterPosition(View child)
+
+获得adapter中指定position对应的view
+LayoutManager#findViewByPosition(int position)
+
+获得adapter中 第一个可见的item的 position
+LinearLayoutManager#findFirstVisibleItemPosition()

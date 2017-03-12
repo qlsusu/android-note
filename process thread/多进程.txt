@@ -1,11 +1,15 @@
 参见：
+Android多进程使用场景
+	http://blog.spinytech.com/2016/11/17/android_multiple_process_usage_scenario/
 关于 Android 应用多进程的整理
 	http://droidyue.com/blog/2017/01/15/android-multiple-processes-summary/
 
-多进程的好处：
-. 增加app的可用内存
-	因为，内存使用大小限制，是针对于进程的（非针对于app）
-. 独立于主进程，做一些特定的逻辑
+场景：
+当用户切到别的应用，或者关掉手机屏幕的时候，应用本身的核心模块还在正常运行，提供服务
+则，应该将 服务放入到一个子进程中
+因为：
+	主进程（ui部分）的内存使用会降低（因为：service的内存使用未在主进程中，则，在同一优先级的进程中，主进程 因为内存使用少，不易被杀死）
+	这样也可被认为 我们的app 能使用的内存 增大了（因为 系统是针对于进程来分配资源的，而不是针对于 逻辑上的app整体）
 
 android:process
 如果以”:“开头。表示这个进程是应用私有的，无法在在跨应用之间共用。

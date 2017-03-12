@@ -1,0 +1,4 @@
+StrictMode.setVmPolicy(new VmPolicy.Builder().
+	//UserManager的实例个数 不能超过1个
+	setClassInstanceLimit(UserManger.class, 1).
+	penaltyLog().build());

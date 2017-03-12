@@ -1,4 +1,6 @@
 参见：
+Android性能优化第（七）篇---StrickMode严苛模式检测耗时与内存问题
+	http://www.jianshu.com/p/2ebc9363ea16
 Android严苛模式StrictMode使用详解
 	http://blog.csdn.net/mynameishuangshuai/article/details/51742375
 doc
@@ -13,9 +15,11 @@ activity内存泄漏
 在application.oncreate中开启strict mode
 // 针对线程的相关策略
 StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().
+	detectAll().
 	penaltyLog().build());
 // 针对VM的相关策略	
 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().
-	detectAll().penaltyLog().penaltyDeath().build());
+	detectAll().
+	penaltyLog().penaltyDeath().build());
 
 开发者选项中开启严格模式，开启之后，如果主线程中有执行时间长的操作，屏幕则会闪烁

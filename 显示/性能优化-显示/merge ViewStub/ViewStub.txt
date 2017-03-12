@@ -5,6 +5,9 @@ Android布局优化之ViewStub、include、merge使用与源码分析
 ViewStub就是一个宽高都为0的一个View，它默认是不可见的，只有通过调用setVisibility函数或者Inflate函数才会将其要装载的目标布局给加载出来，从而达到延迟加载的效果
 加载结果：ViewStub从parent中移除、把目标布局的根元素添加到parent中
 
+和view.gone的区别：
+View.GONE在布局加载的时候，就已经添加到布局树上了，而ViewStub只会在显示的时候才会渲染布局
+
 一个例子：
 <ViewStub  
     android:id="@+id/stub_import"  
