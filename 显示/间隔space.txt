@@ -1,0 +1,6 @@
+当我们想为 几个view之间添加分割线，可以使用space:
+<Space
+    android:layout_width="match_parent"
+    android:layout_height="10dp"
+    android:background="#FF0000"/>
+说明：虽然定义了background，但是并不起作用

@@ -1,0 +1,2 @@
+createVideoThumbnail(String filePath, int kind)
+extractThumbnail(Bitmap source, int width, int height)

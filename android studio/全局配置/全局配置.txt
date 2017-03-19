@@ -1,0 +1,10 @@
+参见：
+Android Studio 中 Gradle 依赖的统一管理
+	http://www.jianshu.com/p/a092bcc3de7d
+
+. 编写config.gradle，在其中定义全局配置
+	参见：./config.gradle
+. 在工程的build.gradle中，加入：apply from: "config.gradle"
+. 在module的build.gradle中，可以进行如下引用：
+	以前：compile "com.android.support:recyclerview-v7:25.3.0"
+	现在：compile rootProject.ext.dependencies["recyclerview"]

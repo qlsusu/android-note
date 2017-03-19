@@ -1,2 +1,4 @@
+android studio中，analyze-run inspection by name-输入unused resources
+
 参见：
 https://github.com/KeepSafe/android-resource-remover

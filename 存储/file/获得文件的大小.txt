@@ -1,0 +1,3 @@
+// 会将 字节数据格式化为 B、KB、M 
+File file;
+Formatter.formatFileSize(this, file.length())

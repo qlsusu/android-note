@@ -1,0 +1,10 @@
+参见：
+Android 时间、日期处理 DateUtils、SystemClock、DateFormat
+	http://blog.csdn.net/jjwwmlp456/article/details/45198423
+	
+DateUtils.formatDateTime(getApplicationContext(),
+    System.currentTimeMillis(),
+    DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME
+            | DateUtils.FORMAT_SHOW_YEAR | DateUtils.LENGTH_LONG | DateUtils.FORMAT_ABBREV_MONTH);
+
+值为：2017年3月19日星期日 15:12
