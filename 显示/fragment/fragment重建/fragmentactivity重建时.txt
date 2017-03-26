@@ -1,0 +1,11 @@
+fragment被attach到一个activity上，当activity被异常杀死而又重建时，android系统会 自动恢复出一个 fragment对象，因为：
+FragmentActivity#onCreate
+    FragmentController#restoreAllState(Parcelable, FragmentManagerNonConfig)
+        FragmentManagerImpl#restoreAllState
+            该Parcelable是一个FragmentManagerState
+            FragmentManagerState.mActive是一个[FragmentState]
+            FragmentState#instantiate
+                Fragment#instantiate(Context, String, Bundle)
+
+之后，该fragment.state 会根据 fragmentactivity的 来进行调整
+参见：fragment核心.txt 中 FragmentManagerImpl#moveToState(Fragment, int, int, int, boolean)

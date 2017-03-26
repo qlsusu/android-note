@@ -1,0 +1,10 @@
+参见：http://blog.csdn.net/allenwells/article/details/46965727
+
+在libs下，按照CPU类型创建相应目录，如x86, armeabi
+将so放入到该文件夹内，
+在module的build.gradle中添加
+	sourceSets{
+		main{
+			jniLibs.srcDirs=['libs']
+		}
+	}

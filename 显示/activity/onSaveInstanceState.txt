@@ -1,13 +1,14 @@
 参见：http://www.cnblogs.com/heiguy/archive/2010/10/30/1865239.html
 
 ------------------------------------onSaveInstanceState
-什么时候被调用
+什么时候被调用：
 即系统在“未经你许可”时销毁了你的activity 之前，onSaveInstanceState会被系统调用 以便未来的恢复
+在2.3之前是在onPause之前，2.3之后是在了onStop函数之前
 --
 Android calls onSaveInstanceState() before the activity becomes vulnerable to being destroyed by the system, 
 	but does not bother calling it when the instance is actually being destroyed by a user action (such as pressing the BACK key)
 	
-调用时机举例：
+调用场景举例：
 1、当用户按下HOME键时。
 	app所在的进程优先级变低，可能被系统杀死，则activity有可能被销毁
 2、长按HOME键，选择运行其他的程序时。

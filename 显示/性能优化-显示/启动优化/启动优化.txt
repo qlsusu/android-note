@@ -24,8 +24,8 @@ getWindow().getDecorView().post(new Runnable() {
     public void run() {
         //mLoadingRunnable有可能在新线程中 进行
         //为什么在post中还要进行post：
-          此处才是界面展现出来的时刻
-          参见：Android应用启动优化:一种DelayLoad的实现和原理(上篇)
+        //此处才是界面展现出来的时刻
+        //参见：Android应用启动优化:一种DelayLoad的实现和原理(上篇)
         myHandler.post(mLoadingRunnable);
     }
 });

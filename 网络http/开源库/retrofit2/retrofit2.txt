@@ -22,3 +22,5 @@ Retrofit使用教程(一)
 	http://blog.xuanzhangjiong.xyz/2016/02/25/%E5%AD%A6%E4%B9%A0Retrofit%E5%92%8CRxJava%E5%B0%8F%E8%AE%B0/
 Android实战之你应该使用哪个网络库？
 	https://segmentfault.com/a/1190000003965158
+Retrofit 2.0 超能实践（一），okHttp完美支持Https传输
+	http://blog.csdn.net/sk719887916/article/details/51597816

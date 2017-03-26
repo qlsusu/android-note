@@ -1,0 +1,1 @@
+weight_sum 和 layout_weight连用，可以实现：孩子占剩余空间的 百分之多少

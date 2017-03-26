@@ -2,9 +2,8 @@
 Android Studio 打包及引用 aar
 	http://www.androidchina.net/2467.html
 
----------------------------------------------
-
-aar包含了一个 library的资源（如：res和.class等）
+aar是什么：
+包含了一个 library的资源（如：res和.class等）
 
 ---------------------------------------------如何使用
 libraray可以和app位于不同的project中

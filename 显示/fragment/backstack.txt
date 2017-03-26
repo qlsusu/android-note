@@ -1,0 +1,27 @@
+------------------------------BackStackRecord#addToBackStack(String name)
+在fragmenttransaction执行commit之前，调用了addToBackStack，当用户点击back时，将恢复到transaction.commit之前的状态
+
+例子：
+// Create new fragment and transaction
+Fragment newFragment = new ExampleFragment();
+FragmentTransaction transaction = getFragmentManager().beginTransaction();
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+transaction.replace(R.id.fragment_container, newFragment);
+transaction.addToBackStack(null);
+// Commit the transaction
+transaction.commit();
+
+在这个例子中，newFragment将取代在R.id.fragment_container容器中的fragment，如果没有，将直接添加新的fragment。
+当你移除一个fragment的时候
+	如果commit()之前 调用了 addToBackStack()，之前的fragment将会是stopped，即是可以通过返回键来恢复
+	如果commit()之前 没有调用 addToBackStack()，之前的fragment将会是destroyed
+
+------------------------------FragmentManager#popBackStack(String name, int flag)
+参见：android recipe v4/2_08_CustomBack
+
+例子：
+设：tag1, tag2, tag3,tag4依次进入到backstack
+此刻呈现的是，tag4对应的frag
+当popBackStack(tag3, FragmentManager.POP_BACK_STACK_INCLUSIVE)时，呈现的是tag2对应的frag，
+当点击back时，呈现tag1

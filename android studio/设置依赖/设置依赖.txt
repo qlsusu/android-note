@@ -19,15 +19,3 @@ buildtype
 	compile 'com.xx.xx:ProjectName:Version'：配置Maven` 库作为依赖；在 Maven 库中心 可以搜索自己想用的库进行依赖；
 	compile project(':AnotherModule')：配置另一个 Module 作为本 Module 的依赖，被依赖的 Module 必须被导入到当前工程中；
 	compile(name: 'xxx', ext: 'aar')：依赖一个 本地的aar 的引用
---
-so的依赖：
-	参见：http://blog.csdn.net/allenwells/article/details/46965727
-	在libs下，按照CPU类型创建相应目录，如x86, armeabi
-	将so放入到该文件夹内，
-	在module的build.gradle中添加
-		sourceSets{
-			main{
-				jniLibs.srcDirs=['libs']
-			}
-		}
-		

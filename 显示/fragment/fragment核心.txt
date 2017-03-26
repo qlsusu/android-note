@@ -1,0 +1,57 @@
+---------------------------------FragmentManager
+负责管理Fragment
+如何得到：FragmentActivity.getSupportFragmentManager（其返回的是FragmentManagerImpl）
+（4.3之后的版本引入了FragmentController，仅仅是 在其基础上的一层封装，原理差别不是太大）
+
+final class FragmentManagerImpl extends FragmentManager implements LayoutInflaterFactory {
+    ...
+    ArrayList<Runnable> mPendingActions;
+    Runnable[] mTmpActions;
+    boolean mExecutingActions;
+
+    ArrayList<Fragment> mActive;
+    ArrayList<Fragment> mAdded;
+    ArrayList<Integer> mAvailIndices;
+    ArrayList<BackStackRecord> mBackStack;
+
+---------------------------------FragmentTransaction
+其缓存针对于fragment的操作（实体：BackStackRecord.Op）（该操作最终通过调用 诸如FragmentManagerImpl#addFragment 来完成）
+如何得到：FragmentManagerImpl#beginTransaction（其返回的是BackStackRecord）
+
+操作：
+如：BackStackRecord#add(int, Fragment, String)，其本质上仅仅往BackStackRecord#mOps中加入一个Op
+
+在BackStackRecord#commitAllowingStateLoss时
+	FragmentManagerImpl#scheduleCommit
+		仅仅handler.post
+
+而FragmentManager#executePendingTransactions时，其将会更新fragment的state（与activity的 保持一致），真实的执行fragment生命周期回调等
+工作流为：
+    FragmentManagerImpl#execPendingActions
+        FragmentManagerImpl#optimizeAndExecuteOps
+            FragmentManagerImpl#executeOpsTogether
+                FragmentManagerImpl#executeOps
+                    BackStackRecord#executeOps
+                        执行诸如FragmentManagerImpl#addFragment
+                            FragmentManagerImpl#moveToState(Fragment)
+                            或，FragmentManagerImpl#moveFragmentToExpectedState
+                                FragmentManagerImpl#moveToState(Fragment, int, int, int, boolean)
+被 直接/间接 触发时机：
+    诸如FragmentActivity#onStart的生命周期回调中，如：
+        FragmentActivity#onStart
+            FragmentController#execPendingActions
+    或，手动调用时
+
+FragmentManagerImpl#moveToState(Fragment, int, int, int, boolean)中
+其会设置fragment的state（与activity的 保持一致）
+并执行fragment生命周期回调，如：
+    Fragment#onAttach(Context) 
+    或，Fragment#onCreateView（通过Fragment#performCreateView来调用）
+被 直接/间接 触发时机：
+    FragmentManagerImpl#execPendingActions中，
+    或，诸如FragmentActivity#onStart的生命周期回调中，
+        FragmentController#dispatchStart
+            FragmentManagerImpl#dispatchStart
+                FragmentManagerImpl#moveToState(int, boolean)
+                    FragmentManagerImpl#moveFragmentToExpectedState
+                        FragmentManagerImpl#moveToState(Fragment, int, int, int, boolean)

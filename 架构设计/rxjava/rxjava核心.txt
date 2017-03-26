@@ -16,6 +16,11 @@ ReactiveX/RxJava文档中文版
 	文中也有一些链接
 关于RxJava最友好的文章（进阶）
 	http://www.jianshu.com/p/e61e1307e538
+--
+Rxjava +Retrofit 你需要掌握的几个技巧，Retrofit缓存，统一对有无网络处理, 异常处理，返回结果问题
+	http://www.jianshu.com/p/b1979c25634f
+关于 RxJava 最友好的文章—— RxJava 2.0 全新来袭
+	https://gold.xitu.io/post/582b2c818ac24700618ff8f5
 
 ---------------------------------基础概念
 
