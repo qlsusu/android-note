@@ -1,4 +1,9 @@
 参见：
+Android性能优化-Render篇
+	https://my.oschina.net/u/3026396/blog/817305
+	其中具体介绍了：
+		cpu gpu的工作原理
+		解决性能问题的 一般思路
 Android性能优化第（四）篇---Android渲染机制
 	http://www.jianshu.com/p/9ac245657127
 Android App优化, 要怎么做?

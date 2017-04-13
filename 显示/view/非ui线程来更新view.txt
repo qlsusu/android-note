@@ -1,0 +1,3 @@
+参见：
+Android子线程更新View的探索
+	http://www.jianshu.com/p/c39203884209

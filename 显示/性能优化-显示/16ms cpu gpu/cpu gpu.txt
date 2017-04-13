@@ -1,6 +1,0 @@
-参见：
-Android性能优化第（四）篇---Android渲染机制
-	http://www.jianshu.com/p/9ac245657127
-	
-CPU负责包括Measure，Layout，Record，Execute的计算操作
-GPU负责栅格化(rasterization), 将UI元素绘制到屏幕上.

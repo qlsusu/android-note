@@ -4,15 +4,12 @@
  */
 public native int save();
 
-
-
 /**
  * 传入一个标志，来表示当restore 的时候，哪些参数需要还原。该参数定义在Canvas中，参照下面。
  * save()方法默认的是还原matrix和clip，但是可以使用这个方法指定哪些需要还原。并且只有指定matrix和clip才有效，其余的几个参数是
  * 用于saveLayer()和saveLayerAlpha()方法 的。
  */
 public native int save(int saveFlags);
-
 
 /**
  * 回到上一个save调用之前的状态，如果restore调用的次数大于save方法，会出错。
@@ -24,15 +21,10 @@ public native void restore();
  */
 public native int getSaveCount();
 
-
-
-
 /**
  * 回到任何一个save()方法调用之前的状态
  */
 public native void restoreToCount(int saveCount);
-
-
 
 /**saveFlags的参数*/
 public static final int ALL_SAVE_FLAG = 0x1F; //还原所有

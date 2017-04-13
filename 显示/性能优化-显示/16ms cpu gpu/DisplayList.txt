@@ -1,0 +1,11 @@
+参见：
+Android性能优化-Render篇
+	https://my.oschina.net/u/3026396/blog/817305
+
+DisplayList持有所有将要交给GPU绘制到屏幕上的数据信息
+	GPU要绘制的全部对象的信息列表
+	执行绘制操作的OpenGL命令列表
+
+在某个View第一次需要被渲染时，DisplayList会因此而被创建，当这个View要显示到屏幕上时，我们会执行GPU的绘制指令来进行渲染。
+如果你在后续有执行类似移动这个View的位置等操作而需要再次渲染这个View时，我们就仅仅需要额外操作一次渲染指令就够了。
+然而如果你修改了View中的某些可见组件，那么之前的DisplayList就无法继续使用了，我们需要回头重新创建一个DisplayList并且重新执行渲染指令并更新到屏幕上。

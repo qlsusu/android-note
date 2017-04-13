@@ -4,7 +4,7 @@ Activity与Fragment生命周期探讨
 Understanding Fragment's setRetainInstance(boolean)
 	http://stackoverflow.com/questions/11182180/understanding-fragments-setretaininstanceboolean
 
-如果fragment.setRetainInstance(true)（在fragment.oncreate中设置）了，那么即便activity重新创建了（如：因为横竖屏切换，导致activity被重建），该fragment仍然被保存了
+如果fragment.setRetainInstance(true)（在fragment.oncreate中设置）了，那么即便activity重新创建了（如：因为横竖屏切换，导致activity被重建），该fragment仍然被保存
 
 其生命周期被调整为：
 当activity被销毁时，fragment.ondestory不会被调用，但是其他的诸如ondestroyview,ondetach等，仍然被调用
