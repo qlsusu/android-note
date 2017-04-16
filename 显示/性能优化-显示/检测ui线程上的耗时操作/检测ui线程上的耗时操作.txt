@@ -1,0 +1,3 @@
+参见：
+Android UI性能优化 检测应用中的UI卡顿
+	http://blog.csdn.net/lmj623565791/article/details/58626355

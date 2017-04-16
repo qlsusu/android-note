@@ -1,0 +1,95 @@
+//loop原理
+public static void loop() {
+    final Looper me = myLooper();
+
+    final MessageQueue queue = me.mQueue;
+    // ...
+    for (;;) {
+        Message msg = queue.next(); // might block
+        // This must be in a local variable, in case a UI event sets the logger
+        Printer logging = me.mLogging;
+        if (logging != null) {
+            logging.println(">>>>> Dispatching to " + msg.target + " " +
+                    msg.callback + ": " + msg.what);
+        }
+        // focus
+        msg.target.dispatchMessage(msg);
+
+        if (logging != null) {
+            logging.println("<<<<< Finished to " + msg.target + " " + msg.callback);
+        }
+
+        // ...
+        }
+        msg.recycleUnchecked();
+    }
+}
+
+public class BlockDetectByPrinter {
+    public static void start() {
+        //为looper设置messagelogging
+        Looper.getMainLooper().setMessageLogging(new Printer() {
+            private static final String START = ">>>>> Dispatching";
+            private static final String END = "<<<<< Finished";
+
+            @Override
+            public void println(String x) {
+                //当target开始处理时
+                if (x.startsWith(START)) {
+                    //启动监视
+                    LogMonitor.getInstance().startMonitor();
+                }
+
+                //当target处理完毕时
+                //当TIME_BLOCK时间内，还没有处理完毕，则会打印 耗时堆栈，此刻即便removeMonitor也无本质效果
+                //如果在规定时间内处理完毕，就停止监听
+                if (x.startsWith(END)) {
+                    LogMonitor.getInstance().removeMonitor();
+                }
+            }
+        });
+    }
+}
+
+public class LogMonitor {
+    private static LogMonitor sInstance = new LogMonitor();
+    private HandlerThread mLogThread = new HandlerThread("log");
+    private Handler mIoHandler;
+    //多长时间没有操作完，被认为是耗时操作
+    private static final long TIME_BLOCK = 1000L;
+
+    private LogMonitor() {
+        mLogThread.start();
+        mIoHandler = new Handler(mLogThread.getLooper());
+    }
+
+    private static Runnable mLogRunnable = new Runnable() {
+        @Override
+        public void run() {
+            StringBuilder sb = new StringBuilder();
+            //打印堆栈
+            StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
+            for (StackTraceElement s : stackTrace) {
+                sb.append(s.toString() + "\n");
+            }
+            Log.e("TAG", sb.toString());
+        }
+    };
+
+    public static LogMonitor getInstance() {
+        return sInstance;
+    }
+
+    public boolean isMonitor() {
+        return mIoHandler.hasCallbacks(mLogRunnable);
+    }
+
+    public void startMonitor() {
+        mIoHandler.postDelayed(mLogRunnable, TIME_BLOCK);
+    }
+
+    public void removeMonitor() {
+        mIoHandler.removeCallbacks(mLogRunnable);
+    }
+
+}

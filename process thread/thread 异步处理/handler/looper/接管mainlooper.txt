@@ -1,0 +1,40 @@
+private static final String FIELD_mQueue = "mQueue";
+private static final String METHOD_next = "next";
+
+//提交一个runnable，该runnalbe本质上是 looper.loop()，永远都不会结束
+//mainlooper的后续的消息都将会在这里进行处理。
+new Handler(Looper.getMainLooper()).post(new Runnable() {
+    @Override
+    public void run() {
+        try {
+            Looper mainLooper = Looper.getMainLooper();
+            final Looper me = mainLooper;
+            final MessageQueue queue;
+            Field fieldQueue = me.getClass().getDeclaredField(FIELD_mQueue);
+            fieldQueue.setAccessible(true);
+            //获得mainlooper的MessageQueue
+            queue = (MessageQueue) fieldQueue.get(me);
+            Method methodNext = queue.getClass().getDeclaredMethod(METHOD_next);
+            methodNext.setAccessible(true);
+            Binder.clearCallingIdentity();
+            for (; ; ) {
+                //调用messsagequeue.next
+                Message msg = (Message) methodNext.invoke(queue);
+                if (msg == null) {
+                    return;
+                }
+
+                //做一些自己的事情，比如检测ui线程上的耗时操作
+                LogMonitor.getInstance().startMonitor();
+
+                msg.getTarget().dispatchMessage(msg);
+                msg.recycle();
+
+                LogMonitor.getInstance().removeMonitor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+});

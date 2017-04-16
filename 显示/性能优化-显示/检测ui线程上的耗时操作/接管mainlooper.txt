@@ -1,0 +1,2 @@
+参见：
+/Users/qlong/_study/_data/android/-笔记-141104/process thread/thread 异步处理/handler/looper/接管mainlooper.txt

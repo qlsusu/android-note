@@ -1,0 +1,3 @@
+1. Android设置是Debug版本,且root,直接将该apk用adb工具push到system/app或system/priv-app
+2. 如果是非root设备,需要编译后烧写镜像
+3. 有些权限(如WRITE_SECURE_SETTINGS)不开放给第三方应用,只能在对应设备源码总编译然后作为系统app使用

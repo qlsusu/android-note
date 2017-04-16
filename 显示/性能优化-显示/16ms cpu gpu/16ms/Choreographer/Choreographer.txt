@@ -1,0 +1,9 @@
+参见：
+android view的绘制中，View绘制的时间如何和vsync屏幕刷新频率保持同步的？
+	https://www.zhihu.com/question/30372696
+Android系统Choreographer机制实现过程
+	http://blog.csdn.net/yangwen123/article/details/39518923
+Android Choreographer 源码分析
+	http://www.jianshu.com/p/996bca12eb1d
+
+Choreographer是对VSYNC做了监听的，当有VSYNC消息的时候会执行onVsync,最终走到Choreographer的doFrame，在这里会将从callback队列中取出runnable进行绘制。
