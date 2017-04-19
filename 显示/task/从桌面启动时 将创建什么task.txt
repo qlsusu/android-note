@@ -1,0 +1,1 @@
+app的launcher activity的affinity所对应的task
