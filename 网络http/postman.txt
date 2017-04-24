@@ -1,2 +1,6 @@
+参见：
+Postman使用手册1——导入导出和发送请求查看响应
+	http://www.jianshu.com/p/13c8017bb5c8
+
 一个chrome的插件
 可以查看网络请求的返回等

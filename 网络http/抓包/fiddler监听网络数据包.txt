@@ -1,6 +1,8 @@
 参见：
 那些值得你试试的Android竞品分析工具
 	http://www.jianshu.com/p/ba2d9eca47a2
+先于服务器端的Android开发,基于mock和fiddler(win)和whistle(linux)
+	http://blog.csdn.net/lj402159806/article/details/53152922
 
 使用：fiddler
 设置：tools-fiddler option-connections-allow remote computer to connect
