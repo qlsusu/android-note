@@ -9,6 +9,7 @@
 </resources>
 
 在layout.xml，你就可以这样来使用
+xmlns:app="http://schemas.android.com/apk/res-auto"
 <View
 	android:id="@+id/second"
 	android:layout_width="match_parent"
@@ -22,7 +23,7 @@ TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Follow);
 try{
 	for (int i = 0; i < a.getIndexCount(); i++) {
 		int attr = a.getIndex(i);
-		if (a.getIndex(i) == R.styleable.Follow_target) {
+		if (attr == R.styleable.Follow_target) {
 			targetId = a.getResourceId(attr, -1);
 		}
 	}

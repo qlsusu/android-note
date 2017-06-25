@@ -1,8 +1,11 @@
 正统做法：
-通过fragment.setarguments(bundle)来传递参数，
-后，fragment.oncreate(Bundle savedInstanceState)来获得参数
+提供无参的构造函数
+产生fragment对象
+构建bundle（通过bundle.putxxx方式）
+fragment.setarguments(bundle)
+oncreate(Bundle savedInstanceState)被调用时，通过getArguments 来获得参数
 
 为什么要通过这种方式（fragment源码中的构造函数中的doc）：
-Default constructor.  <strong>Every</strong> fragment must have an empty constructor, so it can be instantiated when restoring its activity's state.  
+Every fragment MUST have an empty constructor, so it can be instantiated when restoring its activity's state.  
 It is strongly recommended that subclasses do not have other constructors with parameters, since these constructors will not be called when the fragment is re-instantiated; 
 instead, arguments can be supplied by the caller with {@link #setArguments} and later retrieved by the Fragment with {@link #getArguments}.

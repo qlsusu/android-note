@@ -1,3 +1,7 @@
+参见：
+Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
+    http://www.cnblogs.com/mengdd/p/5582244.html
+
 ---------------------------------FragmentManager
 负责管理Fragment
 如何得到：FragmentActivity.getSupportFragmentManager（其返回的是FragmentManagerImpl）

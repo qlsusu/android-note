@@ -1,4 +1,6 @@
 参见：
+Android Fragment使用(一) 基础篇 温故知新
+	http://www.cnblogs.com/mengdd/p/5548359.html
 Fragment自定义动画、动画监听以及兼容性包使用
 	http://www.cnblogs.com/lcyty/p/3383960.html
 Square：从今天开始抛弃Fragment吧！

@@ -6,10 +6,10 @@ http://www.cnblogs.com/punkisnotdead/p/5181821.html
 丈量measure
 	确定view 被丈量的宽高
 	通过丈量孩子(onmeasure中调用child.measure)，和 自身的布局方式，来确定自身的宽高
-		在丈量孩子时，孩子的最大剩余空间 应该为：自身的specsize- (自身的padding+孩子lp.margin+usedSpace)
+		在丈量孩子时，孩子的最大剩余空间 应该为：自身的specsize - (自身的padding+孩子lp.margin+usedSpace)
 			参见：得到孩子的measurespec.txt 和 view的measurespec的创建规则.png
 		粗粒度的丈量孩子:viewgroup.measureChildren(int widthMeasureSpec, int heightMeasureSpec)
-			这里，孩子的最大剩余空间为：自身的specsize- (自身的padding)
+			这里，孩子的最大剩余空间为：自身的specsize - (自身的padding)
 	setMeasuredDimension
 		当计算得到了width/height后，应该使用view.resolveSize(int size, int measureSpec)来作为 setMeasuredDimension的入参
 		参见：view.resolvesize.png
@@ -42,6 +42,6 @@ setWillNotDraw
 如果你的自定义view 不需要draw的话，就可以设置这个方法为true。这样系统知道你这个view 不需要draw 可以优化执行速度。
 viewgroup 一般都默认设置这个为true，因为viewgroup多数都是只负责布局.而view 这个标志位 默认一般都是关闭的。
 
-onAttachedToWindow和onAttachedToWindow
-nAttachedToWindow是在第一次onDraw前调用的，其中可以注册一些广播等
+onAttachedToWindow和onDetachedFromWindow
+onAttachedToWindow是在第一次onDraw前调用的，其中可以注册一些广播等
 onDetachedFromWindow我们销毁View的时候被调用，其中可以取消广播注册等

@@ -1,0 +1,5 @@
+参见：
+android－关于ContentProvider的使用
+	http://blog.csdn.net/juetion/article/details/17481039
+Android小技巧(二)：为ContentProvider添加数据库事务支持
+	http://blog.csdn.net/mylzc/article/details/6794400

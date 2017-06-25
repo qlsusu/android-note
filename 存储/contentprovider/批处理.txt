@@ -1,3 +1,30 @@
+------------------------------在contentprovider中
+@Override
+public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation>operations) throws OperationApplicationException{
+	SQLiteDatabasedb = mOpenHelper.getWritableDatabase();
+	db.beginTransaction();//开始事务
+	try{
+		ContentProviderResult[] results = super.applyBatch(operations);
+		db.setTransactionSuccessful();//设置事务标记为successful
+		return results;
+	}finally {
+		db.endTransaction();//结束事务
+	}
+}
+
+//contentprovider中，原生的applybatch为：
+public @NonNull ContentProviderResult[] applyBatch(
+        @NonNull ArrayList<ContentProviderOperation> operations)
+                throws OperationApplicationException {
+    final int numOperations = operations.size();
+    final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+    for (int i = 0; i < numOperations; i++) {
+        results[i] = operations.get(i).apply(this, results, i);
+    }
+    return results;
+}
+
+------------------------------客户中
 ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation> operations)
 
 ContentProviderOperation的构建:
@@ -5,3 +32,9 @@ ContentProviderOperation.Builder builder=ContentProviderOperation.newXXX(Uri);
 builder.withSelection("=?",new String[]{"xxx"});
 builder.withValues(ContentValues);
 ContentProviderOperation operation=builder.build();
+--
+或者：
+//删除Person表
+ContentProviderOperation.newDelete(Person.CONTENT_URI).build()
+//添加一条记录到Home表
+ContentProviderOperation.newInsert(Home.CONTENT_URI).withValues(values).build()

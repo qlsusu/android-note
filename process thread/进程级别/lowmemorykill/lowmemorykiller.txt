@@ -6,4 +6,5 @@ Android LowMemoryKiller原理分析
 
 Lowmemorykiller来进行杀进程，是一种根据阈值级别触发相应力度的内存回收的机制。
 
-adj值越大，优先级越低，adj<0的进程都是系统进程。
+adj值越大，优先级越低
+adj<0的进程都是系统进程。

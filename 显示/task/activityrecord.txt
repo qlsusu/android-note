@@ -1,0 +1,2 @@
+Activity的堆栈管理以ActivityRecord为单位,
+可以认为一个ActivityRecord就是一个Activity栈

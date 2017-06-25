@@ -25,3 +25,4 @@ Android calls onSaveInstanceState() before the activity becomes vulnerable to be
 ------------------------------------onRestoreInstanceState
 什么时候被调用
 activity A“确实”被系统销毁了，而非仅仅是停留在 有销毁的可能性下
+在onstart之后

@@ -1,23 +1,26 @@
-------------------------------BackStackRecord#addToBackStack(String name)
-在fragmenttransaction执行commit之前，调用了addToBackStack，当用户点击back时，将恢复到transaction.commit之前的状态
+------------------------------FragmentTransaction.addToBackStack(@Nullable String name);
+Add this transaction to the back stack.  
+This means that the transaction will be remembered after it is committed, 
+and will reverse its operation when later popped off the stack（当用户点击back按键时）.
 
-例子：
-// Create new fragment and transaction
-Fragment newFragment = new ExampleFragment();
-FragmentTransaction transaction = getFragmentManager().beginTransaction();
-// Replace whatever is in the fragment_container view with this fragment,
-// and add the transaction to the back stack
-transaction.replace(R.id.fragment_container, newFragment);
-transaction.addToBackStack(null);
-// Commit the transaction
-transaction.commit();
+一个transaction可以包含多种操作, 并且不局限于对同一个Fragment, 所以每一个transaction实际上可以是一系列对多个fragment的操作的组合.
+加入到back stack中去的时候, 是把这一系列的组合作为一个原子, 加入到back stack中.
+需要在commit之前
+用户按Back键, 从栈中pop出一个transaction, 进行逆转操作, 可以返回上一个转换前的状态（即是：上次commit之前的状态）.
 
-在这个例子中，newFragment将取代在R.id.fragment_container容器中的fragment，如果没有，将直接添加新的fragment。
-当你移除一个fragment的时候
-	如果commit()之前 调用了 addToBackStack()，之前的fragment将会是stopped，即是可以通过返回键来恢复
-	如果commit()之前 没有调用 addToBackStack()，之前的fragment将会是destroyed
+当transaction中包含了replace操作，且该transaction被添加到back stack中，那么旧的fragment将会 最底执行到ondestroyedview（并不会执行ondestroy, ondetach）
+当transaction中包含了replace操作，但是该transaction并未添加到back stack中，那么旧的fragment将会 最底执行到ondetach
+
+Fragment的back stack: 由宿主activity掌管, 每个activity一个.
+而 Activity的back stack: 由系统维护, 每个task一个back stack.
 
 ------------------------------FragmentManager#popBackStack(String name, int flag)
+Pop the last fragment transition from the manager's fragment back stack. If there is nothing to pop, false is returned. This function is asynchronous -- it enqueues the request to pop, but the action will not be performed until the application returns to its event loop.
+Parameters:
+	name - If non-null, this is the name of a previous back state to look for; if found, all states up to that state will be popped. 
+		The POP_BACK_STACK_INCLUSIVE flag can be used to control whether the named state itself is popped. If null, only the top state is popped.
+	flags - Either 0 or POP_BACK_STACK_INCLUSIVE.
+
 参见：android recipe v4/2_08_CustomBack
 
 例子：
