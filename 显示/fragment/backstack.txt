@@ -3,10 +3,10 @@ Add this transaction to the back stack.
 This means that the transaction will be remembered after it is committed, 
 and will reverse its operation when later popped off the stack（当用户点击back按键时）.
 
-一个transaction可以包含多种操作, 并且不局限于对同一个Fragment, 所以每一个transaction实际上可以是一系列对多个fragment的操作的组合.
-加入到back stack中去的时候, 是把这一系列的组合作为一个原子, 加入到back stack中.
+一个transaction是 对多个fragment的操作的组合.
+加入到back stack中去的时候, 是把transaction中的那一系列操作作为一个原子, 加入到back stack中.
 需要在commit之前
-用户按Back键, 从栈中pop出一个transaction, 进行逆转操作, 可以返回上一个转换前的状态（即是：上次commit之前的状态）.
+用户按Back键, 从栈中pop出一个transaction, 对其中的每项操作进行逆转操作，从而达到commit之前的状态
 
 当transaction中包含了replace操作，且该transaction被添加到back stack中，那么旧的fragment将会 最底执行到ondestroyedview（并不会执行ondestroy, ondetach）
 当transaction中包含了replace操作，但是该transaction并未添加到back stack中，那么旧的fragment将会 最底执行到ondetach

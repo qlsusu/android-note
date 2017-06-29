@@ -1,0 +1,31 @@
+参见：
+Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
+	http://www.cnblogs.com/mengdd/p/5582244.html
+
+保存时机：
+1. fragmentactivity.onSaveInstanceState时，会调用Fragment#onSaveInstanceState
+2. fragmentmanager.moveToState时，当自身的状态<CREATED时，会保存view的状态
+	如：fragment2代替fragment1，被填充到container时，fragment1会执行保存
+3. 手动调用FragmentManager.saveFragmentInstanceState(Fragment)，获得SavedState
+	而该savestate可以作为另一个fragment对象的 初始化参数
+	如：先显示fragment1，再用fragment2来replace，再用fragment3来replace
+		其中，fragment1和fragment3属于同一class
+		那么fragment1中的state 可以传递给 fragment3 来使用
+
+恢复时机：
+1. 之前被销毁而现在被重建的fragmentactivity，在执行oncreate时，通过saveInstanceState.getParcelable(FragmentActivity.FRAGMENTS_TAG)
+	后传递给fragment.oncreate等
+2. fragmentmanager.moveToState时，当自身的状态>CREATED时
+	当fragment1又重新填充到container中时
+3. 在初始化fragment，调用fragment.setInitialSavedState(SaveState)
+	其作为参量传递到fragment.oncreate
+
+保存状态时，都保存什么：
+1. view的state，这个安卓系统会帮我们做
+	一个bundle例子：
+	Bundle[{
+		android:viewHierarchyState=Bundle[{android:views={16908290=android.view.AbsSavedState$1@bc382e7, 2131492950=CompoundButton.SavedState{4034f96 checked=true}, 2131492951=android.view.AbsSavedState$1@bc382e7}}], 
+		android:fragments=android.app.FragmentManagerState@bacc717}]
+要求：view需要有id，且 saved状态位位true
+2. 自身对象的成员变量，这也是我们在onSaveInstanceState中需要额外做的
+	
