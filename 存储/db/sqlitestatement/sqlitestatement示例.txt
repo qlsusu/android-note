@@ -1,0 +1,71 @@
+参见：
+How do I use prepared statements in SQlite in Android?
+    https://stackoverflow.com/questions/433392/how-do-i-use-prepared-statements-in-sqlite-in-android
+android批量插入数据效率对比
+    http://www.iteye.com/topic/1133521
+
+/** 
+ * 第二种方式批量插入(插入1W条数据耗时：1365ms) 
+ * @param openHelper 
+ * @param list 
+ * @return 
+ */  
+public static boolean insertBySql(SQLiteOpenHelper openHelper,  
+        List<RemoteAppInfo> list) {  
+    if (null == openHelper || null == list || list.size() <= 0) {  
+        return false;  
+    }  
+    SQLiteDatabase db = null;  
+    try {  
+        db = openHelper.getWritableDatabase();  
+        String sql = "insert into " + RemoteDBHelper.TABLE_APP_REMOTE + "("  
+                + RemoteDBHelper.COL_PKG_NAME + ","// 包名  
+                + RemoteDBHelper.COL_USER_ACCOUNT + ","// 账号  
+                + RemoteDBHelper.COL_APP_SOURCE + ","// 来源  
+                + RemoteDBHelper.COL_SOURCE_UNIQUE + ","// PC mac 地址  
+                + RemoteDBHelper.COL_MOBILE_UNIQUE + ","// 手机唯一标识  
+                + RemoteDBHelper.COL_IMEI + ","// 手机IMEI  
+                + RemoteDBHelper.COL_INSTALL_STATUS + ","// 安装状态  
+                + RemoteDBHelper.COL_TRANSFER_RESULT + ","// 传输状态  
+                + RemoteDBHelper.COL_REMOTE_RECORD_ID // 唯一标识  
+                + ") " + "values(?,?,?,?,?,?,?,?,?)";  
+        SQLiteStatement stat = db.compileStatement(sql);  
+
+        //开启事务
+        db.beginTransaction();  
+        for (RemoteAppInfo remoteAppInfo : list) {
+            //清除上次的绑定
+            stat.clearBindings();
+            stat.bindString(1, remoteAppInfo.getPkgName());  
+            stat.bindString(2, remoteAppInfo.getAccount());  
+            stat.bindLong(3, remoteAppInfo.getFrom());  
+            stat.bindString(4, remoteAppInfo.getFromDeviceMd5());  
+            stat.bindString(5, remoteAppInfo.getMoblieMd5());  
+            stat.bindString(6, remoteAppInfo.getImei());  
+            stat.bindLong(7, remoteAppInfo.getInstallStatus());  
+            stat.bindLong(8, remoteAppInfo.getTransferResult());  
+            stat.bindString(9, remoteAppInfo.getRecordId()); 
+            //执行操作
+            long result = stat.executeInsert();  
+            if (result < 0) {  
+                return false;  
+            }  
+        }
+        //设置事务成功  
+        db.setTransactionSuccessful();  
+    } catch (Exception e) {  
+        e.printStackTrace();  
+        return false;  
+    } finally {  
+        try {  
+            if (null != db) {  
+                db.endTransaction();  
+                //最好不要执行db的关闭
+                //db.close();  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+    return true;  
+}  

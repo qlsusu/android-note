@@ -1,16 +1,14 @@
+å‚è§ï¼š
 http://hi.baidu.com/justin8335/blog/item/8976de1d009e35f91ad5762e.html
-	½²ÊöÁË¼¯³ÉeclipseºÍcdt
-	
+	è®²è¿°äº†é›†æˆeclipseå’Œcdt
 http://hi.baidu.com/wentaokou/blog/item/8150c54db8a1fcf6d62afc0c.html
-	8²½½ÌÄã´ò¿ªAndroidÖ®ÃÅ NDKÈëÃÅ½Ì³Ì
-	
+	8æ­¥æ•™ä½ æ‰“å¼€Androidä¹‹é—¨ NDKå…¥é—¨æ•™ç¨‹
 http://www.cnblogs.com/ginoz/archive/2010/06/30/1768443.html
-	ÁíÍâÒ»¸ö°²×°½Ì³Ì£¬½²ÊöÁËcygwinÖĞÓ¦¸Ã°²×°ÄÄĞ©¶«Î÷
-	
-
-
+	å¦å¤–ä¸€ä¸ªå®‰è£…æ•™ç¨‹ï¼Œè®²è¿°äº†cygwinä¸­åº”è¯¥å®‰è£…å“ªäº›ä¸œè¥¿
 http://www.pyfun.com/ziliao/201009/1634.html
-	Ìáµ½ÁËmakeapp
+	æåˆ°äº†makeapp
 http://hi.baidu.com/tmy13/blog/item/3f6c29294991bbf799250a85.html/cmtid/3870828f8ca523f4513d92af
 http://blog.csdn.net/hzhxxx/archive/2010/07/21/5752627.aspx
 http://www.cnblogs.com/halzhang/archive/2010/08/03/1791405.html
+
+jniå®ç°äº† javaå’Œnativeåº“ ä¹‹é—´çš„ç›¸äº’è°ƒç”¨

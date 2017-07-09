@@ -17,10 +17,9 @@ sendBroadcast("com.android.XXX_ACTION", "com.android.permission.RECV_XXX");
 1. 在AndroidManifest.xml中要添加对应的RECV_XXX权限，例如：
 <uses-permission android:name="com.android.permission.RECV_XXX"></uses-permission>
 
-
 ---------------------谁有权给我发广播
 含义：
-Receiver只能接收来自具有该SEND_XXX权限的应用发出的广播。
+Receiver只能接收来自具有该SEND_XXX权限的应用发出的广播
 
 .在Receiver app中
 1. 在manifest.xml中，声明权限，如：

@@ -1,14 +1,28 @@
-------------------------------在contentprovider中
+设：contentprovider内部 对数据的处理方式 采用sqlitedatabase
+
+当要求contentprovider进行修改时，推荐 客户方使用 applybatch(contentprovideroperations)这种方式
+而在服务方contentprovider.applybatch中，开启/提交事务
+	applybatch的执行体 会进一步调用 增删改查方法
+	而在增删改查方法中，均不再开启/提交事务
+对于增删改方法的内部实现（使用sqlitedatabase），一律采用sqlitestatement方式
+	参见：存储/db/使用sqlitestate来批量 插入 更新 删除.txt
+
+------------------------------在服务方contentprovider中
 @Override
 public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation>operations) throws OperationApplicationException{
-	SQLiteDatabasedb = mOpenHelper.getWritableDatabase();
-	db.beginTransaction();//开始事务
+	SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+	//开始事务	
+	db.beginTransaction();
 	try{
+		//使用super的applybatch的方式
 		ContentProviderResult[] results = super.applyBatch(operations);
-		db.setTransactionSuccessful();//设置事务标记为successful
+
+		//设置事务标记为successful
+		db.setTransactionSuccessful();
 		return results;
 	}finally {
-		db.endTransaction();//结束事务
+		//结束事务
+		db.endTransaction();
 	}
 }
 
@@ -27,14 +41,9 @@ public @NonNull ContentProviderResult[] applyBatch(
 ------------------------------客户中
 ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation> operations)
 
-ContentProviderOperation的构建:
+>>>ContentProviderOperation的构建:
 ContentProviderOperation.Builder builder=ContentProviderOperation.newXXX(Uri);
-builder.withSelection("=?",new String[]{"xxx"});
-builder.withValues(ContentValues);
+builder.withxxx
+	builder.withSelection("=?",new String[]{"xxx"});
+	builder.withValues(ContentValues);
 ContentProviderOperation operation=builder.build();
---
-或者：
-//删除Person表
-ContentProviderOperation.newDelete(Person.CONTENT_URI).build()
-//添加一条记录到Home表
-ContentProviderOperation.newInsert(Home.CONTENT_URI).withValues(values).build()
