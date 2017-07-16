@@ -1,2 +1,8 @@
-一个浏览器标识，就是让某些网站判断你的浏览器类型来提供不同的网页
-如是手机的就打开wap,显示非手机的就打开pc常规页面.
+User-Agent 
+首部包含了一个特征字符串，用来让网络协议的对端 来识别 发起请求的用户代理软件的 应用类型、操作系统、软件开发商以及版本号。
+
+有什么用：
+同样请求一个网页，可根据user-agent来判断 该请求是来自desktop还是一个手机，并据此来返回 不同的网页内容（desktop的版本，wap版本）
+
+示例：
+Mozilla/5.0 (Linux; Android 7.1.1; ONEPLUS A3000 Build/XXX) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36

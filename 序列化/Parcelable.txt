@@ -1,0 +1,62 @@
+参见：
+序列化与反序列化之Parcelable和Serializable浅析
+    http://blog.csdn.net/javazejian/article/details/52665164
+Android Parcelable和Serializable的区别
+	http://www.cnblogs.com/trinea/archive/2012/11/09/2763213.html
+
+提供了什么：
+序列化/反序列化
+--
+Parcelable本质：
+    序列化时，将对象写入到parcel中（parcel类似 流）
+    反序列化时，通过CREATOR 将parcel转换成对象
+
+为什么使用：
+相较于serializable，parcelable性能更好，占用内存更小
+而Android的Parcelable的设计初衷是因为Serializable效率过慢，，
+Parcelable是通过IBinder通信的消息的载体。
+
+在什么场景使用：
+序列化后的数据，仅仅存在于内存中（如：组件间（可以是同一个app，或者是不同的app）数据的传递）
+而对于将序列化后的数据 持久化到数据库，或者，通过网络 进行传输，还是建议使用serializable
+    为什么：android版本不同而导致Parcelable可能不同
+
+------------------------------------Parcelable一个例子
+public class MyParcelable implements Parcelable {
+    private int mData;
+    private String mStr;
+    //其中User类也实现了Parcelable
+    public User user;
+
+    public int describeContents() {
+        return 0;
+    }
+
+    // 写数据进行保存
+    // 注意：写入和读取的类型及顺序一致
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(mData);
+        out.writeString(mStr);
+        out.writeParcelable(user,0);
+    }
+
+    // 构造函数：读数据进行恢复
+    // 注意：写入和读取的类型及顺序一致
+    private MyParcelable(Parcel in) {
+        mData = in.readInt();
+        mStr = in.readString();
+        //User是另一个序列化对象，此方法序列需要传递当前线程的上下文类加载器，否则会报无法找到类的错误
+        user=in.readParcelable(Thread.currentThread().getContextClassLoader());
+    }
+
+    // 用来创建自定义的Parcelable的对象
+    public static final Parcelable.Creator<MyParcelable> CREATOR = new Parcelable.Creator<MyParcelable>() {
+        public MyParcelable createFromParcel(Parcel in) {
+            return new MyParcelable(in);
+        }
+
+        public MyParcelable[] newArray(int size) {
+            return new MyParcelable[size];
+        }
+    };
+}

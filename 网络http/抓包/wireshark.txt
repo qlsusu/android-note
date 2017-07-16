@@ -1,0 +1,13 @@
+方法1.
+pc创建一个热点，后手机连接到该热点上
+启动wireshark来监控网络
+
+方法2.
+导出手机的tcpdump
+	下载tcpdump，并导入到手机
+		http://www.tcpdump.org/
+		adb push c:\tcpdump /data/local/tcpdump
+	chmod +x /data/local/tcpdump
+	//进行抓包，并导出到sdcard。此刻，你可以在设备上进行app操作，操作结束后，ctrl+c来停止
+	/data/local/tcpdump -p -vv -s 0 -w /sdcard/capture.pcap
+	用wireshark打开该文件，进行分析
