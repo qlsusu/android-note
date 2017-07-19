@@ -7,18 +7,19 @@ new Handler(Looper.getMainLooper()).post(new Runnable() {
     @Override
     public void run() {
         try {
-            Looper mainLooper = Looper.getMainLooper();
-            final Looper me = mainLooper;
+            final Looper mainLooper = Looper.getMainLooper();
             final MessageQueue queue;
-            Field fieldQueue = me.getClass().getDeclaredField(FIELD_mQueue);
+            Field fieldQueue = Looper.class.getDeclaredField(FIELD_mQueue);
             fieldQueue.setAccessible(true);
             //获得mainlooper的MessageQueue
-            queue = (MessageQueue) fieldQueue.get(me);
+            queue = (MessageQueue) fieldQueue.get(mainLooper);
             Method methodNext = queue.getClass().getDeclaredMethod(METHOD_next);
             methodNext.setAccessible(true);
+
             Binder.clearCallingIdentity();
+            
             for (; ; ) {
-                //调用messsagequeue.next
+                //调用 mainlooper.messsagequeue.next() 得到message
                 Message msg = (Message) methodNext.invoke(queue);
                 if (msg == null) {
                     return;

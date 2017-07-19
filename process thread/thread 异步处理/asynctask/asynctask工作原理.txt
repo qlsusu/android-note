@@ -2,13 +2,15 @@
 AsyncTask#execute(Params...)
 其会调用：AsyncTask#executeOnExecutor(Executor exec, Params... params)
 	其中，executor采用sDefaultExecutor，默认下为SERIAL_EXECUTOR
-	其内部定义了futuretask和workrunnable(继承自callable)，executor.exec的是该futuretask
-		而workrunnable内部指定了 threadpoolexecutor中线程的优先级为：Process.THREAD_PRIORITY_BACKGROUND
-最终，任务的执行通过THREAD_POOL_EXECUTOR来exec
-	THREAD_POOL_EXECUTOR是public，也是android推荐我们采用的threadpoolexecutor
+	其内部拥有FutureTask（其内部的callable是WorkerRunnable类型），executor.exec的也是该futuretask
+		而workrunnable.call()设置了进行 执行线程的优先级：Process.THREAD_PRIORITY_BACKGROUND
+SERIAL_EXECUTOR被提交了任务，
+	对该任务进行包装（该任务执行完毕后，从任务队列中取出下一个任务（取操作非阻塞）来执行）（这种任务的处理方式：也保证了提交到该线程池上的任务，都是串行来执行的）
+	后该包装后的任务被放入到任务队列中
+	从任务队列中取出一个任务，由于threadpoolexecutor来执行
 	
 通知结果：
 AsyncTask#postResult
 将会向InternalHandler发送消息（MESSAGE_POST_RESULT）
-	该handler采用了looper.mainlooper
+	而该handler采用了looper.mainlooper
 最终调用了AsyncTask#onPostExecute

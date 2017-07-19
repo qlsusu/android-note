@@ -1,3 +1,3 @@
-发送方 和 接收方 在同一个进程中，位于其他app的receiver不能收到该通知
+发送方 和 接收方 在同一个进程中，只有本app的receiver才能收到该通知
 LocalBroadcastManager#registerReceiver(BroadcastReceiver receiver, IntentFilter filter)
 LocalBroadcastManager#unregisterReceiver(BroadcastReceiver receiver)

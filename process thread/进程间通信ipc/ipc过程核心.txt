@@ -1,0 +1,21 @@
+使用的I接口，参见：I接口-java示例.txt
+
+编写aidl文件，定义方法
+自动生成IMyLogic.java
+	声明了接口方法
+	定义了IMyLogic.Stub（其继承于Binder）
+		通过构造函数，指名该Stub对象关联IMyLogic（attachInterface）
+		实现Binder.onTransact()方法
+			判断（通过code）要调用哪个接口方法
+				读取输入parcel
+				调用 接口方法（抽象的Stub声明其implements了IMyLogic，则Stub的实现子类 拥有该方法的实现）
+				将结果写入到输出parcel中
+	定义了IMyLogic.Stub.Proxy
+		其声明实现了IMyLogic，则client可使用对象 来请求IMyLogic
+		Stub.asInterface(IBinder)返回该proxy对象
+		接口方法的实现为：
+			在输入parcel中指名：要请求IMyLogic（writeInterfaceToken）
+			指名code为 要调用的方法
+			调用IBinder.transact()
+			读取输出parcel
+				其会阻塞，知道parcel中存在数据

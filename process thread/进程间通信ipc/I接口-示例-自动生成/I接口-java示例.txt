@@ -1,0 +1,126 @@
+/*
+ * This file is auto-generated.  DO NOT MODIFY.
+ * Original file: /Users/qlong/project-as/test/bind/src/main/aidl/com/ql/bind/IMyLogic.aidl
+ */
+package com.ql.bind;
+// Declare any non-default types here with import statements
+
+public interface IMyLogic extends android.os.IInterface {
+    //I接口方法
+    public int add(int a, int b, com.ql.bind.IMyLogicCallback callback) throws android.os.RemoteException;
+
+    /**
+     * Local-side IPC implementation stub class.
+     */
+    public static abstract class Stub extends android.os.Binder implements com.ql.bind.IMyLogic {
+        //I接口标识
+        private static final java.lang.String DESCRIPTOR = "com.ql.bind.IMyLogic";
+
+        //方法标识
+        static final int TRANSACTION_add = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+
+        //我这个binder对应了I接口
+        /**
+         * Construct the stub at attach it to the interface.
+         */
+        public Stub() {
+            this.attachInterface(this, DESCRIPTOR);
+        }
+
+        //------------------------------------client的使用
+        /**
+         * 该方法在client中使用，用于产生proxy
+         * Cast an IBinder object into an com.ql.bind.IMyLogic interface,
+         * generating a proxy if needed.
+         */
+        public static com.ql.bind.IMyLogic asInterface(android.os.IBinder obj) {
+            if ((obj == null)) {
+                return null;
+            }
+            android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
+            if (((iin != null) && (iin instanceof com.ql.bind.IMyLogic))) {
+                return ((com.ql.bind.IMyLogic) iin);
+            }
+            //产生I接口的代理对象
+            return new com.ql.bind.IMyLogic.Stub.Proxy(obj);
+        }
+
+        private static class Proxy implements com.ql.bind.IMyLogic {
+            private android.os.IBinder mRemote;
+
+            Proxy(android.os.IBinder remote) {
+                mRemote = remote;
+            }
+
+            @Override
+            public android.os.IBinder asBinder() {
+                return mRemote;
+            }
+
+            public java.lang.String getInterfaceDescriptor() {
+                return DESCRIPTOR;
+            }
+
+            @Override
+            public int add(int a, int b, com.ql.bind.IMyLogicCallback callback) throws android.os.RemoteException {
+                android.os.Parcel _data = android.os.Parcel.obtain();
+                android.os.Parcel _reply = android.os.Parcel.obtain();
+                int _result;
+                try {
+                    //我要使用I接口
+                    _data.writeInterfaceToken(DESCRIPTOR);
+                    //写入 输入
+                    _data.writeInt(a);
+                    _data.writeInt(b);
+                    _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
+                    //执行remote调用：指名调用方法，输入参数，返回参数
+                    mRemote.transact(Stub.TRANSACTION_add, _data, _reply, 0);
+                    //读取异常情况（如：无异常）
+                    _reply.readException();
+                    //阻塞到 有返回值
+                    _result = _reply.readInt();
+                } finally {
+                    //回收parcel
+                    _reply.recycle();
+                    _data.recycle();
+                }
+                return _result;
+            }
+        }
+
+        @Override
+        public android.os.IBinder asBinder() {
+            return this;
+        }
+
+        //当定位到我（因为我对应了I接口）
+        @Override
+        public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException {
+            switch (code) {
+                case INTERFACE_TRANSACTION: {
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                }
+                //当要调用add方法时
+                case TRANSACTION_add: {
+                    data.enforceInterface(DESCRIPTOR);
+                    //读取输入
+                    int _arg0;
+                    _arg0 = data.readInt();
+                    int _arg1;
+                    _arg1 = data.readInt();
+                    com.ql.bind.IMyLogicCallback _arg2;
+                    _arg2 = com.ql.bind.IMyLogicCallback.Stub.asInterface(data.readStrongBinder());
+                    //执行方法，子类需要实现add方法
+                    int _result = this.add(_arg0, _arg1, _arg2);
+                    //没有产生异常
+                    reply.writeNoException();
+                    //写入结果
+                    reply.writeInt(_result);
+                    return true;
+                }
+            }
+            return super.onTransact(code, data, reply, flags);
+        }        
+    }
+}

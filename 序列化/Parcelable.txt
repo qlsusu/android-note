@@ -21,6 +21,10 @@ Parcelable是通过IBinder通信的消息的载体。
 而对于将序列化后的数据 持久化到数据库，或者，通过网络 进行传输，还是建议使用serializable
     为什么：android版本不同而导致Parcelable可能不同
 
+>>>Parcel的使用：
+Parcel p=Parcel.obtain();
+p.writeXXX();
+p.recycle();
 ------------------------------------Parcelable一个例子
 public class MyParcelable implements Parcelable {
     private int mData;

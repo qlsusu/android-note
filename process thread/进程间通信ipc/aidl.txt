@@ -11,15 +11,6 @@ Android Interface Definition Language
 进程之间如果要进行通信，就必须先把需要传递的对象分解成操作系统能够理解的基本类型，并根据你的需要封装跨边界的对象。
 而要完成这些封装工作，需要写的代码量十分地冗长而枯燥。因此Android提供了AIDL来帮助你完成这些工作。
 
-支持什么数据类型：
-所有的基本类型（int、float等）
-String
-CharSequence
-Pacelable
-List, Map
-	其中的元素类型 也必须是上树类型之一
-
-在as/eclipse中的位置：
-对于android studio，应该建立一个aidl文件夹 来放置aidl文件
-	其位置是和res平级的
+.aidl在as/eclipse中的位置：
+对于android studio，应该在 main下 建立一个aidl文件夹 来放置aidl文件
 对于eclipse，该aidl文件应该放置在src中的package下

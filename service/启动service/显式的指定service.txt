@@ -1,2 +1,2 @@
-在ICE_CREAM_SANDWICH（4.0） 以及之后的版本中，在启动service时（无论是start还是bind），均需要显式的指定service：
+在ICE_CREAM_SANDWICH（4.0） 以及之后的版本中，在启动service时（无论是start还是bind）（无论是app内部，还是不同的app之间），均需要显式的指定service：
 intent.setPackage(xxx);
