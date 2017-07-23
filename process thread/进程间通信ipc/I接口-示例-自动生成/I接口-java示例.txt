@@ -37,6 +37,8 @@ public interface IMyLogic extends android.os.IInterface {
             if ((obj == null)) {
                 return null;
             }
+
+            //如果是 bind方(client) 和 被bind方(server) 在同一个进程中，那么直接返回 i接口.stub对象
             android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
             if (((iin != null) && (iin instanceof com.ql.bind.IMyLogic))) {
                 return ((com.ql.bind.IMyLogic) iin);
@@ -45,7 +47,10 @@ public interface IMyLogic extends android.os.IInterface {
             return new com.ql.bind.IMyLogic.Stub.Proxy(obj);
         }
 
+        //--------Proxy的定义（往往在stub类中 定义，如：ActivityManagerNative定义了ActivityManagerProxy）
         private static class Proxy implements com.ql.bind.IMyLogic {
+            //其 对应 真实的i接口.stub对象 的remote版本：
+            //stub对象被称为 native（如：IActivityManager的stub的类名为：ActivityManagerNative），则该ibinder对象被称为 remote
             private android.os.IBinder mRemote;
 
             Proxy(android.os.IBinder remote) {
@@ -88,12 +93,14 @@ public interface IMyLogic extends android.os.IInterface {
             }
         }
 
+        //------------------------------------自身的使用
         @Override
         public android.os.IBinder asBinder() {
             return this;
         }
 
         //当定位到我（因为我对应了I接口）
+        //该方法运行在 binder线程池中
         @Override
         public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException {
             switch (code) {

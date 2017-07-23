@@ -1,4 +1,6 @@
 所有的基本类型（int long boolean float double）
+String
+CharSequence
 	如：生成一个aidl文件时，将会默认产生该方法
 	/**
 	 * Demonstrates some basic types that you can use as parameters
@@ -6,10 +8,11 @@
 	 */
 	void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,
 	        double aDouble, String aString);
-String
-CharSequence
 .aidl
-	Pacelable（如果一个类是parcelable，需要在aidl文件中再次定义）
+	Pacelable
+		如果一个类是parcelable，需要在aidl文件中再次定义，如：
+			package com.ryg.sayhi.aidl;
+			parcelable Student;
 	I接口
 List, Map
 	其中的元素类型 也必须是上述类型之一

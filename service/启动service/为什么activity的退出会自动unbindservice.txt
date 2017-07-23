@@ -1,0 +1,6 @@
+方法签名：
+Context#bindService(@RequiresPermission Intent service, @NonNull ServiceConnection conn, @BindServiceFlags int flags);
+ServiceConnection#onServiceConnected(ComponentName name, IBinder service)
+
+当使用activity.bindservice时，这里的context为activity
+当activity退出时，意味着该context失效，则ServiceConnection失效，connection中的service失效
