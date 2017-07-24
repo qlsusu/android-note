@@ -1,0 +1,23 @@
+参见：
+Android应用程序绑定服务（bindService）的过程源代码分析
+	http://blog.csdn.net/luoshengyang/article/details/6745181
+
+client 请求 ams来bind一个service
+	构建iserviceconnection.stub （其本身作是serviceconnection的wrapper），并传给ams进程
+	后续ams得到service的binder后，通过该iserviceconnection 将binder传递给client
+ams为目标service创建servicerecord
+	connectionrecord对应 该serviceconnection (指名：请求方 目标 serviceconnection)
+	appbindrecord 代表callerapp 针对于某servicerecord 有哪些 connectionrecord
+ams判断 service组件所在进程是否启动（找processrecord），如果没有的话 启动进程（创建一个prcoessrecord）
+	service进程 请求ams来 attchapplication
+	ams进程得到iapplicationthread来和 service组件所在进程 通信
+ams进程要求 service进程 执行service组件的创建 application的创建
+ams进程要求 service进程 执行bind操作，
+service进程 告诉 ams进程 binder（onbind返回的那个binder）
+ams进程 通知 client进程 该binder （通过client进程之前传递的 iserviceconnection）
+	遍历servicerecord的connectionrecord
+	执行connectionrecord.connection.connect(ibinder)
+		在client进程中，执行该local方法：
+			iserviceconnection.stub对象.connect
+				调用servicedispatcher.connect
+					使用activitythread.handler.post 来执行onserviceconnect(service进程 传递过来的binder（先传给ams，ams再进一步传递）)

@@ -51,6 +51,7 @@ public interface IMyLogic extends android.os.IInterface {
         private static class Proxy implements com.ql.bind.IMyLogic {
             //其 对应 真实的i接口.stub对象 的remote版本：
             //stub对象被称为 native（如：IActivityManager的stub的类名为：ActivityManagerNative），则该ibinder对象被称为 remote
+            //这两个binder对象代表：在不同进程的 同一个对象
             private android.os.IBinder mRemote;
 
             Proxy(android.os.IBinder remote) {

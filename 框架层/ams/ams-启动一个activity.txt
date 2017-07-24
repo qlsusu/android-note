@@ -1,0 +1,21 @@
+参见：
+Android应用程序启动过程源代码分析
+	http://blog.csdn.net/luoshengyang/article/details/6689748
+
+背景：当前界面为appA的activityA，现在要启动 appB的activityB
+在appA中，通过iactivitymanager，向ams发请求：要求启动 appB的activityB
+ams通过iapplicationthread 要求activityA 进行pause
+appA的applicationthread收到请求后，要求activitythread来 pause activityA
+activityA被pause后，通过iactivitymanager 向ams汇报
+ams要启动activityB，首先判断activityB对应的processrecord是否存在（通过processname（activityrecord.processname）, uid（activityrecord.activityinfo.applicationinfo.uid）的方式），并没有发现 该processrecord
+创建processrecord对象（存入关键信息（processName,uid等）），创建进程
+appB的activitythread.main执行，并执行了activitythread.attach，汇报自己的applicationthread
+ams收到该iapplicationthread，并将pid（通过ibinder.getcallingpid）和该iapplicationthread存入到processrecord中
+ams发现 之前要启动的activityrecord（对应activityB） 的app（processrecord）为空（因为为空，才创建进程的么），但是刚被attach的processrecord的 name和uid 均满足activityrecord的要求，那么，启动该activityrecord
+ams通过 appB的iapplicationthread，要求 启动activityB
+appB的applicationthread 要求 activitythread 启动activityB
+	创建activityB对象
+	创建application对象（如果需要）
+	activityB.attach
+	执行activityB的oncreate
+	执行activityB.onRestoreInstanceState

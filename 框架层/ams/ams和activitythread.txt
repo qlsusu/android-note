@@ -1,12 +1,8 @@
-参见：
-Android应用程序启动过程源代码分析
-	http://blog.csdn.net/luoshengyang/article/details/6689748
-
 ------------------------------AMS进程
 ActivityManagerService（I接口：IActivityManager，继承自：ActivityManagerNative（本质：I接口.stub））
 	负责：启动进程，启动/管理 Activity和Service
 ApplicationThreadProxy（I接口：IApplicationThread）
-	ams进程 使用iapplicationthread 来和 app进程 交互
+	作用：ams进程 使用iapplicationthread 来和 app进程 交互
 	如何获得：
 		在启动app进程时（通过执行Process.start("android.app.ActivityThread",xxx)，进而执行activitythread.main），执行activitythread.attch，其中调用iactivitymanager.attachapplication()时，将app的applicationthread作为参数传入
 			而最终activitymanagerservice会将 pid（IBinder.getCallingPid()）和该iapplicationthread进行关联（processrecord.id 与 processrecord.thread）
@@ -31,6 +27,14 @@ ActivityRecord
 		数据结构：WeakReference<ActivityRecord> weakActivity 和 ActivityManagerService mService
 		该token会传入到 app进程中，来告诉，当前要针对于哪个activity进行处理
 	其持有：taskrecord, processrecord
+ServiceRecord
+	代表着service
+	ConnectionRecord
+		代表一次 client要与server的建立连接
+		拥有，要bind哪个service（servicerecord）
+		和，client传来的iserviceconnection（用于ams得到 service进程的binder后 回传给client）
+	AppBindRecord
+		代表 processrecord 针对于 servicerecord，都拥有哪些connectionrecord
 
 ------------------------------app进程
 ActivityThread
@@ -52,22 +56,3 @@ Instrumentation
 	监控Activity/application的 创建等，相当于是系统运行日志。
 ActivityClientRecord
 	对应着 ams进程的 ActivityRecord
-
-------------------------------app进程 与 ams进程 的交互示例
-背景：当前界面为appA的activityA，现在要启动 appB的activityB
-在appA中，通过iactivitymanager，向ams发请求：要求启动 appB的activityB
-ams通过iapplicationthread 要求activityA 进行pause
-appA的applicationthread收到请求后，要求activitythread来 pause activityA
-activityA被pause后，通过iactivitymanager 向ams汇报
-ams要启动activityB，首先判断activityB对应的processrecord是否存在（通过processname（activityrecord.processname）, uid（activityrecord.activityinfo.applicationinfo.uid）的方式），并没有发现 该processrecord
-创建processrecord对象（存入关键信息（processName,uid等）），创建进程
-appB的activitythread.main执行，并执行了activitythread.attach，汇报自己的applicationthread
-ams收到该iapplicationthread，并将pid（通过ibinder.getcallingpid）和该iapplicationthread存入到processrecord中
-ams发现 之前要启动的activityrecord（对应activityB） 的app（processrecord）为空（因为为空，才创建进程的么），但是刚被attach的processrecord的 name和uid 均满足activityrecord的要求，那么，启动该activityrecord
-ams通过 appB的iapplicationthread，要求 启动activityB
-appB的applicationthread 要求 activitythread 启动activityB
-	创建activityB对象
-	创建application对象（如果需要）
-	activityB.attach
-	执行activityB的oncreate
-	执行activityB.onRestoreInstanceState
