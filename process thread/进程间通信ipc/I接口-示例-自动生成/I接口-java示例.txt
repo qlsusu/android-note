@@ -7,7 +7,7 @@ package com.ql.bind;
 
 public interface IMyLogic extends android.os.IInterface {
     //I接口方法
-    public int add(int a, int b, com.ql.bind.IMyLogicCallback callback) throws android.os.RemoteException;
+    public int add(int a, int b, com.ql.bind.IMyLogicCallback callback, com.ql.bind.bean.MyParcel myParcel) throws android.os.RemoteException;
 
     /**
      * Local-side IPC implementation stub class.
@@ -43,6 +43,7 @@ public interface IMyLogic extends android.os.IInterface {
             if (((iin != null) && (iin instanceof com.ql.bind.IMyLogic))) {
                 return ((com.ql.bind.IMyLogic) iin);
             }
+
             //产生I接口的代理对象
             return new com.ql.bind.IMyLogic.Stub.Proxy(obj);
         }
@@ -51,7 +52,7 @@ public interface IMyLogic extends android.os.IInterface {
         private static class Proxy implements com.ql.bind.IMyLogic {
             //其 对应 真实的i接口.stub对象 的remote版本：
             //stub对象被称为 native（如：IActivityManager的stub的类名为：ActivityManagerNative），则该ibinder对象被称为 remote
-            //这两个binder对象代表：在不同进程的 同一个对象
+            //这两个binder对象代表：在不同进程的 "同一个"对象
             private android.os.IBinder mRemote;
 
             Proxy(android.os.IBinder remote) {
@@ -68,7 +69,7 @@ public interface IMyLogic extends android.os.IInterface {
             }
 
             @Override
-            public int add(int a, int b, com.ql.bind.IMyLogicCallback callback) throws android.os.RemoteException {
+            public int add(int a, int b, com.ql.bind.IMyLogicCallback callback, com.ql.bind.bean.MyParcel myParcel) throws android.os.RemoteException {
                 android.os.Parcel _data = android.os.Parcel.obtain();
                 android.os.Parcel _reply = android.os.Parcel.obtain();
                 int _result;
@@ -78,7 +79,15 @@ public interface IMyLogic extends android.os.IInterface {
                     //写入 输入
                     _data.writeInt(a);
                     _data.writeInt(b);
+                    //写入 binder
                     _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
+                    //写入 自定义parcel
+                    if ((myParcel != null)) {
+                        _data.writeInt(1);
+                        myParcel.writeToParcel(_data, 0);
+                    } else {
+                        _data.writeInt(0);
+                    }
                     //执行remote调用：指名调用方法，输入参数，返回参数
                     mRemote.transact(Stub.TRANSACTION_add, _data, _reply, 0);
                     //读取异常情况（如：无异常）
@@ -117,10 +126,17 @@ public interface IMyLogic extends android.os.IInterface {
                     _arg0 = data.readInt();
                     int _arg1;
                     _arg1 = data.readInt();
+                    //读取binder，并变成 I接口.stub.proxy
                     com.ql.bind.IMyLogicCallback _arg2;
                     _arg2 = com.ql.bind.IMyLogicCallback.Stub.asInterface(data.readStrongBinder());
-                    //执行方法，子类需要实现add方法
-                    int _result = this.add(_arg0, _arg1, _arg2);
+                    //读取自定义parcel
+                    if ((0 != data.readInt())) {
+                        _arg3 = com.ql.bind.bean.MyParcel.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg3 = null;
+                    }
+                    //执行方法，stub的子类需要实现该 add本地方法
+                    int _result = this.add(_arg0, _arg1, _arg2, _arg3);
                     //没有产生异常
                     reply.writeNoException();
                     //写入结果

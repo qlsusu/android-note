@@ -1,0 +1,24 @@
+为什么使用双缓冲：
+当我要在屏幕上画100个圆，而每画一个圆，就需要访问一次显示屏，而访问显示屏 比较耗时
+我可以创建一个 缓冲区（其大小 和 屏幕尺寸相同），将这100个圆 画在这个缓冲区中，然后再将该 缓冲区画到显示屏上（则我只用访问一次显示屏）
+
+缓冲区示例：
+MyView的onDraw(Canvas canvas)中
+	 /* 创建Canvas对象 */  
+	Canvas mCanvas = new Canvas();  
+	/* 创建屏幕大小的缓冲区 tmp*/  
+	Bitmap tmp = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);  
+	/* 设置将内容绘制在tmp上 */  
+	mCanvas.setBitmap(tmp);  
+	//pic 在tmp上  
+	Bitmap pic = ((BitmapDrawable) getResources().getDrawable(R.drawable.qq)).getBitmap();  
+	mCanvas.drawBitmap(pic, 0, 0, paint);  
+	//把5*8个圆绘制在tmp上  
+	for (int i = 0; i < 5; i++)  
+	    for (int j = 0; j < 8; j++)  
+	        mCanvas.drawCircle(  
+	                (getWidth() / 5) * i + (getWidth() / 10),  
+	                (getHeight() / 8) * j + (getHeight() / 16),  
+	                m_circle_r, paint);  
+	//把tmp绘制在物理设备上  
+	canvas.drawBitmap(tmp, 0, 0, paint);  

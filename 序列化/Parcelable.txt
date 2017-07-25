@@ -36,7 +36,8 @@ public class MyParcelable implements Parcelable {
         return 0;
     }
 
-    // 写数据进行保存
+    // 将该bean写入到parcel中
+    // 什么场景需要：ipc通信时，client提供输入参数，binder需要将该输入实体 序列化到 parcel中
     // 注意：写入和读取的类型及顺序一致
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(mData);
@@ -44,7 +45,8 @@ public class MyParcelable implements Parcelable {
         out.writeParcelable(user,0);
     }
 
-    // 构造函数：读数据进行恢复
+    // 通过parcel来构造出 实体对象
+    // 什么场景需要：ipc通信中，server的binder读取parcel，需要从该parcel中 反序列化到 实体对象（通过CREATOR.createFromParcel）
     // 注意：写入和读取的类型及顺序一致
     private MyParcelable(Parcel in) {
         mData = in.readInt();
