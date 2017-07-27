@@ -1,0 +1,3 @@
+Ixxx service = Ixxx.Stub.asInterface(ServiceManager.getService("xxx"))，如
+	ams.proxy对应于"activity"
+	wms.proxy对应于"windows"

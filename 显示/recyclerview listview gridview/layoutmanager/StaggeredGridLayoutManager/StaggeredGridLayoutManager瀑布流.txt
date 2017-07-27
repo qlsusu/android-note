@@ -11,4 +11,7 @@ RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
 recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(),
 		StaggeredGridLayoutManager.VERTICAL));
 recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
-	
+
+宽和高都可以不一样吗？
+是不行的，如StaggeredGridLayoutManager采用了VERTICAL方向，则item是一行行排布
+设列数为3，则对于item来说，宽度的最大值是一行的1/3，则此时，只有高 在items间 是可以不同的

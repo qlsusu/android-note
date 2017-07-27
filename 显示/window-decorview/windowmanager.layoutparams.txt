@@ -4,7 +4,7 @@ WindowManager.LayoutParams
 	height：描述窗口的高度，该变量同样是父类ViewGroup.LayoutParams的成员变量。
 	x：描述窗口的起点X轴的坐标。
 	y：描述窗口起点Y轴的坐标。
-	type：窗口的类型，分为三个大类型：应用窗口，子窗口，系统窗口。
+	type：窗口的类型，分为三个类型：应用窗口，子窗口，系统窗口。
 	flag：窗口特征标记，比如是否全屏，是否隐藏标题栏等。如：
  		WindowManager.LayoutParams wlp = getWindow().getAttributes();
  		//设置沉浸式

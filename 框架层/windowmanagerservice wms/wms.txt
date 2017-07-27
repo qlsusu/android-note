@@ -1,0 +1,69 @@
+参见：
+Android应用程序窗口（Activity）实现框架简要介绍和学习计划 （等系列教程）
+	http://blog.csdn.net/luoshengyang/article/details/8170307
+	系列教程入口：http://blog.csdn.net/Luoshengyang/article/list/3
+
+phonewindow
+	decorview
+	wlp
+
+>>>执行流程：
+activitythread.handlelaunchactivity
+	activitythread.performlaunchactivity中
+		activity.attach
+			其中，创建phonewindow
+		activity.oncreate
+			setcontentview
+				phonewindow.setcontentview
+					其中创建了decorview（在activity.oncreate中执行了setcontentview，进而执行window.setcontentview），
+					进而创建了mcontentparent(对应android.R.id.content)
+					根据activity的feature（对应于windowmanager.layoutparams）来找对应的layout文件（如：activity要显示标题，那么就找拥有title的layout文件）
+						该layout文件位于：frameworks/base/core/res/res/layout/下
+					该layout中包含了android.R.id.content，那么将该view 赋值给 mcontentparent
+	activitythread.handleresumeactivity
+		判断activity是否真的可见，如其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
+		当真的可见时，执行activity.onresume
+		接下来，activity需要显示，那么构建viewroot, decorview, wlp之间的关系
+		该关系的确定是由windowmanager来完成（windowmanager.addview(decorview, windowmanager.lp)）（存储于：[] decorview, [] viewroot, [] wlp）
+			构建viewroot
+			后，调用viewroot.setview来确定 和wms的ipc关系
+				viewroot已经含有了 iwindow的本地binder 和 iwindowsession的代理binder
+			
+>>>app和wms的交互
+app的windowmanagerglobal的 iwindowsession类型的代理binder 对应于 wms的iwindowsession的本地binder
+	app级别的对应
+	如何创建：
+		app端：iwindowmanager.openSession()
+			在viewrootimpl的构造函数中
+		wms端：app端openSession被调用时，在wms端产生 session
+	app持有iwindowsession代理binder有什么用
+		添加删除window
+		对窗口（decorview）进行relayout以 显示在屏幕上
+wms的windowstate 对应于 app的viewroot的 iwindow类型的本地binder
+	窗口级别的对应
+	windowstate持有：iwindowsession本地binder，iwindow的代理binder
+	如何创建：
+		app端：new ViewRootImpl.W
+			在viewrootimpl的构造函数中
+		wms端：app端调用 iwindowsession.addToDisplay()时，将iwindow类型的binder 传入
+			在viewrootimpl.setview()中
+	ams持有iwindow代理binder有什么用
+		当窗口发生变化时（大小 可见性等发生变化，进行通知）
+
+------------------------之下为老的内容
+
+判断
+
+windowmanager		
+	localwindowmanager
+		windowmanagerimpl
+			windowmanagerglobal
+				iwindowmanager(对应windowmanagerservice)
+				iwindowtoken
+				对应关系
+					[] decorview
+						其父decorview是谁：子wlp.token == 父root.mwindow（W类型）.asbinder
+					[] windowmanager.lp(attribute)
+					[] viewroot
+viewroot
+	用来控制view的绘制
