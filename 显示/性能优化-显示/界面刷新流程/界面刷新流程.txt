@@ -1,0 +1,19 @@
+参见：
+用两张图告诉你，为什么你的App会卡顿?
+	http://www.jianshu.com/p/df4d5ec779c8
+
+view.requestlayout
+	ViewRootImpl#requestLayoutDuringLayout
+		mLayoutRequesters.add(view);
+
+当绘制内容需要发生改变时，会通过Choreographer请求一个vsync信号，方式：
+	Choreographer#postCallback(int callbackType, Runnable action, Object token)
+		提供一个callback（指定了 callbackType 和 action）
+		Choreographer.FrameDisplayEventReceiver#scheduleVsync()
+			其会请求一个vsync信号
+	当接收到vsync信号时，会执行callback回调（来更新绘制（有可能通过viewrootimpl.dotraversal）），通过：
+		Choreographer.FrameDisplayEventReceiver#onVsync
+			Choreographer.FrameHandler#handleMessage
+				Choreographer#doCallbacks
+					Choreographer.FrameCallback#doFrame
+					或，Runnable#run

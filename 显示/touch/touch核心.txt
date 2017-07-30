@@ -1,4 +1,6 @@
 参见：
+原来Android触控机制竟是这样的？
+	http://www.jianshu.com/p/b7cef3b3e703
 十分钟彻底弄明白View事件分发机制
 	https://dreamerhome.github.io/2016/07/25/viewEventDispatch/
 my/touch
@@ -20,8 +22,16 @@ activity.dispatchTouchEvent,
 	viewgroup.onTouchEvent
 activity.onTouchEvent
 
-说明：
-完整传递流程：Activity（PhoneWindow）-> DecorView -> ViewGroup -> View
+完整传递流程：
+ViewRootImpl.WindowInputEventReceiver收到了inputevent
+将inputevent入队列，并处理 所有的 待处理inputevent
+针对于每个待处理的event，将event传递给inputstage
+最后该事件被传递给了viewrootimpl
+	首先要求decorview（其进一步要求window.callback）处理该事件
+		而activity是该callback，当它收到该事件后，
+			要求window（window会进一步要求decorview，但activity只和window打交道）以super的方式（即viewgroup.dispatchtouchevent）处理该事件
+			如果谁都没有成功处理，那么ontouchevent会被调用
+--
 view.dispatchtouchevent的返回值 意味着 是否对后续事件感兴趣
 当view.ontouch返回了true，也就意味着viewgroup.dispatchtouchevent返回了true，也就意味着 viewgroup对后续的事件感兴趣
 

@@ -2,32 +2,75 @@
 Android应用程序窗口（Activity）实现框架简要介绍和学习计划 （等系列教程）
 	http://blog.csdn.net/luoshengyang/article/details/8170307
 	系列教程入口：http://blog.csdn.net/Luoshengyang/article/list/3
+Android窗口机制（一）初识Android的窗口结构
+	http://www.jianshu.com/p/40a9c93b5a8d
+	拥有系列教程，其为第一篇
 
 phonewindow
 	decorview
 	wlp
 
 >>>执行流程：
-activitythread.handlelaunchactivity
+ams->applicationthread->activitythread.schedulelaunchactivity
+后，activitythread.handlelaunchactivity
 	activitythread.performlaunchactivity中
+		创建activity对象，application对象，context对象
 		activity.attach
-			其中，创建phonewindow
+			创建phonewindow
+			为其设置诸如 callback（本质上就是activity）等
 		activity.oncreate
-			setcontentview
+			activity.setcontentview
 				phonewindow.setcontentview
-					其中创建了decorview（在activity.oncreate中执行了setcontentview，进而执行window.setcontentview），
-					进而创建了mcontentparent(对应android.R.id.content)
-					根据activity的feature（对应于windowmanager.layoutparams）来找对应的layout文件（如：activity要显示标题，那么就找拥有title的layout文件）
+					创建decorview
+					根据activity的 theme,feature 来找对应的layout文件（如：activity要显示标题，那么就找拥有title的layout文件）
 						该layout文件位于：frameworks/base/core/res/res/layout/下
 					该layout中包含了android.R.id.content，那么将该view 赋值给 mcontentparent
+		activity.onstart
+		activity.onRestoreInstanceState
 	activitythread.handleresumeactivity
 		判断activity是否真的可见，如其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
 		当真的可见时，执行activity.onresume
-		接下来，activity需要显示，那么构建viewroot, decorview, wlp之间的关系
-		该关系的确定是由windowmanager来完成（windowmanager.addview(decorview, windowmanager.lp)）（存储于：[] decorview, [] viewroot, [] wlp）
+		接下来，activity需要显示，那么需要构建viewroot, decorview, wlp之间的关系
+		该关系的确定是由windowmanager来完成（windowmanager.addview(decorview, windowmanager.lp)）
+			存储于：[] decorview, [] viewroot, [] wlp
 			构建viewroot
-			后，调用viewroot.setview来确定 和wms的ipc关系
+				负责绘制：
+					performTraversals->
+						performMeasure
+						performLayout
+						performDraw
+			后，调用viewroot.setview来确定 和wms 的ipc关系：
 				viewroot已经含有了 iwindow的本地binder 和 iwindowsession的代理binder
+				监听
+
+共享内存
+管道是单向的吗？只能一个地方写？
+>>>touch, key事件的分发
+注册管道
+	viewrootimpl.setview中
+		mWindowSession.addToDisplay(mWindow, mSeq, mWindowAttributes,
+	        getHostVisibility(), mDisplay.getDisplayId(),
+	        mAttachInfo.mContentInsets, mAttachInfo.mStableInsets,
+	        mAttachInfo.mOutsets, mInputChannel);
+	    mInputEventReceiver = new WindowInputEventReceiver(mInputChannel, Looper.myLooper()); 
+当有事件时
+	ViewRootImpl.WindowInputEventReceiver#onInputEvent
+		enqueueInputEvent
+			doProcessInputEvents
+				deliverInputEvent
+注册一个inputchannle
+wms将会产生一个管道，
+两个管道，
+	前向管道 和 反向管道
+	server往前向管道中写，client从反向管道中读
+	client从前向管道中读，client往反向管道中写
+收到事件后（按键事件，或者，touch事件），让server往前向管道中来写
+
+该channel
+
+当产生事件后，wms将该事件 分发到inputchannel中，而viewroot注册了该channel的另外一端 （具体怎么注册~！！！！！！！！！！，老罗的文章）
+则viewroot收到该事件(通过：ViewRootImpl#dispatchInputEvent(InputEvent))
+后->decorview->activity(实现window.callback)
 			
 >>>app和wms的交互
 app的windowmanagerglobal的 iwindowsession类型的代理binder 对应于 wms的iwindowsession的本地binder

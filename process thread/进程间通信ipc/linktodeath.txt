@@ -1,0 +1,5 @@
+Binder#linkToDeath(DeathRecipient recipient, int flags)
+	用于：该binder对应的 本地binder所在进程被杀掉时，DeathRecipient#binderDied会被调用
+Binder#unlinkToDeath(DeathRecipient recipient, int flags)
+	用于：该binder对应的 本地binder所在进程被杀掉时，该binder便没有意义，则应该调用 unlinktodeath方法，将linktodeath时的recipient作为参数传入
+

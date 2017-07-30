@@ -1,0 +1,12 @@
+系统发送一个HW_Vsync信号（分解为：Vsync和SF_Vsync）
+	app开始在canvas上（viewrootimpl.surface提供）进行绘制，
+	后surfacefling服务将这些surface进行合成（通过匿名共享内存的方式），显示在屏幕上
+Android设定的刷新率是60FPS(Frame Per Second)，则我们需要在16ms之内，完成上述两项工作
+
+丢帧：
+一个vsync信息到达时，我们来更新屏幕的背景图片, 但需要24ms才能完成本次运算
+当surface合成信号来时，合成操作的 源surface并未得到更新（因为新的内容还未绘制到surface上），则用户看到的还是老的内容
+当下一个 surface合成信号来时，才能基于新的surface进行合成，用户那时才能看到新的内容合成时
+则，我们一共经历了两个sync信号（而不是一个），才能看到新内容，则可认为：丢了1帧
+
+丢帧给用户的感觉就是卡顿
