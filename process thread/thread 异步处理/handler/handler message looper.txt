@@ -17,7 +17,7 @@ handler需要知道looper，通过Handler(Looper looper)来指定
 
 经过Looper.prepare()来构建一个looper对象（其中创建一个MessageQueue）来和当前线程关联（放入到threadlocal中）
 	messagequeue：不是通过list的方式，而是通过message.next的chain方式
-经过Looper.loop()来开启循环（会阻塞当前线程，当从queue中取不出消息时）：从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)）
+经过Looper.loop()来开启循环（会阻塞当前线程，当从queue中取不出消息时）：从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)，进而调用Handler#sendMessageAtTime）
 
 ------------------------handler
 用来发送消息，处理Looper抽取出来的Message
