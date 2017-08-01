@@ -15,5 +15,5 @@ interface IMyLogic {
 //    void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,
 //            double aDouble, String aString);
 
-    void add(int a,int b, IMyLogicCallback callback, in MyParcel myParcel);
+    int add(int a,int b, INormalLogicCallback callback, in MyParcel inParcel, out MyParcel outParcel, inout MyParcel inOutParcel);
 }

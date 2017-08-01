@@ -5,6 +5,8 @@ Android应用程序窗口（Activity）实现框架简要介绍和学习计划 �
 Android窗口机制（一）初识Android的窗口结构
 	http://www.jianshu.com/p/40a9c93b5a8d
 	拥有系列教程，其为第一篇
+深入理解Activity——Token之旅
+	http://blog.csdn.net/guoqifa29/article/details/46819377
 
 phonewindow
 	decorview

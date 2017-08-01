@@ -7,7 +7,7 @@ package com.ql.bind;
 
 public interface IMyLogic extends android.os.IInterface {
     //I接口方法
-    public int add(int a, int b, com.ql.bind.IMyLogicCallback callback, com.ql.bind.bean.MyParcel myParcel) throws android.os.RemoteException;
+    public int add(int a, int b, com.ql.bind.INormalLogicCallback callback, com.ql.bind.bean.MyParcel inParcel, com.ql.bind.bean.MyParcel outParcel, com.ql.bind.bean.MyParcel inOutParcel) throws android.os.RemoteException;
 
     /**
      * Local-side IPC implementation stub class.
@@ -69,31 +69,52 @@ public interface IMyLogic extends android.os.IInterface {
             }
 
             @Override
-            public int add(int a, int b, com.ql.bind.IMyLogicCallback callback, com.ql.bind.bean.MyParcel myParcel) throws android.os.RemoteException {
+            public int add(int a, int b, com.ql.bind.INormalLogicCallback callback, com.ql.bind.bean.MyParcel inParcel, com.ql.bind.bean.MyParcel outParcel, com.ql.bind.bean.MyParcel inOutParcel) throws android.os.RemoteException {
                 android.os.Parcel _data = android.os.Parcel.obtain();
                 android.os.Parcel _reply = android.os.Parcel.obtain();
                 int _result;
                 try {
                     //我要使用I接口
                     _data.writeInterfaceToken(DESCRIPTOR);
+
                     //写入 输入
                     _data.writeInt(a);
                     _data.writeInt(b);
+
                     //写入 binder
                     _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
-                    //写入 自定义parcel
-                    if ((myParcel != null)) {
+
+                    //如果参数是in/inout类型，那么序列化 参数 到parcel
+                    //如果参数是out类型，那么不序列化参数（因为server会重新new出该对象，而不使用client提供的该参数对象）
+                    if ((inParcel != null)) {
                         _data.writeInt(1);
-                        myParcel.writeToParcel(_data, 0);
+                        inParcel.writeToParcel(_data, 0);
                     } else {
                         _data.writeInt(0);
                     }
+                    if ((inOutParcel != null)) {
+                        _data.writeInt(1);
+                        inOutParcel.writeToParcel(_data, 0);
+                    } else {
+                        _data.writeInt(0);
+                    }
+
                     //执行remote调用：指名调用方法，输入参数，返回参数
                     mRemote.transact(Stub.TRANSACTION_add, _data, _reply, 0);
+
+                    //阻塞到 有返回值
                     //读取异常情况（如：无异常）
                     _reply.readException();
-                    //阻塞到 有返回值
+
+                    //读取返回值
                     _result = _reply.readInt();
+                    //如果参数是out/inout类型，那么反序列化出 参数 从parcel
+                    if ((0 != _reply.readInt())) {
+                        outParcel.readFromParcel(_reply);
+                    }
+                    if ((0 != _reply.readInt())) {
+                        inOutParcel.readFromParcel(_reply);
+                    }
                 } finally {
                     //回收parcel
                     _reply.recycle();
@@ -121,26 +142,59 @@ public interface IMyLogic extends android.os.IInterface {
                 //当要调用add方法时
                 case TRANSACTION_add: {
                     data.enforceInterface(DESCRIPTOR);
+
                     //读取输入
                     int _arg0;
                     _arg0 = data.readInt();
                     int _arg1;
                     _arg1 = data.readInt();
+
                     //读取binder，并变成 I接口.stub.proxy
                     com.ql.bind.IMyLogicCallback _arg2;
                     _arg2 = com.ql.bind.IMyLogicCallback.Stub.asInterface(data.readStrongBinder());
-                    //读取自定义parcel
+
+                    //读取自定义parcel（in类型）
                     if ((0 != data.readInt())) {
                         _arg3 = com.ql.bind.bean.MyParcel.CREATOR.createFromParcel(data);
                     } else {
                         _arg3 = null;
                     }
+
+                    //如果参数是out类型，那么不会使用client提供的参数对象，而是new出该对象
+                    com.ql.bind.bean.MyParcel _arg4;
+                    _arg4 = new com.ql.bind.bean.MyParcel();
+
+                    //读取自定义parcel（inout类型）
+                    com.ql.bind.bean.MyParcel _arg5;
+                    if ((0 != data.readInt())) {
+                        _arg5 = com.ql.bind.bean.MyParcel.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg5 = null;
+                    }
+
                     //执行方法，stub的子类需要实现该 add本地方法
-                    int _result = this.add(_arg0, _arg1, _arg2, _arg3);
+                    int _result = this.add(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5);
+
                     //没有产生异常
                     reply.writeNoException();
                     //写入结果
                     reply.writeInt(_result);
+
+                    //如果参数是out类型，那么在执行上述add方法的过程中，设置_arg4的 某些成员变量 的值，后序列化_arg4到reply parcel中
+                    if ((_arg4 != null)) {
+                        reply.writeInt(1);
+                        _arg4.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    //同理，对于参数类型是inout类型
+                    if ((_arg5 != null)) {
+                        reply.writeInt(1);
+                        _arg5.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+                    } else {
+                        reply.writeInt(0);
+                    }
+
                     return true;
                 }
             }

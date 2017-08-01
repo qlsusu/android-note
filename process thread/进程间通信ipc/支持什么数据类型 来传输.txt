@@ -15,4 +15,4 @@ CharSequence
 			parcelable Student;
 	I接口
 List, Map
-	其中的元素类型 也必须是上述类型之一
+	list的元素 Map的entry.key和value 也必须是上述类型之一
