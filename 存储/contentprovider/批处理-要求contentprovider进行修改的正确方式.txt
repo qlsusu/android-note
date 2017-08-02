@@ -1,6 +1,6 @@
 设：contentprovider内部 对数据的处理方式 采用sqlitedatabase
 
-当要求contentprovider进行修改时，推荐 客户方使用 applybatch(contentprovideroperations)这种方式
+当要求contentprovider进行修改时，推荐 客户方使用 applybatch(arraylist<contentprovideroperation>)这种方式
 而在服务方contentprovider.applybatch中，开启/提交事务
 	applybatch的执行体 会进一步调用 增删改查方法
 	而在增删改查方法中，均不再开启/提交事务
@@ -43,7 +43,8 @@ ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation>
 
 >>>ContentProviderOperation的构建:
 ContentProviderOperation.Builder builder=ContentProviderOperation.newXXX(Uri);
-builder.withxxx
+	如：newInsert
+builder.withxxx，如：
 	builder.withSelection("=?",new String[]{"xxx"});
 	builder.withValues(ContentValues);
 ContentProviderOperation operation=builder.build();

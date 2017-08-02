@@ -1,7 +1,7 @@
 1.	ContentResolver.registerContentObserver(Uri uri, boolean notifyForDescendents, ContentObserver observer)
 Register an observer class that gets callbacks when data identified by a given content URI changes.
 notifyForDescendents：其表明了监视的范围，如，当uri是content://sms，但notifyForDescendents为false时，当插入一个短信，且contentresolver.notify了，该observer还是不会得到通知
-contentobserver构造函数中有一个Handler，参见文档，contentobserver.onChange() will happen on the provider Handler.猜想：该方法中可以进行ui操作
+contentobserver构造函数中有一个Handler，参见文档，contentobserver.onChange() will happen on the provider Handler
 
 2.	ContentResolver.notifyChange(Uri uri, ContentObserver observer)
 Notify registered observers that a row was updated.

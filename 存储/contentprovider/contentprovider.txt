@@ -10,13 +10,25 @@ authority
 sqliteopenhelper
 	准备一个数据库：创建/升级
 	当调用sqliteopenhelper.getxxxdatabase时
+--
 sqlitedatabase
 	使用该对象进行增删改查
+	尽量不要关闭
+transaction
+	事务能力：原子性
+	一次性的 应用 修改，提高效率
+	用法：
+		begintransaction()
+		endtransaction()
+sqlitestatement
+	类似preparedstatement，使用它来完成 增删改操作，来提高执行效率
+applybatch, 批处理：增删改查
+--
 uri
 	客户方使用该uri来告诉contentprovider来 访问哪个方面的数据
 urimatch
-	uri -> integer
+	uri -> int type
 	方面来告诉 客户方期望访问哪方面的数据
-applybatch, 增删改查方法
+--
 contentobserver
 	用于通知内容的改变，如：在 增删改时
