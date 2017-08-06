@@ -4,7 +4,7 @@ http://hukai.me/android-performance-oom/
 
 IntentService是Service的子类，比普通的Service增加了额外的功能。
 
-为什么要使用intentservice
+----------------------为什么要使用intentservice
 (下文来自：http://hukai.me/android-performance-oom/)
 如果你的应用需要在后台使用service，除非它被触发并执行一个任务，否则其他时候Service都应该是停止状态。
 另外需要注意当这个service完成任务之后因为停止service失败而引起的内存泄漏。 
@@ -16,10 +16,16 @@ IntentService是Service的子类，比普通的Service增加了额外的功能�
 Service不会专门启动一条单独的进程，Service与它所在应用位于同一个进程中；  
 Service也不是专门一条新线程，因此不应该在Service中直接处理耗时的任务；  
   
-IntentService特征 
-1、IntentService 会创建一个线程，来处理所有传给onStartCommand()的Intent请求。
-2、对于startService()请求执行onHandleIntent()中的耗时任务，会生成一个队列，每次只有一个Intent传入onHandleIntent()方法并执行。
-	也就是同一时间只会有一个耗时任务被执行，其他的请求还要在后面排队
-3、当所有startService()请求被执行完成后，IntentService 会自动销毁，所以不需要自己写stopSelf()或stopService()来销毁服务。
-4、提供默认的onBind()实现 ，即返回null，不适合绑定的 Service。
-5、提供默认的 onStartCommand() 实现，将intent传入等待队列中，然后到onHandleIntent()的实现。所以如果需要重写onStartCommand() 方法一定要调用父类的实现。
+----------------------IntentService特征 
+onstartcommand中，会向handler发送消息
+	而该handler的looper来自 handlerthread.looper
+	而对于消息
+		msg.arg1=startid
+		msg.obj=intent
+	由于采用了handler，那么也就意味着：一次只能处理一个msg，也即是：当多次start该service时，这些请求将被排队，进而一个个处理
+handler.handlemessage最终被调用 来处理message
+	其中会取得msg.obj(即是intent类型)，进而调用onhandlerintent，将msg.obj传入
+	最后，调用stopself(msg.arg1)
+		说明：当一个service被start了N次，对于每一次，都会分配一个startid。而只有stopself(最后一次的startid)，该service才被最终关闭
+--
+其onbind返回null，即是：不推荐用于ipc

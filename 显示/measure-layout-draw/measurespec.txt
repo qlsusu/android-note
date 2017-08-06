@@ -1,20 +1,16 @@
 measurespec代表一个32位int的值，
 高2位代表specmode，
+	unspecified
+		父容器不对view有任何的限制，view要多大有多大
+		这种情况用于系统的内部，表示一种测量的状态
+	exactly
+		对应于 view的match_parent和具体数值时的情况
+	at_most
+		对应于 view的wrap_content的情况
 低30位代表specsize
 
 创建：
 view指定layoutparams，它再和父容器的measurespec，来确定view的measurespec
-
-------------------------------------
-
-specmode有以下几种
-unspecified
-	父容器不对view有任何的限制，view要多大有多大
-	这种情况用于系统的内部，表示一种测量的状态
-exactly
-	对应于 view的match_parent和具体数值时的情况
-at_most
-	对应于 view的wrap_content的情况
 
 ------------------------------------构建
 		

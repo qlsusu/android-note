@@ -1,8 +1,5 @@
 参见：http://blog.csdn.net/iispring/article/details/50472485
 
-其为Xfermode的子类
-Xfermode有3个子类，但是另外两个 因为不支持硬件加速的问题，被过时
-
 例子：
 @Override
 protected void onDraw(Canvas canvas) {
@@ -10,22 +7,26 @@ protected void onDraw(Canvas canvas) {
 	//设置背景色
 	canvas.drawARGB(255, 139, 197, 186);
 
+	//建立一个layer（缓冲区：一个offscreen的bitmap），该layer的所有像素 初始值为(0,0,0,0)
 	int canvasWidth = canvas.getWidth();
 	int canvasHeight = canvas.getHeight();
-	int layerId = canvas.saveLayer(0, 0, canvasWidth, canvasHeight, null, Canvas.ALL_SAVE_FLAG);
+	int saveCount = canvas.saveLayer(0, 0, canvasWidth, canvasHeight, null, Canvas.ALL_SAVE_FLAG);
+	
+		//绘制dst：黄色的圆形
 		int r = canvasWidth / 3;
-		//绘制黄色的圆形，为目标
 		paint.setColor(0xFFFFCC44);
 		canvas.drawCircle(r, r, r, paint);
 		
 		//使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 		
+		// 绘制src：蓝色的矩形
 		paint.setColor(0xFF66AAFF);
-		// 绘制蓝色的矩形，为源
 		canvas.drawRect(r, r, r * 2.7f, r * 2.7f, paint);
 		
-		//最后将画笔去除Xfermode
+		//去除Xfermode
 		paint.setXfermode(null);
-	canvas.restoreToCount(layerId);
+
+	//将layer绘制到原始canvas上
+	canvas.restoreToCount(saveCount);
 }

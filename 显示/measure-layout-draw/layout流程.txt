@@ -1,0 +1,39 @@
+viewgroup.measure流程
+
+
+-------------------------measure流程
+viewgroup.measure
+	viewgroup.onmeasure
+		遍历每个子view：
+			确定出子view的measurespec
+				通过：viewgroup.public static int getChildMeasureSpec(int spec, int padding, int childDimension)
+					其中，spec为viewgroup的spec，
+					padding用于：
+						在得到子view的ms时，要参照父亲的 specmode和specsize，而最终的 specsize-=该padding
+					childmimension为：子view在 layout.xml中的 layout_width/height
+			执行子view.measure
+
+view.measure
+	view.onmeasure
+
+-------------------------layout流程
+viewgroup.layout
+	viewgroup.onlayout
+		遍历每个子view：
+			根据 viewgroup的布局方式 和 子view的measuredwidth/heigth 来指定 view的 上下左右 四个点的位置
+			调用view.layout(上下左右 四个点的位置)
+
+view.layout
+	view.onlayout
+
+-------------------------draw流程
+viewgroup.draw
+	viewgroup.ondraw
+	viewgroup.dispatchdraw
+		遍历每个子view
+			调用子view.draw
+	viewgroup.ondrawscrollbars
+
+view.draw
+	viewgroup.ondraw
+	viewgroup.ondrawscrollbars

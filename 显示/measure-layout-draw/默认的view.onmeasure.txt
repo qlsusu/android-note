@@ -22,30 +22,15 @@ public static int getDefaultSize(int size, int measureSpec) {
 	return result;
 }
 
-----------------------------------
-
-
-//另外一种好的方式，其中contentsize为一个默认的size
-private int getMeasurement(int measureSpec, int contentSize) {
-	int specSize = MeasureSpec.getSize(measureSpec);
-	switch (MeasureSpec.getMode(measureSpec)) {
-		case MeasureSpec.AT_MOST:
-			return Math.min(specSize, contentSize);
-		case MeasureSpec.UNSPECIFIED:
-			return contentSize;
-		case MeasureSpec.EXACTLY:
-			return specSize;
-		default:
-			return 0;
-	}
-}
-
 protected int getSuggestedMinimumWidth() {
 	return (mBackground == null) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());
 }
 
-drawable的
-public int getMinimumWidth() {
+protected int getSuggestedMinimumHeight() {
+	return (mBackground == null) ? mMinHeight : max(mMinHeight, mBackground.getMinimumHeight());
+}
+
+drawable的 public int getMinimumWidth() {
 	final int intrinsicWidth = getIntrinsicWidth();
 	return intrinsicWidth > 0 ? intrinsicWidth : 0;
 }
