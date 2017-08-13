@@ -1,5 +1,0 @@
-cat /sys/module/lowmemorykiller/parameters/adj
-返回值为oom_score_adj，需要 *17/1000 来得到adj
-
-cat /sys/module/lowmemorykiller/parameters/minfree
-上述adj所对应的内存临界值，单位为4KB

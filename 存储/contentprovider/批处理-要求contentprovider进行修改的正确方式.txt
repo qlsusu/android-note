@@ -32,6 +32,7 @@ public @NonNull ContentProviderResult[] applyBatch(
                 throws OperationApplicationException {
     final int numOperations = operations.size();
     final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+    //这里没有对contentoperation进行归类整理，而是直接调用contentoperation.apply来执行单个operation
     for (int i = 0; i < numOperations; i++) {
         results[i] = operations.get(i).apply(this, results, i);
     }
@@ -45,6 +46,6 @@ ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation>
 ContentProviderOperation.Builder builder=ContentProviderOperation.newXXX(Uri);
 	如：newInsert
 builder.withxxx，如：
-	builder.withSelection("=?",new String[]{"xxx"});
+	builder.withSelection("column1=?",new String[]{"xxx"});
 	builder.withValues(ContentValues);
 ContentProviderOperation operation=builder.build();

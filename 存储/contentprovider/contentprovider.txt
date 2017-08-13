@@ -29,6 +29,8 @@ uri
 urimatch
 	uri -> int type
 	方面来告诉 客户方期望访问哪方面的数据
+	# 通配 数字
+	* 通配 字符
 --
 contentobserver
 	用于通知内容的改变，如：在 增删改时

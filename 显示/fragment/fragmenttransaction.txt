@@ -1,0 +1,46 @@
+fragmenttransaction代表了 一组 针对于不同frag的操作
+可以将该transaction放入到back stack中（在commit之前）
+	当popbackstack时，将会执行 针对于 transaction所涉及的frag的 逆操作（如：add->remove, hide->show, replace->replace）
+		涉及哪些fragment，如fragB要 replace fragA，那么该涉及的frag是 fragB和fragA（而不仅仅是fragB）
+		逆操作：add->remove, hide->show, replace->replace
+		这也是frag为什么会进行状态保存的原因：逆反操作后，该frag可能需要再次展示在用户面前，则需要恢复该frag为 被remove之前的状态
+
+提交commit:
+fragmenttransaction.commitallowingstateloss()
+	当宿主activity要进入到stop状态，如：新的activity在task的顶端，或，用户按了home
+	此刻，fragment的状态会被保存（通过fragmentmanager.onsavefragmentinstancestate）
+	之后，要执行其他fragment的添加或移除
+		如果提交采用 未commitallowingstateloss，则会抛出IllegalStateException
+			表明：activity.fragments的状态都已经保存了
+		如果提交采用 commitallowingstateloss，则新的fragment的状态不会保存
+			如：之前添加的fragment有 fragA和fragB，而activity在stop时，又添加了fragC
+			当activity被系统杀掉，再返回时，会显示fragA和fragB，而不显示fragC（因为fragC的状态没有保存，而是state loss了）
+			但，当activity未被系统杀掉，再返回时，呈现的是 fragA fragB fragC，当activity再处于stop状态时，fragA fragB fragC的状态都会被再次保存
+	参见：commit(), commitNow()和commitAllowingStateLoss()
+		http://www.cnblogs.com/mengdd/p/5827045.html
+fragmenttransaction.commitNowAllowingstateloss()
+fragmenttransaction.commit
+fragmenttransaction.commitNow（参见：立刻执行）
+
+立刻执行：
+参见：立刻执行.txt
+
+当在fragA内部 再添加一个fragB，需要使用childfragmentmanager
+
+------------------------------有什么操作
+attach(), detach()
+	detach() 
+		fragment实际的生命周期会走到onDestroyView(), 但不会走onDestroy()和onDetach(), 也即fragment本身并没有被销毁, 只是view被销毁了.
+add(), remove(),
+	remove()
+		如果不加入到back stack, fragment的生命周期会一直走到onDetach()
+		如果加入到back stack，会执行到ondestroyview
+show(), hide(),
+	用来设置fragment的显示和隐藏状态, 
+	这两个方法并不对应fragment的状态变化,只是将view设置为visible和gone,然后调用onHiddenChanged()的回调.
+replace()
+	replace() = remove() + add()
+
+------------------------------frag切换的方式（花开中的 设计情景）
+一开始add(fragA)，切换时hide(fragA)，add(fragB)；再次切换时，只需hide(fragB)（或者remove(fragB）），show(fragA)
+这样就能做到多个Fragment切换不重新实例化，而不是使用replace：replace()这个方法只是在上一个Fragment不再需要时采用的简便方法。

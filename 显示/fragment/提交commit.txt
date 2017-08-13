@@ -1,2 +1,0 @@
-fragmenttransaction.commitallowingstateloss()
-或者，fragmenttransaction.commit

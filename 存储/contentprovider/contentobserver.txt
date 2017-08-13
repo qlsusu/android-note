@@ -5,7 +5,9 @@ contentobserver构造函数中有一个Handler，参见文档，contentobserver.
 
 2.	ContentResolver.notifyChange(Uri uri, ContentObserver observer)
 Notify registered observers that a row was updated.
-参数说明：observer that initiated the change. In many cases, the latter will be null; a non-null value simply means that the observer that initiated the change will not be notified of its own changes.
+参数说明：
+	observer that initiated the change. 
+	In many cases, the latter will be null; a non-null value simply means that the observer that initiated the change will not be notified of its own changes.
 说明：当删除内置数据库contact中的一个人时，注册在data.content_uri的contentobserver会被通知一次；但是当添加一个人时，会通知两次
 
 3.	Cursor.setNotificationUri(ContentResolver cr, Uri uri)

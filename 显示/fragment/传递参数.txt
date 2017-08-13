@@ -1,9 +1,8 @@
 正统做法：
 提供无参的构造函数
 产生fragment对象
-构建bundle（通过bundle.putxxx方式）
-fragment.setarguments(bundle)
-oncreate(Bundle savedInstanceState)被调用时，通过getArguments 来获得参数
+fragment.setarguments(bundle)来传递参数
+oncreate(Bundle savedInstanceState)被调用时，通过getArguments 来获得之前传递的参数
 
 为什么要通过这种方式（fragment源码中的构造函数中的doc）：
 Every fragment MUST have an empty constructor, so it can be instantiated when restoring its activity's state.  

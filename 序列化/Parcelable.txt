@@ -13,7 +13,6 @@ Parcelable本质：
 
 为什么使用：
 相较于serializable，parcelable性能更好，占用内存更小
-而Android的Parcelable的设计初衷是因为Serializable效率过慢，，
 Parcelable是通过IBinder通信的消息的载体。
 
 在什么场景使用：

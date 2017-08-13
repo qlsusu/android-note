@@ -1,0 +1,5 @@
+只有activity处于resume状态时，其内部的fragment的state（如CREATE）才可被切换
+
+什么时候改变：
+宿主activity的状态发生改变时
+执行transaction（无论是否加入backstack，加入backstack时，有可能fragment并不会执行到ondestroy,ondetach）

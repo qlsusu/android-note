@@ -7,11 +7,6 @@ Square：从今天开始抛弃Fragment吧！
 	https://github.com/hehonghui/android-tech-frontier/blob/master/issue-13/Square%EF%BC%9A%E4%BB%8E%E4%BB%8A%E5%A4%A9%E5%BC%80%E5%A7%8B%E6%8A%9B%E5%BC%83Fragment%E5%90%A7%EF%BC%81.md
 
 一个Fragment的实例都必须与一个FragmentActivity关联
-
-fragment的切换
-replace()这个方法只是在上一个Fragment不再需要时采用的简便方法。
-正确的切换方式是add()，切换时hide()，add()另一个Fragment；再次切换时，只需hide()当前，show()另一个。
-这样就能做到多个Fragment切换不重新实例化
 	
 ChildFragmentManager	
 如果一个fragment内部，要使用viewpager，而其内部又要使用FragmentPagerAdapter，则FragmentPagerAdapter的构建使用fragment.getChildFragmentManager

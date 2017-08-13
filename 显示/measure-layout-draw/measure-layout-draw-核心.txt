@@ -1,0 +1,70 @@
+参见：
+Android应用层View绘制流程与源码分析
+	http://blog.csdn.net/yanbober/article/details/46128379
+
+-------------------------measure流程
+viewgroup.measure
+	viewgroup.onmeasure
+		遍历 需要参与到measure的 每个子view（可能view/viewgroup类型）：
+			哪些子view需要参与：
+				. 第一次
+				. 当对某个子view的layoutparams发生了改变，那么该子view的位置和大小 会发生改变，而该改变 可能会导致 兄弟view的位置和大小 也被迫改变（根据父view的布局方式）。那么该view和兄弟view会参与到measure
+				. 该view.requestlayout被调用（直接 或 间接（孩子view.requestlayout 将导致 父亲view.requestlayout间接被调用））
+			--	
+			确定出子view的measurespec
+				通过：viewgroup.public static int getChildMeasureSpec(int spec, int padding, int childDimension)
+					其中，spec为 viewgroup的spec，
+					padding用于：
+						在得到子view的measure spec时，要参照父亲的 specmode和specsize，而最终的 specsize-=该padding
+						取值为：自身的padding+孩子lp.margin+usedSpace
+					childmimension为：子view在 layout.xml中的 layout_width/height
+			执行子view.measure，确定出子view的measured dimen
+		根据子view的measured dimen 和 自身的布局方式，确定出 自身的measured dimen
+
+view.measure
+	view.onmeasure
+		确定出 自身的measured dimen
+
+确定出 自身的measured dimen 的方式：
+	view.setMeasuredDimension
+
+-------------------------layout流程
+viewgroup.layout
+	viewgroup.onlayout
+		遍历 需要参与到layout的 每个子view（可能view/viewgroup类型）：
+			哪些子view需要参与：
+				. 如果子view参与到 measure了，那么其会参与到layout
+			--
+			根据 viewgroup的布局方式 和 子view的measured dimen 来指定 子view的 上下左右 四个点的位置
+			调用子view.layout(上下左右 四个点的位置) 来将子view放入到 一个rect中
+
+view.layout
+	view.onlayout
+		自身被放入到 一个rect中（上下左右 四个点的位置）
+
+-------------------------draw流程
+viewgroup.draw
+	background.draw
+	viewgroup.ondraw
+	viewgroup.dispatchdraw
+		遍历 需要参与到draw的 每个子view
+			哪些子view需要参与到draw：
+				. 第一次
+				. 该子view主动引发了 再次被measure layout
+					主动：如：该子view的layoutparams发生了改变
+					而非这些子view：因为其他子view的 位置和大小 发生了改变，导致自身的 位置和大小 发生了改变
+				. 调用invalidate的view，和 它的祖先
+				. view的visibility又变成了visible
+				--
+				则意味着：一个view参与到了measure layout，但却不一定参与到draw
+			--	
+			调用子view.draw
+	viewgroup.ondrawscrollbars
+
+view.draw
+	viewgroup.ondraw
+		绘制自身
+	viewgroup.ondrawscrollbars
+
+draw中的canvas参数，来自：
+	mSurface.lockCanvas(dirty)

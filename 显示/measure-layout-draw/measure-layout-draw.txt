@@ -1,34 +1,6 @@
 ﻿参见：
 http://www.cnblogs.com/punkisnotdead/p/5181821.html
 
-------------------------------------------------------------------------------------整体过程
-
-丈量measure
-	确定view 被丈量的宽高
-	通过丈量孩子(onmeasure中调用child.measure)，和 自身的布局方式，来确定自身的宽高
-		在丈量孩子时，孩子的最大剩余空间 应该为：自身的specsize - (自身的padding+孩子lp.margin+usedSpace)
-			参见：得到孩子的measurespec.txt 和 view的measurespec的创建规则.png
-		粗粒度的丈量孩子:viewgroup.measureChildren(int widthMeasureSpec, int heightMeasureSpec)
-			这里，孩子的最大剩余空间为：自身的specsize - (自身的padding)
-	setMeasuredDimension
-		当计算得到了width/height后，应该使用view.resolveSize(int size, int measureSpec)来作为 setMeasuredDimension的入参
-		参见：view.resolvesize.png
-布局layout
-	确定view的位置（left/top/right/bottom）和 最终的宽高（width=right-left, height=bottom-top, 通常 和 measured width/height相同）
-	同时，也布局孩子（onlayout中调用child.layout）
-		需要减去孩子lp.margin
-	--
-	layout和onlayout中的参数，均是，对应的view 相对于父亲的 l,t,r,b
-绘制draw
-	绘制背景 background.draw(canvas)
-	绘制自身 ondraw
-		viewgroup默认不绘制自身，可通过setwillnotdraw(false)来开启绘制自身
-		需要考虑：padding
-	分发来绘制孩子 dispatchdraw
-	绘制装饰 ondrawscrollbars
-
-------------------------------------------------------------------------------------
-
 要得到view.measuredwidth/height，则需要view.measure来先丈量该view
 
 如果只想得到view的margin，那么

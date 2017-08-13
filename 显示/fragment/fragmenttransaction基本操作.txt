@@ -1,9 +1,0 @@
-attach(), detach()
-	调用detach()之后, fragment实际的生命周期会走到onDestroyView(), 但不会走onDestroy()和onDetach(), 也即fragment本身并没有被销毁, 只是view被销毁了.
-add(), remove(),
-	remove()比detach()要彻底一些, 如果不加入到back stack, remove()的时候, fragment的生命周期会一直走到onDetach().
-show(), hide(),
-	用来设置fragment的显示和隐藏状态, 
-	这两个方法并不对应fragment的状态变化,只是将view设置为visible和gone,然后调用onHiddenChanged()的回调.
-replace()
-	replace() = remove() + add()

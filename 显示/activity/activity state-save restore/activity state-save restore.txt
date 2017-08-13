@@ -1,0 +1,23 @@
+参见：
+The Real Best Practices to Save/Restore Activity's and Fragment's state. (StatedFragment is now deprecated)
+	https://inthecheesefactory.com/blog/fragment-state-saving-best-practices/en
+
+---------------当activity都保存了什么状态
+view state
+	自动进行，针对于：其子孙view
+	该子孙view需要预备如下条件，才能自动保存：
+		具备id
+		savedenable 为 true
+		该view实现了 onSaveInstanceState/onRestoreInstanceState方法
+activity对象的 某些属性（应用业务性质，自己定义）
+	无法自动保存
+	保存处：Activity#onSaveInstanceState(android.os.Bundle)
+		super实现 会调用View#onSaveInstanceState
+
+---------------activity的状态恢复
+都需要恢复什么：
+	view state
+	activity对象的 某些属性（应用业务性质，自己定义）
+
+恢复处：Activity#onRestoreInstanceState(android.os.Bundle)
+	super实现 会调用View#onRestoreInstanceState

@@ -1,6 +1,3 @@
-viewgroup.measure流程
-
-
 -------------------------measure流程
 viewgroup.measure
 	viewgroup.onmeasure

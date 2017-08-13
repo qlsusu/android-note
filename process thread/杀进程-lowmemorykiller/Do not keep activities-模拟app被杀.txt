@@ -1,0 +1,11 @@
+参见：
+Android Do not keep activities选项分析
+	http://www.cnblogs.com/mengdd/p/4528417.html
+
+开发者选项中，打开：Do not keep activities
+当从A到B时，A会被ondestory掉
+当从B返回时，A会重新执行oncreate
+
+就好像：
+进程被杀掉，而B是杀之前 task的top activity
+当B返回时，上一个activity需要被重建

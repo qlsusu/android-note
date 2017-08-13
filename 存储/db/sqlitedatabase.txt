@@ -1,3 +1,5 @@
 参见：
 【Android基础篇】SQLite数据库的增删改查基本操作
 	http://blog.csdn.net/zgljl2012/article/details/44769043
+
+其拥有增删改查的方法

@@ -6,10 +6,14 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 
 他们作为hashmap的替代方案
 
-SparseArray只能存储key为int类型的数据
+SparseArray只能存储key为int类型的数据，其泛型对应了 value的类型
 SparseArray在存储和读取数据时候，使用的是二分查找法
 	也就是在put添加数据的时候，会使用二分查找法和之前的key比较当前我们添加的元素的key的大小，然后按照从小到大的顺序排列好，
 	所以，SparseArray存储的元素都是按元素的key值从小到大排列好的。 
+例子：
+	SparseArray<Fragment.SavedState> savedStateSparseArray = new SparseArray<>();
+	savedStateSparseArray.put(0, savedState);
+	savedStateSparseArray.get(0);
 
 同样的对于arraymap
 

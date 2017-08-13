@@ -1,3 +1,7 @@
+具体参数含义，参见：
+Android应用Activity、Dialog、PopWindow、Toast窗口添加机制及源码分析
+	http://blog.csdn.net/yanbober/article/details/46361191
+
 WindowManager.LayoutParams
 重要参数：
 	width：描述窗口的宽度，该变量是父类ViewGroup.LayoutParams的成员变量。
@@ -13,3 +17,6 @@ WindowManager.LayoutParams
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         getWindow().setAttributes(wlp);	
 	gravity：窗口的对齐方式，居中还是置顶或者置底等等。
+
+//App开发中弹出软键盘时下面的输入框被软件盘挡住问题的解决办法
+getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);

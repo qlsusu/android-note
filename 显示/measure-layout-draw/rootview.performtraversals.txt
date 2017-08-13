@@ -1,0 +1,3 @@
+其负责对 decorview进行 measure layout draw
+	而其会遍历孩子view 来对孩子view进行measure layout draw
+子view.requestlayout 和 子view.invalidate 最终将会触发rootview.performtraversals

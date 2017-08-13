@@ -1,0 +1,9 @@
+timeinterpolator时间插值器：
+	根据时间流逝的百分比(elapsed fraction) 来计算出 当前属性值改变的百分比(interpolated fraction)
+	有哪些interpolator，如：linear, acceleratedecelerate, decelerate 等
+	可通过animation.getAnimatedFraction来获得 动画进程的百分比
+	
+typeevaluator类型估值算法：
+	根据属性值改变的百分比 和 start/end value 来计算出 当前的属性值
+		如：floatevaluator下，动画值= start + (end-start)*fraction
+	有哪些evaluator，如：int, float, argb 等

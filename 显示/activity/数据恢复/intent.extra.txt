@@ -1,7 +1,0 @@
-activityA传递给了activityB一些数据，通过intent.putextra
-当app进程因为系统回收资源而被杀死时，再次进入app，将进入activityB，而传递给它的intent.extra还在
-
-能传递什么数据：
-基本数据 以及 它的数组
-string/charsequence 以及 它的数组
-parcelable serializable

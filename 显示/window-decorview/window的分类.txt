@@ -1,0 +1,8 @@
+. 应用程序窗口。一般应用程序的窗口，比如我们应用程序的Activity的窗口。
+. 子窗口。一般在Activity里面的窗口，比如对话框等。
+. 系统窗口。系统的窗口，比如输入法，Toast，墙纸等。
+
+//ApplicationWindows取值在FIRST_APPLICATION_WINDOW与LAST_APPLICATION_WINDOW之间，是常用的顶层应用程序窗口，须将token设置成Activity的token；
+        //SubWindows取值在FIRST_SUB_WINDOW和LAST_SUB_WINDOW之间，与顶层窗口相关联，需将token设置成它所附着宿主窗口的token；
+        //SystemWindows取值在FIRST_SYSTEM_WINDOW和LAST_SYSTEM_WINDOW之间，不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用；
+        public int type;

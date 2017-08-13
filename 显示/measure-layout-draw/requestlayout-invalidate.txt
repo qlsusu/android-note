@@ -1,0 +1,1 @@
+requestlayout将会递归调用 父亲view.requestlayout，并最终触发viewroot.performtraversals

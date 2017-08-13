@@ -1,0 +1,33 @@
+参见：
+Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
+	http://www.cnblogs.com/mengdd/p/5582244.html
+
+保存时机：
+1. fragmentactivity.onSaveInstanceState时，会调用Fragment#onSaveInstanceState
+2. fragmentmanager.moveToState时，当自身的状态<CREATED时，会保存view的状态
+	注意：仅仅是保存view的状态，而不保存fragment对象的某些属性，为什么：
+		因为在movetostate过程中，fragment对象 是一直存在的（对象的属性 是一直都在的）
+	如：fragment2代替fragment1，被填充到container时，fragment1会执行保存
+	无论transaction是否要放入到backstack中
+3. 手动调用FragmentManager.saveFragmentInstanceState(Fragment)，获得SavedState
+	而该savestate可以作为另一个fragment对象的 初始化参数
+	如：先显示fragment1，再用fragment2来replace，再用fragment3来replace
+		其中，fragment1和fragment3属于同一class
+		那么可以将 fragment1中的state 传递给 fragment3 来使用(则fragment3拥有 fragment1的状态)
+
+恢复时机：
+1. 之前被销毁而现在被重建的fragmentactivity，在执行oncreate时，
+	通过saveInstanceState.getParcelable(FragmentActivity.FRAGMENTS_TAG)来获得fragment的保存状态
+	后传递给fragment.oncreate等
+2. fragmentmanager.moveToState时，当自身的状态>CREATED时，view state会被恢复
+	当fragment1又重新填充到container中时
+3. 新建fragment对象，调用fragment.setInitialSavedState(SaveState)（传递之前saveFragmentInstanceState产生的state）
+	该SaveState进而会被传递到fragment.oncreate
+	该方法需要在 执行transaction操作（如replace） 之前
+
+保存状态时，都保存什么：
+1. view的state，
+	系统会帮我们做
+2. 自身对象的成员变量，
+	需要手动在onSaveInstanceState中来做
+		

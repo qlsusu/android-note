@@ -1,0 +1,33 @@
+------------valueanimator
+其不作用于任何对象，仅仅是作用于一个值
+我们可以监听（通过animatorupdatelistener）该值的 变化比例（通过animator.getanimatedfraction） ，再依据该变化比例 来完成其他事情
+
+用法：
+ValueAnimator.ofFloat(目标值i, 目标值j, ,,,).setXXX().start();
+
+------------ObjectAnimator
+原理：
+myObj的setX用于设置新值
+myObj的getX用于获得原始值
+	什么时候会用到getX：当animator的目标值只有1个时，
+		会选择getX的返回 作为 起始值。如：ObjectAnimator.ofFloat(myObj, X, 目标值0)
+		如果未提供getX，则会选择 X的类型 的默认值 来作为 起始值，如ofInt时，X是int类型，而int的默认值是0
+X有什么选择：https://developer.android.com/guide/topics/graphics/prop-animation.html#views
+
+用法：
+ObjectAnimator.ofFloat(myObj, X, 目标值i, 目标值j, ,,,).setXXX().start();
+
+X的形式：
+. 可以使用 字符串的形式，如translationY
+. 也可以使用Property<T, float的形式>，如：
+	public static final Property<View, Float> SCALE_X = new FloatProperty<View>("scaleX") {
+		@Override
+		public void setValue(View object, float value) {
+			object.setScaleX(value);
+		}
+
+		@Override
+		public Float get(View object) {
+			return object.getScaleX();
+		}
+	};
