@@ -1,8 +1,16 @@
-系统发送一个HW_Vsync信号（分解为：Vsync和SF_Vsync）
-	app开始在canvas上（viewrootimpl.surface提供）进行绘制，
-	后surfacefling服务将这些surface进行合成（通过匿名共享内存的方式），显示在屏幕上
+vsync使得 屏幕刷新率（RFS）和 帧率(FPS) 强制一致
 Android设定的刷新率是60FPS(Frame Per Second)，则我们需要在16ms之内，完成上述两项工作
 
+系统发送一个HW_Vsync信号（该信号分解为：Vsync和SF_Vsync，通过vsync offset，使得：SF_VSYNC信号 相较于vsync信号 要延后一段时间才发送）
+	通过vsync信号，在canvas上（viewrootimpl.surface提供）进行绘制
+	通过sf_vsync信号，surfacefling服务将这些surface进行合成（通过匿名共享内存的方式），将合成结果 更新至 result surface（猜测）
+		如果在进行合成时，发现surface还未准备好，则忽略本次合成
+	上述信号所对应的操作的 耗时总和 需要小于 16ms（= 1s/FPS）
+		如果大于，那么 result surface还是老的（未更新）
+	--
+	在下一个vsync信号时，本次合成后的surface 将被绘制到屏幕上
+
+------------------------------之下为老的内容
 丢帧：
 一个vsync信息到达时，我们来更新屏幕的背景图片, 但需要24ms才能完成本次运算
 当surface合成信号来时，合成操作的 源surface并未得到更新（因为新的内容还未绘制到surface上），则用户看到的还是老的内容

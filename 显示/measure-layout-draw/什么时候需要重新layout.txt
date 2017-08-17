@@ -1,2 +1,0 @@
-view的位置发生了变化
-或者，view.requestlayout

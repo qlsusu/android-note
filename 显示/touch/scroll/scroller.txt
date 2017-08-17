@@ -2,9 +2,9 @@
 而我们可以利用 该模拟滑动中 产生的数值，来辅助进行实际的滑动（view.scrollto/by），因为这种效果会更真实
 
 ------------原理：
-1. 触发计算，如：startscroll/fling
+1. 触发计算，如：scroller.startscroll/fling
 startScroll(int startX, int startY, int dx, int dy, int duration)
-	内涵：在指定时间内，从start开始scroll，经过指定的距离（dx/dy）
+	内涵：在指定时间内，从startX/Y开始scroll，经过指定的距离（dx/dy）
 	期间会改变scrollx/y
 fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
 	内涵：以velocityx/y为初始值，后该velocity开始衰减，最终停止
@@ -19,10 +19,13 @@ fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, 
 
 2. 调用computeScrollOffset进行计算，
 	If it returns true, the animation is not yet finished.
-其往往在view.computeScroll中计算，并在其中也调用了invalidate，而在invalidate中，会触发下一次的view.computescroll的调用
-则形成循环
+其往往在view.computeScroll中计算，并在其中也调用了invalidate
+	（而在invalidate中，会触发下一次的view.computescroll的调用，则形成循环）
+弊端：则，如果我们要想使用这种机制（在view.computescroll中来 调用computeScrollOffset），则我们必须自定义view
 
-3. 通过getCurrX/Y来获得滑动的位置（参照于startX/Y），后view根据该数值来进行scrollto/by
+------------弊端：
+要使用scroller，关键是调用 周期性的调用computeScrollOffset
+而sdk中 在view.draw会调用computeScroll，而在该函数内部，我们可以调用computeScrollOffset
 
 ------------一个例子：
 // Revert any animation currently in progress

@@ -1,0 +1,11 @@
+目标view.requestlayout时
+    祖先view 执行 measure layout dispatchdraw
+    目标view 执行 measure layout dispatchdraw
+目标view.invalidate时
+    目标view 执行 dispatchdraw
+目标view改变了lp时
+    同requestlayout时的 measure layout draw的执行情形
+    --
+    在该过程中，如果某view的 measure spec发生了改变（如：ms.specsize变了（原因举例：其他兄弟view的measured dimen变了，导致父亲为本view分配的ms.specsize变了；或者，父亲的margin改变了，导致父亲的ms.specsize改变，从而导致本view的ms.specsize改变）），那么会执行measure
+    在该过程中，如果某view的 被layout的区域 变了（左上角位置（在最终的屏幕上）或大小），那么会执行layout
+    但，上述view并不执行dispatchdraw

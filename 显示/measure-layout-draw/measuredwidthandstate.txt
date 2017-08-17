@@ -1,0 +1,30 @@
+孩子通过测量，确定了measuredwidth/height，但是这个int并不能表示：是否孩子view得到了 理想的尺寸
+	如：父亲给出的measurespec为 at_most|100，而孩子最小的要求尺寸为200，则孩子不得不说 自己丈量的尺寸为100，则在这种情况下，父亲并没有满足孩子理想的尺寸要求
+	则，父亲可能会因此，给予孩子大一些的空间
+
+resolveSizeAndState和getDefaultSize 的逻辑类似，但是多了state信息
+public static int resolveSizeAndState(int size, int measureSpec, int childMeasuredState) {
+    final int specMode = MeasureSpec.getMode(measureSpec);
+    final int specSize = MeasureSpec.getSize(measureSpec);
+    final int result;
+    switch (specMode) {
+        case MeasureSpec.AT_MOST:
+            if (specSize < size) {
+                //当specMode为AT_MOST，并且父控件指定的尺寸specSize小于View自己想要的尺寸时，
+                //我们就会用掩码MEASURED_STATE_TOO_SMALL向量算结果加入尺寸太小的标记
+                //这样其父ViewGroup就可以通过该标记其给子View的尺寸太小了，
+                //然后可能分配更大一点的尺寸给子View
+                result = specSize | MEASURED_STATE_TOO_SMALL;
+            } else {
+                result = size;
+            }
+            break;
+        case MeasureSpec.EXACTLY:
+            result = specSize;
+            break;
+        case MeasureSpec.UNSPECIFIED:
+        default:
+            result = size;
+    }
+    return result | (childMeasuredState & MEASURED_STATE_MASK);
+}

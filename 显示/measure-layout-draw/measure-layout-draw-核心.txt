@@ -6,10 +6,9 @@ Android应用层View绘制流程与源码分析
 viewgroup.measure
 	viewgroup.onmeasure
 		遍历 需要参与到measure的 每个子view（可能view/viewgroup类型）：
-			哪些子view需要参与：
-				. 第一次
-				. 当对某个子view的layoutparams发生了改变，那么该子view的位置和大小 会发生改变，而该改变 可能会导致 兄弟view的位置和大小 也被迫改变（根据父view的布局方式）。那么该view和兄弟view会参与到measure
-				. 该view.requestlayout被调用（直接 或 间接（孩子view.requestlayout 将导致 父亲view.requestlayout间接被调用））
+			哪些子view需要参与（参见：measure-layout-draw时机举例.txt）：
+				. 该view从来没有被measure过，或，该view的measure spec（由父亲提供）变了
+				. 该view（或者其子孙view）要求requestlayout
 			--	
 			确定出子view的measurespec
 				通过：viewgroup.public static int getChildMeasureSpec(int spec, int padding, int childDimension)
@@ -32,8 +31,9 @@ view.measure
 viewgroup.layout
 	viewgroup.onlayout
 		遍历 需要参与到layout的 每个子view（可能view/viewgroup类型）：
-			哪些子view需要参与：
-				. 如果子view参与到 measure了，那么其会参与到layout
+			哪些子view需要参与（参见：measure-layout-draw时机举例.txt）：
+				. 该view从来没有被layout过，或，该view的 被layout区域（左上角定点在屏幕上的最终位置，或，大小）发生了改变
+				. 该view（或者其子孙view）要求requestlayout
 			--
 			根据 viewgroup的布局方式 和 子view的measured dimen 来指定 子view的 上下左右 四个点的位置
 			调用子view.layout(上下左右 四个点的位置) 来将子view放入到 一个rect中
@@ -49,11 +49,10 @@ viewgroup.draw
 	viewgroup.dispatchdraw
 		遍历 需要参与到draw的 每个子view
 			哪些子view需要参与到draw：
-				. 第一次
-				. 该子view主动引发了 再次被measure layout
-					主动：如：该子view的layoutparams发生了改变
-					而非这些子view：因为其他子view的 位置和大小 发生了改变，导致自身的 位置和大小 发生了改变
-				. 调用invalidate的view，和 它的祖先
+				. 该view从来没被draw过
+				. 该view调用invalidate
+				. 该view（或子孙view）要求requestlayout
+					对于目标view的 祖先，会调用dispatchdraw
 				. view的visibility又变成了visible
 				--
 				则意味着：一个view参与到了measure layout，但却不一定参与到draw
