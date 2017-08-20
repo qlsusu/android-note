@@ -1,0 +1,19 @@
+参见：
+移动端网络优化
+	http://www.trinea.cn/android/mobile-performance-optimization/
+
+不使用域名，而是直接使用ip
+	减少dns解析时间
+	防止dns劫持
+连接复用
+	keep-alive
+	指向同一个host:port的 多个请求，tcp连接会被复用（不用再经过3次握手来建立连接）
+减少请求和响应的传输数据大小
+	使用gzip压缩
+使用缓存
+	如果该缓存没有过期，那么使用缓存的，而不是联网发送请求
+--
+减少请求的次数
+	多请求合并
+根据api优先级 预先请求 或者 延后请求
+	

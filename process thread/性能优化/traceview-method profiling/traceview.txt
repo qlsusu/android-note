@@ -1,4 +1,6 @@
 参见：
+Android性能调优工具TraceView介绍
+	http://www.trinea.cn/android/android-traceview/
 Android性能分析工具Systrace和TraceView的使用
 	http://blog.csdn.net/xiyangyang8/article/details/50545707
 Android性能优化第（六）篇---TraceView 分析图怎么看

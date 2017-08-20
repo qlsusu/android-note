@@ -1,0 +1,17 @@
+参见：
+LocalBroadcastManager 的实现原理，还是 Binder？
+	http://www.trinea.cn/android/localbroadcastmanager-impl/
+
+目的：
+发送方 和 接收方 在同一个进程中，只有本app的receiver才能收到该通知
+
+使用：
+LocalBroadcastManager#registerReceiver(BroadcastReceiver receiver, IntentFilter filter)
+LocalBroadcastManager#unregisterReceiver(BroadcastReceiver receiver)
+LocalBroadcastManager#sendBroadcast(Intent intent)
+
+原理：
+当注册一个receiver时，会分析出该receiver能够处理哪些action
+当send broadcast时，找到能够处理该intent的receiver，将它们放入到 mPendingBroadcasts（类型：ArrayList<BroadcastRecord>），后向handler发送消息MSG_EXEC_PENDING_BROADCASTS
+handler处理该消息，执行executePendingBroadcasts()，
+	其中遍历出每个receiver，执行onreceive()

@@ -1,4 +1,9 @@
 参见：
+Android应用开发性能优化完全分析
+	http://blog.csdn.net/yanbober/article/details/48394201
+Android性能调优
+	http://www.trinea.cn/android/android-performance-demo/
+	以及，系列文章
 Android性能优化的方方面面
 	http://www.jianshu.com/p/b3b09fa29f65
 如何在Android中避免创建不必要的对象
@@ -29,6 +34,8 @@ Android内存管理机制
 	Bitmap对象的复用
 		inbitmap
 	避免在onDraw方法里面执行对象的创建
+		会生成临时对象
+		而有可能会频繁的触发gc，引发内存抖动
 	StringBuilder
 避免对象的内存泄露
 	注意Activity的泄漏

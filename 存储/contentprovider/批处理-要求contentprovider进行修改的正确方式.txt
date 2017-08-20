@@ -1,11 +1,12 @@
 设：contentprovider内部 对数据的处理方式 采用sqlitedatabase
 
 当要求contentprovider进行修改时，推荐 客户方使用 applybatch(arraylist<contentprovideroperation>)这种方式
-而在服务方contentprovider.applybatch中，开启/提交事务
-	applybatch的执行体 会进一步调用 增删改查方法
-	而在增删改查方法中，均不再开启/提交事务
-对于增删改方法的内部实现（使用sqlitedatabase），一律采用sqlitestatement方式
-	参见：存储/db/使用sqlitestate来批量 插入 更新 删除.txt
+
+为什么使用：
+. 在服务方的contentprovider.applybatch中，开启/提交事务
+	而在contentprovider的单个增删改方法中，均不再开启/提交事务
+	则，只执行一次事务，提高性能
+. 减少client与provider的通信次数（本质上binder通信）
 
 ------------------------------在服务方contentprovider中
 @Override
@@ -34,12 +35,13 @@ public @NonNull ContentProviderResult[] applyBatch(
     final ContentProviderResult[] results = new ContentProviderResult[numOperations];
     //这里没有对contentoperation进行归类整理，而是直接调用contentoperation.apply来执行单个operation
     for (int i = 0; i < numOperations; i++) {
+    	//分解成为单个增删改方法
         results[i] = operations.get(i).apply(this, results, i);
     }
     return results;
 }
 
-------------------------------客户中
+------------------------------客户方中
 ContentResolver#applyBatch(String authority, ArrayList<ContentProviderOperation> operations)
 
 >>>ContentProviderOperation的构建:

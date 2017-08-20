@@ -1,1 +1,2 @@
+anr文件存在于：/data/anr/trace.txt，则
 adb pull /data/anr/trace.txt ./

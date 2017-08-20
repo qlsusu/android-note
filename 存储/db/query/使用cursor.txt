@@ -1,0 +1,10 @@
+if(mCursor != null && mCursor.getCount() > 0) {
+	//columnIndex为 该column在 返回的所有列中的 索引（>=0）
+	//不建议使用getColumnIndexOrThrow来得到columnIndex（调用该方法也是需要时间的），而是在使用前，将columnIndex保存为常量
+	final int columnIndex = xxx;
+	//int columnIndex = cursor.getColumnIndexOrThrow(columnName);      
+	for(mCursor.moveToFirst();!mCursor.isAfterLast();mCursor.moveToNext()){      
+		//得到column的值
+		cursor.getString(columnIndex);
+    }
+}    

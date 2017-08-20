@@ -64,7 +64,6 @@ public class MessengerService extends Service {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                
                 case 1:
                     Log.d(TAG, msg.getData().getString("msg"));
                     

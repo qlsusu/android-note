@@ -3,10 +3,15 @@
 那么我们该如何知道 哪些client 掉线/absence（如：进程被杀）了
 	为什么需要知道：当client掉线时，server可能需要释放一些资源
 
-server方提供IRemoteCallback.aidl，提供i接口方法：register(IRemoteCallback callback)
+server方
+	提供IRemoteCallback.aidl，
+	提供i接口方法：register(IRemoteCallback callback)
 而client调用该i接口方法，并传入 IRemoteCallback.Stub对象
 server方在register()方法的实现中，将该i接口对象 传入到 RemoteCallbackList<IRemoteCallback>.register方法中
-则，当有client离线时，RemoteCallbackList.onCallbackDied(IRemoteCallback callback)会被调用
+	remotecallbacklist会为该iremotecallback注册callback：iremotecallback.asbinder.linktodeath
+则，当有client离线时，
+	该callback会执行binderdied方法
+	RemoteCallbackList.onCallbackDied(IRemoteCallback callback)会被调用
 
 如果server不想（或者client要求server不想）再监听该IRemoteCallback
 可调用RemoteCallbackList<IRemoteCallback>.unregister来反注册

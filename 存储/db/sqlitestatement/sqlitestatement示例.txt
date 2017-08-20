@@ -58,7 +58,8 @@ public static boolean insertBySql(SQLiteOpenHelper openHelper,
         return false;  
     } finally {  
         try {  
-            if (null != db) {  
+            if (null != db) {
+                //提交事务
                 db.endTransaction();  
                 //最好不要执行db的关闭
                 //db.close();  

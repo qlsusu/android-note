@@ -1,5 +1,5 @@
-在开始调试的地方，Debug.startMethodTracing("tracefilename");
+在开始调试的地方，Debug.startMethodTracing("yourtracefilename");
 结束调试的地方，Debug.stopMethodTracing();
-运行你的app，会在sd卡根目录生成文件tracefilename.trace
+运行你的app，会在sd卡根目录生成文件yourtracefilename.trace
 	需要读写权限：<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 运行traceview tracefilename.trace 来打开

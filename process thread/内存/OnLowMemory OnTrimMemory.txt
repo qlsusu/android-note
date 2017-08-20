@@ -35,7 +35,7 @@ Context.registerComponentCallbacks(new ComponentCallbacks() {
 . OnLowMemory大概和 OnTrimMemory中的TRIM_MEMORY_COMPLETE级别相同
 . OnLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。
 
-OnTrimMemory的参数值类型：
+OnTrimMemory的参数值类型（定义在：ComponentCallbacks2.java中）：
 TRIM_MEMORY_RUNNING_MODERATE：
     表示应用程序正常运行，并且不会被杀掉。但是目前手机的内存已经有点低了，系统可能会开始根据LRU缓存规则来去杀死进程了
     内存不足(后台进程超过5个)
@@ -88,3 +88,7 @@ Context.registerComponentCallbacks(new ComponentCallbacks2() {
 ----------------------------------------------------需要释放什么
 缓存：包括一些文件缓存，图片缓存等
 动态生成和添加的View，且少数情况下才使用到的View
+
+----------------------------------------------------模拟trim操作
+adb shell dumpsys gfxinfo packagename -cmd trim value
+其中value取值为：诸如TRIM_MEMORY_BACKGROUND这样的常量值

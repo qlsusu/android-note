@@ -1,0 +1,15 @@
+参见：
+第8章  深入理解Surface系统
+	http://wiki.jikexueyuan.com/project/deep-android-v1/surface.html
+
+viewroot和wms 创建联系：
+viewrootimpl在初始化构建的时候，会为整个app申请一个iwindowsession.proxy
+	通过windowmanagerglobal（其持有iwindowmanager.proxy）.opensession()
+		而在wms，会创建一个iwindowsession.stub
+	app可通过该iwindowsession 来和和wms的通信
+在viewroot.setview中
+	会将w对象（iwindow.stub）传递给wms
+		w对象在viewrootimpl初始化时被构建
+		通过iwindowsession.proxy#adddisplay来传递w
+		在wms端，会创建windowstate来对应该iwindow
+			缓存在mwindowmap：<iwindow.asbinder, windowstate>

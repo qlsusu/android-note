@@ -23,3 +23,4 @@ Choreographer.FrameDisplayEventReceiver#onVsync
 					Choreographer.CallbackRecord.action#run
 					因为在ViewRootImpl#scheduleTraversals中注册的action为：ViewRootImpl.TraversalRunnable
 					其会执行：ViewRootImpl#doTraversal，而其中会执行ViewRootImpl#performTraversals
+					

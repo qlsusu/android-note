@@ -29,7 +29,7 @@ new Handler(Looper.getMainLooper()).post(new Runnable() {
                 LogMonitor.getInstance().startMonitor();
 
                 msg.getTarget().dispatchMessage(msg);
-                msg.recycle();
+                msg.recycleUnchecked();
 
                 LogMonitor.getInstance().removeMonitor();
             }

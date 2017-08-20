@@ -1,0 +1,13 @@
+surface
+Handle onto a raw buffer（存储着当前窗口的像素值） that is being managed by the screen compositor.
+surface有一个canvas（透明的画布）
+
+surfaceview
+参见：google doc中的surfaceview
+一种view的承载方式，可放入到viewgroup中
+
+surfaceholder
+Abstract interface to someone holding a display surface.  
+Allows you to control the surface size and format, edit the pixels in the surface, 
+and monitor changes to the surface
+	通过：SurfaceHolder.Callback

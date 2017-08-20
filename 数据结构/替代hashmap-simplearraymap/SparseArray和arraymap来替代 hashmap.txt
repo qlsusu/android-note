@@ -6,18 +6,34 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 
 他们作为hashmap的替代方案
 
-SparseArray只能存储key为int类型的数据，其泛型对应了 value的类型
-SparseArray在存储和读取数据时候，使用的是二分查找法
-	也就是在put添加数据的时候，会使用二分查找法和之前的key比较当前我们添加的元素的key的大小，然后按照从小到大的顺序排列好，
-	所以，SparseArray存储的元素都是按元素的key值从小到大排列好的。 
+------------------------SparseArray
+内部数据结构：
+	private int[] mKeys;
+    private Object[] mValues;
+在进行存储时，key和value被放入到 各自对应的数组中
+如何确定 放入的位置：
+	key被放入到mkeys，放入后，整个mkeys要保持有序
+		为了：后续查找key时，能快速定位
+		采用了 二分查找来进行 插入和查找
+当key确定了被插入的位置index，则 mvalues[index]=value
+
 例子：
 	SparseArray<Fragment.SavedState> savedStateSparseArray = new SparseArray<>();
 	savedStateSparseArray.put(0, savedState);
 	savedStateSparseArray.get(0);
 
-同样的对于arraymap
-
 什么时候使用
-数据量不大，最好在千级以内
-如果key的类型已经确定为int类型，那么使用SparseArray，因为它避免了自动装箱的过程，如果key为long类型，它还提供了一个LongSparseArray来确保key为long类型时的使用
-如果key类型为其它的类型，则使用ArrayMap
+1. 数据量不大，最好在千级以内
+	为什么要求数据量不大，因为 插入和删除都涉及到 数组元素的移动（复制）
+2. key是int类型（非integer类型，对于hashmap来说）
+	则省去了int->integer的自动装箱
+
+如果key是long类型，那么使用 longsparsearray
+
+------------------------arraymap
+其内部数据结构和 sparsearray类似
+也提供了两个数组 来存储key和value
+且key数组是排好序的，根据:key.hashcode
+
+和sparsearray不同的地方：
+key可以是任何类型（非sparsearray要求的int）

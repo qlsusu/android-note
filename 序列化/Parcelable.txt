@@ -44,7 +44,7 @@ public class MyParcelable implements Parcelable {
         out.writeParcelable(user,0);
     }
 
-    // 通过parcel来构造出 实体对象
+    // 通过parcel来构造出 实体对象（或者定义一个函数：readfromparcel(parcel)）
     // 什么场景需要：ipc通信中，server的binder读取parcel，需要从该parcel中 反序列化到 实体对象（通过CREATOR.createFromParcel）
     // 注意：写入和读取的类型及顺序一致
     private MyParcelable(Parcel in) {

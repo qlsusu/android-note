@@ -18,12 +18,13 @@ Android Training - 高效地显示Bitmap(Lesson 4 - 优化Bitmap的内存使用)
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = 1;
+		//该图片位于哪个density目录下（如：drawable-xxhdpi，则对应了480）
 		options.inDensity = 160;
 		options.inTargetDensity = 160;
 		bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.origin, options);
 		// MX4上，虽然density = 3
 		// 但是通过设置inTargetDensity / inDensity = 160 / 160 = 1
-		// 解码后图片大小为720x720
+		// 解码后图片大小为 图片的原始大小
 --
 系统也提供了方法
 Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
@@ -46,18 +47,21 @@ Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
 	// 准备裁剪的矩阵
 	Rect rect = new Rect(0, 0,
 			originBitmap.getWidth(), originBitmap.getHeight());
+	或者：
 	RectF rectF = new RectF(new Rect(0, 0,
 			originBitmap.getWidth(), originBitmap.getHeight()));
 
+	//将图片画到一个独立的canvas上（从一个bitmap来）
 	Bitmap roundBitmap = Bitmap.createBitmap(originBitmap.getWidth(),
 			originBitmap.getHeight(), Bitmap.Config.ARGB_8888);
 	Canvas canvas = new Canvas(roundBitmap);
 	// 圆角矩阵，radius为圆角大小
 	canvas.drawRoundRect(rectF, radius, radius, paint);
-
 	// 关键代码，关于Xfermode和SRC_IN请自行查阅
 	paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 	canvas.drawBitmap(originBitmap, rect, rect, paint);
+	//之后将roundBitmap绘制到 源canvas上
+
 如果是矩形，使用现成方法
 	Bitmap clipBitmap = Bitmap.createBitmap(originBitmap,
 		left, top,
