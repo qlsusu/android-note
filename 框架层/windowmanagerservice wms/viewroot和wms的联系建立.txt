@@ -11,5 +11,8 @@ viewrootimpl在初始化构建的时候，会为整个app申请一个iwindowsess
 	会将w对象（iwindow.stub）传递给wms
 		w对象在viewrootimpl初始化时被构建
 		通过iwindowsession.proxy#adddisplay来传递w
-		在wms端，会创建windowstate来对应该iwindow
-			缓存在mwindowmap：<iwindow.asbinder, windowstate>
+			wms端，session为其iwindowsession.stub，最终会调用windowmanager.addwindow
+			其中，会创建windowstate来对应该phonewindow
+				缓存在mwindowmap：<iwindow.asbinder, windowstate>
+			也会创建windowtoken来对应iwindow
+				缓存在mtokenmap：<iwindow.asbinder, windowtoken>

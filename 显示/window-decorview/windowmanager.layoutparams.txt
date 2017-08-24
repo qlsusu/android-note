@@ -20,3 +20,5 @@ WindowManager.LayoutParams
 
 //App开发中弹出软键盘时下面的输入框被软件盘挡住问题的解决办法
 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+其token为iwindow.asbinder

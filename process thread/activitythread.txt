@@ -1,2 +1,0 @@
-app运行的入口为：
-ActivityThread的main方法
