@@ -1,6 +1,0 @@
-参见：
-file:///Users/qlong/_study/android/android-sdk-macosx/docs/guide/topics/resources/providing-resources.html
-
-有哪些quaulifier（参见：参考1）
-	Configuration qualifier names.
-		包含了国家码：Language and region

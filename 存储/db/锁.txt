@@ -1,6 +1,9 @@
---------------------------------------------锁
+参见：
+SQLite 文件锁和写同步
+	http://blog.csdn.net/hustyangju/article/details/17530901
+
 锁级别：
-整个数据库文件
+针对于 整个数据库文件
 
 谁要请求锁：
 要被执行的statement
@@ -13,7 +16,7 @@ shared
 	请求到该锁后
 		可以读
 reserved
-	要发生写statement，会请求该锁（本质上，先请求shared锁，得到后，再请求该锁）
+	要发生写statement（insert时），会请求该锁（本质上，先请求shared锁，得到后，再请求该锁）
 	请求到该锁后
 		可以写，但是仅仅是写入到缓存中
 		其他statement 还可以申请shared锁
@@ -22,28 +25,15 @@ pending
 	当写入到缓存完毕后（commit时），将申请该锁
 	请求到该锁后
 		其他statement不能再申请shared锁
-		其本质上，会等待 其他的 读取statement 执行完毕，后，申请exclusive锁
+		申请exclusive锁
 exclusive锁
-	请求到该锁后
+	当其他的 读取statement 执行完毕后，将获得该锁，后：
 		将 写入到缓存中的内容 刷入到db文件
 		当写入完毕后，将依次释放 exclusive, pending, reserved, shared锁
 
 SQLiteDatabase#setLockingEnabled(boolean lockingEnabled)
+	已经过时
 	当设置为true时
 	在执行 写statement 时，读statement还可以执行
 		如果写statement没有执行完毕，读statement，则得到的结果是 写statement 之前的
 		如果写statement执行完毕后，才读statement，则得到的结果是 写statement 之后的
-
---------------------------------------------事务
-一个statement在执行时，会自动添加一个事务
-而事务会 打开回滚日志（journal），写入日志，关闭日志
-这个是比较耗时的
-那么，推荐 将一组修改的statement放入到一个事务中，
-	好处：
-		性能提升
-		一组操作同时成功，或同时失败
-	操作：
-		SQLiteDatabase#beginTransaction
-		SQLiteDatabase#setTransactionSuccessful
-		SQLiteDatabase#endTransaction
-		

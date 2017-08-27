@@ -1,0 +1,2 @@
+有哪些国家码，参见：java.util.Locale中定义的常量
+如：Locale.static public final Locale SIMPLIFIED_CHINESE = createConstant("zh", "CN");

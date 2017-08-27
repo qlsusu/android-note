@@ -1,2 +1,0 @@
-如果Task中有ABCD, 在D中启动B, 会clear掉B以上的CD. 
-注意：如果B是standard这种launch mode，那么B也会被destroy，再被create

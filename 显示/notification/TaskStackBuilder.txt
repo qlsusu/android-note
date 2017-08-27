@@ -1,0 +1,33 @@
+参见：
+Notification中使用TaskStackBuilder
+	http://blog.csdn.net/alone_slfly/article/details/41744323
+
+有什么用：
+在通知栏中出现了通知，点击该通知后，将跳入到activity1中（而activity1属于task1）
+在 点击通知之前，清空task中的所有activity（如：一直back）
+点击通知，跳入到activity1，后点击back，
+	因为task中无activity，则返回到桌面
+	而，通过在manifest.xml中，为notification的跳入activity(activity1) 设置parent activity，该back点击 将返回到parent activity
+
+------------------------------示例
+NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+	.setContent(view)
+	.setSmallIcon(R.drawable.icon).setTicker("新资讯")
+	.setWhen(System.currentTimeMillis())
+	.setOngoing(false)
+	.setAutoCancel(true);
+
+TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+stackBuilder.addParentStack(MainActivity.class);
+Intent intent = new Intent(this, NotificationShow.class);
+stackBuilder.addNextIntent(intent);
+
+PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+mBuilder.setContentIntent(pendingIntent);
+
+>>>manifest.xml中
+<activity  
+    android:name="NotificationShow的完全限定类名"  
+    android:parentActivityName="MainActivity的完全限定类名">
+</activity>  
+

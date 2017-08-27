@@ -1,0 +1,24 @@
+一个statement在执行时，会自动添加一个事务
+而执行事务 会
+	将修改写入到内存 
+	打开回滚日志（journal），写入日志
+	在提交时
+		将内存中的修改 写入到数据库
+		删除 回滚日志文件
+每次事务的执行 是比较耗时的
+	如：sqlite虽然1秒可以插入50000条数据，但是1s内只能支持 十几次 事务
+
+事务的正确使用方式：
+将一组修改的statement放入到一个事务中，
+	好处：
+		性能提升：多次修改 只用操作1次数据库文件（在提交事务之前，修改都在内存中）
+		原子性：一组操作同时成功，或同时失败
+	编码：
+		SQLiteDatabase#beginTransaction
+		try{
+			...
+			SQLiteDatabase#setTransactionSuccessful
+		}finally{
+			SQLiteDatabase#endTransaction
+		}
+		

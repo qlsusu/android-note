@@ -1,0 +1,6 @@
+参见：
+https://developer.android.com/guide/topics/resources/providing-resources.html
+
+有哪些qualifier
+参见表格：Configuration qualifier names
+注意：如果需要定义多个qualifier，那么需要参照于 该表格的item顺序，即是：Layout Direction 要在 Language and region 之后

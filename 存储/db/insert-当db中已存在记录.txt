@@ -1,0 +1,18 @@
+场景：
+要插入一些数据
+如果这些数据已经存在于数据库中（如：定义了唯一性索引（使用 一些列）），那么可以
+	拿新数据 来更新 老数据
+	忽略新数据
+
+jee的方案（但是sqlite不支持该语法）：
+IF EXISTS (SELECT * FROM ...) 
+THEN
+	UPDATE SET ...
+ELSE
+	INSERT INTO ...
+
+sqlite的方案：
+INSERT OR REPLACE INTO ...
+	如果在数据库中，已经存在了该记录，那么 用新数据来 更新
+INSERT OR IGNORE INTO ...
+	如果在数据库中，已经存在了该记录，那么 忽略 新数据

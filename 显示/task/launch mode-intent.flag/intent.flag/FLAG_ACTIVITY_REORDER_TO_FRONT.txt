@@ -1,0 +1,3 @@
+栈中为ABCD，如果在D中又启动了B
+	在默认flag的情况下，栈为：ABCDB
+	在addflag: FLAG_ACTIVITY_REORDER_TO_FRONT时，为：ACDB

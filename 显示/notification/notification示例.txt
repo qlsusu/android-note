@@ -4,11 +4,8 @@ NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicat
 	.setWhen(System.currentTimeMillis())
 	.setOngoing(false)
 	.setAutoCancel(true);
+
 Intent intent = new Intent(this, NotificationShow.class);
-TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-stackBuilder.addParentStack(NotificationShow.class);
-stackBuilder.addNextIntent(intent);
 // FLAG_UPDATE_CURRENT：需要使用FLAG_UPDATE_CURRENT，否则，如果使用0的话，新构建的intent中的extra会被之前的extra所覆盖
-PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//       PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);  
+PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);  
 mBuilder.setContentIntent(pendingIntent);

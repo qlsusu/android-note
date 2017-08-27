@@ -1,0 +1,101 @@
+参见：
+Is Sqlite Database instance thread safe
+	https://stackoverflow.com/questions/6675240/is-sqlite-database-instance-thread-safe
+Android threading and database locking
+	https://stackoverflow.com/questions/2647542/android-threading-and-database-locking
+What are the best practices for SQLite on Android?
+	https://stackoverflow.com/questions/2493331/what-are-the-best-practices-for-sqlite-on-android/3689883#3689883
+android 多线程数据库读写分析与优化
+	http://www.cnblogs.com/javawebsoa/p/3237018.html
+sqlite3 多线程和锁 ，优化插入速度及性能优化
+	http://www.cnblogs.com/jaejaking/p/5383403.html
+SQLite-线程安全和并发
+	https://github.com/xiangwangfeng/xiangwangfeng.github.io/wiki/SQLite-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E5%92%8C%E5%B9%B6%E5%8F%91
+关于Android SQLite3多线程并发问题，学习笔记。
+	http://blog.csdn.net/rockcode_li/article/details/39024497
+SQLite在多线程环境下的应用
+	https://www.keakon.net/2011/10/25/SQLite%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%BA%94%E7%94%A8
+Using SQLite In Multi-Threaded Applications
+	http://www.sqlite.org/threadsafe.html
+SQLite在多线程并发访问的应用
+	http://blog.csdn.net/lang791534167/article/details/38984887
+
+---------------------读写描述
+并发 写-写（对于一个db，任何时刻，只能有一个线程 能开启事务）：
+使用 db连接1，线程a 来开启事务（db.beginTransaction()）后
+	当使用 db连接1，线程b 来开启事务时，会被阻塞，直到：线程a提交了事务
+	当使用 db连接2，线程c 来开启事务时，会直接抛出异常：db lock
+
+并发 写-读：
+未使用db.enableWriteAheadLogging时
+	使用 db连接1，线程a 来开启事务（db.beginTransaction()）后
+		当使用 db连接1，线程b 来读时，cursor的返回 就会被阻塞，直到：线程a提交了事务
+		当使用 db连接2，线程c 来读时，cursor会正常返回，但是访问cursor时（如：cursor.getcount()）会被阻塞，直到：线程a提交了事务
+使用了db.enableWriteAheadLogging时
+	无论 使用 什么db连接 什么线程，均可以 边写边读（返回cursor时，不会被阻塞）（但，有可能读取到的是 写之前的数据）
+	--
+	WAL本质
+		会生成wal文件
+		每次更新均写入到该wal文件中，当执行checkpoint时（如：提交事务），会将更新内容 写入到数据库文件中
+
+并发 读-写
+当获得并访问了cursor（如：cursor.getcount()）后，再请求事务时（无论是否同一个db连接），不会阻塞
+	注意：因为 读 并不会阻塞 写，那么在编程实现上，在上层再额外加入同步机制（如：读写锁）来控制并发 读-写
+
+本质：
+sqlitedatabase内部有锁的机制
+参见：http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+
+---------------------并发实践
+. 我们使用一个db连接，存活周期 同于app的，不要close
+. 采用读写锁（多线程时，写写 和 读写时 需要相互等待，读读时 可以同时进行）
+. enableWriteAheadLogging
+	如果开启，意味着：读-读 读-写 可以并发，且写入的速度会快
+	如果不开启，意味着：读-读 可以并发，但是 读-写 不能并发
+
+---------------------示例	
+class DataAccess {
+    private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+    private final Lock r = rwl.readLock();
+    private final Lock w = rwl.writeLock();
+
+    public Data readSomething(int id) {
+        Cursor c = null;
+        r.lock();
+        try {
+            c = getReadableDatabase().query(...);
+            return c.getString(0);
+        } finally {
+            if (c != null) c.close();
+            r.unlock();
+        }
+    }
+
+    public void changeSomething(int id, int value) {
+        w.lock();
+        try {
+            getWritableDatabase().update(...);
+        } finally {
+            w.unlock();
+        }
+    }
+
+    private void beginTransactionWithSemaphores() {
+        getWritableDatabase().beginTransactionWithListener(new SQLiteTransactionListener() {
+            @Override
+            public void onBegin() {
+                w.lock();
+            }
+
+            @Override
+            public void onRollback() {
+                w.unlock();
+            }
+
+            @Override
+            public void onCommit() {
+                w.unlock();
+            }
+        });
+    }
+}

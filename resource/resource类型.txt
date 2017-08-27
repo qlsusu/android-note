@@ -1,5 +1,5 @@
 参见：
-file:///Users/qlong/_study/android/android-sdk-macosx/docs/guide/topics/resources/providing-resources.html
+https://developer.android.com/guide/topics/resources/providing-resources.html
 
-可以在res/下放置什么（参见：参考1）
-	Resource directories supported inside project res/ directory.
+可以在res/下放置什么：
+参见表格：Resource directories supported inside project res/ directory.
