@@ -1,2 +1,5 @@
+参见：
 加速Android Studio/Gradle构建
 	http://blog.isming.me/2015/03/18/android-build-speed-up/
+加速Gradle构建大型Android项目的方法
+	http://www.jianshu.com/p/541d124c2728

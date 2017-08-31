@@ -1,0 +1,5 @@
+有什么用：
+在一个project中，有多个module，而这些module可能需要一些公共的参数，如：compileSdkVersion
+那么将这些参数在config.gradle中来定义，参见：config.gradle
+而在module的build.gradle中，来直接使用这些变量
+	如：compile rootProject.ext.dependencies['mytool']

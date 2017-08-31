@@ -1,0 +1,26 @@
+参见：
+Gradle for Android 第三篇( 依赖管理 )
+	https://segmentfault.com/a/1190000004237922
+Gradle之依赖管理
+	http://jcodecraeer.com/a/anzhuokaifa/Android_Studio/2015/0129/2375.html
+
+--------------module的build.gradle中的 dependencies{}中可以放什么：
+compile
+{buildtype}Compile，如：debugCompile, releaseCompile
+{flavor}Compile, 如：flavor1Compile
+testCompile
+androidTestCompile
+	
+--------------compile方式：
+compile fileTree(dir: 'xxx', include: ['*.jar', '*.xxx'])
+	将某个目录下所有符合扩展名的文件作为依赖；
+compile files('xxx.jar')
+	配置某个 jar 包作为依赖。
+compile 'com.xx.xx:ProjectName:Version'
+	配置Maven库作为依赖；
+	需要配置 Maven库（远程/本地），来寻找该project
+compile project(':AnotherModule')
+	配置另一个 Module 作为本 Module 的依赖，被依赖的 Module 必须被导入到当前工程中；
+compile(name: 'xxx', ext: 'aar')
+	依赖一个 本地的aar 的引用
+	其中，需要在module的build.gradle中 指名仓库repository，来寻找该aar

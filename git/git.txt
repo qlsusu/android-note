@@ -7,6 +7,17 @@ Git教程
 	https://www.zhihu.com/question/20070065/answer/79557687
 awesome-github
 	https://github.com/AntBranch/awesome-github#%E5%91%BD%E4%BB%A4%E8%A1%8C
+
+git clone http://仓库地址 -b 分支名
+git checkout -b main origin/本地分支名
+git checkout 分支名
+
+git stash
+git pull --rebase
+git stash apply
+
+git push origin 本地分支:refs/for/远程分支
+
 	
 查看本次commit都更新了哪些文件：
 	git show --name-only SHA1

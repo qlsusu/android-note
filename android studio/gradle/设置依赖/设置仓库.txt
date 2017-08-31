@@ -1,0 +1,6 @@
+在module的build.gradle中
+repositories {
+    flatDir {
+        dirs '.aar的父文件夹的完整路径，其中路径中心为 module所在文件夹'
+    }
+}

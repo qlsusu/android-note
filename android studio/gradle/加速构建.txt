@@ -1,3 +1,0 @@
-参见：
-加速Gradle构建大型Android项目的方法
-	http://www.jianshu.com/p/541d124c2728

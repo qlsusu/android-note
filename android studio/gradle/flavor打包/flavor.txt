@@ -1,0 +1,8 @@
+在flavor中可以指定什么：
+. applicationId
+. 定义一些buildconfigfield
+	如：buildConfigField "boolean","IS_ENABLE","true"
+	其会在 {project}/build/generated/source/buildConfig/{flavor}/debug/.../BuildConfig.java 中产生该变量：
+		public static final boolean IS_ENABLE = true;
+
+当定义了一个flavor1，则可在 {project}/src/flavor1/下建立 类似于 src/main/的子目录结构 来存放资源（.java, .xml等）
