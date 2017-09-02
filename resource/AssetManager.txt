@@ -1,0 +1,31 @@
+参见：
+Android 资源加载机制详解
+	http://www.jianshu.com/p/1d0bfbdaab17
+
+AssetManager是用来加载资源的，都加载什么资源
+. assets/下的资源
+	如要加载：assets/string/string.txt
+	则，assetManager.open("string/string.txt")
+. res/下的资源
+	Resource.getxxx方法内部也是调用AssetManager的获取资源的方法（如：getResourceText(id)）
+
+AssetManager的资源在哪里：
+. /data/app/com.packagename/base.apk
+. /system/framework/framework-res.apk
+
+-------------------------如何添加自定义的apk到assetmanager中，以及如何访问：
+//构建assetmanager
+AssetManager assetManager = AssetManager.class.newInstance();
+//添加assetpath
+Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
+addAssetPath.invoke(assetManager, apkPath);
+
+//构建resource
+Resources resource = getResources();
+resource = new Resources(assetManager, resource.getDisplayMetrics(), resource.getConfiguration());
+Theme theme = resource.newTheme();
+theme.setTo(super.getTheme());
+//访问资源
+final String name="com.ql.pluginsource/string:hello";
+int id = resource.getIdentifier(name, null, null);
+String value = resource.getString(id);

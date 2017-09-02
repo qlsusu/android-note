@@ -1,16 +1,15 @@
-如果你需要将一个view的id传递进来，定义attr的类型为reference类型
-
-在attrs.xml中
+>>> attrs.xml中：
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Follow">
+    	<!-- 属性名称需要在 app范围内唯一 -->
         <attr name="target" format="reference" />
     </declare-styleable>
 </resources>
 
-在layout.xml，你就可以这样来使用
+>>> layout.xml中：
 xmlns:app="http://schemas.android.com/apk/res-auto"
-<View
+<MyView
 	android:id="@+id/second"
 	android:layout_width="match_parent"
 	android:layout_height="128dp"
@@ -18,13 +17,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@android:color/holo_green_light"
 	app:target="@id/first" />
 	
-读取数据：
+>>> MyView.java中：
 TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Follow);
 try{
 	for (int i = 0; i < a.getIndexCount(); i++) {
-		int attr = a.getIndex(i);
-		if (attr == R.styleable.Follow_target) {
-			targetId = a.getResourceId(attr, -1);
+		int attrIndex = a.getIndex(i);
+		if (attrIndex == R.styleable.Follow_target) {
+			target = a.getResourceId(attrIndex, -1);
 		}
 	}
 }finally{

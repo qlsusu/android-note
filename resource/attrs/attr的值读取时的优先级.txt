@@ -1,0 +1,4 @@
+框架使用Attr的顺序是：
+1. View中的Style
+2. Activity中的Theme
+3. Application中的Theme

@@ -1,4 +1,0 @@
-att的取值可以是多个，如：
-<declare-styleable name="Follow">
-	<attr name="mycolor" format="reference|color" />
-</declare-styleable>
