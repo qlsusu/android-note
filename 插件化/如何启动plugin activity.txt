@@ -1,0 +1,86 @@
+当要启动activity时，需要两个条件：
+. 在manifest.xml中必须声明该activity，否则会报错：have you declared this activity in your AndroidManifest.xml?
+	可能还存在某种方式，来越过该检查
+. 需要在主app中 找到该activity的.class
+
+------------------------宿主组件
+plugin apk中也许包含着activity
+但是该activity并没有声明在manifest.xml中，无法启动，也无法受系统的 生命周期管理
+则，提出宿主activity的概念（ProxyActivity），它是plugin apk中的activity的 "容器"（在主程序看来，宿主activity就代表着 plugin activity）
+plugin activity包含着：
+	自身业务逻辑
+	layout.xml
+	oncreate等生命周期的回调的 具体实现
+而宿主activity负责 在合适的时机 调用 上述plugin activity向外提供的功能
+一个例子：
+	在主程序中，要想启动plugin activity，本质上是启动 ProxyActivity，后在intent.extra中指名要启动的plugin actvity的类名
+	而ProxyActivity会在oncreate中得到 plugin activity提供的contentview来 充当自己的，并调用（通过反射）plugin activity的oncreate/onresume等
+	
+plugin activity也许通过宿主activity来访问其他 业务
+则在plugin activity提供方法：setProxy(ProxyActivity)来将宿主activity传入
+
+存在什么问题：
+系统并不负责 plugin activity的生命周期方法
+
+开源框架：dynamic-load-apk（百度）
+
+------------------------主app 直接启动 plugin activity
+>>> 非代理方式
+如何在主app中 找到该activity的.class：
+. 要求plugin activity需要在 主app.manifest.xml中声明
+. 构建一个element（代表着plugin.apk），放入到 classloader.pathList.dexElements 中，
+	一个调用例子：patchClassLoader(getClassLoader(), new File(apkPath), getDir("dex", Context.MODE_PRIVATE));
+	public static void patchClassLoader(ClassLoader cl, File apkFile, File optDexFile)
+	        throws IllegalAccessException, NoSuchMethodException, IOException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+	    // 获取 BaseDexClassLoader : pathList
+	    Field pathListField = DexClassLoader.class.getSuperclass().getDeclaredField("pathList");
+	    pathListField.setAccessible(true);
+	    Object pathListObj = pathListField.get(cl);
+
+	    // 获取 PathList: Element[] dexElements
+	    Field dexElementArray = pathListObj.getClass().getDeclaredField("dexElements");
+	    dexElementArray.setAccessible(true);
+	    Object[] dexElements = (Object[]) dexElementArray.get(pathListObj);
+
+	    // Element 类型
+	    Class<?> elementClass = dexElements.getClass().getComponentType();
+
+	    // 创建一个数组, 用来替换原始的数组
+	    Object[] newElements = (Object[]) Array.newInstance(elementClass, dexElements.length + 1);
+
+	    // 构造插件Element(File file, boolean isDirectory, File zip, DexFile dexFile)
+	    Constructor<?> constructor = elementClass.getConstructor(File.class, boolean.class, File.class, DexFile.class);
+	    Object o = constructor.newInstance(apkFile, false, apkFile, DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0));
+
+	    Object[] toAddElementArray = new Object[]{o};
+	    // 把原始的elements复制进去
+	    System.arraycopy(dexElements, 0, newElements, 0, dexElements.length);
+	    // 插件的那个element复制进去
+	    System.arraycopy(toAddElementArray, 0, newElements, dexElements.length, toAddElementArray.length);
+
+	    // 替换
+	    dexElementArray.set(pathListObj, newElements);
+	}
+
+有什么优点：
+. 系统负责plugin activity的生命周期
+
+存在什么问题：
+. 启动的activity 需要在 主app.manifest.xml中定义
+	但是，我们无法事先知道有哪些 plugin activity
+. plugin.manifest.xml已经无效，则activity的theme在其中声明无效，但通过代码 可能还存在问题
+
+>>> 代理方式（主app的唯一钩子方式）（还未完整验证）
+内部使用：com.linkedin.dexmaker:dexmaker-mockito:2.2.0 中的 ProxyBuilder 来动态生成.dex
+在主app中仅仅定义一个钩子activity
+使用proxybuilder来生成proxy activity，其声称是该钩子activity，但是确是plugin activity的子类
+将该proxy activity对应的dex放入到 主classloader.pathlist.dexelements中，来找到 该proxy activity
+
+有什么优点：
+. 系统负责plugin activity的生命周期
+. 主app中仅仅定义一个钩子activity（而不管plugin.apk中有多少activity）
+
+------------------------使用fragment的方式
+
+
+

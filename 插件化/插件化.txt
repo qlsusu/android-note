@@ -3,66 +3,13 @@ Android应用程序插件化研究之DexClassLoader
 	http://www.jianshu.com/p/43a8a9b932de
 	有一系列教程
 
-------------------------加载.apk/.dex 和 .class
-//首先，先将.apk放入到本地文件系统中
-final String apkPath = Environment.getExternalStorageDirectory() + "/bill/pluginsource-debug.apk";
-DexClassLoader dexClassLoader = new DexClassLoader(
-	apkPath, 
-	getDir("dex", Context.MODE_PRIVATE).getAbsolutePath(), 
-	null, 
-	ClassLoader.getSystemClassLoader());
+是什么：
+将一些业务组件（如：接口逻辑，activity, fragment等）封装到plugin.apk中
+下载该apk，并放入到本地文件系统中
+通过dexclassloader可加载该apk中的class
+通过反射，可构建该class的实例，调用其方法
 
-//加载class
-final String clzName = "com.ql.pluginsource.SourceLogic";
-Class clz = dexClassLoader.loadClass(clzName);
-Object obj = clz.newInstance();
-Method method = clz.getDeclaredMethod("methodName", new Class[]{});
-//调用class的方法
-int value = (int) method.invoke(obj, new Object[]{});
-
-------------------------访问plugin apk中的资源
-//构建assetmanager
-AssetManager assetManager = AssetManager.class.newInstance();
-//添加assetpath
-Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
-addAssetPath.invoke(assetManager, apkPath);
-
-//构建resource
-Resources baseResource = context.getResources();
-Resources resource = new Resources(assetManager, baseResource.getDisplayMetrics(), baseResource.getConfiguration());
-Theme theme = resource.newTheme();
-theme.setTo(super.getTheme());
-
-//访问资源
-//字符串
-final String name="com.ql.pluginsource/string:hello";
-int id = resource.getIdentifier(name, null, null);
-String value = resource.getString(id);
-//layout
-int layoutId=xxx;
-XmlResourceParser xmlParser = resource.getLayout(layoutId);
-View root = LayoutInflater.from(context).inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot);
-
-------------------------宿主组件
-plugin apk中也许包含着activity
-但是该activity并没有声明在manifest.xml中，无法启动，也无法受系统的 生命周期管理
-则，提出宿主activity的概念（ProxyActivity），它是plugin apk中的activity的 "容器"（在主程序看来，宿主activity就代表着 plugin activity）
-plugin activity包含着：
-	自身业务逻辑
-	layout.xml
-	oncreate等生命周期的回调的 具体实现
-而宿主activity负责 在合适的时机 调用 上述plugin activity向外提供的功能
-一个例子：
-	在主程序中，要想启动plugin activity，本质上是启动 ProxyActivity，后在intent.extra中指名要启动的plugin actvity的类名
-	而ProxyActivity会在oncreate中得到 plugin activity的contentview来 充当自己的，并调用（通过反射）plugin activity的oncreate/onresume等
-	
-plugin activity也许通过宿主activity来访问其他 业务
-则在plugin activity提供方法：setProxy(ProxyActivity)来将宿主activity传入
-
-------------------------有什么插件框架：
-dynamic-load-apk（百度）
-
-
-
-
-
+待解决：
+. proxy方式的完整例子
+. fragment的方式 
+. plugin activity使用R的方式（不要产生问题）

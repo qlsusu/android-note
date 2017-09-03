@@ -1,0 +1,46 @@
+------------------------加载plugin.apk/.dex 中的 .class
+//首先，先将.apk放入到本地文件系统中
+final String apkPath = Environment.getExternalStorageDirectory() + "/bill/pluginsource-debug.apk";
+DexClassLoader dexClassLoader = new DexClassLoader(
+	apkPath, 
+	getDir("dex", Context.MODE_PRIVATE).getAbsolutePath(), 
+	null, 
+	ClassLoader.getSystemClassLoader());
+
+//加载class
+final String clzName = "com.ql.pluginsource.SourceLogic";
+Class clz = dexClassLoader.loadClass(clzName);
+//调用class的方法
+Object obj = clz.newInstance();
+Method method = clz.getDeclaredMethod("methodName", new Class[]{});
+int value = (int) method.invoke(obj, new Object[]{});
+
+------------------------访问plugin apk中的资源
+//构建assetmanager
+AssetManager assetManager = AssetManager.class.newInstance();
+//添加assetpath
+Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
+addAssetPath.invoke(assetManager, apkPath);
+
+//构建resource
+Resources baseResource = context.getResources();
+Resources resource = new Resources(assetManager, baseResource.getDisplayMetrics(), baseResource.getConfiguration());
+Theme theme = resource.newTheme();
+theme.setTo(super.getTheme());
+
+//通过该resource来访问 plugin.apk中的资源
+//字符串
+final String name="com.ql.pluginsource/string:hello";
+int id = resource.getIdentifier(name, null, null);
+String value = resource.getString(id);
+//layout
+int layoutId=xxx;
+XmlResourceParser xmlParser = resource.getLayout(layoutId);
+View root = LayoutInflater.from(context).inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot);
+
+//如果在plugin activity中，要通过 R.xxx的方式 来访问 plugin.apk中的资源
+1. 在主app中，按照上述方式 构建resource
+2. 通过某种方式，将该resource传递给plugin activity
+3. 在plugin activity中，将该resource赋值给 contextimpl.mresources成员变量（通过反射）
+说明：该种方式可能还存在问题！！！！
+	
