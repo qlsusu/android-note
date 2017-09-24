@@ -1,0 +1,34 @@
+mOkHttpClient = new OkHttpClient();
+File sdcache = getExternalCacheDir();
+int cacheSize = 10 * 1024 * 1024;
+mOkHttpClient.setCache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
+
+//判断response从哪里来
+Call call = mOkHttpClient.newCall(request);
+call.enqueue(new Callback() {
+   @Override
+   public void onFailure(Request request, IOException e) {
+   }
+
+   @Override
+   public void onResponse(final Response response) throws IOException {
+   		//response来自cache
+       if (null != response.cacheResponse()) {
+           String str = response.cacheResponse().toString();
+           Log.i("wangshu", "cache---" + str);
+       } 
+       //response来自网络
+       else {
+           response.body().string();
+           String str=response.networkResponse().toString();
+           Log.i("wangshu", "network---" + str);
+       }
+       
+       runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               Toast.makeText(getApplicationContext(), "请求成功", Toast.LENGTH_SHORT).show();
+           }
+       });
+   }
+});

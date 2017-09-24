@@ -1,0 +1,44 @@
+----------------------------chain
+为什么会有Interceptor.Chain，其是做什么的：Chain是在指定一个流程：
+判断当前要执行第几个interceptor（如果可能的话）
+	第几个：通过chain.index来指定
+执行Interceptor#intercept(Chain chain)
+执行完毕后，执行chain上的下一个interceptor
+	下一个在哪里：interceptor并没有采用next结构，而是：所有的interceptor均保存在OkHttpClient#interceptors（或者OkHttpClient#networkInterceptors）
+	传递给intercept方法中的 chain的index指名了下一个interceptor的index
+	则intercept方法中，需要调用Interceptor.Chain#proceed
+
+除此之外，chain在 所有的interceptor执行完毕之后，触发真实的联网：
+RealCall#getResponse
+
+----------------------------interceptor
+intercept举例：
+class LoggingInterceptor implements Interceptor {
+  	@Override 
+  	public Response intercept(Interceptor.Chain chain) throws IOException {
+	    Request request = chain.request();
+
+	    //执行自身的逻辑：日志打印
+	    long t1 = System.nanoTime();
+	    logger.info(String.format("Sending request %s on %s%n%s",
+	        request.url(), chain.connection(), request.headers()));
+
+	    //要求chain上的其他interceptor来进行拦截
+	    Response response = chain.proceed(request);
+
+		//执行自身的逻辑：日志打印
+	    long t2 = System.nanoTime();
+	    logger.info(String.format("Received response for %s in %.1fms%n%s",
+	        response.request().url(), (t2 - t1) / 1e6d, response.headers()));
+
+	    return response;
+	}
+}
+
+如何添加一个interceptor：
+OkHttpClient.Builder#addInterceptor
+
+
+有哪些拦截器：
+ApplicationInterceptorChain
+NetworkInterceptorChain

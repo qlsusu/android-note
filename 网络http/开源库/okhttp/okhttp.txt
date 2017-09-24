@@ -1,8 +1,13 @@
 参见：
 官方Recipes
 	https://github.com/square/okhttp/wiki/Recipes
+Okhttp-wiki 之 Home 主页
+	http://www.jianshu.com/p/d2667e156097
+	以及，系列教程
 OkHttp使用教程
 	http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0106/2275.html
+Android网络编程（五）OkHttp2.x用法全解析
+	http://liuwangshu.cn/application/network/5-okhttp2x.html
 鸿阳的okhttp工具
 	https://github.com/hongyangAndroid/okhttp-utils
 Android OkHttp完全解析 是时候来了解OkHttp了
@@ -16,6 +21,7 @@ Android Networking I: OkHttp, Volley and Gson
 
 --------------------------------一个全局的OkHttpClient对象
 OkHttp官方文档并建议:全局使用一个OkHttpClient
+即是：使用同一个httpclient来newCall
 
 public ConfigureTimeouts() throws Exception {
     client = new OkHttpClient();
@@ -23,6 +29,15 @@ public ConfigureTimeouts() throws Exception {
     client.setWriteTimeout(10, TimeUnit.SECONDS);
     client.setReadTimeout(30, TimeUnit.SECONDS);
 }
+//如果使用okhttp3.0，那么使用httpclient.build来设置参数：
+File sdcache = getExternalCacheDir();
+int cacheSize = 10 * 1024 * 1024;
+OkHttpClient.Builder builder = new OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
+OkHttpClient mOkHttpClient=builder.build();
 
 也可以使用一个clone来创建一个浅拷贝，
 这样，可以为单独的请求设置超市等参数，如：
@@ -130,6 +145,10 @@ if (response.isSuccessful()) {
 } else {
 	throw new IOException("Unexpected code " + response);
 }
+
+关于上传文件的另外一个参见：
+Android网络编程（六）OkHttp3用法全解析
+	http://liuwangshu.cn/application/network/6-okhttp3.html
 
 --------------------------------请求取消
 Call.cancel()

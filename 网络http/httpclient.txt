@@ -1,0 +1,3 @@
+参见：
+Android网络编程（二）HttpClient与HttpURLConnection
+	http://liuwangshu.cn/application/network/2-httpclienthttp-urlconnection.html

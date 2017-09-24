@@ -2,7 +2,7 @@ public ImageCache(Context context) {
 	this.context = context;
 
 	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-	// Use 1/8th or 1/1th of the available memory for this memory cache.
+	// Use 1/8th of the available memory for this memory cache.
 	final int cacheSize = maxMemory / 8;
 
 	cache = new LruCache<String, Bitmap>(cacheSize) {

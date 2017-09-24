@@ -1,0 +1,41 @@
+请求由RealCall代表
+
+如何实例化：Call OkHttpClient.newCall(Request request)
+
+同步请求：
+RealCall#execute
+	Dispatcher#executed
+	RealCall#getResponseWithInterceptorChain
+
+异步请求：
+RealCall#enqueue
+	Dispatcher#enqueue
+		条件判断：runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost
+		通过条件后：
+		java.util.concurrent.Executor#execute
+			RealCall.AsyncCall#execute
+				RealCall#getResponseWithInterceptorChain
+
+请求核心：
+Response getResponseWithInterceptorChain() throws IOException {
+    // Build a full stack of interceptors.
+    List<Interceptor> interceptors = new ArrayList<>();
+    interceptors.addAll(client.interceptors());
+    //其中，构建了StreamAllocation
+    interceptors.add(retryAndFollowUpInterceptor);
+    interceptors.add(new BridgeInterceptor(client.cookieJar()));
+    interceptors.add(new CacheInterceptor(client.internalCache()));
+    //其中，构建了RealConnection, HttpCodec，其中调用了：okhttp3.internal.connection.StreamAllocation#newStream
+    interceptors.add(new ConnectInterceptor(client));
+    if (!forWebSocket) {
+      interceptors.addAll(client.networkInterceptors());
+    }
+    interceptors.add(new CallServerInterceptor(forWebSocket));
+
+    Interceptor.Chain chain = new RealInterceptorChain(interceptors, null, null, null, 0,
+        originalRequest, this, eventListener, client.connectTimeoutMillis(),
+        client.readTimeoutMillis(), client.writeTimeoutMillis());
+    return chain.proceed(originalRequest);
+}
+
+RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)

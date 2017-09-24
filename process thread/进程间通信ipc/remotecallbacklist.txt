@@ -2,6 +2,10 @@ client调用server的 IA接口的方法 传入IB接口的对象
 server收到该IB接口对象后，将其register到remotecallbacklist
 	remotecallbacklist应该负责什么：
 		当client进程被杀时，应该检测到 之前client向server传送的IB接口对象无效了
-			如何检测：IB对象.asbinder.linktodeath(DeathRecipient)，当client被杀时，recipient.binderDied被调用
+			如何检测：IB对象.asbinder.linktodeath(DeathRecipient)，
+				该DeathRecipient的实现是 其内部类Callback
+				Callback是对IB的一次封装
+			当client被杀时，recipient.binderDied被调用
 		当server执行了某些操作，需要通知所有的client（通过IB接口的方法）
-			如何找到之前注册的所有IB接口对象：remotecallbacklist中一个map<binder,callback(其本质上是deathrecipient，内部含有IB接口对象)>
+			如何找到之前注册的所有IB接口对象：remotecallbacklist有一个map<Binder,Callback>
+			而通过Callback可以找到IB

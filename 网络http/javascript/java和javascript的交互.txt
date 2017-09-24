@@ -1,0 +1,32 @@
+参见：
+【Android】如何写一个JsBridge
+	https://xesam.github.io/android/2016/04/12/Android-%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AAJsBridge.html
+
+----------------------------------------如何调用js中的方法
+. webView.loadUrl(“javascript:methodName(parameterValues)”)
+	其对应了 js方法没有返回值的情况
+. webview.evaluateJavascript(String script, ValueCallback<String> callback)
+	其对应了 js方法有返回值的情况，callback中的回调方法 是在ui线程上执行的
+
+----------------------------------------js如何调用java的方法
+. 声明 桥接接口：
+	class MyBridge{
+		@JavascriptInterface
+		//被标记为@JavascriptInterface的方法，才能在js端被调用
+		public void method1(){...}
+	}
+. webview.addJavascriptInterface(new MyBridge(),"bridge_logic");
+. 在js方，调用window.bridge_logic.method1
+
+----------------安全隐患（4.2以及 之前）
+参见：
+Android面试一天一题（Day 23：当Android遇上JavaScript）
+	http://www.jianshu.com/p/4bb5672ff88d
+
+window.bridge_logic.getClass().forName()来得到Runtime.class，后调用getRuntime得到Runtime对象
+之后就可以调用 Runtime.exec来执行一些危险的命令了
+
+应对措施
+setJavascriptEnable(false)
+不使用addJavascriptInterface
+通过removeJavascriptInterface来移除系统自带的（如：searchBoxJavaBridge_）

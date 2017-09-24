@@ -1,4 +1,6 @@
 参考：
+Android面试一天一题（Day 23：当Android遇上JavaScript）
+	http://www.jianshu.com/p/4bb5672ff88d
 React Native: 配置和起步 
 	http://www.liaohuqiu.net/cn/posts/react-native-1/
 [译]React Native开源图表组件(react-native-chart-android) 
@@ -6,3 +8,7 @@ React Native: 配置和起步
 给所有开发者的React Native详细入门指南（第一阶段）
 	http://www.jianshu.com/p/fa0874be0827
 	其中，包含了系列教程
+
+是什么：
+开发者使用javascript进行开发
+基于 react native的js解释引擎，将其解释为 原生的相关控件，再进行渲染
