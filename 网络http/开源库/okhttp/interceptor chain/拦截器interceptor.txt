@@ -1,15 +1,19 @@
 ----------------------------chain
-为什么会有Interceptor.Chain，其是做什么的：Chain是在指定一个流程：
-判断当前要执行第几个interceptor（如果可能的话）
+Chain封装了一个流程okhttp3.internal.http.RealInterceptorChain#proceed(okhttp3.Request, okhttp3.internal.connection.StreamAllocation, okhttp3.internal.http.HttpCodec, okhttp3.internal.connection.RealConnection)：
+找到要执行的interceptor
 	第几个：通过chain.index来指定
-执行Interceptor#intercept(Chain chain)
-执行完毕后，执行chain上的下一个interceptor
-	下一个在哪里：interceptor并没有采用next结构，而是：所有的interceptor均保存在OkHttpClient#interceptors（或者OkHttpClient#networkInterceptors）
-	传递给intercept方法中的 chain的index指名了下一个interceptor的index
-	则intercept方法中，需要调用Interceptor.Chain#proceed
+如果找到了interceptor
+	构建一个新的Chain（newIndex = index+1）
+	执行Interceptor#intercept(newChain)
+		执行 先行逻辑
+		newChain.proceed
+			根据自身的index，来找到要执行的interceptor
+			并构建另一个newChain（newIndex+1），传递给interceptor 来允许其在合适的时间，再次通知chain
+		执行 后续逻辑
 
-除此之外，chain在 所有的interceptor执行完毕之后，触发真实的联网：
-RealCall#getResponse
+则Chain.proceed流程 可被描述为：
+	interceptor1-pre interceptor2-pre interceptor3-pre interceptor3-post interceptor2-post interceptor1-post
+	即是：interceptor虽然没被设计为 next结构，但是 interceptor链扔可 顺序pres 逆序 posts
 
 ----------------------------interceptor
 intercept举例：
@@ -37,8 +41,3 @@ class LoggingInterceptor implements Interceptor {
 
 如何添加一个interceptor：
 OkHttpClient.Builder#addInterceptor
-
-
-有哪些拦截器：
-ApplicationInterceptorChain
-NetworkInterceptorChain

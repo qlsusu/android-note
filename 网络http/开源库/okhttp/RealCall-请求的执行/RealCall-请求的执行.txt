@@ -11,10 +11,15 @@ RealCall#execute
 RealCall#enqueue
 	Dispatcher#enqueue
 		条件判断：runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost
-		通过条件后：
-		java.util.concurrent.Executor#execute
-			RealCall.AsyncCall#execute
-				RealCall#getResponseWithInterceptorChain
+		通过条件 则在线程池上执行任务（放入到runningAsyncCalls中）：
+    		java.util.concurrent.Executor#execute
+    			RealCall.AsyncCall#execute
+    				RealCall#getResponseWithInterceptorChain
+    				Dispatcher#finished(RealCall.AsyncCall)
+    					将Call从runningSyncCalls中移出
+    					执行readyAsyncCalls中的Call
+        未通过条件，放入到readyAsyncCalls中
+            在Dispatcher#finished(RealCall.AsyncCall)时，执行
 
 请求核心：
 Response getResponseWithInterceptorChain() throws IOException {
@@ -23,9 +28,11 @@ Response getResponseWithInterceptorChain() throws IOException {
     interceptors.addAll(client.interceptors());
     //其中，构建了StreamAllocation
     interceptors.add(retryAndFollowUpInterceptor);
+    //添加一些请求头，去掉一些响应信息（对于client来讲，这些信息是不需要的）
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
+    //是否读取缓存，而不进行真实的联网
     interceptors.add(new CacheInterceptor(client.internalCache()));
-    //其中，构建了RealConnection, HttpCodec，其中调用了：okhttp3.internal.connection.StreamAllocation#newStream
+    //通过StreamAllocation#newStream的方式，找到RealConnection（来自连接池，或者，新建一个），得到HttpCodec
     interceptors.add(new ConnectInterceptor(client));
     if (!forWebSocket) {
       interceptors.addAll(client.networkInterceptors());
@@ -38,4 +45,5 @@ Response getResponseWithInterceptorChain() throws IOException {
     return chain.proceed(originalRequest);
 }
 
+RealInterceptorChain#proceed原型：
 RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)

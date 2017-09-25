@@ -1,0 +1,114 @@
+------------------------------StreamAllocation
+有什么用：
+	为一次Request 来选择一个RealConnection（无论是来自ConnectionPool，或者是新建一个RealConnection），并构建HttpCodec（拥有source, sink来和 服务器进行数据交互）
+在什么地方被构建：
+	okhttp3.internal.http.RetryAndFollowUpInterceptor#intercept
+
+构造函数：
+public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
+	this.connectionPool = connectionPool;
+	this.address = address;
+	this.call = call;
+	this.eventListener = eventListener;
+	this.routeSelector = new RouteSelector(address, routeDatabase(), call, eventListener);
+	this.callStackTrace = callStackTrace;
+}
+
+请求过程：
+StreamAllocation#newStream
+	StreamAllocation#findHealthyConnection
+		StreamAllocation#findConnection
+			ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)
+				RealConnection#isEligible(Address address, @Nullable Route route)返回true意味着 找到
+					内部核心：
+					该RealConnection.allocations.size 是否小于 allocationLimit
+						如：一个connection已经被分配给了StreamAllocation，且，其还在和服务端进行交互（读写io），则此刻该connection不能再分配给其他StreamAllocation
+					判断 RealConnection.route.address 是否和 参数address 的非host部分 相等
+					如果host也相等，则意味找到
+					否则，进一步判断
+				如果找到，会执行StreamAllocation#acquire来更新RealConnection#allocations
+			如果找到了，返回
+			如果没找到
+				通过routeSelector来找到Selection，遍历其每个Route，再去ConnectionPool中查找，看是否能找到
+				如果找到了，返回
+				如果没找到
+					通过Selection.next来找到Route，根据该Route来建立RealConnection
+					RealConnectin.connect
+						RealConnection#connectSocket，或，RealConnection#connectTunnel
+							okhttp3.internal.platform.AndroidPlatform#connectSocket
+							构建了流：BufferedSource（输入流，对于请求方）, BufferedSink（输出流）
+						RealConnection#establishProtocol
+					将其添加到ConnectionPool中
+		RealConnection#isHealthy
+			如：该connection的读写流还没有被关闭 等
+	构建HttpCodec（Encodes HTTP requests and decodes HTTP responses）
+		其拥有source sink，来完成 读写操作
+
+------------------------------目标地址的选择
+有什么用：
+当没有从ConnectionPool找到RealConnection时，需要新建一个
+则需要Route
+
+使用RouteSelector来得到一个Route（本质上，是一个List的Route（由Selection封装，而一个Selection对应于一个Proxy））
+	总共有多少个Proxy
+	针对于一个Proxy，得到一个Selection，而Selection包含了一些Route 和 当前的Route选取位置
+	Route表示：对于该请求地址，对应的目标地址是什么。核心数据：Address Proxy InetSocketAddress
+		若Proxy为Porxy.DIRECT时，对应 服务器（ip，端口）
+		若Proxy为HTTP时，对应 代理服务器（ip，端口）
+		若Proxy为SOCKS时，对应 服务器（域名 端口）
+	--
+	过程如下：
+	RouteSelector#next
+		RouteSelector#nextProxy
+			RouteSelector#resetNextInetSocketAddress
+				得到：inetSocketAddresses
+		遍历inetSocketAddresses，构建每个Route，由Selection来封装（一些Route 和 当前Route的index）
+	
+Address核心数据：
+	HttpUrl（请求地址相关） 和 ProxySelector（https相关）
+
+InetSocketAddress核心数据
+	ip（InetAddress（包含了int类型的address 和 hostName) 和 
+	port
+
+------------------------------下面为老的内容
+
+StreamAllocation#findConnection
+	okhttpclient中，internal.Internal#get(ConnectionPool pool, Address address, StreamAllocation streamAllocation, Route route)
+		ConnectionPool#get
+
+先简单说下RealConnection: 
+RealConnection是Okhttp正式发起网络请求所使用的对象，
+该对象含有了一个通过RouteSelector选中Route对象，
+route对象正好持有了当前请求所访问的目标主机信息（InetSocketAddress）。事
+
+清除无用connect
+ConnectionPool#cleanupRunnable
+
+
+StreamAllocation#findConnection来得到connection
+	从ConnectionPool来得到该RealConnection
+	如果不存在，那么构建一个新的RealConnection，并执行连接，最后放入到ConnectionPool中，
+
+ConnectionPool
+清理操作：ConnectionPool#put将会执行清理操作
+哪些RealConnection需要被清理：
+数据已经发送了
+
+
+URLs是抽象的：
+
+它们规定了调用可能是明文(http)或密文(https)，但是没有规定应该使用哪个加密算法。也没有规定如何验证对等的证书(HostnameVerifier)或者哪个证书可被信任(SSLSocketFactory)。
+它们没有规定是否一个特定的代理服务器可以使用或如何认证代理服务器。
+它们也是具体的：每一个URL确定一个特定路径(像/square/okhttp)和查询(像?q=sharks&lang=en)。每个服务器有很多URL。
+
+作者：DoAndKeep
+链接：http://www.jianshu.com/p/2b44343a9bca
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+internal.http.RetryAndFollowUpInterceptor#intercept
+中，创建了new StreamAllocation(client.connectionPool(), createAddress(request.url()),
+        call, eventListener, callStackTrace);
+        其中，创建了new RouteSelector(address, routeDatabase(), call, eventListener);
+
