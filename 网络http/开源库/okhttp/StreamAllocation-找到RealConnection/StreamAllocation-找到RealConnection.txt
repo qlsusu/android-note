@@ -1,23 +1,29 @@
 ------------------------------StreamAllocation
 有什么用：
-	为一次Request 来选择一个RealConnection（无论是来自ConnectionPool，或者是新建一个RealConnection），并构建HttpCodec（拥有source, sink来和 服务器进行数据交互）
+	其对应了 一个request-response
+	为一次Request 来选择一个RealConnection（无论是来自ConnectionPool，或者是新建一个RealConnection）
+		>>> RealConnection
+			其对应了一个真实的 socket连接
+	并构建HttpCodec（拥有source, sink来和 服务器进行数据交互）
 在什么地方被构建：
-	okhttp3.internal.http.RetryAndFollowUpInterceptor#intercept
+	RetryAndFollowUpInterceptor#intercept
 
 构造函数：
 public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
 	this.connectionPool = connectionPool;
+	// 请求地址相关的信息				
 	this.address = address;
 	this.call = call;
 	this.eventListener = eventListener;
+	// 根据Proxy来选择出 Route（包含：Address Proxy InetSocketAddress（目标地址））
 	this.routeSelector = new RouteSelector(address, routeDatabase(), call, eventListener);
 	this.callStackTrace = callStackTrace;
 }
 
-请求过程：
 StreamAllocation#newStream
 	StreamAllocation#findHealthyConnection
 		StreamAllocation#findConnection
+			//
 			ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)
 				RealConnection#isEligible(Address address, @Nullable Route route)返回true意味着 找到
 					内部核心：
@@ -38,11 +44,15 @@ StreamAllocation#newStream
 							okhttp3.internal.platform.AndroidPlatform#connectSocket
 							构建了流：BufferedSource（输入流，对于请求方）, BufferedSink（输出流）
 						RealConnection#establishProtocol
+							如果是https，则RealConnection#connectTls
 					将其添加到ConnectionPool中
 		RealConnection#isHealthy
 			如：该connection的读写流还没有被关闭 等
 	构建HttpCodec（Encodes HTTP requests and decodes HTTP responses）
 		其拥有source sink，来完成 读写操作
+
+---------------ConnecitonPool
+
 
 ------------------------------目标地址的选择
 有什么用：
@@ -73,18 +83,8 @@ InetSocketAddress核心数据
 
 ------------------------------下面为老的内容
 
-StreamAllocation#findConnection
-	okhttpclient中，internal.Internal#get(ConnectionPool pool, Address address, StreamAllocation streamAllocation, Route route)
-		ConnectionPool#get
-
-先简单说下RealConnection: 
-RealConnection是Okhttp正式发起网络请求所使用的对象，
-该对象含有了一个通过RouteSelector选中Route对象，
-route对象正好持有了当前请求所访问的目标主机信息（InetSocketAddress）。事
-
 清除无用connect
 ConnectionPool#cleanupRunnable
-
 
 StreamAllocation#findConnection来得到connection
 	从ConnectionPool来得到该RealConnection

@@ -1,3 +1,6 @@
 参见：
+Mac上的抓包工具Charles
+	http://blog.csdn.net/jiangwei0910410003/article/details/41620363
+	其中说明了：如何抓 https的包
 如何使用charles对Android Https进行抓包
 	http://www.jianshu.com/p/3bbf596c9ca6

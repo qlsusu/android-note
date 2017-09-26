@@ -28,7 +28,8 @@ Response getResponseWithInterceptorChain() throws IOException {
     interceptors.addAll(client.interceptors());
     //其中，构建了StreamAllocation
     interceptors.add(retryAndFollowUpInterceptor);
-    //添加一些请求头，去掉一些响应信息（对于client来讲，这些信息是不需要的）
+    //请求处理，如：添加keep alive, gzip；
+    //响应处理，如：响应的Content-Encoding如果是gzip，则解压该response.body
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
     //是否读取缓存，而不进行真实的联网
     interceptors.add(new CacheInterceptor(client.internalCache()));
