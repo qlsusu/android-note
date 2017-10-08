@@ -61,7 +61,8 @@ final Request request = new Request.Builder()
 //new call
 Call call = mOkHttpClient.newCall(request); 
 //请求加入调度 (异步方式)
-call.enqueue(new Callback()
+call.enqueue(
+	new Callback()
         {
             @Override
             public void onFailure(Request request, IOException e)

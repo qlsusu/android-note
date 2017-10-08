@@ -1,0 +1,13 @@
+负责：
+. 当发生错误时（如：RouteException），当满足重试条件时，进行重试
+	重试条件：RetryAndFollowUpInterceptor#recover
+	重试手段：交由RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)处理
+		其会找到新的Route，并在ConnectInterceptor中重新建立连接（参见：StreamAllocation#newStream），并进一步处理
+. 根据状态码，来找到重定向location，建立连接，并进一步处理
+	Request followUp = followUpRequest(response);
+	streamAllocation = new StreamAllocation(client.connectionPool(), createAddress(followUp.url()), call, eventListener, callStackTrace);
+	request = followUp;
+	priorResponse = response;
+	再一次走入while循环：realChain.proceed(request, streamAllocation, null, null);
+
+在其中创建了 StreamAllocation

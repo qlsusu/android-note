@@ -1,3 +1,6 @@
+拦截器的形式：
+pre1 - pre2 - net communication - post2 - post1
+
 ----------------------------chain
 Chain封装了一个流程okhttp3.internal.http.RealInterceptorChain#proceed(okhttp3.Request, okhttp3.internal.connection.StreamAllocation, okhttp3.internal.http.HttpCodec, okhttp3.internal.connection.RealConnection)：
 找到要执行的interceptor

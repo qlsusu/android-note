@@ -1,34 +1,30 @@
-mOkHttpClient = new OkHttpClient();
-File sdcache = getExternalCacheDir();
-int cacheSize = 10 * 1024 * 1024;
-mOkHttpClient.setCache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
+参见：
+OkHttp3源码分析[缓存策略]
+	http://www.jianshu.com/p/9cebbbd0eeab
+OKHttp源码解析(六)--中阶之缓存基础 - 简书
+	http://www.jianshu.com/p/b32d13655be7
 
-//判断response从哪里来
-Call call = mOkHttpClient.newCall(request);
-call.enqueue(new Callback() {
-   @Override
-   public void onFailure(Request request, IOException e) {
-   }
+获得request的candidate cache：
+okhttp3.Cache#get
+	得到key: okhttp3.Cache#key
+		ByteString.encodeUtf8(httpUrl.toString()).md5().hex();
+	okhttp3.internal.cache.DiskLruCache#get
 
-   @Override
-   public void onResponse(final Response response) throws IOException {
-   		//response来自cache
-       if (null != response.cacheResponse()) {
-           String str = response.cacheResponse().toString();
-           Log.i("wangshu", "cache---" + str);
-       } 
-       //response来自网络
-       else {
-           response.body().string();
-           String str=response.networkResponse().toString();
-           Log.i("wangshu", "network---" + str);
-       }
-       
-       runOnUiThread(new Runnable() {
-           @Override
-           public void run() {
-               Toast.makeText(getApplicationContext(), "请求成功", Toast.LENGTH_SHORT).show();
-           }
-       });
-   }
-});
+CacheControl对应着 header中的cache-control
+如何构建：CacheControl#parse(Headers headers)
+
+CacheInterceptor#intercept
+	被提供request, cacheCandidate（来自：okhttp3.Cache#get，即是：先不管用不用该缓存，先提供给我缓存），得到CacheStrategy：
+	CacheStrategy.Factory#get
+		CacheStrategy.Factory#getCandidate
+			得到CacheStrategy
+				是否需要发送联网请求（真实的请求数据，或者，有条件的请求（if-none-match, if-modify-since））而判断缓存的内容是否有效（即使缓存已经过期了）
+					CacheStrategy#networkRequest
+				缓存的内容					
+					CacheStrategy#cacheResponse
+		如果request要求onlyIfCache（只从缓存中读取数据） 且 得到的CacheStrategy又要求访问网络，则返回 CacheStrategy(null,null)
+	--
+	当需要联网请求时，在响应获得后，将响应放入到缓存中
+		okhttp3.internal.cache.InternalCache#put
+			okhttp3.Cache#put
+				一种情况：当请求是post，是不会缓存响应的，参见：okhttp3.internal.http.HttpMethod#invalidatesCache

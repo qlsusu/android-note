@@ -1,6 +1,0 @@
-okhttp3.internal.cache.CacheStrategy.Factory#getCandidate
-
-okhttp3.internal.cache.CacheStrategy#networkRequest
-	是否需要发送联网请求（真实的请求数据，或者，有条件的请求（if-none-match, if-modify-since））而判断缓存的内容是否有效
-okhttp3.internal.cache.CacheStrategy#cacheResponse
-	缓存的内容

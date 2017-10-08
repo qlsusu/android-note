@@ -1,12 +1,16 @@
 ------------------------------StreamAllocation
 有什么用：
-	其对应了 一个request-response
+	其对应了 一个request-response 过程
 	为一次Request 来选择一个RealConnection（无论是来自ConnectionPool，或者是新建一个RealConnection）
-		>>> RealConnection
-			其对应了一个真实的 socket连接
 	并构建HttpCodec（拥有source, sink来和 服务器进行数据交互）
 在什么地方被构建：
 	RetryAndFollowUpInterceptor#intercept
+
+vs RealConnection：
+	RealConnection 对应了一个真实的 socket连接，负责创建一个socket连接
+		RealConnection#connect
+			RealConnection#connectSocket
+	有可能多个 StreamAllocation(一个request-response过程）都对应了 同一个RealConnection
 
 构造函数：
 public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
@@ -20,28 +24,35 @@ public StreamAllocation(ConnectionPool connectionPool, Address address, Call cal
 	this.callStackTrace = callStackTrace;
 }
 
-StreamAllocation#newStream
+复用/新建 RealConnection:
+StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 	StreamAllocation#findHealthyConnection
-		StreamAllocation#findConnection
-			//
+		StreamAllocation#findConnection				
 			ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)
-				RealConnection#isEligible(Address address, @Nullable Route route)返回true意味着 找到
-					内部核心：
+				说明：关键数据为Address Route，而StreamAllocation仅仅为了 更新 RealConnection.allocations
+				遍历每个RealConnection，查看它是否可复用：RealConnection#isEligible(Address address, Route route)
 					该RealConnection.allocations.size 是否小于 allocationLimit
 						如：一个connection已经被分配给了StreamAllocation，且，其还在和服务端进行交互（读写io），则此刻该connection不能再分配给其他StreamAllocation
-					判断 RealConnection.route.address 是否和 参数address 的非host部分 相等
+					判断 RealConnection.route.address的非host部分 是否和 参数address的 相等
 					如果host也相等，则意味找到
-					否则，进一步判断
+						说明：此刻仅仅比较address，而非 双方的 route.inetSocketAddress，为什么：
+							如果能根据Address就能找到RealConnection，那么就没必要 事先算的Route 再拿Route来找 RealConnection
+					否则，根据Route进一步判断（说明：此刻route为null），核心：
+						参数route.inetSocketAddress 和 RealConnection.route的 相同
+						再辅助进行其他的一些check，如RealConnection.route.proxy.type 为 Proxy.Type.DIRECT 等
 				如果找到，会执行StreamAllocation#acquire来更新RealConnection#allocations
 			如果找到了，返回
 			如果没找到
-				通过routeSelector来找到Selection，遍历其每个Route，再去ConnectionPool中查找，看是否能找到
+				通过routeSelector来找到routeSelection（类型：Selection），遍历其每个Route，再去ConnectionPool中查找，看是否能找到
+				>>> RouteSelector, Route是什么
+					参见：Route-Address Proxy InetSocketAddress.txt
 				如果找到了，返回
 				如果没找到
-					通过Selection.next来找到Route，根据该Route来建立RealConnection
-					RealConnectin.connect
-						RealConnection#connectSocket，或，RealConnection#connectTunnel
-							okhttp3.internal.platform.AndroidPlatform#connectSocket
+					通过routeSelection（RouteSelector.Selection类型）.next来得到一个Route，根据该Route来建立RealConnection
+					更新RealConnection.allocations
+					创建连接：RealConnectin.connect
+						RealConnection#connectSocket，或，RealConnection#connectTunnel（是https，但是proxy不是direct）
+							platform.AndroidPlatform#connectSocket
 							构建了流：BufferedSource（输入流，对于请求方）, BufferedSink（输出流）
 						RealConnection#establishProtocol
 							如果是https，则RealConnection#connectTls
@@ -49,66 +60,45 @@ StreamAllocation#newStream
 		RealConnection#isHealthy
 			如：该connection的读写流还没有被关闭 等
 	构建HttpCodec（Encodes HTTP requests and decodes HTTP responses）
-		其拥有source sink，来完成 读写操作
+		其对应于 StreamAllocation，拥有source sink，来完成 读写操作 (针对于 request/response header/body)
+		最终由CallServerInterceptor#intercept来调用
+
+‘释放’RealConnection 以让其被后续StreamAllocation复用
+Http1Codec.AbstractSource#endOfInput
+	StreamAllocation#streamFinished
+		StreamAllocation#deallocate（其会返回socket，此刻为null）
+			StreamAllocation#release(RealConnection)
+				去除 RealConnection.allocations中的 该StreamAllocationReference
+			如果RealConnection.allocations为empty，则设置RealConnection#idleAtNanos
+		Util#closeQuietly(java.net.Socket)
+			未做任何，因为Socket为null
 
 ---------------ConnecitonPool
+新生成的Connection会被放入到 ConnectionPool中
 
-
-------------------------------目标地址的选择
-有什么用：
-当没有从ConnectionPool找到RealConnection时，需要新建一个
-则需要Route
-
-使用RouteSelector来得到一个Route（本质上，是一个List的Route（由Selection封装，而一个Selection对应于一个Proxy））
-	总共有多少个Proxy
-	针对于一个Proxy，得到一个Selection，而Selection包含了一些Route 和 当前的Route选取位置
-	Route表示：对于该请求地址，对应的目标地址是什么。核心数据：Address Proxy InetSocketAddress
-		若Proxy为Porxy.DIRECT时，对应 服务器（ip，端口）
-		若Proxy为HTTP时，对应 代理服务器（ip，端口）
-		若Proxy为SOCKS时，对应 服务器（域名 端口）
-	--
-	过程如下：
-	RouteSelector#next
-		RouteSelector#nextProxy
-			RouteSelector#resetNextInetSocketAddress
-				得到：inetSocketAddresses
-		遍历inetSocketAddresses，构建每个Route，由Selection来封装（一些Route 和 当前Route的index）
-	
-Address核心数据：
-	HttpUrl（请求地址相关） 和 ProxySelector（https相关）
-
-InetSocketAddress核心数据
-	ip（InetAddress（包含了int类型的address 和 hostName) 和 
-	port
+定时清理RealConnection：
+	哪些connection会被清理：其上的StreamAllocation已经全部执行完毕，且，其空闲时间（now-idle）已经超过了 预设阀值（keepAliveDurationNs）
+	触发时机：
+		当put一个connection到pool时，将会触发清理（如果清理还未启动）
+		在一次清理之后，会确定出下一次清理的时间点
+	过程：
+	检查所有的connection的idle时刻
+	找到最早idle的，得到最长duration(=now-idle)
+	该duration是否有值
+		如果有值，则意味：存在connection已经处于idle
+			判断该duration 是否大于 预置的keepAliveDurationNs
+				如果大于，那么该connection便是要清理的
+					清理本质：Util#closeQuietly(Socket)
+					需要立刻触发 再次清理（现在只清理了一个，可能还有其他connection需要清理）
+				否则，需要在 keepAliveDurationNs-duration之后 再次触发清理
+		如果无值，那么所有的connection都处于work状态
+			则等待keepAliveDurationNs之后再次触发清理
 
 ------------------------------下面为老的内容
-
-清除无用connect
-ConnectionPool#cleanupRunnable
-
-StreamAllocation#findConnection来得到connection
-	从ConnectionPool来得到该RealConnection
-	如果不存在，那么构建一个新的RealConnection，并执行连接，最后放入到ConnectionPool中，
-
-ConnectionPool
-清理操作：ConnectionPool#put将会执行清理操作
-哪些RealConnection需要被清理：
-数据已经发送了
-
-
 URLs是抽象的：
 
 它们规定了调用可能是明文(http)或密文(https)，但是没有规定应该使用哪个加密算法。也没有规定如何验证对等的证书(HostnameVerifier)或者哪个证书可被信任(SSLSocketFactory)。
 它们没有规定是否一个特定的代理服务器可以使用或如何认证代理服务器。
 它们也是具体的：每一个URL确定一个特定路径(像/square/okhttp)和查询(像?q=sharks&lang=en)。每个服务器有很多URL。
 
-作者：DoAndKeep
-链接：http://www.jianshu.com/p/2b44343a9bca
-來源：简书
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
-internal.http.RetryAndFollowUpInterceptor#intercept
-中，创建了new StreamAllocation(client.connectionPool(), createAddress(request.url()),
-        call, eventListener, callStackTrace);
-        其中，创建了new RouteSelector(address, routeDatabase(), call, eventListener);
 

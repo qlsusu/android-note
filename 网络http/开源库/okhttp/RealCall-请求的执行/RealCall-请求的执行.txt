@@ -1,43 +1,55 @@
 请求由RealCall代表
-
 如何实例化：Call OkHttpClient.newCall(Request request)
+
+Dispatcher
+负责任务的调度，如：同步/异步 任务的触发执行，任务的完成后 来尝试启动其他任务
 
 同步请求：
 RealCall#execute
 	Dispatcher#executed
 	RealCall#getResponseWithInterceptorChain
+    Dispatcher#finished(RealCall)
 
 异步请求：
 RealCall#enqueue
 	Dispatcher#enqueue
-		条件判断：runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost
+		条件判断：正在运行的异步call的个数 和 针对于host的call的总数
+            runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost
 		通过条件 则在线程池上执行任务（放入到runningAsyncCalls中）：
     		java.util.concurrent.Executor#execute
     			RealCall.AsyncCall#execute
     				RealCall#getResponseWithInterceptorChain
     				Dispatcher#finished(RealCall.AsyncCall)
-    					将Call从runningSyncCalls中移出
-    					执行readyAsyncCalls中的Call
         未通过条件，放入到readyAsyncCalls中
-            在Dispatcher#finished(RealCall.AsyncCall)时，执行
+            再在Dispatcher#finished(RealCall.AsyncCall)时，可能被执行
 
 请求核心：
 Response getResponseWithInterceptorChain() throws IOException {
     // Build a full stack of interceptors.
     List<Interceptor> interceptors = new ArrayList<>();
+    //添加自定义的interceptor
     interceptors.addAll(client.interceptors());
+
     //其中，构建了StreamAllocation
+    //当连接route失败时（或其他原因），或，需要重定向时，调整StreamAllocation，再次发送请求
+        （方式：再次RealInterceptorChain#proceed(okhttp3.Request, StreamAllocation, HttpCodec, RealConnection)）
     interceptors.add(retryAndFollowUpInterceptor);
-    //请求处理，如：添加keep alive, gzip；
-    //响应处理，如：响应的Content-Encoding如果是gzip，则解压该response.body
+
+    //请求处理，如：添加Connection:Keep-Alive, Content-Encoding:gzip等
+    //响应处理，如：响应的Content-Encoding如果是gzip，则解压该response.body，并移除Content-Encoding, Content-Length
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
-    //是否读取缓存，而不进行真实的联网
+
+    //是否读取缓存，而不进行真实的联网；将响应进行缓存
     interceptors.add(new CacheInterceptor(client.internalCache()));
-    //通过StreamAllocation#newStream的方式，找到RealConnection（来自连接池，或者，新建一个），得到HttpCodec
+
+    //通过StreamAllocation#newStream的方式，为该StreamAllocation找到RealConnection（来自连接池，或者，新建一个），得到HttpCodec
     interceptors.add(new ConnectInterceptor(client));
     if (!forWebSocket) {
-      interceptors.addAll(client.networkInterceptors());
+        //添加自定义的net interceptor
+        interceptors.addAll(client.networkInterceptors());
     }
+    
+    //执行真实的input/output通信
     interceptors.add(new CallServerInterceptor(forWebSocket));
 
     Interceptor.Chain chain = new RealInterceptorChain(interceptors, null, null, null, 0,
@@ -45,6 +57,17 @@ Response getResponseWithInterceptorChain() throws IOException {
         client.readTimeoutMillis(), client.writeTimeoutMillis());
     return chain.proceed(originalRequest);
 }
+
+启动其他AsyncCall
+启动时机：
+. 本AsyncCall完成后
+    Dispatcher#finished(RealCall) 或 Dispatcher#finished(RealCall.AsyncCall)
+        Dispatcher#finished(Deque<T> calls, T call, boolean promoteCalls)
+            将Call从相应的队列中移出 runningSyncCalls 或 runningAsyncCalls中移出
+            Dispatcher#promoteCalls
+                试图执行 readyAsyncCalls中的Call
+. 更新了maxRequests 或 maxRequestsPerHost时
+    因为该数值可能会变大，则有可能可以再其他AsyncCall
 
 RealInterceptorChain#proceed原型：
 RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)

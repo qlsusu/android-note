@@ -1,3 +1,4 @@
+//设置缓存
 mOkHttpClient = new OkHttpClient();
 File sdcache = getExternalCacheDir();
 int cacheSize = 10 * 1024 * 1024;

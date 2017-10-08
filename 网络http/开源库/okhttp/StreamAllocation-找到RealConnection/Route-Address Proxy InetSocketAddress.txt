@@ -1,0 +1,53 @@
+-------------------------Route
+当没有从ConnectionPool找到RealConnection时，需要新建一个，而建立RealConnection，需要目标地址（ip和host）
+由Route代表：根据Address，选择了Proxy，得到了InetSocketAddress
+
+使用RouteSelector来得到 Address对应的 Route（需要参考于 Proxy）：
+	本质上，通过RouteSelector得到的是一个List的Route（由Selection封装，而一个Selection对应于一个Proxy）
+	什么时候被构建：构建StreamAllocation时，其作为 成员变量
+		其需要预先被提供Proxy，而Proxy由Address提供（Proxy（一个proxy），或，ProxySelector（一些proxy））
+			获取方式：RouteSelector#resetNextProxy
+	工作原理：RouteSelector#next：
+		RouteSelector#nextProxy
+			得到下一个Proxy
+			RouteSelector#resetNextInetSocketAddress
+				reset RouteSelector.inetSocketAddresses，规则为：
+				若Proxy为DIRECT时，为：Address的 host对应的ip（通过dns获得）和端口
+				若Proxy为HTTP时（http代理），为：Proxy的 ip（通过dns获得）和端口
+				若Proxy为SOCKS时（socket代理），为：Address的 host（并没有通过dns来获得host对应的ip）和端口
+		根据 Proxy 和 新的RouteSelector.inetSocketAddresses，来构建List<Route>，并构建Selection
+
+当选择了一个Route，但是连接失败时（待补充，当连接失败时，如何进行重连，需要查看retryandfollowupinterceptor!!!!!!!!!）：
+RetryAndFollowUpInterceptor#intercept 异常了，抛出了RouteException
+	RetryAndFollowUpInterceptor#recover
+		StreamAllocation#streamFailed
+			RouteSelector#connectFailed(Route failedRoute, IOException failure)
+				如果Route.proxy不是direct，那么通知ProxySelector
+					java.net.ProxySelector#connectFailed
+				添加Route到routeDatabase中
+					RouteDatabase#failed
+
+-------------------------Address
+HttpUrl
+要请求的地址，包含了：host port path query
+	port的取值范围为：1 ~ 0xFFFF
+在哪里被构建：通过Builder来构建Request时，指定了url
+
+Address：
+在哪里被构建：
+	RetryAndFollowUpInterceptor#intercept
+		构建StreamAllocation时，RetryAndFollowUpInterceptor#createAddress
+核心数据：
+	请求地址
+		HttpUrl（注意：其中只包含了host port信息）
+	代理
+		Proxy, ProxySelector
+	https相关
+		SSLSocketFactory
+		HostnameVerifier
+		CertificatePinner
+
+-------------------------InetSocketAddress
+InetSocketAddress核心数据
+	ip（InetAddress（包含了int类型的address 和 hostName) 和 
+	port
