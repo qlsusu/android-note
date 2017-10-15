@@ -31,8 +31,17 @@ public class MyParcelable implements Parcelable {
     //其中User类也实现了Parcelable
     public User user;
 
-    public int describeContents() {
-        return 0;
+	// 通过parcel来构造出 实体对象（或者定义一个函数：readfromparcel(parcel)）
+    // 什么场景需要：ipc通信中，server的binder读取parcel，需要从该parcel中 反序列化到 实体对象（通过CREATOR.createFromParcel）
+    // 注意：写入和读取的类型及顺序一致
+    protected MyParcelable(Parcel in) {
+        readFromParcel(in);
+    }
+    
+    //无参的构造函数，为什么需要：
+    //在aidl中，如果参数是out类型，那么在stub.onTransact中，将不使用in parcel，而是手动调用构造函数 来形成实参
+    public MyParcelable() {
+
     }
 
     // 将该bean写入到parcel中
@@ -43,12 +52,13 @@ public class MyParcelable implements Parcelable {
         out.writeString(mStr);
         out.writeParcelable(user,0);
     }
-
-    // 通过parcel来构造出 实体对象（或者定义一个函数：readfromparcel(parcel)）
-    // 什么场景需要：ipc通信中，server的binder读取parcel，需要从该parcel中 反序列化到 实体对象（通过CREATOR.createFromParcel）
-    // 注意：写入和读取的类型及顺序一致
-    private MyParcelable(Parcel in) {
-        mData = in.readInt();
+    
+    //从parcel中提取信息，赋予给变量
+    //什么场景下用到：
+    //. 构造函数中
+    //. 在aidl中，对于out/inout类型的参数，需要从replay parcel中提取信息
+    public void readFromParcel(Parcel in) {
+    	mData = in.readInt();
         mStr = in.readString();
         //User是另一个序列化对象，此方法序列需要传递当前线程的上下文类加载器，否则会报无法找到类的错误
         user=in.readParcelable(Thread.currentThread().getContextClassLoader());
@@ -64,4 +74,8 @@ public class MyParcelable implements Parcelable {
             return new MyParcelable[size];
         }
     };
+    
+    public int describeContents() {
+        return 0;
+    }
 }

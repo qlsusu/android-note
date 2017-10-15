@@ -9,6 +9,7 @@ ViewRootImpl#scheduleTraversals
 			callbackType为：Choreographer.CALLBACK_TRAVERSAL
 			action为：ViewRootImpl.TraversalRunnable
 		添加一个Choreographer.CallbackRecord
+			一个callbackType  对应了 一个List的CallbackRecord
 		通过Choreographer.FrameHandler发送并处理消息（MSG_DO_SCHEDULE_VSYNC）
 			Choreographer#doScheduleVsync
 				DisplayEventReceiver#scheduleVsync

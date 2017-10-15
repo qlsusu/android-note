@@ -7,8 +7,8 @@ service中的binder对象 被称为local
 它们虽然存在于不同的进程中，可认为是 "同一"对象
 
 aidl的通信
-client的binder.transact，在其中指名i接口，调用的方法（code参数），填充数据到input parcel中，并读取output parcel（会被阻塞）
-而service的binder.ontransact中，对i接口进行验证，读取input，调用方法，将结果写入到output中
---
-而通过调用 i接口.stub.proxy的方法（proxy继承自i接口），会将输入参数 序列化到input parcel中，指名其他信息（如：方法名等），最终调用binder.transact
-而service的binder.ontransact中，将 之前的输入参数反序列化为对象，并最终调用 i接口方法的local实现（stub继承自i接口，而我们需要继承stub来提供 i接口的local实现）
+client的 i接口的remote实现（Proxy实现了i接口） 中
+	指名要调用的i接口（writeInterfaceToken），指名要调用的方法（code参数），填充数据到in parcel中，调用接口方法（remoteBinder.transact）（会被阻塞），最后读取reply parcel
+service的 onTransact 中
+	判断要调用什么方法（switch code）
+	对i接口进行验证（enforceInterface），读取in parcel，执行方法（i接口的local实现（stub继承自i接口，而我们需要继承stub来提供 i接口的local实现）），将结果写入到reply parcel中

@@ -108,6 +108,7 @@ public interface IMyLogic extends android.os.IInterface {
 
                     //读取返回值
                     _result = _reply.readInt();
+                    
                     //如果参数是out/inout类型，那么反序列化出 参数 从parcel
                     if ((0 != _reply.readInt())) {
                         outParcel.readFromParcel(_reply);
@@ -177,6 +178,7 @@ public interface IMyLogic extends android.os.IInterface {
 
                     //没有产生异常
                     reply.writeNoException();
+                    
                     //写入结果
                     reply.writeInt(_result);
 

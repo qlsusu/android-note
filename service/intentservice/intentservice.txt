@@ -18,13 +18,14 @@ Service也不是专门一条新线程，因此不应该在Service中直接处理
   
 ----------------------IntentService特征 
 onstartcommand中，会向handler发送消息
-	而该handler的looper来自 handlerthread.looper
+	而该handler的looper来自 HandlerThread.looper
 	而对于消息
 		msg.arg1=startid
+			该startId来自 onStart(Intent intent, int startId)
 		msg.obj=intent
 	由于采用了handler，那么也就意味着：一次只能处理一个msg，也即是：当多次start该service时，这些请求将被排队，进而一个个处理
 handler.handlemessage最终被调用 来处理message
-	其中会取得msg.obj(即是intent类型)，进而调用onhandlerintent，将msg.obj传入
+	其中会取得msg.obj(即是intent类型)，进而调用onHandleIntent，将msg.obj传入
 	最后，调用stopself(msg.arg1)
 		说明：当一个service被start了N次，对于每一次，都会分配一个startid。而只有stopself(最后一次的startid)，该service才被最终关闭
 --

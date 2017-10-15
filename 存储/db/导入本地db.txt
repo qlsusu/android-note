@@ -1,0 +1,3 @@
+得到本地db的最终放入位置：dbPath = Context#getDatabasePath(String dbName)#getPath
+将本地db写入到 dbPath对应的文件中
+创建SqliteDatabase: SqliteDatabase#openOrCreateDatabase(String path, CursorFactory factory)

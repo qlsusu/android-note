@@ -14,4 +14,4 @@ LocalBroadcastManager#sendBroadcast(Intent intent)
 当注册一个receiver时，会分析出该receiver能够处理哪些action
 当send broadcast时，找到能够处理该intent的receiver，将它们放入到 mPendingBroadcasts（类型：ArrayList<BroadcastRecord>），后向handler发送消息MSG_EXEC_PENDING_BROADCASTS
 handler处理该消息，执行executePendingBroadcasts()，
-	其中遍历出每个receiver，执行onreceive()
+	遍历 mPendingBroadcasts的每个receiver，执行onreceive()

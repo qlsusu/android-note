@@ -1,0 +1,6 @@
+@Override
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	//增加字段 sex（varchar类型）
+	//一行中，原有的数据还被保存，知识sex这一列 的值为null
+	db.execSQL("ALTER TABLE myTable ADD sex VARCHAR");
+}

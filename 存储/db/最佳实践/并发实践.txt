@@ -46,7 +46,7 @@ SQLite在多线程并发访问的应用
 sqlitedatabase内部有锁的机制
 参见：http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
 
----------------------并发实践
+---------------------并发实践！！！！！
 . 我们使用一个db连接，存活周期 同于app的，不要close
 . 采用读写锁（多线程时，写写 和 读写时 需要相互等待，读读时 可以同时进行）
 . enableWriteAheadLogging
@@ -54,13 +54,14 @@ sqlitedatabase内部有锁的机制
 	如果不开启，意味着：读-读 可以并发，但是 读-写 不能并发
 
 ---------------------示例	
-class DataAccess {
+class DataAccess extends SQLiteOpenHelper {
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     private final Lock r = rwl.readLock();
     private final Lock w = rwl.writeLock();
 
     public Data readSomething(int id) {
         Cursor c = null;
+        //请求read锁
         r.lock();
         try {
             c = getReadableDatabase().query(...);
@@ -72,6 +73,7 @@ class DataAccess {
     }
 
     public void changeSomething(int id, int value) {
+    	//请求write锁
         w.lock();
         try {
             getWritableDatabase().update(...);

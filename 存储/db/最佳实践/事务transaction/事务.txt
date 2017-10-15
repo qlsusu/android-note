@@ -10,15 +10,16 @@
 
 事务的正确使用方式：
 将一组修改的statement放入到一个事务中，
-	好处：
-		性能提升：多次修改 只用操作1次数据库文件（在提交事务之前，修改都在内存中）
-		原子性：一组操作同时成功，或同时失败
-	编码：
-		SQLiteDatabase#beginTransaction
-		try{
-			...
-			SQLiteDatabase#setTransactionSuccessful
-		}finally{
-			SQLiteDatabase#endTransaction
-		}
+好处：
+	性能提升：多次修改 只用操作1次数据库文件（在提交事务之前，修改都在内存中）
+	原子性：一组操作同时成功，或同时失败
+编码：
+	SQLiteDatabase#beginTransaction
+	try{
+		//执行 增删改
+		...
+		SQLiteDatabase#setTransactionSuccessful
+	}finally{
+		SQLiteDatabase#endTransaction
+	}
 		

@@ -28,6 +28,10 @@ android:process
 <activity android:name=".MusicPlayerActivity" android:process=":music"/>
 <activity android:name=".AnotherActivity" android:process="droidyue.com"/>
 
+注意：
+. Application#onCreate会多次调用
+. 内存是不同共享的，因为是不同的进程（单例 在多进程间 已经作废）
+
 ------------------------------------之下为老的内容
 
 谨慎使用多进程
