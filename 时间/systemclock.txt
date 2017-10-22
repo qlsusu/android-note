@@ -2,6 +2,6 @@
 Android SystemClock
 	http://blog.csdn.net/shichaosong/article/details/8478104
 
-SystemClock.elapsedRealTime() // 系统从启动到现在的时间。用于记录：两个时间点的间隔（避免了：使用system.currenttimemilis时，用户可能会修改系统时间，导致间隔时长不准）
+SystemClock.elapsedRealTime() // 系统从启动开始 消逝的的时间（到现在）。用于记录：两个时间点的间隔（避免了：使用system.currenttimemilis时，用户可能会修改系统时间，导致间隔时长不准）
 SystemClock.uptimeMillis()  // 从开机到现在的毫秒数（手机睡眠的时间不包括在内）；
 System.currentTimeMillis() // 从1970年1月1日 UTC到现在的毫秒数；
