@@ -2,4 +2,4 @@
 
 什么时候改变：
 宿主activity的状态发生改变时
-执行transaction（无论是否加入backstack，加入backstack时，有可能fragment并不会执行到ondestroy,ondetach）
+执行transaction（无论是否加入backstack，而加入backstack时，有可能fragment并不会执行到ondestroy,ondetach）

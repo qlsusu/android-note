@@ -4,10 +4,8 @@
 当commit一个transaction，或，popbackstack，仅仅是往mainlooper.queue中提交一个任务，并不是立刻执行
 
 立刻执行的方式：
-fragmenttransaction.commitnow, fragmentmanager.executependingactions, fragmentmanager.popbackstackImmediate
-
-commitnow
-立刻执行 当前提交的transaction
-
-executependingactions
-会执行所有的pending actions
+fragmenttransaction.commitnow
+	立刻执行 当前提交的transaction
+fragmentmanager.popbackstackImmediate
+fragmentmanager.executependingactions
+	会执行所有的pending actions

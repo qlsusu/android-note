@@ -11,7 +11,7 @@ Android calls onSaveInstanceState() before the activity becomes vulnerable to be
 调用场景举例：
 1、当用户按下HOME键时。
 	app所在的进程优先级变低，可能被系统杀死，则activity有可能被销毁
-2、长按HOME键，选择运行其他的程序时。
+2、调出 多任务时
 	同1
 3、按下电源按键（关闭屏幕显示）时。
 	同1
@@ -20,7 +20,7 @@ Android calls onSaveInstanceState() before the activity becomes vulnerable to be
 	但是，当前界面是activityB之后，用户有可能home，而让整个app的进程优先级变低，则进程有可能被杀死，
 	但是，此刻，如果只让activityB保存状态，activityA而没有机会保存状态 就不对了。
 	则该时机应该保存activityA的状态
-5、屏幕方向切换时，例如从竖屏切换到横屏时。
+5、屏幕方向切换时，如从竖屏切换到横屏时（此刻，并没有在manifest.xml的configchange中进行声明）
 
 ------------------------------------onRestoreInstanceState
 什么时候被调用

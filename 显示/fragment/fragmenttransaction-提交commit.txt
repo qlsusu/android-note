@@ -1,0 +1,17 @@
+提交commit的方式:
+fragmenttransaction.commit
+fragmenttransaction.commitNow（参见：立刻执行.txt）
+fragmenttransaction.commitNowAllowingstateloss()
+
+fragmenttransaction.commitallowingstateloss()：
+	当宿主activity要进入到stop状态，如：新的activity在task的顶端，或，用户按了home
+	此刻，fragment的状态会被保存（通过fragmentmanager.onsavefragmentinstancestate）
+	之后，要执行其他fragment的添加或移除
+		如果提交采用 未commitallowingstateloss，则会抛出IllegalStateException
+			表明：activity.fragments的状态都已经保存了
+		如果提交采用 commitallowingstateloss，则新的fragment的状态不会保存
+			如：之前添加的fragment有 fragA和fragB，而activity在stop时，又添加了fragC
+			当activity被系统杀掉，再返回时，会显示fragA和fragB，而不显示fragC（因为fragC的状态没有保存，而是state loss了）
+			但，当activity未被系统杀掉，再返回时，呈现的是 fragA fragB fragC，当activity再处于stop状态时，fragA fragB fragC的状态都会被再次保存
+	参见：commit(), commitNow()和commitAllowingStateLoss()
+		http://www.cnblogs.com/mengdd/p/5827045.html

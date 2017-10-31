@@ -35,5 +35,7 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 也提供了两个数组 来存储key和value
 且key数组是排好序的，根据:key.hashcode
 
+其是Bundle内部的 数据存储基础：BaseBundle中含有 ArrayMap类型的mMap
+
 和sparsearray不同的地方：
-key可以是任何类型（非sparsearray要求的int）
+key可以是任何类型（而sparsearray要求key为int类型）

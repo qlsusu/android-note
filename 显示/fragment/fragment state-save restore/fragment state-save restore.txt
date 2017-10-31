@@ -30,4 +30,16 @@ Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
 	系统会帮我们做
 2. 自身对象的成员变量，
 	需要手动在onSaveInstanceState中来做
-		
+
+如果我们不想保存Fragment的状态：
+为什么不想保存：
+	当进程被杀死后，再进入，FragmentActivity会执行恢复，进而恢复Fragment
+	而Fragment的一些属性我们之前又没有保存，则恢复时，该属性为null，则有可能会引发问题
+如何做：
+	自定义的FragmentActivity.onSaveInstanceState(Bundle outState)中
+	先执行super.
+	后outState.putParcelable(FragmentActivity.FRAGMENTS_TAG, null)
+		有可能tag为android:fragments
+	--
+	而非：
+		自定义的Fragment.onSaveInstanceState(Bundle outState)中 什么也不做
