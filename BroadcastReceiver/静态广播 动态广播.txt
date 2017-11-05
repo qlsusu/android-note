@@ -1,0 +1,2 @@
+静态广播由packagemanager负责
+动态广播由ams负责

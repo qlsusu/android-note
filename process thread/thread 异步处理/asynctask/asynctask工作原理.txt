@@ -1,13 +1,46 @@
 执行流程：
 AsyncTask#execute(Params...)
-其会调用：AsyncTask#executeOnExecutor(Executor exec, Params... params)
-	其中，executor采用sDefaultExecutor，默认下为SERIAL_EXECUTOR
-	其内部拥有FutureTask（其内部的callable是WorkerRunnable类型），executor.exec的也是该futuretask
-		而workrunnable.call()设置了进行 执行线程的优先级：Process.THREAD_PRIORITY_BACKGROUND
+	AsyncTask#executeOnExecutor(Executor executor, Params... params)
+		其内部指定了小流程：指定state（这也意味着AsyncTask执行执行1次），调用onPreExecute等，最终调用executor.execute()
+		executor采用sDefaultExecutor，默认下为SERIAL_EXECUTOR（具体参见下文）
+		executor执行的是FutureTask，其内部的callable为WorkerRunnable
+			执行doInBackground
+			获得结果后，通过InnerHandler来postResult
+				在handleMessage中，会进一步执行onPostResult（或者，onCancelled）
+			--
+			在call()的第一行，指定了线程优先级：Process.THREAD_PRIORITY_BACKGROUND
+		
 SERIAL_EXECUTOR被提交了任务，
 	对该任务进行包装（该任务执行完毕后，从任务队列中取出下一个任务（取操作非阻塞）来执行）（这种任务的处理方式：也保证了提交到该线程池上的任务，都是串行来执行的）
 	后该包装后的任务被放入到任务队列中
-	从任务队列中取出一个任务，由于threadpoolexecutor来执行
+	从任务队列中取出一个任务，由threadpoolexecutor来执行
+	--
+	源码：
+	private static class SerialExecutor implements Executor {
+        final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
+        Runnable mActive;
+
+        public synchronized void execute(final Runnable r) {
+            mTasks.offer(new Runnable() {
+                public void run() {
+                    try {
+                        r.run();
+                    } finally {
+                        scheduleNext();
+                    }
+                }
+            });
+            if (mActive == null) {
+                scheduleNext();
+            }
+        }
+
+        protected synchronized void scheduleNext() {
+            if ((mActive = mTasks.poll()) != null) {
+                THREAD_POOL_EXECUTOR.execute(mActive);
+            }
+        }
+    }
 	
 通知结果：
 AsyncTask#postResult

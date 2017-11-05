@@ -10,7 +10,7 @@ Android源码解析之（二）-->异步消息机制
 Message 意为消息，发送到Handler进行处理的对象，携带描述信息和任意数据。
 MessageQueue 意为消息队列，Message的集合。
 获取消息的方式
-	message=handler.obtainmessage(what)
+	message=handler.obtainmessage(what,obj)
 	message.recycle
 
 ------------------------looper

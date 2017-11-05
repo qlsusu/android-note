@@ -1,0 +1,10 @@
+当在manifest.xml中，声明了一个receiver
+那么，如何disable掉该receiver呢：
+一个例子：
+getPackageManager().setComponentEnabledSetting(  
+	new ComponentName("com.example.broadcasttest", mStaBroadcastReceiver.class.getName()),  
+	PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+	PackageManager.DONT_KILL_APP)
+说明：当你通过上述该法disable掉一个receiver，该receiver就永远接收不到广播了
+
+如何恢复成manifest.xml中的样子：PackageManager.COMPONENT_ENABLED_STATE_DEFAULT

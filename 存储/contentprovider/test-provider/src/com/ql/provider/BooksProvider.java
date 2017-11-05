@@ -22,6 +22,7 @@ public class BooksProvider extends ContentProvider {
     private static final UriMatcher URI_MATCHER;
     private static final int BOOKS = 1;
     private static final int BOOK_ID = 2;
+
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
         URI_MATCHER.addURI(AUTHORITY, "books", BOOKS);
@@ -32,10 +33,10 @@ public class BooksProvider extends ContentProvider {
     //数据库相关
     private SQLiteDatabase booksDB;
     private static final String DATABASE_NAME = "Books";
-    private static final String DATABASE_TABLE = "titles";
+    private static final String TABLE_NAME = "titles";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_CREATE = "create table "
-            + DATABASE_TABLE + " (_id integer primary key autoincrement, "
+            + TABLE_NAME + " (_id integer primary key autoincrement, "
             + "title text not null, isbn text not null);";
     //表字段
     public static final String _ID = "_id";
@@ -88,7 +89,7 @@ public class BooksProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
-        sqlBuilder.setTables(DATABASE_TABLE);
+        sqlBuilder.setTables(TABLE_NAME);
 
         if (URI_MATCHER.match(uri) == BOOK_ID)
             //---if getting a particular book---
@@ -109,7 +110,7 @@ public class BooksProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         //---add a new book---
-        long rowID = booksDB.insert(DATABASE_TABLE, "", values);
+        long rowID = booksDB.insert(TABLE_NAME, "", values);
 
         //---if added successfully---
         if (rowID > 0) {
@@ -126,13 +127,13 @@ public class BooksProvider extends ContentProvider {
         int count = 0;
         switch (URI_MATCHER.match(uri)) {
             case BOOKS:
-                count = booksDB.delete(DATABASE_TABLE, selection, selectionArgs);
+                count = booksDB.delete(TABLE_NAME, selection, selectionArgs);
 
                 break;
 
             case BOOK_ID:
                 String id = uri.getPathSegments().get(1);
-                count = booksDB.delete(DATABASE_TABLE, _ID + " = " + id
+                count = booksDB.delete(TABLE_NAME, _ID + " = " + id
                                 + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
                         selectionArgs);
                 break;

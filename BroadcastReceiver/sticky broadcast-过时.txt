@@ -1,0 +1,13 @@
+参见：
+sendStickyBroadcast 的理解和使用 - CSDN博客
+	http://blog.csdn.net/yihua0607/article/details/6890805
+
+已经过时！！（不建议再使用sticky broadcast）
+
+有什么用：
+当发出了一个广播，但是此刻还没有 注册receiver来处理这条消息
+当在后续某个时刻，才注册了receiver，那么该receiver如何能收到之前发送的通知呢？：
+通过sendStickyBroadcast发送的广播会被一直保留（即使，有receiver已经处理了该消息）
+
+如何remove掉sticky broadcast:
+removeStickyBroadcast

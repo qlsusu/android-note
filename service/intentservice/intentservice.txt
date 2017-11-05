@@ -2,20 +2,6 @@
 http://blog.csdn.net/xiao__gui/article/details/11579087
 http://hukai.me/android-performance-oom/
 
-IntentService是Service的子类，比普通的Service增加了额外的功能。
-
-----------------------为什么要使用intentservice
-(下文来自：http://hukai.me/android-performance-oom/)
-如果你的应用需要在后台使用service，除非它被触发并执行一个任务，否则其他时候Service都应该是停止状态。
-另外需要注意当这个service完成任务之后因为停止service失败而引起的内存泄漏。 
-当你启动一个Service，系统会倾向为了保留这个Service而一直保留Service所在的进程。这使得进程的运行代价很高，因为系统没有办法把Service所占用的RAM空间腾出来让给其他组件，另外Service还不能被Paged out。
-这减少了系统能够存放到LRU缓存当中的进程数量，它会影响应用之间的切换效率，甚至会导致系统内存使用不稳定，从而无法继续保持住所有目前正在运行的service。 
-建议使用IntentService，它会在处理完交代给它的任务之后尽快结束自己。更多信息，请阅读Running in a Background Service。
---
-先看Service本身存在两个问题：  
-Service不会专门启动一条单独的进程，Service与它所在应用位于同一个进程中；  
-Service也不是专门一条新线程，因此不应该在Service中直接处理耗时的任务；  
-  
 ----------------------IntentService特征 
 onstartcommand中，会向handler发送消息
 	而该handler的looper来自 HandlerThread.looper
@@ -30,3 +16,15 @@ handler.handlemessage最终被调用 来处理message
 		说明：当一个service被start了N次，对于每一次，都会分配一个startid。而只有stopself(最后一次的startid)，该service才被最终关闭
 --
 其onbind返回null，即是：不推荐用于ipc
+
+----------------------为什么要使用intentservice
+(下文来自：http://hukai.me/android-performance-oom/)
+如果你的应用需要在后台使用service，除非它被触发并执行一个任务，否则其他时候Service都应该是停止状态。
+另外需要注意当这个service完成任务之后因为停止service失败而引起的内存泄漏。 
+当你启动一个Service，系统会倾向为了保留这个Service而一直保留Service所在的进程。这使得进程的运行代价很高，因为系统没有办法把Service所占用的RAM空间腾出来让给其他组件，另外Service还不能被Paged out。
+这减少了系统能够存放到LRU缓存当中的进程数量，它会影响应用之间的切换效率，甚至会导致系统内存使用不稳定，从而无法继续保持住所有目前正在运行的service。 
+建议使用IntentService，它会在处理完交代给它的任务之后尽快结束自己。更多信息，请阅读Running in a Background Service。
+--
+先看Service本身存在两个问题：  
+Service不会专门启动一条单独的进程，Service与它所在应用位于同一个进程中；  
+Service也不是专门一条新线程，因此不应该在Service中直接处理耗时的任务；  

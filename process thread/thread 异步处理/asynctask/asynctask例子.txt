@@ -1,5 +1,6 @@
 private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
-	@Override
+	 //运行在非ui线程上（executor提供线程）
+	 @Override
      protected Long doInBackground(URL... urls) {
          int count = urls.length;
          long totalSize = 0;
@@ -12,19 +13,22 @@ private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
          return totalSize;
      }
 
-	@Override
+	 //在doInBackground中，调用publishProgress(int i)时来触发
+	 @Override
      protected void onProgressUpdate(Integer... progress) {
          setProgressPercent(progress[0]);
      }
      
-	@Override
+     //得到了结果（doInBackgorund的返回值），运行在ui线程上
+	 @Override
      protected void onPostExecute(Long result) {
          showDialog("Downloaded " + result + " bytes");
      }
      
+     //在任务开始前，运行在ui线程上
      @Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
+	 protected void onPreExecute() {
+		 super.onPreExecute();
+	 }
  
  }
