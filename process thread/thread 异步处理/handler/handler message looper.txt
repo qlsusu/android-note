@@ -7,23 +7,21 @@ Android源码解析之（二）-->异步消息机制
 	http://blog.csdn.net/qq_23547831/article/details/50751687
 
 ------------------------message
-Message 意为消息，发送到Handler进行处理的对象，携带描述信息和任意数据。
-MessageQueue 意为消息队列，Message的集合。
 获取消息的方式
 	message=handler.obtainmessage(what,obj)
 	message.recycle
 
 ------------------------looper
-Looper用来从MessageQueue中抽取Message，发送给Handler进行处理。
-是handler和message之前的桥梁
-handler需要知道looper，通过Handler(Looper looper)来指定
+其loop()会从MessageQueue中抽取Message，并分发至msg.target（即是handler）
 
-经过Looper.prepare()来构建一个looper对象（其中创建一个MessageQueue）来和当前线程关联（放入到threadlocal中）
+Looper.prepare()来构建一个looper对象（其中创建一个MessageQueue）来和当前线程关联（放入到Looper.sThreadlocal中）
 	messagequeue：不是通过list的方式，而是通过message.next的chain方式
-经过Looper.loop()来开启循环（会阻塞当前线程，当从queue中取不出消息时）：从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)，进而调用Handler#sendMessageAtTime）
+Looper.loop()来开启消息分发循环（会阻塞当前线程，当从queue中取不出消息时）：
+	从messagequeue队列中取出消息，发送给handler来进行处理（通过msg.target.dispatchMessage(msg)，进而调用Handler#sendMessageAtTime）
 
 ------------------------handler
-用来发送消息，处理Looper抽取出来的Message
+. 用来发送消息
+. 处理Looper抽取出来的Message
 
 发送消息
 handler.sendMessage

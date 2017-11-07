@@ -3,9 +3,9 @@ cat /system/build.prop
 dalvik.vm.heapstartsize=8m
 	App启动后, 系统分配给它的Heap初始大小. 随着App使用可增加.
 dalvik.vm.heapgrowthlimit=192m
-	默认情况下, App可使用的Heap的最大值, 超过这个值就会产生OOM.
+	如果App的manifest文件中 没有配置 largeHeap属性默认情况下, App可使用的Heap的最大值, 超过这个值就会产生OOM.
 dalvik.vm.heapsize=512m
-	如果App的manifest文件中配置了largeHeap属性, 如下.则App可使用的Heap的最大值为此项设定值.
+	如果App的manifest文件中 配置了 largeHeap属性, App可使用的Heap的最大值, 超过这个值就会产生OOM.
 dalvik.vm.heaptargetutilization=0.75
 	当前理想的堆内存利用率. GC后, Dalvik的Heap内存会进行相应的调整, 调整到当前存活的对象的大小和 / Heap大小 接近这个选项的值, 即这里的0.75. 注意, 这只是一个参考值.
 dalvik.vm.heapminfree=2m
