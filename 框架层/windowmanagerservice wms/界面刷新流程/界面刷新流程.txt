@@ -8,6 +8,11 @@ ViewRootImpl#scheduleTraversals
 		参数：
 			callbackType为：Choreographer.CALLBACK_TRAVERSAL
 			action为：ViewRootImpl.TraversalRunnable
+				ViewRootImpl#doTraversal
+					ViewRootImpl#performTraversals
+						DecorView.performMeasure
+						DecorView.performLayout
+						DecorView.performDraw
 		添加一个Choreographer.CallbackRecord
 			一个callbackType  对应了 一个List的CallbackRecord
 		通过Choreographer.FrameHandler发送并处理消息（MSG_DO_SCHEDULE_VSYNC）
@@ -22,6 +27,5 @@ Choreographer.FrameDisplayEventReceiver#onVsync
 				针对于该callbackType的 每一个Choreographer.CallbackRecord
 				执行Choreographer.CallbackRecord#run
 					Choreographer.CallbackRecord.action#run
-					因为在ViewRootImpl#scheduleTraversals中注册的action为：ViewRootImpl.TraversalRunnable
-					其会执行：ViewRootImpl#doTraversal，而其中会执行ViewRootImpl#performTraversals
-					
+						ViewRootImpl.TraversalRunnable（因为在ViewRootImpl#scheduleTraversals中注册的action为TraversalRunnable）
+		

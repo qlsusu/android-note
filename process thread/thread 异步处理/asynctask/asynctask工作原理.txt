@@ -5,8 +5,8 @@ AsyncTask#execute(Params...)
 		executor采用sDefaultExecutor，默认下为SERIAL_EXECUTOR（具体参见下文）
 		executor执行的是FutureTask，其内部的callable为WorkerRunnable
 			执行doInBackground
-			获得结果后，通过InnerHandler来postResult
-				在handleMessage中，会进一步执行onPostResult（或者，onCancelled）
+			获得结果后，postResult（通过InnerHandler（其使用了Looper.getMainLooper）来发送消息MESSAGE_POST_RESULT）
+				在handleMessage中，会进一步执行AsyncTask#onPostResult（或者，onCancelled）
 			--
 			在call()的第一行，指定了线程优先级：Process.THREAD_PRIORITY_BACKGROUND
 		
@@ -41,9 +41,3 @@ SERIAL_EXECUTOR被提交了任务，
             }
         }
     }
-	
-通知结果：
-AsyncTask#postResult
-将会向InternalHandler发送消息（MESSAGE_POST_RESULT）
-	而该handler采用了looper.mainlooper
-最终调用了AsyncTask#onPostExecute
