@@ -1,4 +1,6 @@
 参见：
+LeakCanary工作过程以及原理
+	https://github.com/linsir6/AndroidNote/blob/master/AndroidNote/Android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/LeakCanary%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8E%9F%E7%90%86.md
 https://github.com/square/leakcanary
 Android 内存泄漏总结
 	https://yq.aliyun.com/articles/3009
@@ -11,13 +13,45 @@ LeakCanary——直白的展现Android中的内存泄露
 中文说明文档
 	http://www.liaohuqiu.net/cn/posts/leak-canary-read-me/
 
+如何监听：RefWatcher#watch(java.lang.Object, java.lang.String)：
+为被监控对象生成key（uuid），将该key保存在retainedKeys（代表该key还存活，未被回收）
+生成弱引用KeyedWeakReference（其拥有 被监控对象的key），关联的队列为RefWatcher#queue
+RefWatcher#ensureGoneAsync
+	AndroidWatchExecutor#execute
+		AndroidWatchExecutor#waitForIdle
+			main looper的MessageQueue#addIdleHandler
+				IdleHandler：当MessageQueue中的消息已经都处理完毕，那么执行IdleHandler中的逻辑
+				内部：AndroidWatchExecutor#postToBackgroundWithDelay
+					使用backgroundHandler（基于HandlerThread，即是：新线程）来post
+					内部：RefWatcher#ensureGone（该Retryable在RefWatcher#ensureGoneAsync中指定）
+						RefWatcher#removeWeaklyReachableReferences
+							不断的从queue中取头元素（weak ref），直到取完
+							在retainedKeys中 移除 weak ref的key
+						RefWatcher#gone
+							判断被监控对象是否已经gone（未在retainedKeys中存在）
+						如果已经gone了，那么结束，因为 不存在泄露
+						否则，执行gc（GcTrigger#runGc），再次removeWeaklyReachableReferences，再判断是否gone
+						如果还没gone，那么便存在泄露
+						（因为 被监控对象并没有成为 weakly reachable，则该对象对应的weak ref并未放入到queue中，
+						则queue便弹不出该weak ref，则retainedKeys便remove不掉该watch ref的key）
+							生成dump
+							分析dump
+							找出 gcroot最短路径
+							
+在什么时候进行监听：
+activity.onDestroy时
+为开发者做的封装（不用开发者在activity.onDestroy中主动来编写监听）：
+	为application注册一个ActivityLifecycleCallbacks
+		如何注册：com.squareup.leakcanary.ActivityRefWatcher#watchActivities
+			watchActivities如何被调用：RefWatcher的构造函数的调用堆栈
+	在onActivityDestroyed中
+		ActivityRefWatcher#onActivityDestroyed
+			RefWatcher#watch(java.lang.Object)
+
 用法：
 RefWatcher ＝ LeakCanary.install(Application) 
-	其会返回一个预定义的 RefWatcher，同时也会启用一个 ActivityRefWatcher，用于自动监控调用 Activity.onDestroy() 之后泄露的 activity。
 
-监控fragment：
-RefWatcher.watch(Fragment);
-
+------------------------------------------------------------以前的内容
 工作机制：
 1.RefWatcher.watch() 创建一个 KeyedWeakReference 到要被监控的对象。
 2.然后在后台线程检查引用是否被清除，如果没有，调用GC。
