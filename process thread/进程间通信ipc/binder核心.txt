@@ -1,0 +1,37 @@
+service 向ams提供binder（通过service.onbind()返回）
+ams再将该binder 传递给client（client之前向ams提供了iserviceconnection，而ams调用该iserviceconnection.connect(binder) 来将binder传递给client）
+
+local binder 和 remote binder
+service中的binder对象 被称为local
+而提供给client的binder对象 被称为remote
+它们虽然存在于不同的进程中，可认为是 "同一"对象
+
+aidl的通信：
+编写aidl文件，定义方法
+自动生成IMyLogic.java
+	声明了接口方法
+	定义了IMyLogic.Stub（其继承于Binder）
+		通过构造函数，指名该Stub对象关联IMyLogic（attachInterface）
+		实现Binder.onTransact()方法
+			判断要调用什么方法（switch code）
+			对I接口进行验证（enforceInterface），
+			读取in parcel 来获取 输入参数
+				//注意：先读取int，判断是否为0
+				if ((0 != _data.readInt())) {
+					_arg3 = MyParcelable.CREATOR.createFromParcel(_data);
+				}
+			调用 接口方法（抽象的Stub声明其implements了IMyLogic，则Stub的实现子类 拥有IMyLogic的该方法的实现）
+			将结果写入到 reply parcel中
+	定义了IMyLogic.Stub.Proxy
+		其声明实现了IMyLogic，则client可使用对象 来请求IMyLogic
+		Stub.asInterface(IBinder)返回该proxy对象
+		接口方法的实现为：
+			在in parcel中指名：要请求IMyLogic（writeInterfaceToken）
+			将参数写入到 in parcel中
+				//注意：先写入int 1
+				_data.writeInt(1);
+				myParcelable.writeToParcel(_data, 0);
+			指名code为 要调用的方法
+			调用IBinder.transact()
+				其会阻塞，直到local逻辑执行完毕
+			读取 reply parcel

@@ -2,7 +2,7 @@ activityA传递给了activityB一些数据，通过intent.putextra
 	本质上，是往bundle中填数据
 设此刻task的栈顶为activityB，当app进程因为系统回收资源而被杀死时，再次进入app，将进入activityB，而传递给它的intent.extra还在
 
-bundle（内部数据存储所用的数据结构为ArrayMao）中能填什么数据：
+bundle（内部数据存储所用的数据结构为ArrayMap）中能填什么数据：
 	基本数据 以及 它的数组
 	string/charsequence 以及 它的数组
 	parcelable serializable

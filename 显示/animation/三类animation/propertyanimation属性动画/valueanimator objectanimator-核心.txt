@@ -1,3 +1,7 @@
+参见：
+Android中的动画.md
+	https://github.com/linsir6/AndroidNote/blob/master/AndroidNote/Android%E8%BF%9B%E9%98%B6/Android%E4%B8%AD%E7%9A%84%E5%8A%A8%E7%94%BB.md
+
 ------------valueanimator
 其不作用于任何对象，仅仅是作用于一个值
 我们可以监听（通过animatorupdatelistener）该值的 变化比例（通过animator.getanimatedfraction） ，再依据该变化比例 来完成其他事情

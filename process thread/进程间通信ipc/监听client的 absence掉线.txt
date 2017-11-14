@@ -1,28 +1,18 @@
+场景：
 当client bind到了 server
 而client的进程被杀掉时，server的unbind 有时并不是被调用（当有多个client app来连接server时）
 那么我们该如何知道 哪些client 掉线/absence（如：进程被杀）了
 	为什么需要知道：当client掉线时，server可能需要释放一些资源
 
-server方
-	提供IRemoteCallback.aidl，
-	提供i接口方法：register(IRemoteCallback callback)
-而client调用该i接口方法，并传入 IRemoteCallback.Stub对象
-server方在register()方法的实现中，将该i接口对象 传入到 RemoteCallbackList<IRemoteCallback>.register方法中
-	remotecallbacklist会为该iremotecallback注册callback：iremotecallback.asbinder.linktodeath
-则，当有client离线时，
-	该callback会执行binderdied方法
-	RemoteCallbackList.onCallbackDied(IRemoteCallback callback)会被调用
+实现核心：
+Binder#linkToDeath(DeathRecipient recipient, int flags)
+	用于：该binder对应的 本地binder所在进程被杀掉时，DeathRecipient#binderDied会被调用
+Binder#unlinkToDeath(DeathRecipient recipient, int flags)
+	用于：该binder对应的 本地binder所在进程被杀掉时，该binder便没有意义，则应该调用 unlinktodeath方法，将linktodeath时的recipient作为参数传入
 
-如果server不想（或者client要求server不想）再监听该IRemoteCallback
-可调用RemoteCallbackList<IRemoteCallback>.unregister来反注册
-
-说明：
-上述机制也可以用在：client监听server掉线
+RemoteCallbackList：
+参见：RemoteCallbackList.txt
 
 ------------------------------本质
 如何从I接口的proxy对象得到ibinder：
 	proxy对象.asbinder，将会返回 mRemote这个binder
-
-client传递给server一个binder，则在server中 可为该binder的remote版本 注册 离线回调：IBinder.linkToDeath(DeathRecipient recipient, int flags)
-	则当client掉线时，DeathRecipient.binderDied()会被调用
-也提供了IBinder.unlinktodeath来 不再监听该binder的 离线

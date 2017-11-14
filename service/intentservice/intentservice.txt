@@ -2,7 +2,9 @@
 http://blog.csdn.net/xiao__gui/article/details/11579087
 http://hukai.me/android-performance-oom/
 
-----------------------IntentService特征 
+----------------------IntentService特征
+以Service的形态，使用Handler（其Looper来自HandlerThread）来处理Intent
+
 onstartcommand中，会向handler发送消息
 	而该handler的looper来自 HandlerThread.looper
 	而对于消息

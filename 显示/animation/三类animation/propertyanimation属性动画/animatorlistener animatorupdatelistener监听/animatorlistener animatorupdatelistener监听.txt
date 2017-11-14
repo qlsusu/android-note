@@ -1,4 +1,4 @@
-------------animatorupdatelistener	
+------------AnimatorUpdateListener
 监听 整个动画播放过程
 onAnimationUpdate() 
 	根据frame刷新率（如：10ms/帧），就会被调用一次
@@ -13,7 +13,7 @@ animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
     }
 });
 
-------------animatorlistener
+------------AnimatorListener
 监听 开始，结束，取消，重复
 一个实现子类（包含了空的方法体）：AnimatorListenerAdapter
 
