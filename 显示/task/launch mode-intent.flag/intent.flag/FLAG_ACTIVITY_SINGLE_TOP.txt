@@ -1,0 +1,4 @@
+如果Task中有ABCD, 在D中启动B（addflag: FLAG_ACTIVITY_SINGLE_TOP）, 
+如果B的launch mode为standard，会clear掉BCD，后再create B
+	效果同：FLAG_ACTIVITY_CLEAR_TOP
+如果B的launch mode为singletop，不起任何特殊效果

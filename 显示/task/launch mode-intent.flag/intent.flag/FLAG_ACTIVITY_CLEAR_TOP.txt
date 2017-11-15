@@ -1,0 +1,4 @@
+如果Task中有ABCD, 在D中启动B（addflag: FLAG_ACTIVITY_CLEAR_TOP）, 
+会clear掉B以上的CD. 
+如果B的launch mode为standard，会clear掉B，后再create B
+如果B的launch mode为singletop，会执行B的onNewIntent

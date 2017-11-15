@@ -23,14 +23,16 @@ public class MainActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        	//拿到服务器的messenger
+        	//remote方 通过Binder来和Messenger关联
+        	//通过该Messenger来发送消息
             mService = new Messenger(iBinder);
             Message msg = Message.obtain(null,1);
             Bundle data = new Bundle();
             data.putString("msg","a msg from client");
             msg.setData(data);
             
-            //设置client的messenger，则，服务器可以拿它来发送消息
+            //server方可以拿到该Messenger来发送消息给client
+            //注意：该Messenger是在Messenger.replyTo中设置的
             msg.replyTo = mGetReplyMessenger;
             try {
                 mService.send(msg);
@@ -86,6 +88,8 @@ public class MessengerService extends Service {
         }
     }
 
+	//local方 通过Handler来和Messenger关联
+	//通过该Messenger来处理消息
     private final Messenger messenger = new Messenger(new MessengerHandler());
 
     @Nullable

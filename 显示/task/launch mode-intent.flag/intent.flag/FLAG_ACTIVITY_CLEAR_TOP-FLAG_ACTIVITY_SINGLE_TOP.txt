@@ -1,3 +1,0 @@
-如果Task中有ABCD, 在D中启动B（addflag: FLAG_ACTIVITY_CLEAR_TOP）, 会clear掉B以上的CD. 
-注意：如果B是standard这种launch mode，那么B也会被destroy，再被create
-	如果不想B被destory再create，那么addflag: FLAG_ACTIVITY_SINGLE_TOP
