@@ -1,4 +1,6 @@
 参见:
+Android应用Context详解及源码解析
+	http://blog.csdn.net/yanbober/article/details/45967639
 [译]探索Context之Context是什么
 	http://www.jianshu.com/p/c29bf9efcfc1
 Context都没弄明白，还怎么做Android开发？

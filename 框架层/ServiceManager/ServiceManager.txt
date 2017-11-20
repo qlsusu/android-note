@@ -1,5 +1,5 @@
 有什么用：
-根据string来返回一个 框架层服务的 remote binder，如：
+根据string来返回 对应的框架层服务的 remote binder，如：
 Ixxx service = Ixxx.Stub.asInterface(ServiceManager.getService("xxx"))，如
 	ams.proxy对应于"activity"
 	wms.proxy对应于"windows"

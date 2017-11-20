@@ -1,4 +1,6 @@
 参见：
+Android应用Activity、Dialog、PopWindow、Toast窗口添加机制及源码分析 - CSDN博客
+	http://blog.csdn.net/yanbober/article/details/46361191
 Android应用程序窗口（Activity）实现框架简要介绍和学习计划 （等系列教程）
 	http://blog.csdn.net/luoshengyang/article/details/8170307
 	系列教程入口：http://blog.csdn.net/Luoshengyang/article/list/3
@@ -8,42 +10,43 @@ Android窗口机制（一）初识Android的窗口结构
 深入理解Activity——Token之旅
 	http://blog.csdn.net/guoqifa29/article/details/46819377
 
-phonewindow
-	decorview
-	wlp
+WindowManager - IWindowManager的确定：
+WindowManager
+WindowManagerImpl
+	WindowManagerGlobal（单例）
+		IWindowManager.Stub.asInterface(ServiceManager.getService("window"))
+		
+Activity和WindowManager的关联：
+在Activity#attach中
+	构建了Window
+	也构建了WindowManager：WindowManagerImpl#createLocalWindowManager
+		其parentWindow为 activity的创建的那个window
 
->>>执行流程：
-ams->applicationthread->activitythread.schedulelaunchactivity
-后，activitythread.handlelaunchactivity
-	activitythread.performlaunchactivity中
-		创建activity对象，application对象，context对象
-		activity.attach
-			创建phonewindow
-			为其设置诸如 callback（本质上就是activity）等
-		activity.oncreate
-			activity.setcontentview
-				phonewindow.setcontentview
-					创建decorview
-					根据activity的 theme,feature 来找对应的layout文件（如：activity要显示标题，那么就找拥有title的layout文件）
-						该layout文件位于：frameworks/base/core/res/res/layout/下
-					该layout中包含了android.R.id.content，那么将该view 赋值给 mcontentparent
-		activity.onstart
-		activity.onRestoreInstanceState
-	activitythread.handleresumeactivity
-		判断activity是否真的可见，如其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
-		当真的可见时，执行activity.onresume
-		接下来，activity需要显示，那么需要构建viewroot, decorview, wlp之间的关系
-		该关系的确定是由windowmanager来完成（windowmanager.addview(decorview, windowmanager.lp)）
-			存储于：[] decorview, [] viewroot, [] wlp
-			构建viewroot
-				负责绘制：
-					performTraversals->
-						performMeasure
-						performLayout
-						performDraw
-			后，调用viewroot.setview来确定 和wms 的ipc关系：
-				viewroot已经含有了 iwindow的本地binder 和 iwindowsession的代理binder
-				监听
+Window和parentWindow的关系的确定：
+有什么用：
+	dialog中的window 依附于 activity.window
+每个Window都和WindowManager关联
+	通过Window#setWindowManager
+而WindowManager是依附于parentWindow的
+则可确定 Window 和 parentWindow的关系（有可能parentWindow就是其自身）
+
+Window的重要属性：
+view
+wlp	
+	
+窗口类型（3种，WindowManager.LayoutParams.type）
+ApplicationWindows
+	取值在FIRST_APPLICATION_WINDOW与LAST_APPLICATION_WINDOW之间，是常用的顶层应用程序窗口，须将token设置成Activity的token；
+SubWindows
+	取值在FIRST_SUB_WINDOW和LAST_SUB_WINDOW之间，与顶层窗口相关联，需将token设置成它所附着宿主窗口的token；
+SystemWindows
+	取值在FIRST_SYSTEM_WINDOW和LAST_SYSTEM_WINDOW之间，不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用；
+	
+Window和appToken关联
+如果WindowManager.LayoutParams的type是：LayoutParams#TYPE_APPLICATION，那么该window就需要和一个appToken关联
+该appToken对应一个activity（由ActivityClientRecord.token表示）
+
+
 
 共享内存
 管道是单向的吗？只能一个地方写？
@@ -73,42 +76,3 @@ wms将会产生一个管道，
 当产生事件后，wms将该事件 分发到inputchannel中，而viewroot注册了该channel的另外一端 （具体怎么注册~！！！！！！！！！！，老罗的文章）
 则viewroot收到该事件(通过：ViewRootImpl#dispatchInputEvent(InputEvent))
 后->decorview->activity(实现window.callback)
-			
->>>app和wms的交互
-app的windowmanagerglobal的 iwindowsession类型的代理binder 对应于 wms的iwindowsession的本地binder
-	app级别的对应
-	如何创建：
-		app端：iwindowmanager.openSession()
-			在viewrootimpl的构造函数中
-		wms端：app端openSession被调用时，在wms端产生 session
-	app持有iwindowsession代理binder有什么用
-		添加删除window
-		对窗口（decorview）进行relayout以 显示在屏幕上
-wms的windowstate 对应于 app的viewroot的 iwindow类型的本地binder
-	窗口级别的对应
-	windowstate持有：iwindowsession本地binder，iwindow的代理binder
-	如何创建：
-		app端：new ViewRootImpl.W
-			在viewrootimpl的构造函数中
-		wms端：app端调用 iwindowsession.addToDisplay()时，将iwindow类型的binder 传入
-			在viewrootimpl.setview()中
-	ams持有iwindow代理binder有什么用
-		当窗口发生变化时（大小 可见性等发生变化，进行通知）
-
-------------------------之下为老的内容
-
-判断
-
-windowmanager		
-	localwindowmanager
-		windowmanagerimpl
-			windowmanagerglobal
-				iwindowmanager(对应windowmanagerservice)
-				iwindowtoken
-				对应关系
-					[] decorview
-						其父decorview是谁：子wlp.token == 父root.mwindow（W类型）.asbinder
-					[] windowmanager.lp(attribute)
-					[] viewroot
-viewroot
-	用来控制view的绘制

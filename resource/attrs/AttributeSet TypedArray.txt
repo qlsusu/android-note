@@ -23,9 +23,9 @@ public XXXType getAttributeXXXType(int index,XXXType defaultValue)，
 	使用该方法时，必须明确知道某个位置（index）对应的数据类型，否则会返回错误。而且该方法仅适用于特定的类型，如果某个属性值为一个style类型，或者为一个layout类型，那么返回值都将无效。
 
 ------------------------------TypedValue
-其是对attributeset的一次封装
+其是对AttributeSet的一次封装
 为什么要使用：
-	针对于上例，针对于layout_width属性，如果使用attributeset，那么得到的是"@dimen/width"，而不是具体的值
+	针对于上例，针对于layout_width属性，如果使用AttributeSet，那么得到的是"@dimen/width"，而不是具体的值
 
 如何使用：
 TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.XXX);
@@ -33,6 +33,7 @@ try{
 	for (int i = 0; i < a.getIndexCount(); i++) {
 		int attrIndex = a.getIndex(i);
 		if (attrIndex == R.styleable.XXX_YYY) {
+			//如：a.getResourceId(attrIndex, -1);
 			target = a.getZZZ(attrIndex);
 		}
 	}

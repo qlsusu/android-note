@@ -1,0 +1,14 @@
+全屏显示
+
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	//设置Activity的Window为全屏，当然也可以在xml中设置
+	Window window = getWindow();
+	WindowManager.LayoutParams windowAttributes = window.getAttributes();
+	windowAttributes.flags = WindowManager.LayoutParams.FLAG_FULLSCREEN | windowAttributes.flags;
+	window.setAttributes(windowAttributes);
+	//设置Activity的Window为保持屏幕亮
+	window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+	setContentView(R.layout.activity_main);
+}

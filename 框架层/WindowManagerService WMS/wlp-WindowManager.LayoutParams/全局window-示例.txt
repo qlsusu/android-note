@@ -1,0 +1,69 @@
+/**
+ * Author       : yanbo
+ * Time         : 14:47
+ * Description  : 手机屏幕悬浮窗，仿IPhone小圆点
+ *               （未完全实现，只提供思路，如需请自行实现）
+ * Notice       : <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+ */
+public class WindowService extends Service {
+    private WindowManager mWindowManager;
+    private ImageView mImageView;
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //创建悬浮窗
+        createFloatWindow();
+    }
+
+    private void createFloatWindow() {
+        //这里的参数设置上面刚刚讲过，不再说明
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        //其parentWindow是null，也即是：不依附于任何的Activity
+        mWindowManager = (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);
+        //设置window的type
+        //注意其type为PHONE，而一般的Activity对应的type为 APPLICATION
+        layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        //设置效果为背景透明
+        layoutParams.format = PixelFormat.RGBA_8888;
+        //设置浮动窗口不可聚焦
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        layoutParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.x = -50;
+        layoutParams.y = -50;
+
+        mImageView = new ImageView(this);
+        mImageView.setImageResource(android.R.drawable.ic_menu_add);
+        //添加到Window
+        mWindowManager.addView(mImageView, layoutParams);
+        //设置监听
+        mImageView.setOnTouchListener(touchListener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mImageView != null) {
+            //讲WindowManager时说过，add，remove成对出现，所以需要remove
+            mWindowManager.removeView(mImageView);
+        }
+    }
+
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            //模拟触摸触发的事件
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return false;
+        }
+    };
+}	

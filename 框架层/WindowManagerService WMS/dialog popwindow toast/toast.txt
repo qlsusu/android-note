@@ -1,0 +1,18 @@
+----------------------------------------显示原理：
+Toast本身仅仅是一层封装，真正的显示/隐藏逻辑被封装到TN中
+其通过INotificationManager来进行显示
+INotificationManager中，使用ToastRecord来对应 toast请求，使用toastQueue来代表所有的toast请求
+在显示时，INotificationManager 会IPC回调 来将请求转发到 TN（TN本质上是ITransientNotification.Stub）
+	方法：NotificationManagerService#showNextToastLocked
+		record.callback.show(record.token);
+		scheduleTimeoutLocked(record);
+			cancelToastLocked(index);（通过mHandler.sendMessageDelayed(m, delay)的方式）
+				record.callback.hide();
+TN收到IPC回调，使用handler来发送并处理消息
+	handleShow:
+		通过构建view wlp（type为TYPE_TOAST），调用wm.addView来显示，wm.removeView来隐藏
+	handleHide
+
+进一步参见（Toast.java）：
+public static Toast makeText(Context context, CharSequence text, @Duration int duration);
+public void show();
