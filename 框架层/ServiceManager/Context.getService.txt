@@ -4,45 +4,46 @@
 Context#getSystemService(java.lang.String)
 ContextImpl#getSystemService
 	SystemServiceRegistry#getSystemService
-		SYSTEM_SERVICE_FETCHERS.get(name)
-			在SystemServiceRegistry的static中，执行了registerService(String serviceName, Class<T> serviceClass, ServiceFetcher<T> serviceFetcher)，如：
-				registerService(Context.ACCOUNT_SERVICE, AccountManager.class,
-					new CachedServiceFetcher<AccountManager>() {
-					@Override
-					public AccountManager createService(ContextImpl ctx) {
-						IBinder b = ServiceManager.getService(Context.ACCOUNT_SERVICE);
-						IAccountManager service = IAccountManager.Stub.asInterface(b);
-						return new AccountManager(ctx, service);
-					}});
-				或
-				registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
-						new CachedServiceFetcher<ActivityManager>() {
-					@Override
-					public ActivityManager createService(ContextImpl ctx) {
-						return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());
-					}});
-					而ActivityManager内部含有ActivityManagerService的proxy：
-						ActivityManagerNative#getDefault：
-						private static final Singleton<IActivityManager> gDefault = new Singleton<IActivityManager>() {
-							protected IActivityManager create() {
-								IBinder b = ServiceManager.getService("activity");
-								if (false) {
-									Log.v("ActivityManager", "default service binder = " + b);
+		SYSTEM_SERVICE_FETCHERS.get(name)#getSystemService
+			SYSTEM_SERVICE_FETCHERS.get(name)返回的是：CachedServiceFetcher
+				在SystemServiceRegistry的static中，执行了registerService(String serviceName, Class<T> serviceClass, ServiceFetcher<T> serviceFetcher)，如：
+					registerService(Context.ACCOUNT_SERVICE, AccountManager.class,
+						new CachedServiceFetcher<AccountManager>() {
+						@Override
+						public AccountManager createService(ContextImpl ctx) {
+							IBinder b = ServiceManager.getService(Context.ACCOUNT_SERVICE);
+							IAccountManager service = IAccountManager.Stub.asInterface(b);
+							return new AccountManager(ctx, service);
+						}});
+					或
+					registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
+							new CachedServiceFetcher<ActivityManager>() {
+						@Override
+						public ActivityManager createService(ContextImpl ctx) {
+							return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());
+						}});
+						而ActivityManager内部含有ActivityManagerService的proxy：
+							ActivityManagerNative#getDefault：
+							private static final Singleton<IActivityManager> gDefault = new Singleton<IActivityManager>() {
+								protected IActivityManager create() {
+									IBinder b = ServiceManager.getService("activity");
+									if (false) {
+										Log.v("ActivityManager", "default service binder = " + b);
+									}
+									IActivityManager am = asInterface(b);
+									if (false) {
+										Log.v("ActivityManager", "default service = " + am);
+									}
+									return am;
 								}
-								IActivityManager am = asInterface(b);
-								if (false) {
-									Log.v("ActivityManager", "default service = " + am);
-								}
-								return am;
-							}
-						};
-			而会调用SystemServiceRegistry.CachedServiceFetcher#getService
-			注意其构造函数：
-				public CachedServiceFetcher() {
-					mCacheIndex = sServiceCacheSize++;
-				}
-				sServiceCacheSize是在不断增加的，最终其数值为：SystemServiceRegistry的static中 执行的registerService次数
-			而CachedServiceFetcher#getService内部实现为：
+							};
+				而会调用SystemServiceRegistry.CachedServiceFetcher#getService
+				注意其构造函数：
+					public CachedServiceFetcher() {
+						mCacheIndex = sServiceCacheSize++;
+					}
+					sServiceCacheSize是在不断增加的，最终其数值为：SystemServiceRegistry的static中 执行的registerService次数
+			接着看CachedServiceFetcher#getService的内部实现：
 				public final T getService(ContextImpl ctx) {
 					//ctx.mServiceCache来自：SystemServiceRegistry#createServiceCache
 					final Object[] cache = ctx.mServiceCache;

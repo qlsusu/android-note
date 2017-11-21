@@ -53,6 +53,9 @@ ApplicationThread（I接口：IApplicationThread，继承自ApplicationThreadNat
 	如何获得：activitythread的成员变量
 --
 Instrumentation
-	监控Activity/application的 创建等，相当于是系统运行日志。
+	监控Activity/application的 创建等，
+	可用于系统运行日志。
 ActivityClientRecord
 	对应着 ams进程的 ActivityRecord
+	
+LoadedApk

@@ -3,29 +3,28 @@ ams->applicationthread->activitythread.schedulelaunchactivity
 	activitythread.performlaunchactivity中
 		创建activity对象，application对象，context对象
 		activity.attach
-			创建phonewindow
+			创建PhoneWindow
 			为其设置诸如 callback（本质上就是activity）等
-		activity.oncreate
-			activity.setcontentview
-				phonewindow.setcontentview
+		activity.onCreate
+			activity.setContentView
+				phonewindow.setContentView
 					创建decorview
-					根据activity的 theme,feature 来找对应的layout文件（如：activity要显示标题，那么就找拥有title的layout文件）
-						该layout文件位于：frameworks/base/core/res/res/layout/下
-					该layout中包含了android.R.id.content，那么将该view 赋值给 mcontentparent
-		activity.onstart
+					加载合适的窗口布局文件，放入到decorView中
+					加载布局文件，放入到contentParent中（android.R.id.content）
+		activity.onStart
 		activity.onRestoreInstanceState
-	activitythread.handleresumeactivity
+	activitythread.handleResumeActivity
 		判断activity是否真的可见，如其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
 		当真的可见时，执行activity.onResume
 		接下来，activity需要显示，那么需要构建viewroot, decorview, wlp之间的关系
 		该关系的确定是由WindowManager来完成（最终通过WindowManagerGlobal.addView(decorview, wlp)）
 			说明：这里已经不考虑Window/PhoneWindow，而是考虑：view, wlp（而这些数据，大部分情况下，都是由Window来封装）
-			构建viewroot
-				绘制绘制（到Surface.Canvas上）：performTraversals->
+			构建viewroot，其负责：
+				绘制绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
 					performMeasure
 					performLayout
 					performDraw
 				输入事件的处理：dispatchInputEvent
-			存储 ViewRoot-view-wlp 于：[] viewroot, [] decorview, [] wlp
+			存储 ViewRoot-view-wlp 于：[] viewroot, [] decorview, [] wlp，index一致
 			后，调用viewroot.setview(view, wlp)来确定 和wms 的ipc关系
 				参见：viewroot和wms的联系建立.txt

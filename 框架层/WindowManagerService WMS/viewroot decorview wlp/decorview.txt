@@ -1,0 +1,9 @@
+decorView
+其继承于FrameLayout，是PhoneWindow的内部类
+选择一个窗口布局文件（如：android-sdk-macosx/platforms/android-26/data/res/layout/screen_title.xml），依据于：
+	mWindowStyle
+		用于:setFlags, requestFeature
+	mLocalFeatures
+		用于：选择一个layout
+该布局的根view被添加到decorView中
+而Activity#setContentView时，布局的根view被添加到 mContentParent（对应于android.R.id.content）

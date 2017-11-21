@@ -3,10 +3,10 @@
 	http://wiki.jikexueyuan.com/project/deep-android-v1/surface.html
 
 viewroot和wms 创建联系（WindowManagerGlobal#addView(View view, ViewGroup.LayoutParams params, Display display, Window parentWindow)）：
-viewrootimpl在初始化构建的时候，会为整个app申请一个iwindowsession.proxy
+viewrootimpl在 初始化 的时候，会为整个app申请一个iwindowsession.proxy
 	通过windowmanagerglobal（其持有iwindowmanager.proxy）.opensession()
 		而在wms，会创建一个iwindowsession.stub（app级别）
-	app可通过该iwindowsession 来和和wms的通信，如：
+	app可通过该iwindowsession 来和 wms的通信，如：
 		添加删除window
 		对窗口（decorview）进行relayout以 显示在屏幕上
 在viewroot.setView(view, wlp)中
@@ -20,4 +20,4 @@ viewrootimpl在初始化构建的时候，会为整个app申请一个iwindowsess
 				mwindowmap：<iwindow.asbinder, windowstate>
 				mtokenmap：<iwindow.asbinder, windowtoken>
 			wms持有iwindow，可：
-				当窗口发生变化时（大小 可见性等发生变化，进行通知）
+				当窗口发生变化时（大小 可见性等发生变化），进行通知

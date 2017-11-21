@@ -9,44 +9,52 @@ Android窗口机制（一）初识Android的窗口结构
 	拥有系列教程，其为第一篇
 深入理解Activity——Token之旅
 	http://blog.csdn.net/guoqifa29/article/details/46819377
+--
+PhoneWindow,ViewRoot,Activity之间的大致关系
+	http://www.cppblog.com/fwxjj/archive/2013/01/13/197231.html
+Android Input Event Dispatching
+	http://blog.csdn.net/zhejiang9/article/details/5899982
+Android Activity应用窗口的创建过程分析
+	http://blog.csdn.net/feiduclear_up/article/details/49201357
+ Android 从0开始自定义控件之 ViewRoot 与 DecorView （五）	
+	 http://blog.csdn.net/airsaid/article/details/53525335
 
 WindowManager - IWindowManager的确定：
 WindowManager
 WindowManagerImpl
 	WindowManagerGlobal（单例）
 		IWindowManager.Stub.asInterface(ServiceManager.getService("window"))
-		
-Activity和WindowManager的关联：
+
+Window和 Activity WindowManager关联：
+Window.mApptoken为 ActivityClientRecord.token（如果wlp.type为LayoutParams#TYPE_APPLICATION）
+Window.mWindowManager 为 WindowManagerImpl
+
+Activity和 Window, WindowManager的关联：
 在Activity#attach中
-	构建了Window
-	也构建了WindowManager：WindowManagerImpl#createLocalWindowManager
+	构建了Window：mWindow = PolicyManager.makeNewWindow(this)
+	也为该window关联了WindowManager（并持有该WindowManager的引用）：WindowManagerImpl#createLocalWindowManager
 		其parentWindow为 activity的创建的那个window
 
-Window和parentWindow的关系的确定：
-有什么用：
-	dialog中的window 依附于 activity.window
-每个Window都和WindowManager关联
-	通过Window#setWindowManager
-而WindowManager是依附于parentWindow的
-则可确定 Window 和 parentWindow的关系（有可能parentWindow就是其自身）
+Window和parentWindow的关系确定：
+Window 和 WindowManager关联（通过Window#setWindowManager），而WindowManager拥有parentWindow，则表明 window依附于parentWindow，如：
+	activity.windowmanager.parentwindow就是activity.window
+	而dialog依附于activity显示，其windowmanager就是使用 activity.windowmanager，也就间接表示了：dialog.window 依附于 activity.window
 
 Window的重要属性：
-view
-wlp	
+view	顶级view
+wlp		窗口参数
 	
 窗口类型（3种，WindowManager.LayoutParams.type）
 ApplicationWindows
+	比如：Activity的窗口
 	取值在FIRST_APPLICATION_WINDOW与LAST_APPLICATION_WINDOW之间，是常用的顶层应用程序窗口，须将token设置成Activity的token；
 SubWindows
+	比如：Dialog
 	取值在FIRST_SUB_WINDOW和LAST_SUB_WINDOW之间，与顶层窗口相关联，需将token设置成它所附着宿主窗口的token；
 SystemWindows
+	比如：输入法，toast
 	取值在FIRST_SYSTEM_WINDOW和LAST_SYSTEM_WINDOW之间，不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用；
 	
-Window和appToken关联
-如果WindowManager.LayoutParams的type是：LayoutParams#TYPE_APPLICATION，那么该window就需要和一个appToken关联
-该appToken对应一个activity（由ActivityClientRecord.token表示）
-
-
 
 共享内存
 管道是单向的吗？只能一个地方写？
