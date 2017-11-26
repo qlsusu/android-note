@@ -1,5 +1,4 @@
-Application application = null;
-application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+Application#registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
@@ -35,5 +34,6 @@ application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycle
         //在其中保存 指向activity的弱引用
         //后，每隔一段时间检查 该弱引用.get() 是否还有值
         //如果还有值，那么activity被认为泄漏了
+		//而这本质上，也是LeakCanary的检测原理，参见：LeakCanary.txt
     }
 });

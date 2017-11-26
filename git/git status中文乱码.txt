@@ -1,0 +1,5 @@
+参见：
+Git Status 中文乱码解决
+	http://blog.crhan.com/2012/09/git-status-%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E8%A7%A3%E5%86%B3/
+	
+git config --global core.quotepath false

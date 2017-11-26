@@ -7,6 +7,7 @@ new Handler(Looper.getMainLooper()).post(new Runnable() {
     @Override
     public void run() {
         try {
+			//得到mainLooper
             final Looper mainLooper = Looper.getMainLooper();
             final MessageQueue queue;
             Field fieldQueue = Looper.class.getDeclaredField(FIELD_mQueue);
@@ -18,6 +19,8 @@ new Handler(Looper.getMainLooper()).post(new Runnable() {
 
             Binder.clearCallingIdentity();
             
+			//下述内容，本质上就是：Looper#loop
+			//只是去除了 诸如：打印 等非核心流程
             for (; ; ) {
                 //调用 mainlooper.messsagequeue.next() 得到message
                 Message msg = (Message) methodNext.invoke(queue);

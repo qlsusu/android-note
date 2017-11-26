@@ -16,38 +16,40 @@ LeakCanary——直白的展现Android中的内存泄露
 如何监听：RefWatcher#watch(java.lang.Object, java.lang.String)：
 为被监控对象生成key（uuid），将该key保存在retainedKeys（代表该key还存活，未被回收）
 生成弱引用KeyedWeakReference（其拥有 被监控对象的key），关联的队列为RefWatcher#queue
-RefWatcher#ensureGoneAsync
-	AndroidWatchExecutor#execute
-		AndroidWatchExecutor#waitForIdle
-			main looper的MessageQueue#addIdleHandler
-				IdleHandler：当MessageQueue中的消息已经都处理完毕，那么执行IdleHandler中的逻辑
-				内部：AndroidWatchExecutor#postToBackgroundWithDelay
-					使用backgroundHandler（基于HandlerThread，即是：新线程）来post
-					内部：RefWatcher#ensureGone（该Retryable在RefWatcher#ensureGoneAsync中指定）
-						RefWatcher#removeWeaklyReachableReferences
-							不断的从queue中取头元素（weak ref），直到取完
-							在retainedKeys中 移除 weak ref的key
-						RefWatcher#gone
-							判断被监控对象是否已经gone（未在retainedKeys中存在）
-						如果已经gone了，那么结束，因为 不存在泄露
-						否则，执行gc（GcTrigger#runGc），再次removeWeaklyReachableReferences，再判断是否gone
-						如果还没gone，那么便存在泄露
-						（因为 被监控对象并没有成为 weakly reachable，则该对象对应的weak ref并未放入到queue中，
-						则queue便弹不出该weak ref，则retainedKeys便remove不掉该watch ref的key）
-							生成dump
-							分析dump
-							找出 gcroot最短路径
-							
+找一个时机，检查KeyedWeakReference.referent是否变成了weakly reachable。如果未变成，则检测到内存泄漏，找到gcroot到其的最短路径。细节如下：
+	RefWatcher#ensureGoneAsync
+		AndroidWatchExecutor#execute
+			AndroidWatchExecutor#waitForIdle
+				main looper的MessageQueue#addIdleHandler
+					IdleHandler：当MessageQueue中的消息已经都处理完毕，那么执行IdleHandler中的逻辑
+					内部：AndroidWatchExecutor#postToBackgroundWithDelay
+						使用backgroundHandler（基于HandlerThread，即是：新线程）来post
+						内部：RefWatcher#ensureGone（该Retryable在RefWatcher#ensureGoneAsync中指定）
+							RefWatcher#removeWeaklyReachableReferences
+								不断的从queue中取头元素（weak ref），直到取完
+								在retainedKeys中 移除 weak ref的key
+							RefWatcher#gone
+								判断被监控对象是否已经gone（未在retainedKeys中存在）
+							如果已经gone了，那么结束，不存在泄露
+							否则，执行gc（GcTrigger#runGc），再次removeWeaklyReachableReferences，再判断是否gone
+							如果还没gone，那么便存在泄露
+							（因为 被监控对象并没有成为 weakly reachable，则该对象对应的weak ref并未放入到queue中，
+							则queue便弹不出该weak ref，则retainedKeys便remove不掉该watch ref的key）
+								生成dump
+								分析dump
+								找出 gcroot 到 key对应对象 的最短路径
+
 在什么时候进行监听：
 activity.onDestroy时
 为开发者做的封装（不用开发者在activity.onDestroy中主动来编写监听）：
-	为application注册一个ActivityLifecycleCallbacks
-		如何注册：com.squareup.leakcanary.ActivityRefWatcher#watchActivities
-			watchActivities如何被调用：RefWatcher的构造函数的调用堆栈
+	为Application注册一个ActivityLifecycleCallbacks
 	在onActivityDestroyed中
 		ActivityRefWatcher#onActivityDestroyed
 			RefWatcher#watch(java.lang.Object)
-
+	--
+	如何注册：com.squareup.leakcanary.ActivityRefWatcher#watchActivities
+	何时被调用：RefWatcher的构造函数的调用堆栈
+	
 用法：
 RefWatcher ＝ LeakCanary.install(Application) 
 

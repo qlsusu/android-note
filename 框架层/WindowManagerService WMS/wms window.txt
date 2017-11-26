@@ -33,7 +33,7 @@ Activity和 Window, WindowManager的关联：
 在Activity#attach中
 	构建了Window：mWindow = PolicyManager.makeNewWindow(this)
 	也为该window关联了WindowManager（并持有该WindowManager的引用）：WindowManagerImpl#createLocalWindowManager
-		其parentWindow为 activity的创建的那个window
+		其parentWindow为 activity创建的那个window
 
 Window和parentWindow的关系确定：
 Window 和 WindowManager关联（通过Window#setWindowManager），而WindowManager拥有parentWindow，则表明 window依附于parentWindow，如：

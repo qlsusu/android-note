@@ -1,0 +1,59 @@
+参见：
+Android应用Activity、Dialog、PopWindow、Toast窗口添加机制及源码分析 - CSDN博客
+	http://blog.csdn.net/yanbober/article/details/46361191
+第8章  深入理解Surface系统
+	http://wiki.jikexueyuan.com/project/deep-android-v1/surface.html
+
+AMS->ApplicationThread->ActivityThread.scheduleLaunchActivity
+后，ActivityThread.handleLaunchActivity
+	ActivityThread.performLaunchActivity中
+		创建activity对象，application对象，context对象
+		activity.attach
+			创建PhoneWindow
+			为其设置诸如 callback（本质上就是activity）等
+		activity.onCreate
+			activity.setContentView
+				phonewindow.setContentView
+					创建decorview
+					加载合适的窗口布局文件，放入到decorView中
+						（如：android-sdk-macosx/platforms/android-26/data/res/layout/screen_title.xml）：
+						Window.mLocalFeatures
+							用于：选择一个layout
+						Window.mWindowStyle（TypedArray类型）（来自manifest.xml中activity的theme属性的设置）
+							用于：setFlags, requestFeature
+					加载布局文件，放入到contentParent中（android.R.id.content）
+		activity.onStart
+		activity.onRestoreInstanceState
+	ActivityThread.handleResumeActivity
+		判断activity是否真的可见，如：其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
+		当真的可见时，执行activity.onResume
+		接下来，activity需要显示，那么需要构建viewroot, decorview, wlp之间的关系
+		该关系的确定是由WindowManager来完成（最终通过WindowManagerGlobal.addView(view, wlp)）
+			说明：这里已经不考虑Window/PhoneWindow，而是考虑：view, wlp（而这些数据，大部分情况下，都是由Window来封装）
+			构建ViewRootImpl，
+				其负责：
+					绘制绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
+						performMeasure
+						performLayout
+						performDraw
+					输入事件的处理：dispatchInputEvent
+				和WMS确认关系：
+					ViewRootImpl在 初始化 的时候，会为整个app申请一个IWindowSession.Proxy
+					通过WindowManagerGlobal（其持有iwindowmanager.Proxy）.openSession()
+						而在WMS，会创建一个IWindowSession.Stub（对应一个app）
+					app可通过该IWindowSession 来和 WMS的通信，如：
+						添加删除window
+						对窗口（decorview）进行relayout以 显示在屏幕上
+			存储 ViewRoot-view-wlp 于：[] viewroot, [] decorview, [] wlp，index一致
+			后，调用ViewRoot.setView(view, wlp)来确定 和WMS 的ipc关系
+				ViewRoot也有window的概念：W mWindow（iwindow.stub，窗口级别）
+					注意：其并不关心：Window/PhoneWindow对象
+				将W对象传递给WMS
+					W对象在ViewRootImpl初始化时被构建
+					通过IWindowSession.Proxy#addDisplay来传递W
+						WMS端，session为其IWindowSession.stub，最终会调用WindowManagerService.addWindow
+						其中，会创建 WindowState和WindowToken 来对应该IWindow
+							mwindowmap：<IWindow.asbinder, WindowState>
+							mtokenmap：<IWindow.asbinder, WindowToken>
+					WMS持有IWindow，可：
+						当窗口发生变化时（大小 可见性等发生变化），进行通知

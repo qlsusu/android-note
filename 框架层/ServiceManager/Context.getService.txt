@@ -1,5 +1,7 @@
-这里得到的Service（如：ActivityManager），是 Ixxx.Stub.Proxy的wrapper
+这里得到的XXService（如：ActivityManager），是 Ixxx.Stub.Proxy的wrapper
 而ServiceManager.getService()返回的是：框架层服务的remote binder
+ContextImpl中有XXService的缓存列表mServiceCache，在通过ContextImpl来获取XXService时，会先从缓存中查询
+	如果没有查询到，会执行CachedServiceFetcher#createService来 创建（缓存）并返回
 
 Context#getSystemService(java.lang.String)
 ContextImpl#getSystemService
