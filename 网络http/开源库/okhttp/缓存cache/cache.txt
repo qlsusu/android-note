@@ -18,7 +18,8 @@ CacheInterceptor#intercept
 	CacheStrategy.Factory#get
 		CacheStrategy.Factory#getCandidate
 			得到CacheStrategy
-				是否需要发送联网请求（真实的请求数据，或者，有条件的请求（if-none-match, if-modify-since））而判断缓存的内容是否有效（即使缓存已经过期了）
+				核心数据：
+				是否需要发送联网请求（真实的请求数据，或者，有条件的请求（发送etag配合if-none-match, modifyTime配合if-modify-since）），如果缓存不在有效期内（参见：j2se/网络/http/http缓存cache/cache是否在有效期内.txt），则需要联网请求
 					CacheStrategy#networkRequest
 				缓存的内容					
 					CacheStrategy#cacheResponse
@@ -28,3 +29,11 @@ CacheInterceptor#intercept
 		okhttp3.internal.cache.InternalCache#put
 			okhttp3.Cache#put
 				一种情况：当请求是post，是不会缓存响应的，参见：okhttp3.internal.http.HttpMethod#invalidatesCache
+				
+--------------------------------问题：
+如何判断 结果来自缓存 还是 来自网络
+为什么会有该问题：
+当CacheInterceptor将缓存中的结果返回时，方式为：即是：设置了Response.cacheResponse为null
+	return cacheResponse.newBuilder()
+          .cacheResponse(stripBody(cacheResponse))
+          .build();

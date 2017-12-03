@@ -15,7 +15,7 @@ vs RealConnection：
 构造函数：
 public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
 	this.connectionPool = connectionPool;
-	// 请求地址相关的信息				
+	// 请求地址相关的信息
 	this.address = address;
 	this.call = call;
 	this.eventListener = eventListener;
@@ -100,5 +100,4 @@ URLs是抽象的：
 它们规定了调用可能是明文(http)或密文(https)，但是没有规定应该使用哪个加密算法。也没有规定如何验证对等的证书(HostnameVerifier)或者哪个证书可被信任(SSLSocketFactory)。
 它们没有规定是否一个特定的代理服务器可以使用或如何认证代理服务器。
 它们也是具体的：每一个URL确定一个特定路径(像/square/okhttp)和查询(像?q=sharks&lang=en)。每个服务器有很多URL。
-
-
+	

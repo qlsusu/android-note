@@ -1,4 +1,6 @@
 参见：
+我写了个掘金小册：Git 原理详解和实用指南 [内有限量优惠码] - 掘金
+	https://juejin.im/post/5a1fb27f6fb9a0451a7628b0
 常用 Git 命令清单
 	http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html
 Git教程

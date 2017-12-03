@@ -7,21 +7,26 @@ Dispatcher
 同步请求：
 RealCall#execute
 	Dispatcher#executed
+		放入到runningSyncCalls中
 	RealCall#getResponseWithInterceptorChain
     Dispatcher#finished(RealCall)
 
 异步请求：
 RealCall#enqueue
 	Dispatcher#enqueue
-		条件判断：正在运行的异步call的个数 和 针对于host的call的总数
-            runningAsyncCalls.size() < maxRequests && runningCallsForHost(call) < maxRequestsPerHost
-		通过条件 则在线程池上执行任务（放入到runningAsyncCalls中）：
-    		java.util.concurrent.Executor#execute
-    			RealCall.AsyncCall#execute
-    				RealCall#getResponseWithInterceptorChain
-    				Dispatcher#finished(RealCall.AsyncCall)
-        未通过条件，放入到readyAsyncCalls中
-            再在Dispatcher#finished(RealCall.AsyncCall)时，可能被执行
+		条件判断：针对于：正在运行的异步call的个数 和 针对于host的call的总数
+            runningAsyncCalls.size() < Dispatcher#maxRequests（默认：64） && 
+			runningCallsForHost(call) < Dispatcher#maxRequestsPerHost（默认：5）
+		通过条件 则在线程池上（类似：Executors#newCachedThreadPool()）执行任务：
+			放入到runningAsyncCalls中
+    		java.util.concurrent.Executor#execute			
+				RealCall.AsyncCall#execute（AsyncCall是一个NamedRunnable，其run()会调用execute）
+					RealCall#getResponseWithInterceptorChain
+					Dispatcher#finished(RealCall.AsyncCall)
+						从readyAsyncCalls中取出任务，判断是否满足条件，最终执行该任务
+        未通过条件，
+        	放入到readyAsyncCalls中
+            该任务 在Dispatcher#finished(RealCall.AsyncCall)时，可能被执行
 
 请求核心：
 Response getResponseWithInterceptorChain() throws IOException {
@@ -39,26 +44,32 @@ Response getResponseWithInterceptorChain() throws IOException {
     //响应处理，如：响应的Content-Encoding如果是gzip，则解压该response.body，并移除Content-Encoding, Content-Length
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
 
-    //是否读取缓存，而不进行真实的联网；将响应进行缓存
+    //是否读取缓存：有可能直接读取缓存，而不进行真实的联网
+	//将响应进行缓存
     interceptors.add(new CacheInterceptor(client.internalCache()));
 
+	//建立 客户端-服务器 连接
     //通过StreamAllocation#newStream的方式，为该StreamAllocation找到RealConnection（来自连接池，或者，新建一个），得到HttpCodec
     interceptors.add(new ConnectInterceptor(client));
+    
+	//添加自定义的net interceptor
     if (!forWebSocket) {
-        //添加自定义的net interceptor
         interceptors.addAll(client.networkInterceptors());
     }
     
-    //执行真实的input/output通信
+    //执行真实的input/output通信：向服务器发送请求，读取来自服务器的响应
     interceptors.add(new CallServerInterceptor(forWebSocket));
 
     Interceptor.Chain chain = new RealInterceptorChain(interceptors, null, null, null, 0,
         originalRequest, this, eventListener, client.connectTimeoutMillis(),
         client.readTimeoutMillis(), client.writeTimeoutMillis());
+
+	//原型为：RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)
+	//具体执行流程，参见：网络http/开源库/okhttp/拦截器-chain interceptor/拦截器-chain interceptor.txt
     return chain.proceed(originalRequest);
 }
 
-启动其他AsyncCall
+启动其他AsyncCall：
 启动时机：
 . 本AsyncCall完成后
     Dispatcher#finished(RealCall) 或 Dispatcher#finished(RealCall.AsyncCall)
@@ -67,7 +78,4 @@ Response getResponseWithInterceptorChain() throws IOException {
             Dispatcher#promoteCalls
                 试图执行 readyAsyncCalls中的Call
 . 更新了maxRequests 或 maxRequestsPerHost时
-    因为该数值可能会变大，则有可能可以再其他AsyncCall
-
-RealInterceptorChain#proceed原型：
-RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)
+    因为该数值可能会变大，则有可能可以再执行其他AsyncCall

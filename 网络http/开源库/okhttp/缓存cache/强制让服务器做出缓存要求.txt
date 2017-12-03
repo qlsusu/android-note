@@ -1,6 +1,16 @@
 参见：
+OKHttp源码解析(六)--中阶之缓存基础 - 简书
+	http://www.jianshu.com/p/b32d13655be7
 MVP架构实现的Github客户端(4-加入网络缓存)
 	http://www.jianshu.com/p/faa46bbe8a2e
+
+强制使用缓存，而无论该缓存是否过期：
+CacheControl#FORCE_CACHE
+
+强制不使用缓存：
+CacheControl#FORCE_NETWORK
+
+------------------------------之下为：以前的内容
 
 服务器不是由我们开发，响应中可能没有包含cache-control，或者值为no store
 

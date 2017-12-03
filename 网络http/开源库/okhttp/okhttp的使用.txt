@@ -29,7 +29,7 @@ public ConfigureTimeouts() throws Exception {
     client.setWriteTimeout(10, TimeUnit.SECONDS);
     client.setReadTimeout(30, TimeUnit.SECONDS);
 }
-//如果使用okhttp3.0，那么使用httpclient.build来设置参数：
+//如果使用okhttp3.0，那么使用HttpClient.build来设置参数：
 File sdcache = getExternalCacheDir();
 int cacheSize = 10 * 1024 * 1024;
 OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -37,21 +37,17 @@ OkHttpClient.Builder builder = new OkHttpClient.Builder()
         .writeTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-OkHttpClient mOkHttpClient=builder.build();
+OkHttpClient mOkHttpClient = builder.build();
 
-也可以使用一个clone来创建一个浅拷贝，
-这样，可以为单独的请求设置超市等参数，如：
-	Response response = client.clone() // Clone to make a customized OkHttp for this request.
-		.setReadTimeout(500, TimeUnit.MILLISECONDS)
-		.newCall(request)
-		.execute();
-		
+针对于个别Request，自定义设置参数：
+client.clone().
+	setReadTimeout(500, TimeUnit.MILLISECONDS)
 或者，
-OkHttpClient copy = client.newBuilder()
+client.newBuilder()
 	.readTimeout(500, TimeUnit.MILLISECONDS)
-	.build();
+	.build()
 	
---------------------------------get
+--------------------------------get请求
 //创建okHttpClient对象
 OkHttpClient mOkHttpClient = new OkHttpClient();
 //创建一个Request
@@ -80,31 +76,7 @@ call.enqueue(
         
 // 如果希望同步方式call，那么：Response response = call.execute()
 
---------------------------------头信息（request, response）
-Request request = new Request.Builder()
-	.url("https://api.github.com/repos/square/okhttp/issues")
-	// 使用header(name, value)可以设置唯一的name、value。如果已经有值，旧的将被移除
-	.header("User-Agent", "OkHttp Headers.java")
-	// 使用addHeader(name, value)可以添加多值
-	.addHeader("Accept", "application/json; q=0.5")
-	.addHeader("Accept", "application/vnd.github.v3+json")
-	.build();
-
-Response response = client.newCall(request).execute();
-if (!response.isSuccessful()){
-	throw new IOException("Unexpected code " + response);
-}
-
-System.out.println("Server: " + response.header("Server"));
-System.out.println("Date: " + response.header("Date"));
-System.out.println("Vary: " + response.headers("Vary"));
-
-Headers responseHeaders = response.headers();
-for (int i = 0; i < responseHeaders.size(); i++) {
-	System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-}
-
---------------------------------post
+--------------------------------post请求
 OkHttpClient client = new OkHttpClient();
 
 String url;
@@ -151,6 +123,30 @@ if (response.isSuccessful()) {
 Android网络编程（六）OkHttp3用法全解析
 	http://liuwangshu.cn/application/network/6-okhttp3.html
 
+--------------------------------头信息
+Request request = new Request.Builder()
+	.url("https://api.github.com/repos/square/okhttp/issues")
+	// 使用header(name, value)可以设置唯一的name、value。如果已经有值，旧的将被移除
+	.header("User-Agent", "OkHttp Headers.java")
+	// 使用addHeader(name, value)可以添加多值
+	.addHeader("Accept", "application/json; q=0.5")
+	.addHeader("Accept", "application/vnd.github.v3+json")
+	.build();
+
+Response response = client.newCall(request).execute();
+if (!response.isSuccessful()){
+	throw new IOException("Unexpected code " + response);
+}
+
+System.out.println("Server: " + response.header("Server"));
+System.out.println("Date: " + response.header("Date"));
+System.out.println("Vary: " + response.headers("Vary"));
+
+Headers responseHeaders = response.headers();
+for (int i = 0; i < responseHeaders.size(); i++) {
+	System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+}	
+	
 --------------------------------请求取消
 Call.cancel()
 OkHttpClient.cancel(tag)
