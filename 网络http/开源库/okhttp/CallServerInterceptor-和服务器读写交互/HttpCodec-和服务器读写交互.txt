@@ -1,0 +1,23 @@
+HttpCodec（Encodes HTTP requests and decodes HTTP responses）
+	其对应于 StreamAllocation，
+	拥有Source和Sink（Okio#source(Socket), Okio#sink(Socket)），来完成 读写操作 (针对于 request/response header/body)
+	最终由CallServerInterceptor#intercept来调用
+	
+拥有子类：
+Http1Codec
+Http2Codec
+
+客户-服务器 交互过程（参见：CallServerInterceptor#intercept）：
+STATE_IDLE = 0; // Idle connections are ready to write request headers.
+STATE_OPEN_REQUEST_BODY = 1; //在写完请求头信息后，进入该状态
+STATE_WRITING_REQUEST_BODY = 2;//当构建了 再封装的Sink（对Http1Codec#sink的一层封装）后，进入该状态
+	封装的Sink：FixedLengthSink, ChunkedSink
+客户写入请求数据：RequestBody#writeTo(BufferedSink)
+STATE_READ_RESPONSE_HEADERS = 3;//写入数据后 会执行Sink#close，进入该状态
+执行HttpCodec#finishRequest，会执行Http1Codec.sink#flush
+--
+STATE_OPEN_RESPONSE_BODY = 4;//当读取了响应头后，进入该状态，之后也设置了Response#receivedResponseAtMillis
+STATE_READING_RESPONSE_BODY = 5;//当构建了 再封装的Source（对Http1Codec#source的一层封装，再封装的Source用于构建RealResponseBody）后，进入到该状态
+	封装的Source：FixedLengthSource, ChunkedSource 等
+客户读取响应数据：从ResponseBody.Source中
+STATE_CLOSED = 6;//读取完数据后 会执行Http1Codec.AbstractSource#endOfInput，将进入该状态

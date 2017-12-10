@@ -65,7 +65,9 @@ Response getResponseWithInterceptorChain() throws IOException {
         client.readTimeoutMillis(), client.writeTimeoutMillis());
 
 	//原型为：RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)
-	//具体执行流程，参见：网络http/开源库/okhttp/拦截器-chain interceptor/拦截器-chain interceptor.txt
+	//对于当前的StreamAllocation（Request-Response），被分配到了什么RealConnection上，将使用什么HttpCodec来与服务器交互
+	//在ConnectInterceptor.intercept中，上述变量将被构建
+	//Chain的执行流程，参见：拦截器-chain interceptor.txt
     return chain.proceed(originalRequest);
 }
 

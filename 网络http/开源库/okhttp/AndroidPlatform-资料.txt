@@ -1,0 +1,3 @@
+参见：
+关于AndroidPlatform，参见：OKHttp源码解析(八)--中阶之连接与请求前奏 - 简书
+	http://www.jianshu.com/p/510b27237c76

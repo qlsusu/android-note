@@ -1,0 +1,22 @@
+ConnectionSpec含有什么：
+	加解密套件
+	tls版本号
+	是否支持tls扩展
+	--
+	参见：ConnectionSpec#MODERN_TLS
+
+有什么用：
+选择出一个ConnectionSpec，对 SSLSocket 进行配置（设置 tls版本号，加解密套件），过程：
+ConnectionSpecSelector#configureSecureSocket(SSLSocket sslSocket)
+	被调用处：RealConnection#connectTls
+	其中的ConnectionSpecSelector#connectionSpecs来自 Address中的
+		Address被创建时（在RetryAndFollowUpInterceptor#intercept中），被提供了List<ConnectionSpec>
+			来自：OkHttpClient#connectionSpecs
+				默认为：OkHttpClient#DEFAULT_CONNECTION_SPECS
+					ConnectionSpec#MODERN_TLS		
+					ConnectionSpec#CLEARTEXT（明文）
+	对SSLSocket进行配置：
+	ConnectionSpec#isCompatible(SSLSocket socket)
+		条件满足：tls版本，加解密套件
+	ConnectionSpec#apply(SSLSocket sslSocket, boolean isFallback)
+		设置：tls版本，加解密套件

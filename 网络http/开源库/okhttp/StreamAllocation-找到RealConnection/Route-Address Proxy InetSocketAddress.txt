@@ -1,6 +1,11 @@
 -------------------------Route
 当没有从ConnectionPool找到RealConnection时，或者需要新建一个RealConnection时，均需要目标地址（host和ip等）
-Route核心数据：根据Address，选择了Proxy，得到了InetSocketAddress（host和ip）
+Route核心数据：
+	根据Address，
+	选择了Proxy，
+	得到了InetSocketAddress（host和ip）
+		如果是 Proxy.Type是DIRECT/SOCKS，那么ip和port对应 Address.url（HttpUrl类型）中的
+		如果是 Proxy.Type是HTTP，那么ip和port对应 Proxy.sa（SocketAddress类型）中的
 
 使用RouteSelector来得到 Address对应的 Route（需要参考于 Proxy）：
 	本质上，通过RouteSelector得到的是一个Selection
@@ -14,9 +19,10 @@ Route核心数据：根据Address，选择了Proxy，得到了InetSocketAddress�
 			得到下一个Proxy
 			RouteSelector#resetNextInetSocketAddress
 				重置 RouteSelector.inetSocketAddresses，规则为：
-				若Proxy为DIRECT时，为：HttpUrl的 host对应的ip（通过dns获得）和端口
-				若Proxy为HTTP时（http代理），为：Proxy的 ip（通过dns获得）和端口
-				若Proxy为SOCKS时（socket代理），为：HttpUrl的 host（并没有通过dns来获得host对应的ip）和端口
+				若Proxy.Type为DIRECT时，为：HttpUrl的 host对应的ip（通过dns获得）和端口
+				若Proxy.Type为HTTP时（http代理），为：Proxy的 ip（通过dns获得）和端口
+				若Proxy.Type为SOCKS时（socket代理），为：HttpUrl的 host（并没有通过dns来获得host对应的ip）和端口
+					只是在创建Socket时，采用了Socket(Proxy)的形式，参见：RealConnection#connectSocket
 		根据 Proxy对应的 RouteSelector.inetSocketAddresses，来构建List<Route>，并构建Selection
 
 当选择了一个Route，但是连接失败时（待补充，当连接失败时，如何进行重连，需要查看retryandfollowupinterceptor!!!!!!!!!）：
