@@ -25,7 +25,7 @@ Route核心数据：
 					只是在创建Socket时，采用了Socket(Proxy)的形式，参见：RealConnection#connectSocket
 		根据 Proxy对应的 RouteSelector.inetSocketAddresses，来构建List<Route>，并构建Selection
 
-当选择了一个Route，但是连接失败时（待补充，当连接失败时，如何进行重连，需要查看retryandfollowupinterceptor!!!!!!!!!）：
+当选择了一个Route，但是连接失败时：
 RetryAndFollowUpInterceptor#intercept 异常了，抛出了RouteException
 	RetryAndFollowUpInterceptor#recover
 		StreamAllocation#streamFailed

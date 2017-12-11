@@ -14,25 +14,36 @@ CacheControl对应着 header中的cache-control
 如何构建：CacheControl#parse(Headers headers)
 
 CacheInterceptor#intercept
-	得到cacheCandidate（来自：okhttp3.Cache#get(Request)，即是：先不管用不用该缓存，先提供给我缓存），
+	得到cacheCandidate（来自：Cache#get(Request)，即是：先不管用不用该缓存，先提供给我缓存），
 	得到CacheStrategy：
 		CacheStrategy.Factory#get
 			CacheStrategy.Factory#getCandidate
-				得到CacheStrategy
-					核心数据：
+				会结合本次Request和cacheResponse来构建CacheStrategy
+				如：CacheStrategy#isCacheable(cacheResponse, request)为false时，则，不使用缓存
+				或，当request.cacheControl().noCache()时（客户端要求不使用缓存），则不使用缓存
+				或，request中含有If-None-Match/If-Modified-Since时，不使用缓存
+				--
+				CacheStrategy的核心数据：
 					是否需要发送联网请求
 						CacheStrategy#networkRequest
-					缓存的内容					
+					缓存的内容
 						CacheStrategy#cacheResponse
 			如果request要求onlyIfCache（只从缓存中读取数据） 且 得到的CacheStrategy又要求访问网络，则返回 CacheStrategy(null,null)
 	根据CacheStrategy#networkRequest和CacheStrategy#cacheResponse来决定：是否只读取缓存，是否联网请求 等
 	如果要进行联网请求，在响应获得后，
-		如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），则更新缓存（Cache#update）
-		否则，将响应放入到缓存中
-			okhttp3.Cache#put
+		如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），则更新缓存（Cache#update(Response cached, Response network)）：
+			headers
+			sentRequestAtMillis
+			receivedResponseAtMillis
+		否则，有条件的 将响应放入到缓存中
+			是否可缓存：CacheStrategy#isCacheable
+				服务器的响应码（如：HttpURLConnection#HTTP_OK） + 客户端/服务器都不拒绝缓存（!CacheControl#noStore）
+			缓存响应：Cache#put(Response response)
+				先判断Request.method是否 不可缓存：HttpMethod#invalidatesCache
+				--
 				其中，DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
 					参见：okhttp3.Cache#key
-			CacheInterceptor#cacheWritingResponse				
+			CacheInterceptor#cacheWritingResponse
 
 --------------------------------问题：
 如何判断 结果来自缓存 还是 来自网络

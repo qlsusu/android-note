@@ -3,7 +3,7 @@ OKHttp源码解析(九):OKHTTP连接中三个"核心"RealConnection、Con... - �
 	http://www.jianshu.com/p/6166d28983a2
 okhttp3.internal.connection.RealConnection#connectTunnel
 
-协议为：Https/http2.x，使用 Http代理 与 服务器的进行交互
+协议为：Https，使用 Http代理 与 服务器的进行交互
 
-建立与代理的socket连接
+建立 与代理 的SSLSocket连接
 而代理 仅进行数据的转发 在客户端-服务器之间

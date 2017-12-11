@@ -59,8 +59,11 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 					进行TCP+TLS握手：RealConnection#connect
 						下述过程在while(true)，直到 不抛出异常而break：
 						构建原始的RealConnection#rawSocket：RealConnection#connectSocket，或者，RealConnection#connectTunnel（使用http代理，基于https来进行 客户端-服务器通信，参见：隧道Tunnel.txt）
-							创建Socket：javax.net.SocketFactory#createSocket()
-								SocketFactory由Address提供
+							创建Socket：
+								如果Proxy.Type是 DIRECT/HTTP类型，为new Socket()
+									提供方：javax.net.DefaultSocketFactory#createSocket()
+										SocketFactory由Address提供
+								如果为 SOCKS类型，为new Socket(proxy)
 							AndroidPlatform#connectSocket
 								java.net.Socket#connect(java.net.SocketAddress, int)
 									如果是Http代理，需要设置 HOST这个请求头
@@ -74,7 +77,7 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 									javax.net.ssl.SSLSocket#startHandshake
 									Handshake#get(javax.net.ssl.SSLSession)
 								对服务器证书进行校验
-								重设source, sink（来自sslSocket）
+								重设source, sink（基于sslSocket）
 					将其添加到ConnectionPool中			
 		RealConnection#isHealthy
 			其也是该Connection可被复用的条件
