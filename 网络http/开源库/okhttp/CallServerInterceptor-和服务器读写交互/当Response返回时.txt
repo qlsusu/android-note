@@ -1,0 +1,34 @@
+在最终构建了Response时（来自服务器，或，来自缓存），
+在RetryAndFollowUpInterceptor#intercept中，执行到：
+	if (followUp == null) {
+		if (!forWebSocket) {
+		  streamAllocation.release();
+		}
+		return response;
+	}
+	--
+	StreamAllocation#release()
+		StreamAllocation#deallocate(noNewStreams=false, released=true, streamFinished=false)（需要返回一个Socket）
+			满足条件：this.codec == null && (this.released || connection.noNewStreams)，则
+			去除StreamAllocation与RealConnection之间的关系：StreamAllocation#release(RealConnection)
+			当RealConnection.allocations为empty时
+				设置RealConnection#idleAtNanos
+				ConnectionPool#connectionBecameIdle
+					if (connection.noNewStreams || maxIdleConnections == 0) {
+					  connections.remove(connection);
+					  return true;
+					} else {
+					  // Awake the cleanup thread: we may have exceeded the idle connection limit.					  
+					  notifyAll(); 
+					  return false;
+					}
+				如果其返回true，最终return RealConnection.socket（其余情况，return null）				
+		Util#closeQuietly(java.net.Socket)上述返回的Socket（有可能为null）
+
+客户端得到Response，开始读取内容时：		
+Http1Codec.FixedLengthSource#read
+	Http1Codec.AbstractSource#endOfInput
+		StreamAllocation#streamFinished
+			StreamAllocation#deallocate					
+			Util#closeQuietly(java.net.Socket)
+			

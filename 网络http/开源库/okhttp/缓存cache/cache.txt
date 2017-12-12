@@ -18,30 +18,46 @@ CacheInterceptor#intercept
 	得到CacheStrategy：
 		CacheStrategy.Factory#get
 			CacheStrategy.Factory#getCandidate
-				会结合本次Request和cacheResponse来构建CacheStrategy
-				如：CacheStrategy#isCacheable(cacheResponse, request)为false时，则，不使用缓存
-				或，当request.cacheControl().noCache()时（客户端要求不使用缓存），则不使用缓存
-				或，request中含有If-None-Match/If-Modified-Since时，不使用缓存
-				--
-				CacheStrategy的核心数据：
+				会结合本次Request和cacheResponse来构建CacheStrategy			
 					是否需要发送联网请求
 						CacheStrategy#networkRequest
 					缓存的内容
 						CacheStrategy#cacheResponse
+				什么情况下cacheResponse不为空：
+					当响应不可变时
+						此刻，networkRequest为null
+					当缓存并没有过期时
+						此刻，networkRequest为null
+					当缓存过期，但是response中存在ETag/Last_Modified/Date头
+						此刻，networkRequest不为null
+						会为networkRequest添加头信息：
+						If-None-Match: ETag
+						当etag不存在时，If-Modified-Since: Last_Modified 或 Date
+				什么情况下cacheResponse为空：
+					request.isHttps() && cacheResponse.handshake() == null
+					CacheStrategy#isCacheable(cacheResponse, request)为false时
+						为true的条件：response的响应码（HttpURLConnection#HTTP_OK等） + 客户端/服务器都不拒绝缓存（!CacheControl#noStore）
+					当request.cacheControl().noCache()时（客户端要求不使用缓存）
+					当request中已经含有了If-None-Match/If-Modified-Since时
+						有问题：此刻cacheCandidate不为null，但cacheResponse为null，当服务器返回了HTTP_NOT_MODIFIED时，并不会更新cacheResponse
+					等
 			如果request要求onlyIfCache（只从缓存中读取数据） 且 得到的CacheStrategy又要求访问网络，则返回 CacheStrategy(null,null)
 	根据CacheStrategy#networkRequest和CacheStrategy#cacheResponse来决定：是否只读取缓存，是否联网请求 等
 	如果要进行联网请求，在响应获得后，
-		如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），则更新缓存（Cache#update(Response cached, Response network)）：
+		如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），且则更新缓存CacheStrategy#cacheResponse（通过：Cache#update(Response cached, Response network)）：
 			headers
 			sentRequestAtMillis
 			receivedResponseAtMillis
 		否则，有条件的 将响应放入到缓存中
-			是否可缓存：CacheStrategy#isCacheable
-				服务器的响应码（如：HttpURLConnection#HTTP_OK） + 客户端/服务器都不拒绝缓存（!CacheControl#noStore）
-			缓存响应：Cache#put(Response response)
+			是否可缓存：CacheStrategy#isCacheable				
+			对响应进行缓存：Cache#put(Response response)
 				先判断Request.method是否 不可缓存：HttpMethod#invalidatesCache
-				--
-				其中，DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
+					return method.equals("POST")
+						|| method.equals("PATCH")
+						|| method.equals("PUT")
+						|| method.equals("DELETE")
+						|| method.equals("MOVE");     // WebDAV
+				缓存放方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
 					参见：okhttp3.Cache#key
 			CacheInterceptor#cacheWritingResponse
 

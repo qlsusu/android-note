@@ -20,8 +20,7 @@ Android Networking I: OkHttp, Volley and Gson
 	https://medium.com/@sotti/android-networking-i-okhttp-volley-and-gson-72004efff196
 
 --------------------------------一个全局的OkHttpClient对象
-OkHttp官方文档并建议:全局使用一个OkHttpClient
-即是：使用同一个httpclient来newCall
+OkHttp官方文档并建议:全局使用一个OkHttpClient对象
 
 public ConfigureTimeouts() throws Exception {
     client = new OkHttpClient();
@@ -49,7 +48,7 @@ client.newBuilder()
 	
 --------------------------------get请求
 //创建okHttpClient对象
-OkHttpClient mOkHttpClient = new OkHttpClient();
+OkHttpClient mOkHttpClient = xxx;
 //创建一个Request
 final Request request = new Request.Builder()
                 .url("https://github.com/hongyangAndroid")
@@ -57,27 +56,26 @@ final Request request = new Request.Builder()
 //new call
 Call call = mOkHttpClient.newCall(request); 
 //请求加入调度 (异步方式)
-call.enqueue(
-	new Callback()
-        {
-            @Override
-            public void onFailure(Request request, IOException e)
-            {
-            }
+call.enqueue(new Callback()
+	{
+		@Override
+		public void onFailure(Request request, IOException e)
+		{
+		}
 
-            @Override
-            public void onResponse(final Response response) throws IOException
-            {
-                    //比如我们希望获得返回的字符串，可以通过response.body().string()获取；
-					//如果希望获得返回的二进制字节数组，则调用response.body().bytes()；
-					//如果你想拿到返回的inputStream，则调用response.body().byteStream()
-            }
-        });     
+		@Override
+		public void onResponse(final Response response) throws IOException
+		{
+				//比如我们希望获得返回的字符串，可以通过response.body().string()获取；
+				//如果希望获得返回的二进制字节数组，则调用response.body().bytes()；
+				//如果你想拿到返回的InputStream，则调用response.body().byteStream()
+		}
+	});     
         
 // 如果希望同步方式call，那么：Response response = call.execute()
 
 --------------------------------post请求
-OkHttpClient client = new OkHttpClient();
+OkHttpClient client = xxx;
 
 String url;
 String json;

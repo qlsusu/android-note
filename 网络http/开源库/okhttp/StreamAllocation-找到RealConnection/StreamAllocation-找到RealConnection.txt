@@ -11,10 +11,12 @@ vs RealConnection：
 	RealConnection 对应了一个真实的 socket连接，负责创建一个socket连接
 		RealConnection#connect
 			RealConnection#connectSocket
-	有RealConnection#allocationLimit个 StreamAllocation 对应了 同一个RealConnection
+	一个RealConnection 对应了 RealConnection#allocationLimit个StreamAllocation
 		对于http1.x，一个Connection对应 一个 StreamAllocation
 		对于http2，一个Connection对应 多个 StreamAllocation
 	RealConnection#allocations（类型：List<Reference<StreamAllocation>>）表示：有多少stream被 allocate到了 该RealConnection上
+		StreamAllocation#acquire(RealConnection connection, boolean reportedAcquired)
+		StreamAllocation#release(RealConnection)
 
 构造函数：
 public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
@@ -35,7 +37,7 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 			在ConnectionPool中来找RealConnection：ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)
 				说明：关键数据为Address Route，而StreamAllocation仅仅为了 更新 RealConnection.allocations
 				遍历每个RealConnection，查看它是否可复用：RealConnection#isEligible(Address address, Route route)
-					该RealConnection.allocations.size 是否小于 allocationLimit
+					该RealConnection.allocations.size 是否小于 allocationLimit（默认：1）
 						如：一个connection已经被分配给了StreamAllocation，且，其还在和服务端进行交互（读写io），则此刻该connection不能再分配给其他StreamAllocation
 					判断 RealConnection.route.address的非host部分 是否和 参数address的 相等
 						参见：Address#equalsNonHost
@@ -49,22 +51,22 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 			如果找到了，返回
 			--
 			如果没找到
-				通过routeSelector来找到routeSelection（类型：Selection），遍历其每个Route，再去ConnectionPool中查找，看是否能找到
+				通过routeSelector来找到routeSelection（类型：Selection），遍历其每个Route，再去ConnectionPool中查找（ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)），看是否能找到
 					>>> RouteSelector, Route是什么
 						参见：Route-Address Proxy InetSocketAddress.txt
 				如果找到了，返回
 				如果没找到				
 					通过routeSelection（RouteSelector.Selection类型）.next来得到一个Route，根据该Route来构建RealConnection对象
-					更新RealConnection.allocations
+					执行StreamAllocation#acquire来更新RealConnection#allocations
 					进行TCP+TLS握手：RealConnection#connect
 						下述过程在while(true)，直到 不抛出异常而break：
-						构建原始的RealConnection#rawSocket：RealConnection#connectSocket，或者，RealConnection#connectTunnel（使用http代理，基于https来进行 客户端-服务器通信，参见：隧道Tunnel.txt）
-							创建Socket：
+						构建原始的RealConnection#rawSocket：RealConnection#connectSocket，或者，RealConnection#connectTunnel（协议为https，Proxy.Type为HTTP，参见：隧道Tunnel.txt）
+							创建Socket对象：
 								如果Proxy.Type是 DIRECT/HTTP类型，为new Socket()
 									提供方：javax.net.DefaultSocketFactory#createSocket()
 										SocketFactory由Address提供
 								如果为 SOCKS类型，为new Socket(proxy)
-							AndroidPlatform#connectSocket
+							Socket进行连接：AndroidPlatform#connectSocket
 								java.net.Socket#connect(java.net.SocketAddress, int)
 									如果是Http代理，需要设置 HOST这个请求头
 							构建了流：BufferedSource（Okio#source(rawSockect)）, BufferedSink（Okio#sink(rawSocket)）
@@ -78,43 +80,53 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 									Handshake#get(javax.net.ssl.SSLSession)
 								对服务器证书进行校验
 								重设source, sink（基于sslSocket）
+						--
+						当上述TCP+TLS握手失败时，会抛出RouteException
+						该异常最终在 RetryAndFollowUpInterceptor#intercept的try/catch中被捕获处理
+							说明：RetryAndFollowUpInterceptor#intercept中的 是一个while
+							判断能否从该异常中恢复：RetryAndFollowUpInterceptor#recover
+								StreamAllocation#streamFailed
+									RouteSelector#connectFailed(Route failedRoute, IOException failure)
+										如果Route.proxy不是direct，那么通知ProxySelector
+											ProxySelector#connectFailed
+										添加Route到routeDatabase中：下次不要再使用该Route了
+											RouteDatabase#failed
+							如果能恢复，那么会continue，继续while中的逻辑：RealInterceptorChain#proceed
+								则在其中，最终会选择另外一个Route来连接																	
 					将其添加到ConnectionPool中			
 		RealConnection#isHealthy
 			其也是该Connection可被复用的条件
 			如：该connection的读写流还没有被关闭 等
 	构建HttpCodec
 		参见：HttpCodec.txt
-		
-‘释放’RealConnection 以让其被后续StreamAllocation复用
-Http1Codec.AbstractSource#endOfInput
-	StreamAllocation#streamFinished
-		StreamAllocation#deallocate（其会返回socket，此刻为null）
-			StreamAllocation#release(RealConnection)
-				去除 RealConnection.allocations中的 该StreamAllocationReference
-			如果RealConnection.allocations为empty，则设置RealConnection#idleAtNanos
-		Util#closeQuietly(java.net.Socket)
-			未做任何，因为Socket为null
 
 ---------------ConnecitonPool
 新生成的Connection会被放入到 ConnectionPool中
 
 定时清理RealConnection：
-	哪些connection会被清理：其上的StreamAllocation已经全部执行完毕，且，其空闲时间（now-idle）已经超过了 预设阀值（keepAliveDurationNs）
+	哪些connection会被清理：
+		其上的StreamAllocation已经全部执行完毕
+	怎么清理：
+		ConnectionPool#connections.remove(RealConnection)
+		close掉RealConnection对应的Socket
 	触发时机：
 		当put一个connection到pool时，将会触发清理（如果清理还未启动）
-		在一次清理之后，会确定出下一次清理的时间点
+		在一次清理之后，确定出下一次清理的时间点：
+			ConnectionPool.this.wait(waitMillis, (int) waitNanos);
 	过程：
-	检查所有的connection的idle时刻
-	找到最早idle的，得到最长duration(=now-idle)
-	该duration是否有值
-		如果有值，则意味：存在connection已经处于idle
-			判断该duration 是否大于 预置的keepAliveDurationNs
-				如果大于，那么该connection便是要清理的
-					清理本质：Util#closeQuietly(Socket)
-					需要立刻触发 再次清理（现在只清理了一个，可能还有其他connection需要清理）
-				否则，需要在 keepAliveDurationNs-duration之后 再次触发清理
-		如果无值，那么所有的connection都处于work状态
-			则等待keepAliveDurationNs之后再次触发清理
+	检查有多少个RealConnection处于idle，并找到最大的空闲时间longestIdleDurationNs（=now-RealConnection.idleAtNanos（默认为Long.MAX_VALUE））
+		如何判定一个RealConnection处于idle：
+			去掉一些失效的弱引用（referent为null）后，RealConnection.allocations为empty
+				ConnectionPool#pruneAndGetAllocationCount
+				如果存在这样的失效弱引用，则再也不会有StreamAllocation能关联到该RealConnection（RealConnection#noNewStreams为true）
+		RealConnection.idleAtNanos在什么时候被赋值：StreamAllocation#deallocate中（仍需要满足一定条件）										
+	满足条件？：longestIdleDurationNs>=ConnectionPool#keepAliveDurationNs（预设阀值）|| 空闲的RealConnection的个数>ConnectionPool#maxIdleConnections
+		如果满足条件
+			最大空闲时间的RealConnection被清理
+			之后，需要立刻触发 再次清理（现在只清理了一个，可能还有其他connection需要清理）
+		否则
+			如果存在空闲的RealConnection，那么在 keepAliveDurationNs-longestIdleDurationNs之后 再次触发清理
+			否则，在 keepAliveDurationNs 再次触发清理
 
 ------------------------------下面为老的内容
 URLs是抽象的：

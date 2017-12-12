@@ -25,16 +25,6 @@ Route核心数据：
 					只是在创建Socket时，采用了Socket(Proxy)的形式，参见：RealConnection#connectSocket
 		根据 Proxy对应的 RouteSelector.inetSocketAddresses，来构建List<Route>，并构建Selection
 
-当选择了一个Route，但是连接失败时：
-RetryAndFollowUpInterceptor#intercept 异常了，抛出了RouteException
-	RetryAndFollowUpInterceptor#recover
-		StreamAllocation#streamFailed
-			RouteSelector#connectFailed(Route failedRoute, IOException failure)
-				如果Route.proxy不是direct，那么通知ProxySelector
-					ProxySelector#connectFailed
-				添加Route到routeDatabase中：下次不要再使用该Route了
-					RouteDatabase#failed
-
 -------------------------Address
 HttpUrl
 要请求的地址，包含了：host port path query
