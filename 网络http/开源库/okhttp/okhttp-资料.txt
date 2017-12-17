@@ -1,4 +1,4 @@
 参见：
-OKHttp源码解析(三)--中阶之线程池和消息队列 - 简书
-	http://www.jianshu.com/p/82f74db14a18
+OKHttp源码解析(一)--初阶 - 简书
+	https://www.jianshu.com/p/82f74db14a18
 	其中包含了系列教程

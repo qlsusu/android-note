@@ -1,6 +1,6 @@
 HttpCodec（Encodes HTTP requests and decodes HTTP responses）
 	其对应于 StreamAllocation，
-	拥有Source和Sink（Okio#source(Socket), Okio#sink(Socket)），来完成 读写操作 (针对于 request/response header/body)
+	拥有Source和Sink（本质：RealConnection的），来完成 读写操作 (针对于 request/response header/body)		
 	最终由CallServerInterceptor#intercept来调用
 	
 拥有子类：

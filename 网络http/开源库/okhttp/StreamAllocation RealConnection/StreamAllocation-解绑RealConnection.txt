@@ -1,0 +1,86 @@
+在最终构建了Response时（来自服务器，或，来自缓存），
+在RetryAndFollowUpInterceptor#intercept中，执行到：
+	if (followUp == null) {
+		if (!forWebSocket) {
+		  streamAllocation.release();
+		}
+		return response;
+	}
+	此时，将会向用户返回Response
+	--
+	StreamAllocation#release()
+		Socket StreamAllocation#deallocate(noNewStreams=false, released=true, streamFinished=false)
+			条件：this.codec == null && (this.released || connection.noNewStreams)
+				在当前时刻：this.released=true
+					则最终返回的Socket为null
+			如果满足上述条件，则：
+			去除StreamAllocation与RealConnection之间的关系：StreamAllocation#release(RealConnection)
+			当RealConnection.allocations为empty时
+				设置RealConnection#idleAtNanos
+				告诉：该RealConnection已经变成了idle：ConnectionPool#connectionBecameIdle
+					是就立刻进行清理，还是留给ConnectionPool#cleanup来清理：
+					//noNewStreams=true：再也没有StreamAllocation能和该RealConnection关联
+					//意味着：该RealConnection已不可用，需要从ConnectionPool中移除
+					//StreamAllocation#noNewStreams()也是本质上 让 和其关联的RealConnection 不可用
+					if (connection.noNewStreams || maxIdleConnections == 0) {
+					  connections.remove(connection);
+					  return true;
+					} else {
+					  // Awake the cleanup thread: we may have exceeded the idle connection limit.					  
+					  notifyAll(); 
+					  return false;
+					}
+				connectionBecameIdle会返回boolean，如果是true，最终return RealConnection.socket（其余情况，return null）				
+		Util#closeQuietly(java.net.Socket)上述返回的Socket（有可能为null）
+
+客户端得到Response，开始读取内容时：		
+Http1Codec.FixedLengthSource#read
+	Http1Codec.AbstractSource#endOfInput
+		StreamAllocation#streamFinished
+			StreamAllocation#deallocate(noNewStreams, released=false, streamFinished=true)
+				在当前时刻：this.codec = null, this.released = true（之前被设置）						
+			Util#closeQuietly(java.net.Socket)
+
+------------------------------定时清理RealConnection
+ConnectionPool#private final Runnable cleanupRunnable = new Runnable() {
+    @Override public void run() {
+      while (true) {
+        long waitNanos = cleanup(System.nanoTime());
+        if (waitNanos == -1) return;
+        if (waitNanos > 0) {
+          long waitMillis = waitNanos / 1000000L;
+          waitNanos -= (waitMillis * 1000000L);
+          synchronized (ConnectionPool.this) {
+            try {
+              ConnectionPool.this.wait(waitMillis, (int) waitNanos);
+            } catch (InterruptedException ignored) {
+            }
+          }
+        }
+      }
+    }
+};
+
+哪些connection会被清理：
+	其上的StreamAllocation已经全部执行完毕
+怎么清理：
+	ConnectionPool#connections.remove(RealConnection)
+	close掉RealConnection对应的Socket
+触发时机：
+	当put一个RealConnection到ConnectionPool时，将会触发清理（如果清理还未启动）
+	在一次清理之后，确定出下一次清理的时间点：
+		ConnectionPool.this.wait(waitMillis, (int) waitNanos);
+过程（ConnectionPool#cleanup）：
+	检查有多少个RealConnection处于idle，并找到最大的空闲时间longestIdleDurationNs（=now-RealConnection.idleAtNanos（默认为Long.MAX_VALUE））
+		如何判定一个RealConnection处于idle：
+			去掉一些失效的弱引用（referent为null）后，RealConnection.allocations为empty
+				ConnectionPool#pruneAndGetAllocationCount
+				如果存在这样的失效弱引用，则RealConnection#noNewStreams=true
+		RealConnection.idleAtNanos在什么时候被赋值：StreamAllocation#deallocate中（仍需要满足一定条件）										
+	满足条件？：longestIdleDurationNs>=ConnectionPool#keepAliveDurationNs（预设阀值）|| 空闲的RealConnection的个数>ConnectionPool#maxIdleConnections
+		如果满足条件
+			最大空闲时间的RealConnection被清理
+			之后，需要立刻触发 再次清理（现在只清理了一个，可能还有其他connection需要清理）
+		否则
+			如果存在空闲的RealConnection，那么等待 keepAliveDurationNs-longestIdleDurationNs 后再次触发清理
+			否则，等待 keepAliveDurationNs 后再次触发清理

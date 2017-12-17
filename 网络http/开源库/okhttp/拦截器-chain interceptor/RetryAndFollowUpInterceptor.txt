@@ -1,13 +1,30 @@
 负责：
-. 当发生错误时（如：RouteException），当满足重试条件时，进行重试
-	重试条件：RetryAndFollowUpInterceptor#recover
+. 重试，当发生错误时（如：RouteException）
+	重试条件：RetryAndFollowUpInterceptor#recover返回true
 	重试手段：交由RealInterceptorChain#proceed(Request, StreamAllocation, HttpCodec, RealConnection)处理
-		其会找到新的Route，并在ConnectInterceptor中重新建立连接（参见：StreamAllocation#newStream），并进一步处理
-. 根据状态码，来找到重定向location，建立连接，并进一步处理
-	Request followUp = followUpRequest(response);
-	streamAllocation = new StreamAllocation(client.connectionPool(), createAddress(followUp.url()), call, eventListener, callStackTrace);
-	request = followUp;
-	priorResponse = response;
-	再一次走入while循环：realChain.proceed(request, streamAllocation, null, null);
-
-在其中创建了 StreamAllocation
+		内部，其会找到新的Route，并在ConnectInterceptor中重新建立连接（参见：StreamAllocation#newStream），并进一步处理
+. 重定向
+	根据Response判断，是否是重定向（如果是，则followUp!=null）：Request followUp = followUpRequest(response);
+	如果是，且满足条件（如：++followUpCount <= MAX_FOLLOW_UPS），则
+	构建新的Request和StreamAllocation，再次执行：
+		streamAllocation = new StreamAllocation(client.connectionPool(), createAddress(followUp.url()), call, eventListener, callStackTrace);
+		request = followUp;
+		priorResponse = response;
+		再次走入while循环体：realChain.proceed(request, streamAllocation, null, null);]
+. 被取消
+	RealCall#cancel
+		RetryAndFollowUpInterceptor#cancel
+			StreamAllocation#cancel
+				HttpCodec#cancel
+					本质也是调用：RealConnection#cancel
+				RealConnection#cancel
+					closeQuietly(RealConnection.rawSocket)
+				--
+				则，只有当真实的向服务器发请求时，才有可能被cancel
+	而在RetryAndFollowUpInterceptor#intercept中
+		在捕获了异常后，会重走while循环体
+		会执行到：if (canceled) {
+			streamAllocation.release();
+			throw new IOException("Canceled");
+		}
+		在AsyncCall/RealCall#execute中，捕获该异常，最终来通知：EventListener#callFailed(Call call, IOException ioe)

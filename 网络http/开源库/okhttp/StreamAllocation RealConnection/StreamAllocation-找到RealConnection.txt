@@ -1,0 +1,122 @@
+------------------------------StreamAllocation
+StreamAllocation是什么：
+	目的：其为一个Request来找到Reponse
+	创建地点：RetryAndFollowUpInterceptor#intercept中
+	该Reponse可能来自缓存（CacheInterceptor#intercept中）
+	也有可能 来自一个真实的网络请求
+		寻找了一个RealConnection（ConnectInterceptor#intercept中）
+			来自ConnectionPool，或，新建一个RealConnection
+		构建流（HttpCodec（其含有Source, Sink））来和服务器进行数据交互（CallServerInterceptor.intercept中进行）
+
+vs RealConnection：
+	RealConnection 对应了一个真实的socket连接（Socket/SSLSocket）
+		RealConnection#connect
+			RealConnection#connectSocket
+			RealConnection#connectTsl
+	一个RealConnection
+	对应了 RealConnection#allocationLimit个 StreamAllocation
+		对于http1.x，一个Connection对应 一个 StreamAllocation
+		对于http2，一个Connection对应 多个 StreamAllocation
+	RealConnection#allocations（类型：List<Reference<StreamAllocation>>）表示：有多少stream被 allocate到了 该RealConnection上
+		StreamAllocation#acquire(RealConnection connection, boolean reportedAcquired)
+		StreamAllocation#deallocate(boolean noNewStreams, boolean released, boolean streamFinished)
+			StreamAllocation#release(RealConnection connection)
+
+构造函数：
+public StreamAllocation(ConnectionPool connectionPool, Address address, Call call, EventListener eventListener, Object callStackTrace) {
+	this.connectionPool = connectionPool;
+	// 请求地址相关的信息
+	this.address = address;
+	this.call = call;
+	this.eventListener = eventListener;
+	// 根据Proxy来选择出 Route（包含：Address Proxy InetSocketAddress（目标地址））
+	this.routeSelector = new RouteSelector(address, routeDatabase(), call, eventListener);
+	this.callStackTrace = callStackTrace;
+}
+
+复用/新建 RealConnection:
+StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
+	StreamAllocation#findHealthyConnection
+		内部for循环，直到找到一个RealConnection
+		StreamAllocation#findConnection
+			如果已经被分配了RealConnection，那么找到
+			--
+			否则，在ConnectionPool中来找RealConnection：ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)
+				（说明：关键数据为Address Route，而StreamAllocation仅仅为了 更新 RealConnection.allocations
+				而此刻，根据Address来寻找（Route为空））
+				遍历每个RealConnection，查看它是否可复用：RealConnection#isEligible(Address address, Route route)
+					该RealConnection.allocations.size 是否小于 allocationLimit（默认：1）
+						如：一个RealConnection已经被分配给了StreamAllocation，且，其还在和服务端进行交互（读写io），则此刻该connection不能再分配给其他StreamAllocation					
+					根据Address来寻找
+						判断 RealConnection.route.address的 非host部分 是否和 参数address的 相等
+							参见：Address#equalsNonHost
+						如果host部分（RealConnection.route.address.url.host）也相等，则意味找到							
+					否则，如果RealConnection是http2类型，则根据Route进一步查找：						
+						参数route.proxy.type 和 RealConnection.route的 都要为 Proxy.Type.DIRECT
+						参数route.inetSocketAddress 和 RealConnection.route的 相同
+						等
+				如果找到，会执行StreamAllocation#acquire来更新RealConnection#allocations
+			如果找到了，返回
+			--
+			如果没找到
+				如果routeSelection（类型：RouteSelector.Selection类型）需要重新设置（routeSelection==null || !routeSelection.hasNext()）
+					通过routeSelector来找到routeSelection
+					for 其中的每个Route，再去ConnectionPool中查找（ConnectionPool#get(Address address, StreamAllocation streamAllocation, Route route)）					
+					>>> RouteSelector, Route是什么：
+						参见：Route-Address Proxy InetSocketAddress.txt
+				如果找到了，返回
+			--
+			如果没找到				
+				通过routeSelection.next来得到一个Route，根据该Route来构建RealConnection对象
+				执行StreamAllocation#acquire来更新RealConnection#allocations
+				进行TCP+TLS握手：RealConnection#connect
+					下述过程在while(true)，直到 不抛出异常而break：
+					构建原始的RealConnection#rawSocket：RealConnection#connectSocket，或者，RealConnection#connectTunnel（协议为https，Proxy.Type为HTTP，（address.sslSocketFactory != null && proxy.type() == Proxy.Type.HTTP）参见：隧道Tunnel.txt）
+						创建rawSocket：
+							如果Proxy.Type是 DIRECT/HTTP类型，为new Socket()
+								提供方：javax.net.DefaultSocketFactory#createSocket()
+									SocketFactory由Address提供
+							如果为 SOCKS类型，为new Socket(proxy)
+						Socket进行连接：AndroidPlatform#connectSocket
+							java.net.Socket#connect(java.net.SocketAddress, int)
+								如果是Http代理，需要设置 HOST这个请求头
+						构建了流：BufferedSource（Okio#source(rawSockect)）, BufferedSink（Okio#sink(rawSocket)）
+					RealConnection#establishProtocol
+						如果是Http
+							socket=rawSocket
+						如果是Https，则：RealConnection#connectTls	
+							socket=基于rawSocket创建SSLSocket：javax.net.ssl.SSLSocketFactory#createSocket
+							对SSLSocket进行配置：ConnectionSpecSelector#configureSecureSocket(SSLSocket)
+								参见：ConnectionSpec.txt
+							SSL握手：
+								javax.net.ssl.SSLSocket#startHandshake
+								Handshake#get(javax.net.ssl.SSLSession)
+							对服务器证书进行校验
+							重设source, sink（基于sslSocket）
+					--
+					当上述TCP+TLS握手失败时，会抛出RouteException
+					该异常最终在 RetryAndFollowUpInterceptor#intercept的try/catch中被捕获处理
+						说明：RetryAndFollowUpInterceptor#intercept中的 是一个while
+						判断能否从该异常中恢复：RetryAndFollowUpInterceptor#recover
+							StreamAllocation#streamFailed
+								RouteSelector#connectFailed(Route failedRoute, IOException failure)
+									如果Route.proxy不是direct，那么通知ProxySelector
+										ProxySelector#connectFailed
+									添加Route到routeDatabase中：下次不要再使用该Route了
+										RouteDatabase#failed
+						如果能恢复，那么会continue，继续while中的逻辑：RealInterceptorChain#proceed
+							则在其中，最终会选择另外一个Route来连接																	
+				将其put到ConnectionPool中
+		RealConnection#isHealthy
+			其也是该Connection可被复用的条件
+			如：该connection的读写流还没有被关闭 等
+	构建HttpCodec
+		参见：HttpCodec.txt
+
+------------------------------下面为老的内容
+URLs是抽象的：
+
+它们规定了调用可能是明文(http)或密文(https)，但是没有规定应该使用哪个加密算法。也没有规定如何验证对等的证书(HostnameVerifier)或者哪个证书可被信任(SSLSocketFactory)。
+它们没有规定是否一个特定的代理服务器可以使用或如何认证代理服务器。
+它们也是具体的：每一个URL确定一个特定路径(像/square/okhttp)和查询(像?q=sharks&lang=en)。每个服务器有很多URL。
+	

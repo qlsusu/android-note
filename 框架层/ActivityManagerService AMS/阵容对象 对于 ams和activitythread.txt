@@ -2,12 +2,12 @@
 ActivityManagerService（I接口：IActivityManager，继承自：ActivityManagerNative（本质：I接口.stub））
 	负责：启动进程，启动/管理 Activity和Service
 ApplicationThreadProxy（I接口：IApplicationThread）
-	作用：ams进程 使用iapplicationthread 来和 app进程 交互
+	作用：AMS进程 使用IApplicationThread 来和 App进程 交互
 	如何获得：
-		在启动app进程时（通过执行Process.start("android.app.ActivityThread",xxx)，进而执行activitythread.main），执行activitythread.attch，其中调用iactivitymanager.attachapplication()时，将app的applicationthread作为参数传入
-			而最终activitymanagerservice会将 pid（IBinder.getCallingPid()）和该iapplicationthread进行关联（processrecord.id 与 processrecord.thread）
-		或，app通过iactivitymanager.mRemote.transact中，applicationthread被传入：data.writeStrongBinder(caller != null ? caller.asBinder() : null);
-			这里的call就是applicationthread
+		在启动app进程时（通过执行Process.start("android.App.ActivityThread",xxx)，进而执行ActivityThread.main），执行ActivityThread.attch，其中调用iactivitymanager.attachapplication()时，将app的ApplicationThread作为参数传入
+			而最终activitymanagerservice会将 pid（IBinder.getCallingPid()）和该IApplicationThread进行关联（processrecord.id 与 processrecord.thread）
+		或，app通过iactivitymanager.mRemote.transact中，ApplicationThread被传入：data.writeStrongBinder(caller != null ? caller.asBinder() : null);
+			这里的call就是ApplicationThread
 ActityStack
 	产生ActivityRecord
 	为activity分配task
@@ -16,7 +16,7 @@ ActityStack
 ProcessRecord
 	其代表着进程
 	其pid属性 为新创建的进程的pid（通过执行）
-	其thread属性 为iapplicationthread类型，对应 app的ApplicationThread
+	其thread属性 为IApplicationThread类型，对应 app的ApplicationThread
 	uid属性
 	processName属性
 TaskRecord
@@ -32,30 +32,32 @@ ServiceRecord
 	ConnectionRecord
 		代表一次 client要与server的建立连接
 		拥有，要bind哪个service（servicerecord）
-		和，client传来的iserviceconnection（用于ams得到 service进程的binder后 回传给client）
+		和，client传来的iserviceconnection（用于AMS得到 service进程的binder后 回传给client）
 	AppBindRecord
 		代表 processrecord 针对于 servicerecord，都拥有哪些connectionrecord
 
-------------------------------app进程
+------------------------------App进程
 ActivityThread
 	app进程被启动时，执行的是：ActivityThread.main方法（该方法执行时的 所在线程 为主线程）
-	ams进程 和 本app进程 进行交互时（通过iapplicationthread）（要处理 框架级别的消息）
-		流程为：applicationthread.scheduleXXX -> 向handler H发送消息（其对应的looper在main()中被创建）-> activityhandler.handleXXX
+	AMS进程 和 App进程 进行交互时（通过IApplicationThread）（要处理 框架级别的消息），流程为：
+		ApplicationThread.scheduleXXX -> 
+		通过ActivityThread#mH（Handler类型）发送消息（其对应的Looper在main()中被创建）-> 
+		ActivityThread.handleXXX
 	--
-	如何获得：执行activitythread.main时创建
+	如何获得：执行ActivityThread.main时创建
 ActivityManagerProxy（I接口：IActivityManager）
-	作用：app进程 通过其 与ams进程 交互（如：IActivityManager#attachApplication(IApplicationThread app)来让 ams知道ApplicationThread）
+	作用：App进程 通过其 与AMS进程 交互（如：IActivityManager#attachApplication(IApplicationThread App)来让 AMS知道ApplicationThread）
 	--
 	如何获得：ActivityManagerNative.getDefault()
 ApplicationThread（I接口：IApplicationThread，继承自ApplicationThreadNative（本质：I接口.stub））
-	作用：ams进程 通过其 来与app进程 进行交互
+	作用：AMS进程 通过其 来与app进程 进行交互
 	--
-	如何获得：activitythread的成员变量
+	如何获得：ActivityThread的成员变量
 --
 Instrumentation
 	监控Activity/application的 创建等，
 	可用于系统运行日志。
 ActivityClientRecord
-	对应着 ams进程的 ActivityRecord
+	对应着 AMS进程的 ActivityRecord
 	
 LoadedApk

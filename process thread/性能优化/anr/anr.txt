@@ -1,7 +1,35 @@
 ----------------几类anr
-按键触摸事件派发超时ANR，一般阈值为5s（设置中开启ANR弹窗，默认有事件派发才会触发弹框ANR）；
-广播阻塞ANR，一般阈值为10s（设置中开启ANR弹窗，默认不弹框，只有log提示）；
-服务超时ANR，一般阈值为20s（设置中开启ANR弹窗，默认不弹框，只有log提示）；
+InputDispatching Timeout: 输入事件分发超时5s，包括按键和触摸事件。
+Service Timeout:比如前台服务在20s内未执行完成；
+BroadcastQueue Timeout：比如前台广播在10s内未执行完成
+ContentProvider Timeout：内容提供者,在publish过超时10s;
+
+----------------内部机制（针对于Service）：
+参见：
+理解Android ANR的触发原理 - Gityuan博客 | 袁辉辉博客
+	http://gityuan.com/2016/07/02/android-anr/
+
+原理：
+	在创建Service时，埋下炸弹
+	在Service创建完毕后，清除炸弹
+	如果炸弹未被清除，则爆炸
+--
+ActivityManagerService#startService
+	ActiveServices#startServiceLocked
+		最终调用ActiveServices#realStartServiceLocked
+			埋炸弹：ActiveServices#bumpServiceExecutingLocked
+				ActiveServices#scheduleServiceTimeoutLocked
+					ActivityManagerService#mHandler#sendMessage
+						what: ActivityManagerService.SERVICE_TIMEOUT_MSG
+						delay: ActiveServices#SERVICE_TIMEOUT 或 ActiveServices#SERVICE_BACKGROUND_TIMEOUT
+			来构建Service：IApplicationThread#scheduleCreateService
+				ActivityThread#handleCreateService
+					Service对象，Service#onAttach, Service#onCreate
+					清除炸弹：ActivityManagerService#serviceDoneExecuting
+						最终调用ActiveServices#serviceDoneExecutingLocked
+							ActivityManagerService#mHandler#removeMessages(ActivityManagerService.SERVICE_TIMEOUT_MSG)
+如果未及时清除炸弹：
+	ActiveServices#serviceTimeout
 
 ----------------日志文件
 /data/anr/traces.txt

@@ -3,7 +3,7 @@
 Route核心数据：
 	根据Address，
 	选择了Proxy，
-	得到了InetSocketAddress（host和ip）
+	得到了InetSocketAddress（ip和port）
 		如果是 Proxy.Type是DIRECT/SOCKS，那么ip和port对应 Address.url（HttpUrl类型）中的
 		如果是 Proxy.Type是HTTP，那么ip和port对应 Proxy.sa（SocketAddress类型）中的
 
@@ -45,6 +45,8 @@ Address：
 		SSLSocketFactory
 		HostnameVerifier
 		CertificatePinner
+	协议相关
+		ConnectionSpec
 
 -------------------------InetSocketAddress
 InetSocketAddress核心数据：
