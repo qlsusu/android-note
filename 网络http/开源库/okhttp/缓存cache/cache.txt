@@ -57,7 +57,7 @@ CacheInterceptor#intercept
 						|| method.equals("PUT")
 						|| method.equals("DELETE")
 						|| method.equals("MOVE");     // WebDAV
-				缓存放方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
+				缓存方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
 					参见：okhttp3.Cache#key
 			CacheInterceptor#cacheWritingResponse
 

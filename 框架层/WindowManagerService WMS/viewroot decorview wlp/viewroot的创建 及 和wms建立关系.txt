@@ -14,8 +14,8 @@ AMS->ApplicationThread->ActivityThread.scheduleLaunchActivity
 		activity.onCreate
 			activity.setContentView
 				phonewindow.setContentView
-					创建decorview
-					加载合适的窗口布局文件，放入到decorView中
+					创建DecorView
+					加载合适的窗口布局文件，放入到DecorView中
 						（如：android-sdk-macosx/platforms/android-26/data/res/layout/screen_title.xml）：
 						Window.mLocalFeatures
 							用于：选择一个layout
@@ -27,7 +27,7 @@ AMS->ApplicationThread->ActivityThread.scheduleLaunchActivity
 	ActivityThread.handleResumeActivity
 		判断activity是否真的可见，如：其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
 		当真的可见时，执行activity.onResume
-		接下来，activity需要显示，那么需要构建viewroot, decorview, wlp之间的关系
+		接下来，activity需要显示，那么需要构建ViewRoot, DecorView, wlp之间的关系
 		该关系的确定是由WindowManager来完成（最终通过WindowManagerGlobal.addView(view, wlp)）
 			说明：这里已经不考虑Window/PhoneWindow，而是考虑：view, wlp（而这些数据，大部分情况下，都是由Window来封装）
 			构建ViewRootImpl，
@@ -43,8 +43,8 @@ AMS->ApplicationThread->ActivityThread.scheduleLaunchActivity
 						而在WMS，会创建一个IWindowSession.Stub（对应一个app）
 					app可通过该IWindowSession 来和 WMS的通信，如：
 						添加删除window
-						对窗口（decorview）进行relayout以 显示在屏幕上
-			存储 ViewRoot-view-wlp 于：[] viewroot, [] decorview, [] wlp，index一致
+						对窗口（DecorView）进行relayout以 显示在屏幕上
+			存储 ViewRoot-view-wlp 于：[] ViewRoot, [] DecorView, [] wlp，index一致
 			后，调用ViewRoot.setView(view, wlp)来确定 和WMS 的ipc关系
 				ViewRoot也有window的概念：W mWindow（iwindow.stub，窗口级别）
 					注意：其并不关心：Window/PhoneWindow对象

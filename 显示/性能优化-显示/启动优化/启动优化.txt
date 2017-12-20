@@ -10,8 +10,8 @@ Android应用启动优化:一种DelayLoad的实现和原理(上篇)
   http://androidperformance.com/2015/11/18/Android-app-lunch-optimize-delay-load.html
 
 方式：
-----------------------------第三方库的加载优化
-在新线程中来进行加载，如 使用intentservice
+----------------------------选择正确的资源加载时机
+在新线程中来进行加载，如 使用IntentService
 
 加载时机：
 . 优先级为1的在应用启动时，就开始加载
@@ -22,16 +22,20 @@ Android应用启动优化:一种DelayLoad的实现和原理(上篇)
 getWindow().getDecorView().post(new Runnable() {
     @Override
     public void run() {
-        //mLoadingRunnable有可能在新线程中 进行
-        //为什么在post中还要进行post：
-        //此处才是界面展现出来的时刻
-        //参见：Android应用启动优化:一种DelayLoad的实现和原理(上篇)
-        myHandler.post(mLoadingRunnable);
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+			@Override
+			public void run() {
+				//此时，界面才真实的显示出来（View的dimen此刻是有值的）
+				//则，进行资源的加载（有可能在新线程上）
+				//参见：Android应用启动优化:一种DelayLoad的实现和原理(上篇)
+				loadXXX();
+			}
+		});
     }
 });
 
-----------------------------设置windowbackground
-//定义drawable
+----------------------------一个无布局的 欢迎页面
+//定义drawable：logo_splash.xml
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 底层白色 -->
@@ -45,19 +49,20 @@ getWindow().getDecorView().post(new Runnable() {
     </item>
 </layer-list>
 
-//设置windowbackground
+//设置windowBackground
 <style name="SplashTheme" parent="AppTheme">
     <item name="android:windowBackground">@drawable/logo_splash</item>
 </style>
 
-//一个 比欢迎页还要靠前的 activity，其使用了 该主题，且不设置contentview
+//一个 启动页Activity（作为App的第一个界面），其不设置contentView，仅仅是使用SplashTheme主题
+//则该Activity能很快显示出来
+//在其中进行 具体页面的跳转
 public class LogoSplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 注意, 这里并没有setContentView, 单纯只是用来跳转到相应的Activity.
-        // 目的是减少首屏渲染
+        
+        // 具体页面的跳转
         if (AppPref.isFirstRunning(this)) {
             IntroduceActivity.launch(this);
         }
@@ -68,6 +73,7 @@ public class LogoSplashActivity extends BaseActivity {
     }
 }
 
+//manifest.xml中
 <activity
   android:name=".ui.module.main.LogoSplashActivity"
   android:screenOrientation="portrait"

@@ -3,14 +3,15 @@ android 使用双缓冲辨析及surfaceview使用例程
 	http://blog.csdn.net/cnbloger/article/details/7404485
 
 步骤：
-监听surfaceholder的创建
-监听到其创建时，就启动线程 来在缓冲区域上绘制
+监听SurfaceHolder的创建
+监听到其被创建时，就启动线程 来在缓冲区域上绘制
 	canvas = mHolder.lockCanvas()
-	canvas.drawxxx
+	canvas.drawXXX
 将缓存区域更新到屏幕上
 	mHolder.unlockCanvasAndPost(canvas);
---
-在surfaceholde被销毁时，remove该监听
+在SurfaceHolder被销毁时，remove该监听
+
+-------------------------------------------------例子
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,16 +1,16 @@
 save：创建一个存储点
-	存储的是：当前的matrix/clip等
+	存储的是：当前的状态（matrix/clip等）
 		具体可以存储哪些，参见：saveflags.png
-	返回的是一个数字count，
+	返回的是一个数字count
 		可由restoreToCount使用，来恢复到特定的 save时的状态
 
-savelayer
+saveLayer
 	同save性质相同
 	只是：
 		新建一个layer（offscreen性质的bitmap，其中每个像素的argb为(0,0,0,0)，即是：全透明），后续的canvas的绘制操作 会绘制到该layer中
-		需要通过restoretocount来 将该缓冲区刷新到 原始canvas上
+		需要通过restoreToCount来 将该缓冲区刷新到 原始canvas上
 		--
 		新的layer 会over在 老的layer上
 
-restoretocount/restore: 恢复到 某个存储点 的状态
+restoreToCount/restore: 恢复到 某个存储点 的状态（matrix/clip等）
 设save了两次，返回的数字count分别为 4和5，则如果恢复到4，则5（的save时的状态）被pop而不再存在

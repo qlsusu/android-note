@@ -7,7 +7,7 @@ http://blog.csdn.net/iispring/article/details/50472485
 	其中，Sa表示Alpha值，Sc表示color值（即是RGB）。
 
 流程上：
-1. 绘制des
+1. 绘制dst（有可能在一个新的layer上（整个layer均参与到合成中，只是有一些点的像素值为透明[0,0]）
 2. setXfermode
 3. 绘制src
 说明：src区域中的的像素 参与到 合成

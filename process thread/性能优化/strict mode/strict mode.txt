@@ -1,4 +1,6 @@
 参见：
+StrictMode机制以及使用场景
+	http://duanqz.github.io/2015-11-04-StrictMode-Analysis#222-vmpolicy
 Android性能优化第（七）篇---StrickMode严苛模式检测耗时与内存问题
 	http://www.jianshu.com/p/2ebc9363ea16
 Android严苛模式StrictMode使用详解
@@ -6,13 +8,16 @@ Android严苛模式StrictMode使用详解
 doc
 	https://developer.android.com/reference/android/os/StrictMode.html
 
-作用：
-分析ui线程上的 “非法” 操作
-	如：读写文件，读写数据库
-activity内存泄漏
-等
+Policy
+	检测 UI线程上的耗时操作（如：读写文件在UI线程上）
+		BlockGuard.setThreadPolicy(AndroidBlockGuardPolicy)
+	检测 资源泄漏（如：未正确关闭Cursor）
+		CloseGuard.setReporter(AndroidCloseGuardReporter)
+Penalty
+	检测出问题后，要进行怎样的惩罚（如：打印日志等）
 
-在application.oncreate中开启strict mode
+------------------------如何启动strict mode：
+在Application.onCreate中
 // 针对线程的相关策略
 StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().
 	detectAll().
@@ -23,3 +28,7 @@ StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().
 	penaltyLog().penaltyDeath().build());
 
 开发者选项中开启严格模式，开启之后，如果主线程中有执行时间长的操作，屏幕则会闪烁
+
+------------------------问题：
+在非ui线程上，为什么检测不出来，
+如：FileInputStream的构造函数中，没有考虑是哪个线程，都有：BlockGuard.getThreadPolicy().onReadFromDisk();

@@ -9,7 +9,7 @@ ContentProvider Timeout：内容提供者,在publish过超时10s;
 理解Android ANR的触发原理 - Gityuan博客 | 袁辉辉博客
 	http://gityuan.com/2016/07/02/android-anr/
 
-原理：
+原理（以 针对于Service 为例）：
 	在创建Service时，埋下炸弹
 	在Service创建完毕后，清除炸弹
 	如果炸弹未被清除，则爆炸
@@ -24,7 +24,7 @@ ActivityManagerService#startService
 						delay: ActiveServices#SERVICE_TIMEOUT 或 ActiveServices#SERVICE_BACKGROUND_TIMEOUT
 			来构建Service：IApplicationThread#scheduleCreateService
 				ActivityThread#handleCreateService
-					Service对象，Service#onAttach, Service#onCreate
+					创建Service对象，Service#onAttach, Service#onCreate
 					清除炸弹：ActivityManagerService#serviceDoneExecuting
 						最终调用ActiveServices#serviceDoneExecutingLocked
 							ActivityManagerService#mHandler#removeMessages(ActivityManagerService.SERVICE_TIMEOUT_MSG)

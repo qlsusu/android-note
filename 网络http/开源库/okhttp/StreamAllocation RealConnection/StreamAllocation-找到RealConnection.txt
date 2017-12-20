@@ -67,7 +67,7 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 				如果找到了，返回
 			--
 			如果没找到				
-				通过routeSelection.next来得到一个Route，根据该Route来构建RealConnection对象
+				通过routeSelection.next来得到一个Route（注意：next方式，有可能使用之前的Route来连接时 失败，则此刻 尝试使用下一个Route），根据该Route来构建RealConnection对象
 				执行StreamAllocation#acquire来更新RealConnection#allocations
 				进行TCP+TLS握手：RealConnection#connect
 					下述过程在while(true)，直到 不抛出异常而break：
@@ -104,8 +104,9 @@ StreamAllocation#newStream（由ConnectInterceptor#intercept触发）
 										ProxySelector#connectFailed
 									添加Route到routeDatabase中：下次不要再使用该Route了
 										RouteDatabase#failed
-						如果能恢复，那么会continue，继续while中的逻辑：RealInterceptorChain#proceed
-							则在其中，最终会选择另外一个Route来连接																	
+						如果能恢复，那么会continue，继续while中的逻辑：RealInterceptorChain#proceed							
+							则在其中，最终会选择另外一个Route来连接
+							注意：Request和StreamAllocation还是上次时的，HttpCodec和RealConnection为null
 				将其put到ConnectionPool中
 		RealConnection#isHealthy
 			其也是该Connection可被复用的条件

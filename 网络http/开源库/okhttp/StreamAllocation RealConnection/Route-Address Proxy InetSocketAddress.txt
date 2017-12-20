@@ -55,3 +55,4 @@ InetSocketAddress核心数据：
 			通过DNS来查询到 string类型的host 对应的ip：InetAddress#getByName(String)
 	port
 		范围：(0 - 0xFFFF)
+		2个byte

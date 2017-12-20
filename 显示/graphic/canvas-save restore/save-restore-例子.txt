@@ -8,23 +8,24 @@ protected void onDraw(Canvas canvas) {
 	int height=getHeight();
 	
 	canvas.translate(width/2, height/2);
+	
+//		此处进行save，保存了canvas当前的 matrix和clip状态（设为：状态1）
 //		count1和count2都本质上对应了同一个状态，
 //		生成两次，是为了后续的两次恢复
 	int count1=canvas.save();
 	int count2=canvas.save();
 	
 	Rect rect=new Rect(0, 0, 400, 400);
-	canvas.drawRect(rect,paint1);
-	
+	canvas.drawRect(rect,paint1);	
 	canvas.scale(0.5f, 0.5f, 200, 0);
 	canvas.drawRect(rect, paint2);
 	
-//		进行一次恢复（translate之后）
+//		恢复到canvas的状态1
 	canvas.restoreToCount(count2);
 	canvas.scale(-0.5f, -0.5f, 200, 0);
 	canvas.drawRect(rect, paint3);
 
-//		进行另一次恢复（translate之后）
+//		恢复到canvas的状态1
 	canvas.restoreToCount(count1);
 	canvas.scale(-0.5f, -0.5f, 0, 0);
 	canvas.drawRect(rect, paint4);
