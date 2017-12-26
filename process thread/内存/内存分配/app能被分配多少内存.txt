@@ -15,5 +15,5 @@ dalvik.vm.heapmaxfree=8m
 
 -----------------
 
-adb shell getprop xxx
-	如：adb shell getprop dalvik.vm.heapsize
+使用命令行来获取，如：
+adb shell getprop dalvik.vm.heapsize

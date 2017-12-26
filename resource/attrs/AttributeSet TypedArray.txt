@@ -6,20 +6,30 @@ xml中：
   android:layout_height="wrap_content"
   style="@stylel/text"/>
 
-public String getIdAttribute()，获取id属性对应的字符串，此处返回"@+id/tv"
-public String getStyleAttribute()，获取style属性对应的字符串，返回"@style/text"
-public int getIdAttributeResourceValue(int defaultValue)，返回id属性对应的int值，此处对应R.id.tv。
-
-public int getAttributeCount()，获取属性的数目，本例中返回4
+public String getIdAttribute()，获取id属性对应的字符串
+	此处返回"@+id/tv"
+public String getStyleAttribute()，获取style属性对应的字符串
+	返回"@style/text"
+public int getIdAttributeResourceValue(int defaultValue)，返回id属性对应的int值
+	此处对应R.id.tv。
+--
+public int getAttributeCount()，获取属性的数目
+	本例中返回4
 public String getAttributeName(int index)，根据属性所在位置返回相应的属性名称。
-	例如，id=0，layout_width=1，layout_height=2，style=3，如果getAttributeName(2)，则返回android:layout_height
-public String getAttributeValue(int index),根据位置返回值。本例中，getAttributeValue(2)则返回"wrap_content"。
+	本例中的index取值：id=0，layout_width=1，layout_height=2，style=3，
+	则，getAttributeName(2) 返回android:layout_height
+public int getAttributeNameResource(int index)，返回指定位置的属性的id值（系统会为每一个attr分配一个唯一的id）。
+	本例中，getAttributeResource(2)返回R.attr.layout_height。
+--
+public String getAttributeValue(int index),根据位置返回值
+	本例中，getAttributeValue(2)则返回"wrap_content"。
 public String getAttributeValue(String namespace,String name)，返回指定命名空间，指定名称的属性值，
 	该方法说明AttributeSet允许给一个XML Element的属性增加多个命名空间的属性值。
-public int getAttributeResource(int index)，返回指定位置的属性id值。
-	本例中，getAttributeResource(2)返回R.attr.layout_width。前面也说过，系统会为每一个attr分配一个唯一的id。
-public XXXType getAttributeXXXType(int index,XXXType defaultValue)，
-	其中XXXType包括int、unsigned int、boolean、float类型。
+--
+public XXX getAttribute{XXX}Value(int index,XXX defaultValue)
+public XXX getAttribute{XXX}Value(String namespace,String name,XXX defaultValue)
+	其中XXX可为：boolean、int、unsigned int、float
+	也可为：List、Resource
 	使用该方法时，必须明确知道某个位置（index）对应的数据类型，否则会返回错误。而且该方法仅适用于特定的类型，如果某个属性值为一个style类型，或者为一个layout类型，那么返回值都将无效。
 
 ------------------------------TypedValue

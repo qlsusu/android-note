@@ -4,4 +4,4 @@ Bitmap screenShotAsBitmap = Bitmap.createBitmap(viewRoot.getDrawingCache());
 viewRoot.setDrawingCacheEnabled(false);  
 // use screenShotAsBitmap as you need
 
-说明：如果viewRoot为 getWindow().getDecorView().getRootView()时，就变成了 截取整个屏幕
+说明：如果上例中的viewRoot为 getWindow().getDecorView().getRootView()时，就变成了 截取整个屏幕

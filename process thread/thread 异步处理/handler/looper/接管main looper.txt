@@ -22,7 +22,7 @@ new Handler(Looper.getMainLooper()).post(new Runnable() {
 			//下述内容，本质上就是：Looper#loop
 			//只是去除了 诸如：打印 等非核心流程
             for (; ; ) {
-                //调用 mainlooper.messsagequeue.next() 得到message
+                //调用 mainLooper.MessageQueue.next() 得到message
                 Message msg = (Message) methodNext.invoke(queue);
                 if (msg == null) {
                     return;

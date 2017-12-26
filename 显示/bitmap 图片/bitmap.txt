@@ -1,4 +1,6 @@
 参见：
+Android Training - 高效地显示Bitmap(Lesson 4 - 优化Bitmap的内存使用)
+	http://hukai.me/android-training-displaying-bitmaps-efficiently-lesson-4/
 mycsdn/那个大图片
 	避免oom
 	decodestream
@@ -6,15 +8,23 @@ mycsdn/那个大图片
 			sampleinsize
 	lrucache
 	decoderesource
-http://blog.csdn.net/qlsusu/article/details/7836036
-Android Training - 高效地显示Bitmap(Lesson 4 - 优化Bitmap的内存使用)
-	http://hukai.me/android-training-displaying-bitmaps-efficiently-lesson-4/
+用bitmap.recycle，并不是那么的straightforward
+	http://blog.csdn.net/qlsusu/article/details/7836036
+
+加载（参见：BitmapTool#getBitmapXXX）：
+使用BitmapFactory#decodeStream来进行加载
+InputStream的来源：
+	如果图片来自于assets：AssetManager#open
+	如果图片来自于res：Resources#openRawResource
+		注意：需要设置options.inDensity和inTargetDensity，才能和BitmapFactory#decodeResource的效果一致，如：
+        options.inDensity = 480;
+        options.inTargetDensity = getApplication().getResources().getDisplayMetrics().densityDpi;
 
 尺寸
 通过decodeResource()来加载的图片，会进行缩放（当bitmapfactory.options.inScaled为true时（默认为true））
 缩放比例：inTargetDensity / inDensity
-	如果图片被放入了drawable下，则indensity为160（默认值），如果被放入了drawable-xxhdpi中，则indensity为480
-	也可以自定义indensity
+	如果图片被放入了drawable下，则inDensity为160（默认值），如果被放入了drawable-xxhdpi中，则inDensity为480
+	也可以自定义inDensity
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = 1;
@@ -33,7 +43,8 @@ Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
 	true);
 --
 另外一种解释
-	BitmapDrawable，其尺寸由getIntrinsicWidth和getIntrinsicHeight给出，其值由：bitmap的尺寸，在哪个drawable文件下（sourceDpi），手机自身的dpi（targetDpi） 来决定
+	BitmapDrawable，其尺寸由getIntrinsicWidth和getIntrinsicHeight给出，
+	其值由：bitmap的尺寸（size），在哪个drawable文件下（sdensity），手机自身的dpi（tdensity） 来决定
 		公式：尺寸=( (size * tdensity) + (sdensity >> 1) ) / sdensity;  
 	在创建对象时，请使用带resource参数的构造函数，否则，认为targetDpi为默认160
 	参见：http://blog.csdn.net/jason_wks/article/details/8283224
@@ -47,9 +58,9 @@ Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
 	// 准备裁剪的矩阵
 	Rect rect = new Rect(0, 0,
 			originBitmap.getWidth(), originBitmap.getHeight());
-	或者：
-	RectF rectF = new RectF(new Rect(0, 0,
-			originBitmap.getWidth(), originBitmap.getHeight()));
+	//或者：
+	//RectF rectF = new RectF(new Rect(0, 0,
+	//		originBitmap.getWidth(), originBitmap.getHeight()));
 
 	//将图片画到一个独立的canvas上（从一个bitmap来）
 	Bitmap roundBitmap = Bitmap.createBitmap(originBitmap.getWidth(),
@@ -84,6 +95,3 @@ lrucache
 缩略图
 理解ThumbnailUtils
 	http://www.jayfeng.com/2016/03/16/%E7%90%86%E8%A7%A3ThumbnailUtils/
-
-
-
