@@ -19,7 +19,7 @@ public String getAttributeName(int index)，根据属性所在位置返回相应
 	本例中的index取值：id=0，layout_width=1，layout_height=2，style=3，
 	则，getAttributeName(2) 返回android:layout_height
 public int getAttributeNameResource(int index)，返回指定位置的属性的id值（系统会为每一个attr分配一个唯一的id）。
-	本例中，getAttributeResource(2)返回R.attr.layout_height。
+	本例中，getAttributeNameResource(2)返回R.attr.layout_height。
 --
 public String getAttributeValue(int index),根据位置返回值
 	本例中，getAttributeValue(2)则返回"wrap_content"。
