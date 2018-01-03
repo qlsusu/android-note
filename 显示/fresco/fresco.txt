@@ -27,7 +27,7 @@ DraweeHierarchy
 		在JAVA代码中使用Drawees
 			https://www.fresco-cn.org/docs/using-drawees-code.html
 DraweeController
-	负责和 image loader 交互（ Fresco 中默认为 image pipeline, 当然你也可以指定别的），等其他控制
+	负责和 image loader 交互（Fresco 中默认为 image pipeline, 当然你也可以指定别的），等其他控制
 image pipeline
 	负责图片的获取
 	ImageRequest

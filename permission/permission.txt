@@ -1,2 +1,1 @@
-判断调用方进程（如ipc通信中的 client进程）是否拥有某个权限（可在server进程的 onbind方法中使用）
-checkCallingOrSelfPermission(${权限名}) == PackageManager.PERMISSION_DENIED
+检查某个进程是否拥有某权限，参见：binder身份校验.txt

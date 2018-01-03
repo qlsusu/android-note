@@ -7,6 +7,7 @@ Android应用程序启动过程源代码分析
 	http://www.jianshu.com/p/9ecea420eb52
 
 背景：当前界面为appA的activityA，现在要启动 appB的activityB
+（也可参见：viewroot的创建 及 和wms建立关系.txt）
 在appA中，通过IActivityManager，向AMS发请求：要求启动 appB的activityB
 	Activity#startActivity
 		Activity#startActivityForResult
@@ -32,12 +33,13 @@ AMS收到该IApplicationThread
 				执行Application#onCreate
 AMS发现 之前要启动的ActivityRecord（对应activityB） 的app（ProcessRecord）为空（因为为空，才创建进程的么），但是刚被attach的ProcessRecord的 name和uid 均满足ActivityRecord的要求，那么，启动该ActivityRecord
 AMS通过 appB的IApplicationThread，要求 启动activityB
+	（ActivityThread.ApplicationThread#scheduleLaunchActivity）
 appB的ApplicationThread 要求 ActivityThread 启动activityB
+	（ActivityThread.handleLaunchActivity）
 	创建activityB对象
 	创建application对象（如果需要）
 	activityB.attach
-	执行activityB.onCreate
-		后续的流程参见：viewroot的创建.txt
+	执行activityB.onCreate		
 	执行activityB.onRestoreInstanceState
 
 --------------------------------------------------其他的核心概念

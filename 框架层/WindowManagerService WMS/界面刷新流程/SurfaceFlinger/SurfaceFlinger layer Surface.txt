@@ -5,7 +5,7 @@ Android应用程序与SurfaceFlinger服务的关系概述和学习计划 - CSDN博客
 App进程 将待绘制的UI数据写入到 匿名共享内存中
 SurfaceFlinger 从该匿名共享内存中 获取UI数据 并绘制到屏幕上
 
-该匿名内存 通过SharedClient 可被访问到
+该匿名内存 通过SharedClient（在SurfaceFlinger所在进程） 可被访问到
 一个SharedClient对应一个App进程
 其内部有32个SharedBufferStack，而每个SharedBufferStack对应一个Surface（即：对应一个ViewRoot（大部分情况下，可以认为对应于一个Window））
 	即是：一个App进程，在绘制时，最多允许31个Window来叠加

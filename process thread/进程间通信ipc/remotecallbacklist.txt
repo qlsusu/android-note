@@ -2,12 +2,13 @@ client调用server的 IA接口的方法 传入IB接口的对象
 server收到该IB接口对象后，将其register到RemoteCallbackList
 
 RemoteCallbackList应该负责什么：
-	维护一个 ArrayMap<IBinder, Callback> mCallbacks 来保存IB
-		当server执行了某些操作，可通过该mCallbacks 来通知所有的client
-		也提供RemoteCallbackList#unregister来反注册IB
-	当client进程被杀时，应该检测到 之前client向server传送的IB接口对象无效了
-		如何检测：IB对象.asbinder.linktodeath(DeathRecipient)，
-			该DeathRecipient的实现是 RemoteCallbackList.Callback
-		当client被杀时，RemoteCallbackList.Callback#binderDied被调用
-			mCallbacks中remove掉IB对象
-			调用RemoteCallbackList#onCallbackDied(E)
+维护一个 ArrayMap<IBinder, Callback> mCallbacks 来保存IB
+	通过RemoteCallbackList#register来进行注册
+	当server执行了某些操作，可通过该mCallbacks 来通知所有的client
+	也提供RemoteCallbackList#unregister来反注册IB
+当client进程被杀时，应该检测到 之前client向server传送的IB接口对象无效了
+	如何检测：IB对象.asbinder.linkToDeath(DeathRecipient)，
+		该DeathRecipient的实现是 RemoteCallbackList.Callback
+	当client被杀时，RemoteCallbackList.Callback#binderDied被调用
+		mCallbacks中remove掉IB对象
+		调用RemoteCallbackList#onCallbackDied(E)

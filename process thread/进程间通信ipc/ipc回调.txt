@@ -20,6 +20,7 @@ ServiceConnection的onServiceConnect()可能如下实现：
         IMyLogic iMyLogic = IMyLogic.Stub.asInterface(service);
         try {
             iMyLogic.add(1, 3, new IMyLogicCallback.Stub() {
+				//注意：该方法被调用在 client的binder线程池中
                 @Override
                 public void onGetResult(int result) throws RemoteException {
                     System.out.println("callback result:" + result);

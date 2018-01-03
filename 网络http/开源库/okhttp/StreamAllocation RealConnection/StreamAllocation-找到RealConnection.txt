@@ -2,11 +2,12 @@
 StreamAllocation是什么：
 	目的：其为一个Request来找到Reponse
 	创建地点：RetryAndFollowUpInterceptor#intercept中
-	该Reponse可能来自缓存（CacheInterceptor#intercept中）
-	也有可能 来自一个真实的网络请求
-		寻找了一个RealConnection（ConnectInterceptor#intercept中）
-			来自ConnectionPool，或，新建一个RealConnection
-		构建流（HttpCodec（其含有Source, Sink））来和服务器进行数据交互（CallServerInterceptor.intercept中进行）
+	该Reponse来源
+		. 来自缓存（CacheInterceptor#intercept中）
+		. 来自一个真实的网络请求
+			寻找了一个RealConnection（ConnectInterceptor#intercept中）
+				来自ConnectionPool，或，新建一个RealConnection
+			构建流（HttpCodec（其含有Source, Sink））来和服务器进行数据交互（CallServerInterceptor.intercept中进行）
 
 vs RealConnection：
 	RealConnection 对应了一个真实的socket连接（Socket/SSLSocket）

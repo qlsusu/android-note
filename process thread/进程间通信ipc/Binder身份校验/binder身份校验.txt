@@ -1,0 +1,39 @@
+参见：
+Android-IPC进程间通信机制 - CSDN博客
+	http://blog.csdn.net/rozol/article/details/75451825
+
+当client请求server时，server可以确保client符合某些条件，如：
+. client需要具备指定权限
+. client为指定包名
+
+------------------------------------例子
+//XXXService.java中
+@Override
+public IBinder onBind(Intent intent) {
+	// 检查权限
+	int check = checkCallingOrSelfPermission("me.luzhuo.ipc.permission.ACCESS_BINDER_SERVICE"); // 检查自己与其他调用者是否有该权限
+	if (check == PackageManager.PERMISSION_DENIED) return null; // 如果没有该权限,则返回null
+
+	return mBinder;
+}
+
+private Binder mBinder = new IXXXService.Stub(){
+	@Override
+	public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+		// 检查权限
+		int check = checkCallingOrSelfPermission("me.luzhuo.ipc.permission.ACCESS_BINDER_SERVICE"); // 检查自己与其他调用者是否有该权限
+		// 如果没有该权限,则返回false(请求失败)
+		// 当返回false时，并没有走到 ipc逻辑执行的主体，此时，并不会抛出异常
+		// 如果ipc逻辑有返回值，那么该返回值为 类型的默认值（如：int为0）
+		if (check == PackageManager.PERMISSION_DENIED) return false; 
+
+		// 验证包名: 使用Uid来获取包名,如果包名不是开始于"me.luzhuo则验证失败,验证不通过,则执行失败
+		String[] packages = getPackageManager().getPackagesForUid(getCallingUid()); // 客户端的Uid:getCallingUid Pid: getCallingPid
+		if (packages != null && packages.length > 0)
+			if (!packages[0].startsWith("me.luzhuo")) return false;
+
+		return super.onTransact(code, data, reply, flags);
+	}
+	
+	...
+}

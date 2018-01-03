@@ -1,6 +1,20 @@
 参见：
 Android面试一天一题（Day 35：神秘的Binder机制）
 	http://www.jianshu.com/p/c7bcb4c96b38
+Android IPC 机制 - Pqpo's Notes
+	https://pqpo.me/2017/03/14/android-ipc-mechanism/
+Android Bander设计与实现 - 设计篇 - CSDN博客
+	http://blog.csdn.net/universus/article/details/6211589
+Binder系列—开篇 - Gityuan博客 | 袁辉辉博客
+	http://gityuan.com/2015/10/31/binder-prepare/
+	有一个系列
+Android Binder 机制 | ngudream
+	http://ngudream.com/2017/03/14/android-binder/
+Android进程间通信（IPC）机制Binder简要介绍和学习计划 - 老罗的Android之旅 - CSDN博客
+	http://blog.csdn.net/luoshengyang/article/details/6618363
+	老罗的
+为什么 Android 要采用 Binder 作为 IPC 机制？ - 知乎
+	https://www.zhihu.com/question/39440766
 
 binder机制的角色：
 . client进程
@@ -15,7 +29,11 @@ binder机制的角色：
 为什么采用binder来实现IPC：
 . 效率
 	数据需要拷贝1次
+	普通client-server传递数据时，client将数据拷贝给内核，后再从内核拷贝数据到server
+	binder机制采用 进程虚拟地址空间和内核虚拟地址空间，则一个物理内存页面，被映射到 上述2个虚拟空间
+	则client拷贝数据到内核空间，后server和内核共享这部分数据（这就减少了 内核-server间的数据拷贝）
 . 通信双方的身份校验
+	参见：binder身份校验.txt
 
 底层源码流程：
 service 向ams提供binder（通过service.onbind()返回）
@@ -49,6 +67,7 @@ aidl的通信：
 	定义了IMyLogic.Stub（其继承于Binder，也实现IMyLogic）
 		通过构造函数，指名该Stub对象关联IMyLogic（attachInterface）
 		实现Binder.onTransact()方法
+			（该方法被调用在 binder线程池中）
 			判断要调用什么方法（switch code）
 			对I接口进行验证（enforceInterface），
 			读取in parcel 来获取 输入参数

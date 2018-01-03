@@ -1,0 +1,6 @@
+管道（Pipe）、
+信号（Signal）和跟踪（Trace）、
+Socket、
+报文队列（Message）、
+共享内存（Shared Memory）、
+信号量（Semaphore）

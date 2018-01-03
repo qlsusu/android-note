@@ -4,10 +4,9 @@ Android应用Activity、Dialog、PopWindow、Toast窗口添加机制及源码分
 第8章  深入理解Surface系统
 	http://wiki.jikexueyuan.com/project/deep-android-v1/surface.html
 
-AMS->ApplicationThread->ActivityThread.scheduleLaunchActivity
-后，ActivityThread.handleLaunchActivity
+AMS->ApplicationThread.scheduleLaunchActivity->ActivityThread.handleLaunchActivity
 	ActivityThread.performLaunchActivity中
-		创建activity对象，application对象，context对象
+		创建Activity对象，Application对象，Context对象
 		activity.attach
 			创建PhoneWindow
 			为其设置诸如 callback（本质上就是activity）等
