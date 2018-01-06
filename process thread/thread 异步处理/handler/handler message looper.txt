@@ -28,8 +28,12 @@ handler.sendMessage
 	handler.enqueueMessage
 		messagequeue.enqueueMessage
 
-------------------------主线程的handler
-new handler(looper.getmainlooper())
+------------------------主线程的Looper，Handler
+主线的Looper为：Looper.getmainlooper()
+在ActivityThread#main中，执行了Looper#prepareMainLooper
+
+主线程的Handler：ActivityThread#mH	
+而我们的程序中可用的形式为：new Handler(Looper.getMainLooper())
 
 ------------------------在新线程上使用handler
 new Thread() {

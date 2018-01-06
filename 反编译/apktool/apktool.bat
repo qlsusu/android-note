@@ -1,3 +1,3 @@
 @echo off
 set PATH=%CD%;%PATH%;
-java -jar -Duser.language=en "%~dp0\apktool_2.0.0rc2.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9
+java -jar -Duser.language=en "%~dp0\apktool_2.0.0rc3.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9

@@ -7,7 +7,7 @@ OKHttp源码解析(六)--中阶之缓存基础 - 简书
 获得request的candidate cache：
 okhttp3.Cache#get
 	得到key: okhttp3.Cache#key
-		ByteString.encodeUtf8(httpUrl.toString()).md5().hex();
+		ByteString.encodeUtf8(request.url.toString()).md5().hex();
 	okhttp3.internal.cache.DiskLruCache#get
 
 CacheControl对应着 header中的cache-control
@@ -31,7 +31,7 @@ CacheInterceptor#intercept
 					当缓存过期，但是response中存在ETag/Last_Modified/Date头
 						此刻，networkRequest不为null
 						会为networkRequest添加头信息：
-						If-None-Match: ETag
+						当etag存在时，If-None-Match: ETag
 						当etag不存在时，If-Modified-Since: Last_Modified 或 Date
 				什么情况下cacheResponse为空：
 					request.isHttps() && cacheResponse.handshake() == null
@@ -57,7 +57,7 @@ CacheInterceptor#intercept
 						|| method.equals("PUT")
 						|| method.equals("DELETE")
 						|| method.equals("MOVE");     // WebDAV
-				缓存方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(HttpUrl.toString()).md5().hex()
+				缓存方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(response.request.url.toString()).md5().hex()
 					参见：okhttp3.Cache#key
 			CacheInterceptor#cacheWritingResponse
 

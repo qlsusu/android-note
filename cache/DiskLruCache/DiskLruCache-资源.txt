@@ -1,0 +1,12 @@
+参见：
+Android使用磁盘缓存DiskLruCache - 简书
+	https://www.jianshu.com/p/f9cfbea586c2
+Android DiskLruCache完全解析，硬盘缓存的最佳方案 - 郭霖的专栏 - CSDN博客
+	http://blog.csdn.net/guolin_blog/article/details/28863651
+源码：
+    https://github.com/JakeWharton/DiskLruCache
+	okhttp3.internal.cache.DiskLruCache
+OKHttp源码解析(七)--中阶之缓存机制 - 简书
+	http://www.jianshu.com/p/a68dc1ca6120
+优雅的构建 Android 项目之磁盘缓存(DiskLruCache)
+    https://gold.xitu.io/post/589d2c862f301e0069b92c04

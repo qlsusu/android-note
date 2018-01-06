@@ -1,1 +1,9 @@
+参见：
+Android中的权限管理（基于Permission ProtectionLevel） - CSDN博客
+	http://blog.csdn.net/jltxgcy/article/details/48288467
+
 检查某个进程是否拥有某权限，参见：binder身份校验.txt
+
+protectionLevel
+<permission android:name="XXX" android:protectionLevel="signatureOrSystem" />
+参见：Android中的权限管理（基于Permission ProtectionLevel） - CSDN博客

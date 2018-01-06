@@ -76,7 +76,7 @@ Response getResponseWithInterceptorChain() throws IOException {
 . 本AsyncCall完成后
     Dispatcher#finished(RealCall) 或 Dispatcher#finished(RealCall.AsyncCall)
         Dispatcher#finished(Deque<T> calls, T call, boolean promoteCalls)
-            将Call从相应的队列中移出 runningSyncCalls 或 runningAsyncCalls中移出
+            将Call从相应的队列 runningSyncCalls 或 runningAsyncCalls中移出
             Dispatcher#promoteCalls
                 试图执行 readyAsyncCalls中的Call
 . 更新了maxRequests 或 maxRequestsPerHost时
