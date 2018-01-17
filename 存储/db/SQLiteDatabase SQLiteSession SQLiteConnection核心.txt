@@ -1,0 +1,69 @@
+参见：
+SQLiteConnectionPool学习笔记 - CSDN博客
+	http://blog.csdn.net/guoqifa29/article/details/50741993
+Android sqlite数据库连接池连接异常分析 - Android开发论坛 - 51CTO技术论坛_中国领先的IT技术社区
+	http://bbs.51cto.com/thread-1113117-1.html
+【Android基础篇】SQLite数据库的增删改查基本操作
+	http://blog.csdn.net/zgljl2012/article/details/44769043
+
+构建：
+static SQLiteDatabase#openDatabase
+	构建SQLiteDatabase对象
+	SQLiteDatabase#open 
+		SQLiteDatabase#openInner
+			创建连接池mConnectionPoolLocked
+			创建主连接SQLiteConnectionPool#mAvailablePrimaryConnection（通过SQLiteConnectionPool#open()）
+				SQLiteConnectionPool有 1个主连接 和 几个非主连接
+				
+数据库修改操作（如：update, transaction相关（begin, commit））（下文以update为例）：
+大体流程：SQLiteDatabase-SQLiteSession（对应于单个线程）-SQLiteConnection
+SQLiteDatabase#update
+	SQLiteDatabase#updateWithOnConflict
+		SQLiteStatement#executeUpdateDelete
+			SQLiteSession#executeForChangedRowCount
+				说明：SQLiteSession为：ThreadLocal<SQLiteSession> SQLiteDatabase#mThreadSession
+					每个线程对应一个
+				流程：
+				获得SQLiteConnection：SQLiteSession#acquireConnection
+					SQLiteSession#mConnection是否为null，如果不为null，直接使用该连接，mConnectionUseCount += 1
+						什么时候不为null：当SQLiteSession#beginTransaction时，申请了一个连接来begin事务，而后该连接未被release
+					如果为null，SQLiteConnectionPool#acquireConnection
+						以获取非主连接为例（通过SQLiteConnectionPool#tryAcquireNonPrimaryConnectionLocked）：
+							判断mAvailableNonPrimaryConnections中是否有连接
+							如果有，找到合适的 取来用：mAvailableNonPrimaryConnections.remove
+								如何找到合适的：如果mAvailableNonPrimaryConnections中的个数>1，且，sql对应的PreparedStatement还存在于SQLiteConnection.mPreparedStatementCache（PreparedStatementCache类型，继承于LruCache<String, PreparedStatement>）中
+									如果不存在，就使用某个SQLiteConnection（之后在操纵数据库时，会构建PreparedStatement，并放入到SQLiteConnection.mPreparedStatementCache）
+								最后放入到mAcquiredConnections中（通过SQLiteConnectionPool#finishAcquireConnectionLocked）
+							否则，是否可以构建新连接，条件：当前已开启的连接个数 < SQLiteConnectionPool#mMaxConnectionPoolSize
+								（mMaxConnectionPoolSize：对于非WAL模式，为1，对于WAL模式，最大为2：SQLiteConnectionPool#setMaxConnectionPoolSizeLocked）
+								如果可以，创建连接：SQLiteConnectionPool#openConnectionLocked
+									并放入到mAcquiredConnections中
+								如果不可以，等待
+									构建ConnectionWaiter（其拥有priority），按照priority顺序（↓） 插入到mConnectionWaiterQueue中
+									LockSupport.parkNanos
+										等待时长：在未被主动唤醒下，等待SQLiteConnectionPool#CONNECTION_POOL_BUSY_MILLIS
+										被唤醒场景：
+											. 主动唤醒：SQLiteConnectionPool#releaseConnection 中 SQLiteConnectionPool#wakeConnectionWaitersLocked
+											. 等待时间到
+										被唤醒后，判断是否获得了连接：waiter.mAssignedConnection有值（主动唤醒场景中，会为其赋值）
+											如果获得了，返回
+											如果没有获得，继续等待							
+				SQLiteConnection#executeForChangedRowCount(String sql, Object[] bindArgs,CancellationSignal cancellationSignal)
+					构建SQLiteConnection.PreparedStatement
+					执行数据库操作
+				SQLiteSession#releaseConnection					
+					当 --mConnectionUseCount == 0，SQLiteConnectionPool#releaseConnection					
+						并非真实的close掉该连接，而是复用：
+						将连接从mAcquiredConnections中移除，添加到mAvailableNonPrimaryConnections中											
+						try唤醒mConnectionWaiterQueue中的所有waiter（尽力）：SQLiteConnectionPool#wakeConnectionWaitersLocked
+							根据waiter的请求连接类型（主连接 非主连接）来再尝试获取连接（如：SQLiteConnectionPool#tryAcquireNonPrimaryConnectionLocked）
+							如果能申请的到
+								设置该waiter.mAssignedConnection								
+								LockSupport.unpark(该waiter.mThread)
+									而在waiter.mThread上，继续执行SQLiteConnectionPool#waitForConnection的后续流程								
+									
+SQLiteDatabase#endTransaction
+	SQLiteSession#endTransaction
+		SQLiteSession#endTransactionUnchecked
+			SQLiteConnection执行commit
+			SQLiteSession#releaseConnection

@@ -1,0 +1,22 @@
+-------------------圆角矩形的Bitmap
+// 准备画笔
+Paint paint = new Paint();
+paint.setAntiAlias(true);
+
+Bitmap roundBitmap = Bitmap.createBitmap(originBitmap.getWidth(),
+		originBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+Canvas canvas = new Canvas(roundBitmap);
+
+// 准备裁剪的矩阵
+Rect rect = new Rect(0, 0, originBitmap.getWidth(), originBitmap.getHeight());
+//或者：RectF rectF = new RectF(new Rect(0, 0, originBitmap.getWidth(), originBitmap.getHeight()));
+// 圆角矩阵，radius为圆角大小
+canvas.drawRoundRect(rectF, radius, radius, paint);
+paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+canvas.drawBitmap(originBitmap, rect, rect, paint);
+//之后将roundBitmap绘制到 源canvas上
+
+-------------------子矩形的Bitmap
+Bitmap clipBitmap = Bitmap.createBitmap(originBitmap,
+	left, top,
+	clipWidth, clipHeight);

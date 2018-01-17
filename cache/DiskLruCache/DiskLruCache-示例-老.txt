@@ -1,0 +1,97 @@
+//使用rxandroid+retrofit进行请求
+public void loadDataByRxandroidRetrofit() {
+    mINewsListActivity.showProgressBar();
+    Subscription subscription = ApiManager.getInstence().getDataService()
+            .getZhihuDaily()
+            .map(new Func1<ZhiHuDaily, ArrayList<ZhihuStory>>() {
+                @Override
+                public ArrayList<ZhihuStory> call(ZhiHuDaily zhiHuDaily) {
+                    ArrayList<ZhihuStory> stories = zhiHuDaily.getStories();
+                    if (stories != null) {
+                        //加载成功后将数据缓存倒本地(demo 中只有一页，实际使用时根据需求选择是否进行缓存)
+                        makeCache(zhiHuDaily.getStories());
+                    }
+                    return stories;
+                }
+            })
+            //设置事件触发在非主线程
+            .subscribeOn(Schedulers.io())
+            //设置事件接受在UI线程以达到UI显示的目的
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<ArrayList<ZhihuStory>>() {
+                @Override
+                public void onCompleted() {
+                    mINewsListActivity.hidProgressBar();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mINewsListActivity.getDataFail("", e.getMessage());
+                }
+
+                @Override
+                public void onNext(ArrayList<ZhihuStory> stories) {
+                    mINewsListActivity.getDataSuccess(stories);
+                }
+            });
+    //绑定观察对象，注意在界面的ondestory或者onpouse方法中调用presenter.unsubcription();
+    addSubscription(subscription);
+}
+
+//生成Cache
+private void makeCache(ArrayList<ZhihuStory> stories) {
+    File cacheFile = getCacheFile(MyApplication.getContext(), Constants.ZHIHUCACHE);
+    DiskLruCache diskLruCache = DiskLruCache.open(cacheFile, MyApplication.getAppVersion(), 1, Constants.CACHE_MAXSIZE);
+    try {
+        //使用MD5加密后的字符串作为key，避免key中有非法字符
+        String key = SecretUtil.getMD5Result(Constants.ZHIHUSTORY_KEY);
+        DiskLruCache.Editor editor = diskLruCache.edit(key);
+        if (editor != null) {
+            ObjectOutputStream outputStream = new ObjectOutputStream(editor.newOutputStream(0));
+            outputStream.writeObject(stories);
+            outputStream.close();
+            editor.commit();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+//加载Cache
+public void loadCache() {
+    File cacheFile = getCacheFile(MyApplication.getContext(), Constants.ZHIHUCACHE);
+    DiskLruCache diskLruCache = DiskLruCache.open(cacheFile, MyApplication.getAppVersion(), 1, Constants.CACHE_MAXSIZE);
+    String key = SecretUtil.getMD5Result(Constants.ZHIHUSTORY_KEY);
+    try {
+        DiskLruCache.Snapshot snapshot = diskLruCache.get(key);
+        if (snapshot != null) {
+            InputStream in = snapshot.getInputStream(0);
+            ObjectInputStream ois = new ObjectInputStream(in);
+            try {
+                ArrayList<ZhihuStory> stories = (ArrayList<ZhihuStory>) ois.readObject();
+                if (stories != null) {
+                    mINewsListActivity.getDataSuccess(stories);
+                } else {
+                    mINewsListActivity.getDataFail("", "无数据");
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+//获取Cache 存储目录
+private  File getCacheFile(Context context, String uniqueName) {
+    String cachePath = null;
+    if ((Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+            || !Environment.isExternalStorageRemovable())
+            && context.getExternalCacheDir() != null) {
+        cachePath = context.getExternalCacheDir().getPath();
+    } else {
+        cachePath = context.getCacheDir().getPath();
+    }
+    return new File(cachePath + File.separator + uniqueName);
+}

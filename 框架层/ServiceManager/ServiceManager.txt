@@ -14,5 +14,5 @@ ServiceManager.class向开发者屏蔽了 IServiceManager相关的细节：
 
 IServiceManager运行于 系统级进程中
 如何获得IServiceManager的remote binder：
-	ServiceManager#getIServiceManager
+	ServiceManager#getIServiceManager （静态方法）
 		ServiceManagerNative.asInterface(BinderInternal.getContextObject());

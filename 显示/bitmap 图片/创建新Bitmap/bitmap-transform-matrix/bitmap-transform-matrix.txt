@@ -1,0 +1,18 @@
+只有Bitmap#createBitmap才会涉及Matrix，BitmapFactory#decodeStream并不会
+也即是：首先需要先获得源Bitmap，才能进一步通过坐标变换得到新的Bitmap
+
+Bitmap#createBitmap(Bitmap source, int x, int y, int width, int height, Matrix matrix, boolean filter)
+source经过 坐标变换matrix后 可生成一个新的Bitmap
+
+新的Bitmap的大小：
+source经过坐标变化后，4个顶点的边界值 构成了新Bitmap的大小
+
+举例1：
+老的dimen为(126,126)
+当matrix为 旋转45度时
+新的dimen为(178,178)
+
+举例2：
+老的dimen为(126,126)
+当matrix为 x方向上平移disX时
+新的dimen为(126,126)，并不是：(126+disX,126)，则在展示效果上，展示这两个Bitmap 并没有什么不同

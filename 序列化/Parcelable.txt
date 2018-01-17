@@ -8,7 +8,7 @@ Android Parcelable和Serializable的区别
 序列化/反序列化
 --
 Parcelable本质：
-    序列化时，将对象写入到parcel中（parcel类似 流）
+    序列化时，将对象写入到parcel中（Parcelable#writeToParcel）
     反序列化时，通过CREATOR 将parcel转换成对象
 
 为什么使用：
@@ -31,7 +31,7 @@ public class MyParcelable implements Parcelable {
     //其中User类也实现了Parcelable
     public User user;
 
-	// 通过parcel来构造出 实体对象（或者定义一个函数：readfromparcel(parcel)）
+	// 通过parcel来构造出 实体对象（或者定义一个函数：readFromParcel(Parcel)）
     // 什么场景需要：ipc通信中，server的binder读取parcel，需要从该parcel中 反序列化到 实体对象（通过CREATOR.createFromParcel）
     // 注意：写入和读取的类型及顺序一致
     protected MyParcelable(Parcel in) {
@@ -56,7 +56,7 @@ public class MyParcelable implements Parcelable {
     //从parcel中提取信息，赋予给变量
     //什么场景下用到：
     //. 构造函数中
-    //. 在aidl中，对于out/inout类型的参数，需要从replay parcel中提取信息
+    //. 在aidl中，对于out/inout类型的参数，需要从reply parcel中提取信息
     public void readFromParcel(Parcel in) {
     	mData = in.readInt();
         mStr = in.readString();

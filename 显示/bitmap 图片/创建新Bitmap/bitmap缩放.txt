@@ -1,0 +1,4 @@
+Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
+	dstWidth,
+	dstHeight,
+	true);

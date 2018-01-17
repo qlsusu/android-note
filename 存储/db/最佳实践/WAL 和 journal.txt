@@ -1,0 +1,46 @@
+参见：
+Write-Ahead Logging
+	http://sqlite.org/wal.html
+Android使用SQLITE3 WAL模式 - CSDN博客
+	http://blog.csdn.net/degwei/article/details/9708339
+
+WAL: write-ahead log
+
+----------------------------------------------WAL模式
+The original content is preserved in the database file and 
+	the CHANGES are appended into a separate WAL file. 
+A COMMIT occurs when a special record indicating a commit is appended to the WAL. 
+	注意：commit 不会使得 WAL文件和.db 进行合并
+Thus a COMMIT can happen 
+	without 
+	ever writing to the original database, 
+	which allows readers to continue operating from the original unaltered database 
+		while changes are simultaneously being committed into the WAL. 
+Multiple transactions can be appended to the end of a single WAL file.
+而当rollback时，仅仅是删除WAL文件
+--
+check point：WAL 和 .db 的合并
+	Moving the WAL file transactions back into the database is called a "checkpoint".
+	从开发角度，SQLiteDatabase.endTransaction时，会执行check point
+	
+如何开启：
+SQLiteOpenHelper#setWriteAheadLoggingEnabled(true)（时机：在SQLiteOpenHelper#getXXXDatabase之前）
+
+-------之下为老的内容：
+The best way to enable write-ahead logging is to pass the ENABLE_WRITE_AHEAD_LOGGING flag to openDatabase(String, SQLiteDatabase.CursorFactory, int). This is more efficient than calling enableWriteAheadLogging(). 
+SQLiteDatabase db = SQLiteDatabase.openDatabase("db_filename", cursorFactory,
+		 SQLiteDatabase.CREATE_IF_NECESSARY | SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING,
+		 myDatabaseErrorHandler);
+db.enableWriteAheadLogging();
+
+----------------------------------------------journal模式（老式）
+The traditional rollback journal works by 
+	writing a copy of the original UNCHANGED database content into a separate rollback JOURNAL file 
+and then 
+	writing CHANGES directly into the DATABASE file. 
+--
+In the event of a crash or ROLLBACK, 
+	the original content contained in the rollback journal 
+	is played back into the database file 
+	to revert the database file to its original state. 
+The COMMIT occurs when the rollback journal is deleted.

@@ -43,15 +43,8 @@ SQLite在多线程并发访问的应用
 	注意：因为 读 并不会阻塞 写，那么在编程实现上，在上层再额外加入同步机制（如：读写锁）来控制并发 读-写
 
 本质：
-sqlitedatabase内部有锁的机制
+SQLiteDatabase内部有锁的机制
 参见：http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
-
----------------------并发实践！！！！！
-. 我们使用一个db连接，存活周期 同于app的，不要close
-. 采用读写锁（多线程时，写写 和 读写时 需要相互等待，读读时 可以同时进行）
-. enableWriteAheadLogging
-	如果开启，意味着：读-读 读-写 可以并发，且写入的速度会快
-	如果不开启，意味着：读-读 可以并发，但是 读-写 不能并发
 
 ---------------------示例	
 class DataAccess extends SQLiteOpenHelper {
@@ -83,7 +76,7 @@ class DataAccess extends SQLiteOpenHelper {
     }
 
     private void beginTransactionWithSemaphores() {
-        getWritableDatabase().beginTransactionWithListener(new SQLiteTransactionListener() {
+        getWritableDatabase().beginTransactionWithListenerNonExclusive(new SQLiteTransactionListener() {
             @Override
             public void onBegin() {
                 w.lock();

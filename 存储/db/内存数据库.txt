@@ -1,0 +1,2 @@
+SQLiteOpenHelper的构造函数 SQLiteOpenHelper(Context context, String name, CursorFactory factory, int version) 中
+name为null

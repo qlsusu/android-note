@@ -2,9 +2,9 @@
 Andoird优化(二)_内存优化_点进来看看不会后悔的
 	http://www.jianshu.com/p/afd4d8a6dcd6
 
-Android定义了几个API，你可以用他们来了解系统中还剩多少可用内存和用了多少内存
+Android定义了几个API，你可以用他们来了解系统当前中还剩多少可用内存和用了多少内存
 ActivityManager的：
-	getMomoryInfo()     
+	getMomoryInfo(MemoryInfo)     
 	getMomoryClass()     
 	getLargeMeoryClass()
 Debug的

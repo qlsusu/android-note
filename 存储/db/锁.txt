@@ -1,6 +1,8 @@
 参见：
 SQLite 文件锁和写同步
 	http://blog.csdn.net/hustyangju/article/details/17530901
+Sqlite3 锁升级机制 - CSDN博客
+	http://blog.csdn.net/degwei/article/details/51510603
 
 锁级别：
 针对于 整个数据库文件

@@ -1,0 +1,4 @@
+Android ImageCache图片缓存，使用简单，支持预取，支持多种缓存算法，支持不同网络类型，扩展性强
+	http://www.trinea.cn/android/android-imagecache/
+Android中图片的三级缓存
+	http://www.jianshu.com/p/2cd59a79ed4a

@@ -84,7 +84,7 @@ public interface IMyLogic extends android.os.IInterface {
                     //写入 binder
                     _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
 
-                    //如果参数是in/inout类型，那么序列化 参数 到parcel
+                    //如果参数是in/inout类型，那么序列化 参数 到parcel：先写入1/0，再Parcelable.writeToParcel					
                     //如果参数是out类型，那么不序列化参数（因为server会重新new出该对象，而不使用client提供的该参数对象）
                     if ((inParcel != null)) {
                         _data.writeInt(1);
@@ -109,7 +109,7 @@ public interface IMyLogic extends android.os.IInterface {
                     //读取返回值
                     _result = _reply.readInt();
                     
-                    //如果参数是out/inout类型，那么反序列化出 参数 从parcel
+                    //如果参数是out/inout类型，那么反序列化出 参数 从parcel：先读取1/0，再Parcelable.readFromParcel
                     if ((0 != _reply.readInt())) {
                         outParcel.readFromParcel(_reply);
                     }

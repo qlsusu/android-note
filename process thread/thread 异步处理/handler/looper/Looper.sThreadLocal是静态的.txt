@@ -1,0 +1,4 @@
+Looper.sThreadLocal是 ThreadLocal类型
+是static类型，可以是static吗？：
+ThreadLocal对应的值存储在 Thread.ThreadLocalMap.Entry.value中，每个线程的ThreadLocalMap是不同的
+对于在多个线程看来，相同的Entry（是WeakReference<ThreadLocal<?>>）是被允许的

@@ -1,0 +1,12 @@
+参见：
+彻底解析Android缓存机制——LruCache - 简书
+	https://www.jianshu.com/p/b49a111147ee
+LruCache 实现原理分析 - 简书
+	https://www.jianshu.com/p/b0d1cbc4f5b8
+
+LruCache 使用LinkedHashMap来体现 last-recently-used
+
+流程：
+. 指定 大小阀值
+. put 对象1 后，更新当前缓存大小（对象1的大小定义处：int sizeOf(K key, V value)）
+. 在put后，若缓存的大小 已经超过 阀值，则，remove掉 最老的Entry

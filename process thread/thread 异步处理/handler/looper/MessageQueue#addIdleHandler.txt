@@ -1,0 +1,6 @@
+有什么用：
+当MessageQueue中 当前没有消息要被处理时，会回调MessageQueue.IdleHandler#queueIdle
+
+一个场景：
+在LeakCanary中，当RefWatcher.watch时，会为 ui线程的MessageQueue添加IdleHandler，来：执行gc来观察 被观察对象是否被回收（依次来判定其是否导致 内存泄漏）
+参见：AndroidWatchExecutor#waitForIdle

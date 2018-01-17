@@ -64,7 +64,7 @@ Application.onTrimMemory()
 Activity.onTrimMemory()
 Fragement.OnTrimMemory()
 Service.onTrimMemory()
-ContentProvider.OnTrimMemory()
+ContentProvider.onTrimMemory()
 --
 //非component时，也能得到 回调通知
 Context.registerComponentCallbacks(new ComponentCallbacks2() {
