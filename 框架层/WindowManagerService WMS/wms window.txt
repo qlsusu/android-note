@@ -19,43 +19,41 @@ Android Activity应用窗口的创建过程分析
  Android 从0开始自定义控件之 ViewRoot 与 DecorView （五）	
 	 http://blog.csdn.net/airsaid/article/details/53525335
 
-WindowManager - IWindowManager的确定：
+Window的重要属性：
+view	顶级view
+wlp		窗口参数 
+	 
+WindowManager - IWindowManager的关联：
 WindowManager
 WindowManagerImpl
 	WindowManagerGlobal（单例）
 		IWindowManager.Stub.asInterface(ServiceManager.getService("window"))
 
-Window和 Activity WindowManager关联：
-Window.mApptoken为 ActivityClientRecord.token（如果wlp.type为LayoutParams#TYPE_APPLICATION）
-Window.mWindowManager 为 WindowManagerImpl
-
-Activity和 Window, WindowManager的关联：
+Window - Activity - WindowManager 的关联：
 在Activity#attach中
-	构建了Window：mWindow = PolicyManager.makeNewWindow(this)
-	也为该window关联了WindowManager（并持有该WindowManager的引用）：WindowManagerImpl#createLocalWindowManager
-		其parentWindow为 activity创建的那个window
+	构建了Window：Activity.mWindow = PolicyManager.makeNewWindow(this)
+	也为该Window关联了WindowManager，通过Window#setWindowManager(WindowManager wm, IBinder appToken, String appName, boolean hardwareAccelerated)
+		Window.mApptoken为 ActivityClientRecord.token
+		Window.mWindowManager=((WindowManagerImpl)wm).createLocalWindowManager
+当Window和WindowManager确定了关系后，表明：Window依附于 mWindowManager#mParentWindow，如：
+	Activity依附于自身，因为：Activity.mWindow.mWindowManager.mParentwindow就是 Activity.mWindow
+	而Dialog.mWindow.mWindowManager为 Activity.mWindow.mWindowManager，也就间接表示了：Dialog.mWindow 依附于 Activity.mWindow
 
-Window和parentWindow的关系确定：
-Window 和 WindowManager关联（通过Window#setWindowManager），而WindowManager拥有parentWindow，则表明 window依附于parentWindow，如：
-	activity.windowmanager.parentwindow就是activity.window
-	而dialog依附于activity显示，其windowmanager就是使用 activity.windowmanager，也就间接表示了：dialog.window 依附于 activity.window
-
-Window的重要属性：
-view	顶级view
-wlp		窗口参数
-	
 窗口类型（3种，WindowManager.LayoutParams.type）
-ApplicationWindows
+Application Windows
 	比如：Activity的窗口
-	取值在FIRST_APPLICATION_WINDOW与LAST_APPLICATION_WINDOW之间，是常用的顶层应用程序窗口，须将token设置成Activity的token；
-SubWindows
+	其mAppToken为Activity的token
+	取值在FIRST_APPLICATION_WINDOW与LAST_APPLICATION_WINDOW之间
+Sub Windows
 	比如：Dialog
-	取值在FIRST_SUB_WINDOW和LAST_SUB_WINDOW之间，与顶层窗口相关联，需将token设置成它所附着宿主窗口的token；
-SystemWindows
+	和mWindowManager.mParentwindow相关联，其mAppToken为 parentWindow.mAppToken
+	取值在FIRST_SUB_WINDOW和LAST_SUB_WINDOW之间
+System Windows
 	比如：输入法，toast
-	取值在FIRST_SYSTEM_WINDOW和LAST_SYSTEM_WINDOW之间，不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用；
+	不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用
+	取值在FIRST_SYSTEM_WINDOW和LAST_SYSTEM_WINDOW之间
 	
-
+------------------------------------------之下需要再整理	
 共享内存
 管道是单向的吗？只能一个地方写？
 >>>touch, key事件的分发

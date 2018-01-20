@@ -1,0 +1,16 @@
+//构建代理对象（Logic是一个接口，产生的代理类是Logic的实现类）
+//调用该代理类的任何方法时，InvocationHandler#invoke会被调用
+//往往需要一个Logic src，来执行真实的业务逻辑
+public Logic make(final Logic src)
+{
+	return (Logic) java.lang.reflect.Proxy.newProxyInstance(Logic.class.getClassLoader(),
+		new Class[] {Logic.class }, new InvocationHandler()
+		{
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+			{
+				System.out.println("intercept!!");
+				return method.invoke(src, args);
+			}
+		});
+}

@@ -1,8 +1,8 @@
 参见：
-Write-Ahead Logging
-	http://sqlite.org/wal.html
 Android使用SQLITE3 WAL模式 - CSDN博客
 	http://blog.csdn.net/degwei/article/details/9708339
+Write-Ahead Logging
+	http://sqlite.org/wal.html
 
 WAL: write-ahead log
 
@@ -23,6 +23,8 @@ check point：WAL 和 .db 的合并
 	Moving the WAL file transactions back into the database is called a "checkpoint".
 	从开发角度，SQLiteDatabase.endTransaction时，会执行check point
 	
+参见：SQLiteDatabase#enableWriteAheadLogging中的注释
+	
 如何开启：
 SQLiteOpenHelper#setWriteAheadLoggingEnabled(true)（时机：在SQLiteOpenHelper#getXXXDatabase之前）
 
@@ -35,7 +37,7 @@ db.enableWriteAheadLogging();
 
 ----------------------------------------------journal模式（老式）
 The traditional rollback journal works by 
-	writing a copy of the original UNCHANGED database content into a separate rollback JOURNAL file 
+	writing a COPY of the original UNCHANGED database content into a separate rollback JOURNAL file 
 and then 
 	writing CHANGES directly into the DATABASE file. 
 --
