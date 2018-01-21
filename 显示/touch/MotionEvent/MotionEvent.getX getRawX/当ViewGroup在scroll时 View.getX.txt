@@ -1,0 +1,2 @@
+MotionEvent.getX均针对于 View在屏幕上的显示区域的 左上角顶点
+如：当ViewGroup进行了scroll（其并不会改变View.getX/Y），会导致View的显示位置发生了改变

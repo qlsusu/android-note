@@ -1,0 +1,4 @@
+在View和ViewGroup 的onTouchEvent中 分别执行getX/Y，二者的值相差多少
+final float offsetX = mScrollX - child.mLeft;
+final float offsetY = mScrollY - child.mTop;
+其中，mScrollX/Y 为ViewGroup的

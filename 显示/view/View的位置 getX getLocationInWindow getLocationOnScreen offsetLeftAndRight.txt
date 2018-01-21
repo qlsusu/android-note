@@ -17,5 +17,6 @@ View.getLocationInWindow 和 View.getLocationOnScreen
 当activity被attach到了window上，上述方法的返回值才不会是0
 	什么时候被attach了：当activity.onWindowFocusChanged()回调被调用时
 	
-offsetTopAndBottom 和 offsetleftandright
+offsetTopAndBottom 和 offsetLeftAndRight
+使得top/bottom += offset, left/right += offset
 更新了view的显示位置，同时，也同步更新view的触控区域

@@ -15,7 +15,7 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 	key被放入到mkeys，放入后，整个mkeys要保持有序
 		为了：后续查找key时，能快速定位
 		采用了 二分查找来进行 插入和查找
-当key确定了被插入的位置index，则 mvalues[index]=value
+当key确定了被插入的位置index，则 mValues[index]=value
 
 例子：
 	SparseArray<Fragment.SavedState> savedStateSparseArray = new SparseArray<>();
@@ -28,14 +28,14 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 2. key是int类型（非integer类型，对于hashmap来说）
 	则省去了int->integer的自动装箱
 
-如果key是long类型，那么使用 longsparsearray
+如果key是long类型，那么使用 longSparseArray
 
-------------------------arraymap
-其内部数据结构和 sparsearray类似
+------------------------ArrayMap
+和SparseArray不同的地方：
+key可以是任何类型（而SparseArray要求key为int类型）
+
+其内部数据结构和 SparseArray类似
 也提供了两个数组 来存储key和value
 且key数组是排好序的，根据:key.hashcode
 
 其是Bundle内部的 数据存储基础：BaseBundle中含有 ArrayMap类型的mMap
-
-和sparsearray不同的地方：
-key可以是任何类型（而sparsearray要求key为int类型）

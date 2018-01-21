@@ -20,8 +20,9 @@ View的可视区域就是墙上的窗户（初始时，和view的layout区域重
 
 scroll改变的是可视区域（窗户）的位置（view.mscrollx/y变量）（移动量的正负 参照与 坐标系的正负方向）
 其并不会改变view的layout区域的位置
+	说明：如果可视区域 已经和 view的layout区域（x/y和width/height）没有任何相交，那么该view 在视觉上 就不可见
 其并不会导致view的background发生位置变化
-说明：如果可视区域 已经和 view的layout区域（x/y和width/height）没有任何相交，那么该view 在视觉上 就不可见
+其也不会改变 孩子view的 left和translationX 与 top和translationY
 
 scrollto
 	滑动到
