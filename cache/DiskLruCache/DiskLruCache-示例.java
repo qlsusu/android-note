@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         cache = new Cache();
-
+		
         findViewById(R.id.write).setOnClickListener(new OnClickListener()
         {
             @Override
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity
             {
                 try
                 {
+					//写入
                     //一个条目对应2个缓存文件
                     //需要每个文件都写入时，才能editor.commit
                     Editor editor = cache.cache.edit(cache.key);
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity
             {
                 try
                 {
+					//读取
                     Snapshot snapshot = cache.cache.get(cache.key);
 
                     BufferedSource source = Okio.buffer(Okio.source(snapshot.getInputStream(0)));

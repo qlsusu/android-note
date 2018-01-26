@@ -1,6 +1,8 @@
 Surface
 Handle onto a raw buffer（存储着当前窗口的像素值，对应着Bitmap） that is being managed by the screen compositor.
 Surface有一个Canvas（透明的画布）
+	Surface#lockCanvas(Rect inOutDirty)
+	Surface#unlockCanvasAndPost(Canvas canvas)
 
 SurfaceView
 参见：google doc中的surfaceview

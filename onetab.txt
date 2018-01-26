@@ -1,3 +1,15 @@
+https://mp.weixin.qq.com/s?__biz=MzI0MjE3OTYwMg==&mid=2649550710&idx=1&sn=a39775baa4e7a71bd8493fb9cdfb6702&chksm=f118040bc66f8d1de418bdd36d482828f4c0afe6e22e4064a8f32a09c3c72a162af229b34def&scene=21 | 2018年快来了，BAT等一二线互联网公司Android面试题汇总
+http://blog.qiji.tech/archives/2764 | [Android]Fresco 中 Image Pipeline 流程 – 技术学习小组
+http://blog.qiji.tech/archives/category/android/fresco | Fresco – 技术学习小组
+http://blog.qiji.tech/archives/1549 | [Android]Fresco 内存管理 – 技术学习小组
+http://blog.csdn.net/eric_sunah/article/details/8001866 | JVM学习之：虚拟机中的运行时栈帧总结（一） - CSDN博客
+https://code.facebook.com/posts/366199913563917 | 无法访问 https://code.facebook.com/posts/366199913563917
+http://blog.csdn.net/sgwhp/article/details/49640611 | 浅析fresco - sgwhp的专栏 - CSDN博客
+http://szysky.com/2016/08/15/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B-08-%E7%90%86%E8%A7%A3Window%E5%92%8CWindowManager/ | 《Android 开发艺术探索》 08-理解Window和WindowManager - 筑梦 suzeyu`苏泽钰
+http://szysky.com/2016/11/28/%E6%B7%B1%E5%85%A5WindowManager/ | 深入WindowManager - 筑梦 suzeyu`苏泽钰
+http://szysky.com/2016/08/10/%E3%80%8AAndroid%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B04-View%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/ | 《Android 开发艺术探索》 04-View的工作原理 - 筑梦 suzeyu`苏泽钰
+https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings | Java bytecode instruction listings - Wikipedia
+
 https://github.com/linsir6/AndroidNote | GitHub - linsir6/AndroidNote: Android基础知识、Android进阶知识、Android自定义View相关、面试相关的知识，欢迎fork，star～
 https://www.jianshu.com/p/efdf695b04fe | Android面试大纲 - 简书
 http://blog.csdn.net/xiaole0313/article/details/62056612 | 2017 年初、阿里、腾讯、百度、华为、京东、搜狗和滴滴面试题汇集（更新篇） - CSDN博客
@@ -385,3 +397,5 @@ http://www.ygdy8.com/ | 阳光电影_免费电影_迅雷电影下载_电影天�
 https://www.bilibili.com/v/tv/overseas/#/ | 海外剧 - 哔哩哔哩 (゜-゜)つロ 干杯~-bilibili
 https://www.bilibili.com/v/tv/overseas/#/all/default | 海外剧 - 哔哩哔哩 (゜-゜)つロ 干杯~-bilibili
 https://www.bilibili.com/video/av8075360/ | 【剧情】孤独的美食家新春SP：严冬之北海道·旭川出差篇 【2016】_海外剧_电视剧_bilibili_哔哩哔哩
+
+qqbrowser://newtab | 新标签页

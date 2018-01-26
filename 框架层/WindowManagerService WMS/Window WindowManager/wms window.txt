@@ -1,0 +1,84 @@
+参见：
+Android应用Activity、Dialog、PopWindow、Toast窗口添加机制及源码分析 - CSDN博客
+	http://blog.csdn.net/yanbober/article/details/46361191
+Android应用程序窗口（Activity）实现框架简要介绍和学习计划 （等系列教程）
+	http://blog.csdn.net/luoshengyang/article/details/8170307
+	系列教程入口：http://blog.csdn.net/Luoshengyang/article/list/3
+Android窗口机制（一）初识Android的窗口结构
+	http://www.jianshu.com/p/40a9c93b5a8d
+	拥有系列教程，其为第一篇
+深入理解Activity——Token之旅
+	http://blog.csdn.net/guoqifa29/article/details/46819377
+--
+PhoneWindow,ViewRoot,Activity之间的大致关系
+	http://www.cppblog.com/fwxjj/archive/2013/01/13/197231.html
+Android Input Event Dispatching
+	http://blog.csdn.net/zhejiang9/article/details/5899982
+Android Activity应用窗口的创建过程分析
+	http://blog.csdn.net/feiduclear_up/article/details/49201357
+ Android 从0开始自定义控件之 ViewRoot 与 DecorView （五）	
+	 http://blog.csdn.net/airsaid/article/details/53525335
+
+Window是对 mView（View类型）和 mWindowAttributes（WindowManager.LayoutParams类型）的一层封装
+
+WindowManager.addView(View view, ViewGroup.LayoutParams params)
+用于：展示Window
+参见：viewroot的创建 及 和wms建立关系.txt
+
+Window - Activity - WindowManager 的关联：
+在Activity#attach中
+	构建了Window：Activity.mWindow = new PhoneWindow(this, window)
+	也为该Window关联了WindowManager：Window#setWindowManager(WindowManager wm, IBinder appToken, String appName, boolean hardwareAccelerated)
+		使用wm来创建一个WindowManagerImpl：((WindowManagerImpl)wm).createLocalWindowManager(this)
+			WindowManagerImpl.mContext = wm.mContext
+			WindowManagerImpl.mParentWindow = this Window			
+		在其中，也确定了Window-Activity的关联：Window.mApptoken为 Activity.mToken（ActivityClientRecord.token）
+	
+WindowManager - IWindowManager的关联：
+WindowManager
+WindowManagerImpl
+	WindowManagerGlobal（单例）
+		IWindowManager.Stub.asInterface(ServiceManager.getService("window"))
+
+窗口类型（3种，WindowManager.LayoutParams.type）
+Application Windows
+	比如：Activity的窗口，Dialog（WindowManager.LayoutParams#TYPE_APPLICATION）
+	其mAppToken为Activity的token
+	取值：[FIRST_APPLICATION_WINDOW, LAST_APPLICATION_WINDOW]
+Sub Windows	
+	取值：[FIRST_SUB_WINDOW, LAST_SUB_WINDOW]
+System Windows
+	比如：toast（WindowManager.LayoutParams#TYPE_TOAST）
+	不能用于应用程序，使用时需要有特殊权限，它是特定的系统功能才能使用
+	取值：[FIRST_SYSTEM_WINDOW, LAST_SYSTEM_WINDOW]
+说明：wlp.type也代表了 窗口的z-order。其越大，越靠近用户
+	
+------------------------------------------之下需要再整理	
+共享内存
+管道是单向的吗？只能一个地方写？
+>>>touch, key事件的分发
+注册管道
+	viewrootimpl.setview中
+		mWindowSession.addToDisplay(mWindow, mSeq, mWindowAttributes,
+	        getHostVisibility(), mDisplay.getDisplayId(),
+	        mAttachInfo.mContentInsets, mAttachInfo.mStableInsets,
+	        mAttachInfo.mOutsets, mInputChannel);
+	    mInputEventReceiver = new WindowInputEventReceiver(mInputChannel, Looper.myLooper()); 
+当有事件时
+	ViewRootImpl.WindowInputEventReceiver#onInputEvent
+		enqueueInputEvent
+			doProcessInputEvents
+				deliverInputEvent
+注册一个inputchannle
+wms将会产生一个管道，
+两个管道，
+	前向管道 和 反向管道
+	server往前向管道中写，client从反向管道中读
+	client从前向管道中读，client往反向管道中写
+收到事件后（按键事件，或者，touch事件），让server往前向管道中来写
+
+该channel
+
+当产生事件后，wms将该事件 分发到inputchannel中，而viewroot注册了该channel的另外一端 （具体怎么注册~！！！！！！！！！！，老罗的文章）
+则viewroot收到该事件(通过：ViewRootImpl#dispatchInputEvent(InputEvent))
+后->decorview->activity(实现window.callback)

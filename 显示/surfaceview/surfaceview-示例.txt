@@ -39,6 +39,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 		mHolder = getHolder(); // 获得SurfaceHolder对象
 		mHolder.addCallback(this); // 为SurfaceView添加状态监听
+		
 		p = new Paint(); // 创建一个画笔对象
 		p.setColor(Color.WHITE); // 设置画笔的颜色为白色
 		setFocusable(true); // 设置焦点
@@ -71,37 +72,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		mHolder.removeCallback(this);
 	}
 
-	/**
-	 * 当屏幕被触摸时调用
-	 */
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		return true;
-	}
-
-	/**
-	 * 当用户按键时调用
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		surfaceDestroyed(mHolder);
-		return super.onKeyDown(keyCode, event);
-	}
-
 	@Override
 	public void run() {
 		while (flag) {
 			try {
 				synchronized (mHolder) {
 					Thread.sleep(100); // 让线程休息100毫秒
-					Draw(); // 调用自定义画画方法
+					draw(); // 调用自定义绘制方法
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -115,9 +92,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	}
 
 	/**
-	 * 自定义一个方法，在画布上画一个圆
+	 * 自定义绘制方法
 	 */
-	protected void Draw() {
+	protected void draw() {
 		mCanvas = mHolder.lockCanvas(); // 获得画布对象，开始对画布画画
 		if (mCanvas != null) {
 			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -138,6 +115,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 							(getWidth() / 5) * i + (getWidth() / 10),
 							(getHeight() / 8) * j + (getHeight() / 16),
 							m_circle_r, paint);
+
 			mHolder.unlockCanvasAndPost(mCanvas); // 完成画画，把画布显示在屏幕上
 		}
 	}

@@ -1,0 +1,7 @@
+Activity#mToken
+	为：android.os.BinderProxy对象
+Window#mAppToken
+WindowManager.LayoutParams#token
+	该token 和Window#mAppToken 相同
+DecorView.getWindowToken
+	为：ViewRootImpl.W对象

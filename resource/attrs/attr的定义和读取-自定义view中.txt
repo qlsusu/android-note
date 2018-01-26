@@ -7,6 +7,21 @@
     </declare-styleable>
 </resources>
 
+>> R.class中
+R{
+	styleable{
+		Follow = {
+            0x7f0100a9
+        };
+		
+		Follow_target = 0;
+	}
+	
+	attr{
+		target = 0x7f0100a9;
+	}
+}
+
 >>> layout.xml中：
 xmlns:app="http://schemas.android.com/apk/res-auto"
 <MyView

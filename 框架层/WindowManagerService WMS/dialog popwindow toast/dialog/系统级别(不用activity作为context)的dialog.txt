@@ -1,3 +1,9 @@
-参见：http://blog.csdn.net/giantgreen/article/details/8723305
+参见：
+Android菜鸟笔记-Service中弹出对话框，即全局性质Dialog不依赖于Activity
+	http://blog.csdn.net/giantgreen/article/details/8723305
+
 该dialog为系统级dialog
-dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//设定为系统级警告，关键  
+dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//设定为系统级警告，关键
+
+注意：
+其需要系统权限，并不仅仅在manifest.xml中进行<use-permission>就行

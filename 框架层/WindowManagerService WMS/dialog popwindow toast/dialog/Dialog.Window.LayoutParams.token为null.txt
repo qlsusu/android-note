@@ -1,0 +1,4 @@
+Dialog.Window.LayoutParams.token为null
+即使为AlertDialog.Builder提供的Context为Activity
+
+但是却不会报错，为何？

@@ -19,8 +19,7 @@ activityA被pause后，通过IActivityManager 向AMS汇报
 --
 AMS要启动activityB，首先判断activityB对应的ProcessRecord是否存在（通过processname（ActivityRecord.processname）, uid（ActivityRecord.activityinfo.applicationinfo.uid）的方式），并没有发现 该ProcessRecord
 创建ProcessRecord对象（存入关键信息（processName,uid等）），创建进程
-appB的ActivityThread.main执行，
-并在其中执行了ActivityThread.attach
+appB的ActivityThread.main执行，并在其中执行了ActivityThread.attach
 	汇报自己的ApplicationThread给AMS（通过ActivityManagerService#attachApplication(IApplicationThread)）
 AMS收到该IApplicationThread
 	将pid（通过ibinder.getcallingpid）和该IApplicationThread存入到ProcessRecord中
@@ -37,6 +36,10 @@ AMS通过 appB的IApplicationThread，要求 启动activityB
 appB的ApplicationThread 要求 ActivityThread 启动activityB
 	（ActivityThread.handleLaunchActivity）
 	创建activityB对象
+		从Intent中找到对应的ComponentName
+			如果其未被设置ComponentName，则请求PackageManager解析该Intent来得到：PackageManager#resolveActivity(Intent, PackageManager.MATCH_DEFAULT_ONLY)
+		Instrumentation.newActivity(ClassLoader cl, String className, Intent intent) 来构建activityB对象
+			className为 ComponentName#getClassName
 	创建application对象（如果需要）
 	activityB.attach
 	执行activityB.onCreate		

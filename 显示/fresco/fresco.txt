@@ -4,6 +4,10 @@
 https://github.com/kaedea/fresco-sample-usage
 Fresco图片加载框架使用经验小结
 	http://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&mid=2650820929&idx=1&sn=914622a161e1132827b364aa86b13aca&scene=4#wechat_redirect
+[Android]Fresco 中 Image Pipeline 流程 – 技术学习小组
+	http://blog.qiji.tech/archives/2764
+Fresco – 技术学习小组
+	http://blog.qiji.tech/archives/category/android/fresco
 
 ------------------------------核心概念
 DraweeView
@@ -28,14 +32,11 @@ DraweeHierarchy
 			https://www.fresco-cn.org/docs/using-drawees-code.html
 DraweeController
 	负责和 image loader 交互（Fresco 中默认为 image pipeline, 当然你也可以指定别的），等其他控制
+	构建：DraweeControllerBuilder.build
+	监听：ControllerListener
 image pipeline
 	负责图片的获取
+	图片可以来自远程服务器，本地文件，或者Content Provider，本地资源
 	ImageRequest
-		要请求什么图片
-
-------------------------------缓存
-三个缓存:
-两个内存缓存：bitmap缓存 和 未解码的图片缓存
-一个磁盘缓存
---
-在app切换到后台时,fresco会自动清理两级的内存缓存
+		要请求什么图片(Uri、是否渐进式图片、是否返回缩略图、缩放、是否自动旋转等)
+		构建：ImageRequest.fromUri(Uri uri) 或 ImageRequestBuilder.build()

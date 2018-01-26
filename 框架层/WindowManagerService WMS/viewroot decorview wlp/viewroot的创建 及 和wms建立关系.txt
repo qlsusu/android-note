@@ -12,47 +12,63 @@ AMS->ApplicationThread.scheduleLaunchActivity->ActivityThread.handleLaunchActivi
 			为其设置诸如 callback（本质上就是activity）等
 		activity.onCreate
 			activity.setContentView
-				phonewindow.setContentView
-					创建DecorView
-					加载合适的窗口布局文件，放入到DecorView中
-						（如：android-sdk-macosx/platforms/android-26/data/res/layout/screen_title.xml）：
-						Window.mLocalFeatures
-							用于：选择一个layout
-						Window.mWindowStyle（TypedArray类型）（来自manifest.xml中activity的theme属性的设置）
-							用于：setFlags, requestFeature
-					加载布局文件，放入到contentParent中（android.R.id.content）
+				PhoneWindow.setContentView
+					PhoneWindow#installDecor
+						PhoneWindow#generateDecor
+							创建DecorView
+						PhoneWindow#generateLayout
+							得到合适的layoutResource
+								如：android-sdk-macosx/platforms/android-26/data/res/layout/screen_title.xml
+								根据Window.mLocalFeatures来选择一个layout
+									其值可通过requestFeature来改变
+								Window.mWindowStyle（TypedArray类型）（来自manifest.xml中activity的theme属性的设置）
+									用于：setFlags, requestFeature							
+							DecorView#onResourcesLoaded
+								DecorView#mContentRoot = 该layoutResource的root
+								该root被添加到DecorView中
+							返回的View（android.R.id.content）被设置给PhoneWindow#mContentParent
+					加载app指定的布局文件，放入到PhoneWindow#mContentParent中
 		activity.onStart
 		activity.onRestoreInstanceState
-	ActivityThread.handleResumeActivity
+	ActivityThread.handleResumeActivity（进而ActivityThread#performResumeActivity）
 		判断activity是否真的可见，如：其启动了另外一个activityB，而activityB占满了全屏，则本activity就不应该显示
 		当真的可见时，执行activity.onResume
-		接下来，activity需要显示，那么需要构建ViewRoot, DecorView, wlp之间的关系
-		该关系的确定是由WindowManager来完成（最终通过WindowManagerGlobal.addView(view, wlp)）
-			说明：这里已经不考虑Window/PhoneWindow，而是考虑：view, wlp（而这些数据，大部分情况下，都是由Window来封装）
-			构建ViewRootImpl，
-				其负责：
-					绘制绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
-						performMeasure
-						performLayout
-						performDraw
-					输入事件的处理：dispatchInputEvent
-				和WMS确认关系：
-					ViewRootImpl在 初始化 的时候，会为整个app申请一个IWindowSession.Proxy
-					通过WindowManagerGlobal（其持有iwindowmanager.Proxy）.openSession()
-						而在WMS，会创建一个IWindowSession.Stub（对应一个app）
-					app可通过该IWindowSession 来和 WMS的通信，如：
-						添加删除window
-						对窗口（DecorView）进行relayout以 显示在屏幕上
-			存储 ViewRoot-view-wlp 于：[] ViewRoot, [] DecorView, [] wlp，index一致
-			后，调用ViewRoot.setView(view, wlp)来确定 和WMS 的ipc关系
-				ViewRoot也有window的概念：W mWindow（iwindow.stub，窗口级别）
-					注意：其并不关心：Window/PhoneWindow对象
-				将W对象传递给WMS
-					W对象在ViewRootImpl初始化时被构建
-					通过IWindowSession.Proxy#addDisplay来传递W
-						WMS端，session为其IWindowSession.stub，最终会调用WindowManagerService.addWindow
-						其中，会创建 WindowState和WindowToken 来对应该IWindow
-							mwindowmap：<IWindow.asbinder, WindowState>
-							mtokenmap：<IWindow.asbinder, WindowToken>
-					WMS持有IWindow，可：
-						当窗口发生变化时（大小 可见性等发生变化），进行通知
+		接下来，activity需要显示，那么需要构建ViewRoot, DecorView, wlp之间的关系：
+		WindowManager.addView(View view, ViewGroup.LayoutParams params)
+			说明：该方法是针对于view的（而非Window）
+			提供WindowManagerImpl.mParentWindow 来调用WindowManagerGlobal#addView(View view, ViewGroup.LayoutParams params, Display display, Window parentWindow)
+				根据parentWindow来调整 params（如：params.mTitle, params.token等）：parentWindow.adjustLayoutParamsForSubWindow(params)，如：
+					如果params.type是 sub window，params.token=parentWindow.mView.getWindowToken
+					如果params.type是 application类型，且params.token为null，则params.token=parentWindow.mAppToken
+					为什么调整params.token：如果为null，很可能在IWindowSession.addToDisplay时抛出异常	
+				构建ViewRootImpl
+					其负责：
+						绘制绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
+							performMeasure
+							performLayout
+							performDraw
+						输入事件的处理：dispatchInputEvent			
+					和WMS确认关系：
+						ViewRootImpl在 初始化 的时候，会为整个app申请一个IWindowSession.Proxy
+						方式：WindowManagerGlobal（其持有IWindowManager.Proxy）.openSession()
+							而在WMS，会创建一个IWindowSession.Stub（对应一个app）
+						app可通过该IWindowSession 来和 WMS的通信，如：
+							添加删除window
+							对窗口（DecorView）进行relayout以 显示在屏幕上
+					ViewRoot也有window的概念：W mWindow（IWindow.Stub，窗口级别）
+						注意：其并不关心：Window/PhoneWindow对象
+				存储 ViewRoot-view-wlp 于：[] ViewRoot, [] DecorView, [] wlp，index一致
+				调用ViewRoot.setView(view, wlp)来确定 和WMS 的ipc关系				
+					requestLayout来请求一个垂直同步信号
+						mChoreographer.postCallback(Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, null);
+							最终调用：DisplayEventReceiver#scheduleVsync
+							当垂直同步信号来时，会执行ViewRootImpl#doTraversal，进而performTraversal
+					将W对象传递给WMS
+						W对象在ViewRootImpl初始化时被构建
+						通过IWindowSession.Proxy#addDisplay来传递W
+							WMS端，session为其IWindowSession.stub，最终会调用WindowManagerService.addWindow
+							其中，会创建 WindowState和WindowToken 来对应该IWindow
+								mwindowmap：<IWindow.asbinder, WindowState>
+								mtokenmap：<IWindow.asbinder, WindowToken>
+						WMS持有IWindow，可：
+							当窗口发生变化时（大小 可见性等发生变化），进行通知

@@ -1,1 +1,1 @@
-需要的是activity（或者，application context，需要验证），而不是context
+需要的是activity（即使是ContextThemeWrapper也不可以），而不是ApplicationContext

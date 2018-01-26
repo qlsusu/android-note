@@ -1,0 +1,13 @@
+使用windowsmanager.layoutparam，在一个activity中居中加入一个view
+这种方法可以使得：和activity自身的layout无任何关系，activity可以使用任意layout
+
+代码：
+LayoutInflater inflater = LayoutInflater.from((ActivityGroup) getParent());
+View overlay = inflater.inflate(R.layout.letter_overlay, null);
+overlay.setVisibility(View.INVISIBLE);
+WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+		LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+		WindowManager.LayoutParams.TYPE_APPLICATION,
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+		PixelFormat.TRANSLUCENT);
+getWindowManager().addView(overlay, lp);
