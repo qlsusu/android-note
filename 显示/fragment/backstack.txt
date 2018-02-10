@@ -1,10 +1,10 @@
 ------------------------------FragmentTransaction.addToBackStack(@Nullable String name);
 Add this transaction to the back stack.  
 This means that the transaction will be remembered after it is committed, 
-and will reverse its operation when later popped off the stack（当用户点击back按键时）.
+and will REVERSE its operation WHEN later POPPED OFF the stack（当用户点击back按键时）.
 
 一个transaction是 对多个fragment的操作的组合.
-加入到back stack中去的时候, 是把transaction中的那一系列操作作为一个原子, 加入到back stack中.
+加入到back stack中去的时候, 是把transaction中的那一系列操作作为一个整体, 加入到back stack中.
 需要在commit之前
 用户按Back键, 从栈中pop出一个transaction, 对其中的每项操作进行 逆转 操作，从而达到commit之前的状态
 
@@ -12,7 +12,12 @@ and will reverse its operation when later popped off the stack（当用户点击
 当transaction中包含了replace操作，但是该transaction并未添加到back stack中，那么旧的fragment将会 最底执行到ondetach
 
 Fragment的back stack: 由宿主activity掌管, 每个activity一个.
-而 Activity的back stack（可认为是task）: 由系统维护
+而 Activity的back stack（可认为是task），由系统维护
+
+注意：
+当FragmentTransaction.addToBackStack后
+不能使用：FragmentTransaction#commitAllowingStateLoss 或 FragmentTransaction#commitNow
+但能使用：FragmentManager#executePendingTransactions
 
 ------------------------------FragmentManager#popBackStack(String name, int flag)
 Pop the last fragment transition from the manager's fragment back stack. If there is nothing to pop, false is returned. This function is asynchronous -- it enqueues the request to pop, but the action will not be performed until the application returns to its event loop.
@@ -26,5 +31,5 @@ Parameters:
 例子：
 设：tag1, tag2, tag3,tag4依次进入到backstack
 此刻呈现的是，tag4对应的frag
-当popBackStack(tag3, FragmentManager.POP_BACK_STACK_INCLUSIVE)时，呈现的是tag2对应的frag，
+当popBackStack(tag3, FragmentManager.POP_BACK_STACK_INCLUSIVE)时，呈现的是tag2对应的frag（tag3也包含在内 被pop）
 再当点击back时，呈现tag1

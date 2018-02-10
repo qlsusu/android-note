@@ -2,7 +2,9 @@
 ViewPager刷新单个页面的方法
 	http://lovelease.iteye.com/blog/2107296
 
-viewpager.adapter.notifyDataSetChanged()时，都会激活getItemPosition(Object object)方法，
-该方法会遍历viewpager的某些item（当前页 和 其左右 共3页），为每个item返回一个状态值，
-	如果是POSITION_NONE，那么该item会被destroyItem，然后重新加载instantiateItem
-	如果是POSITION_UNCHANGED，就不会重新加载。默认是unchanged
+当viewpager.adapter.notifyDataSetChanged()时，会调用getItemPosition(Object object)
+实参object：当前页 和 其左右 分别ViewPager#mOffscreenPageLimit个 相邻页 所对应的Fragment
+返回值：
+	如果是POSITION_NONE，那么会先destroyItem，后再instantiateItem
+	如果是POSITION_UNCHANGED，不进行任何
+	默认为POSITION_UNCHANGED

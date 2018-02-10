@@ -1,0 +1,36 @@
+参见：
+Android Scroll详解(二)：OverScroller实战
+	http://ztelur.github.io/2016/04/07/Android-Scroll%E8%AF%A6%E8%A7%A3-%E4%BA%8C-%EF%BC%9AOverScroller%E5%AE%9E%E6%88%98/
+	
+------------------listview的弹性滑动（可能对于recyclerview也是一样的）
+onTouchEvent(){
+	...
+	case MotionEvent.ACTION_MOVE:
+		delY = (int) (preY - y);
+		preY = y;
+		break;
+	case MotionEvent.ACTION_UP:
+		isActionUp = true;
+		break;
+}
+
+然后在2.3新增的onOverScrolled方法中做如下实现
+protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,boolean clampedY) {
+	this.scrollBy(0, delY / 2);
+	if (isActionUp) {
+		this.scrollTo(0, 0);
+	}
+}
+
+------------------判断listview滑动到底部（可能对于recyclerview也是一样的）
+参见：
+监听ScrollView滑到底部
+	http://blog.csdn.net/zoeice/article/details/9378415
+
+protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,  boolean clampedY) {  
+	super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);  
+	if(scrollY != 0){  
+		//滑动到底部
+		onScrollToBottom.onScrollBottomListener(clampedY);  
+	}
+}  

@@ -1,0 +1,2 @@
+MotionEvent.getX针对于 View在屏幕上的显示区域的 左上角顶点
+而该左上角顶点取决于：自身的x/y（left,translationX 和 top,translationY）和 父亲的scrollX/Y

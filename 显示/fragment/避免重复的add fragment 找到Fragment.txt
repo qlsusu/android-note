@@ -1,0 +1,30 @@
+背景：
+在activity被系统杀掉，而又重建的时候，会再次走一遍生命周期
+在activity.生命周期的过程中，有可能需要重新add fragment，但是之前activity已经有一个同样类型的fragment的，
+则，此刻不应该重新add
+
+正确的方式：
+private void addFragmentB() {
+    FragmentManager fragmentManager = getFragmentManager();
+	// 通过tag来找到Fragment
+    Fragment fragment = fragmentManager.findFragmentByTag(FragmentB.TAG);
+	// 或者通过Fragment对应的container id来找到
+	// fragment = fragmentManager.findFragmentById(R.id.frag_container);
+    if (null == fragment) {
+        FragmentB fragmentB = new FragmentB();
+        Log.i(LOG_TAG, "do add fragmentB action");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		//在add Fragment时，提供tag
+        fragmentTransaction.add(R.id.fragment_container, fragmentB, FragmentB.TAG);
+        fragmentTransaction.commit();
+    }
+}
+private void removeFragmentB() {
+    FragmentManager fragmentManager = getFragmentManager();
+    Fragment fragment = fragmentManager.findFragmentByTag(FragmentB.TAG);
+    if (null != fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+    }
+}

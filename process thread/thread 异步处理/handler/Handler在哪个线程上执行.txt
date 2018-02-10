@@ -1,0 +1,9 @@
+执行流程：
+Looper#loop
+	Message msg = queue.next();
+	msg.target.dispatchMessage(msg);
+	msg.recycleUnchecked();
+	
+Looper#loop在哪里执行（常见位置）：
+. ActivityThread.main
+. HandlerThread#run

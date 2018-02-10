@@ -1,0 +1,64 @@
+参见：
+FragmentTabHost使用方法 - CSDN博客
+	http://blog.csdn.net/caroline_wendy/article/details/50491175
+例子下载
+	https://github.com/SpikeKing/TestFragmentTabHost
+
+@Bind(android.R.id.tabhost)
+FragmentTabHost mTabHost;
+mTabHost.setup(Context, getSupportFragmentManager(), android.R.id.tabcontent);
+mTabHost.getTabWidget().setDividerDrawable(null); // 去掉分割线
+// 构建TabHost.TabSpec
+for (int i = 0; i < mImages.length; i++) {
+	// Tab按钮添加文字和图片
+	TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mFragmentTags[i]).setIndicator(getImageView(i));
+	// 添加Fragment
+	// 指定Fragment的Class
+	// 哪些Fragment会被创建：当前要显示的那个Fragment（其tag为：TabHost.TabSpec#mTag）
+	// 哪些Fragment会被销毁（最后执行到onDestroyView（并不会执行到onDestroy-onDetach））：该Fragment从之前的显示 到 不显示
+	mTabHost.addTab(tabSpec, FragmentTab.class, null);
+	
+	// 设置Tab按钮的背景
+	mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.color.pedo_actionbar_bkg);
+}
+
+// 标题
+private String mFragmentTags[] = {
+	"counter",
+	"assistant",
+	"contest",
+	"center"
+};
+
+// 获得图片资源
+private View getImageView(int index) {
+	@SuppressLint("InflateParams")
+	View view = getLayoutInflater().inflate(R.layout.view_tab_indicator, null);
+	ImageView imageView = (ImageView) view.findViewById(R.id.tab_iv_image);
+	imageView.setImageResource(mImages[index]);
+	return view;
+}
+
+private int mImages[] = {
+	R.drawable.tab_counter,
+	R.drawable.tab_assistant,
+	R.drawable.tab_contest,
+	R.drawable.tab_center
+};
+
+// drawable/tab_counter.xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tab_counter_light" android:state_selected="true"/>
+    <item android:drawable="@drawable/tab_counter_gray" android:state_selected="false"/>
+</selector>
+
+--------------------------------------
+
+mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+	@Override
+	public void onTabChanged(String tabId) {
+		// 当tab发生切换时，该回调被调用，tabId为 要显示的那个Fragment的tag
+		// 初次显示时，该回调并不会调用
+	}
+});

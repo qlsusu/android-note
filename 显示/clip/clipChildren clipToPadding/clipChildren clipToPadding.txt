@@ -1,0 +1,10 @@
+clipChildren=false：
+一般情况下，孩子的dimen 应该在 父亲的dimen的内部
+当孩子dimen 超出 父亲dimen时，正常情况下，超出部分应该被clip
+但当父亲设置了clipChildren=false时，超出部分不会被裁剪
+紧接着，因为孩子dimen 已经超过了 父亲的dimen，则 父亲的可视区域（孩子的可视区域+父亲自身的可视区域）超过了 父亲自身的dimen
+则此刻，去询问 祖父是否设置了clipChildren=false，如果祖父设置了，则父亲的 超出其自身dimen的 可视区域 不会被clip，否则，被clip
+	
+clipToPadding=false：
+父亲设置了padding，如果孩子的dimen 超出了 该padding限定的区域（无论 孩子的dimen 是否超出 父亲的dimen），正常情况下，超出部分应该被clip
+如果父亲设置了clipToPadding=false，超出部分不会被clip

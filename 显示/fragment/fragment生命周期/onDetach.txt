@@ -1,0 +1,6 @@
+当一个Fragment执行到onDetach，则该Fragment不再被系统维护
+而一个Fragment只是执行到onDestoryView时，其还是被系统维护
+
+当Fragment不被系统维护时：
+. FragmentManager#findFragmentByTag返回为null
+. 宿主Activity.onSaveInstanceState中，不会对该Fragment进行state save

@@ -1,0 +1,51 @@
+>>> attrs.xml中：
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Follow">
+    	<!-- 属性名称需要在 app范围内唯一 -->
+        <attr name="target" format="reference" />
+    </declare-styleable>
+</resources>
+
+>> R.class中
+R{
+	styleable{
+		Follow = {
+            0x7f0100a9
+        };
+		
+		//index值
+		Follow_target = 0;
+	}
+	
+	attr{
+		target = 0x7f0100a9;
+	}
+}
+
+>>> layout.xml中：
+xmlns:app="http://schemas.android.com/apk/res-auto"
+<MyView
+	android:id="@+id/second"
+	android:layout_width="match_parent"
+	android:layout_height="128dp"
+	app:layout_behavior="com.ql.coordinate.behavior.FollowBehavior"
+	android:background="@android:color/holo_green_light"
+	app:target="@id/first" />
+	
+>>> MyView.java中：
+public MyView(Context context, @Nullable AttributeSet attrs){
+	TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Follow);
+	try{
+		for (int i = 0; i < array.getIndexCount(); i++) {
+			int attrIndex = array.getIndex(i);
+			if (attrIndex == R.styleable.Follow_target) {
+				target = array.getResourceId(attrIndex, -1);
+			}
+		}
+	}finally{
+		array.recycle();
+	}
+	
+	// ...
+}

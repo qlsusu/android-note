@@ -1,0 +1,4 @@
+new Handler(Looper.getMainlooper())
+
+在ActivityThread#main中，执行了Looper#prepareMainLooper
+ActivityThread#mH

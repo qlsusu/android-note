@@ -1,4 +1,4 @@
-view左上角的顶点x,y
+view左上角的顶点x,y（针对于父亲dimen的左上角顶点）
 x=left+translationx
 y=top+translationy
 其中left/top为 view被layout后，在父亲坐标系下的坐标，在setframe中被赋值

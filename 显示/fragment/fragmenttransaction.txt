@@ -11,15 +11,22 @@ fragmenttransaction代表了 一组 针对于不同frag的操作
 attach(), detach()
 	detach() 
 		fragment实际的生命周期会走到onDestroyView(), 但不会走onDestroy()和onDetach(), 也即fragment本身并没有被销毁, 只是view被销毁了.
+	attach()
+		执行：onCreateView
+		注意：此刻，需要Fragment之前被add过，且被detach过
+	一个使用例子：FragmentPagerAdapter#instantiateItem/destroyItem
 add(), remove(),
 	remove()
 		如果不加入到back stack, fragment的生命周期会一直走到onDetach()
-		如果加入到back stack，会执行到ondestroyview
+		如果加入到back stack，会执行到onDestroyView
+	add()
+		执行：onAttach-onCreate-onCreateView
+	一个使用例子：FragmentStatePagerAdapter#instantiateItem/destroyItem
 show(), hide(),
 	用来设置fragment的显示和隐藏状态, 
 	这两个方法并不对应fragment的状态变化,只是将view设置为visible和gone,然后调用onHiddenChanged()的回调.
 replace()
-	replace() = remove() + add()
+	replace() = remove(旧的) + add(新的)
 
 ------------------------------frag切换的方式（花开中的 设计情景）
 一开始add(fragA)，切换时hide(fragA)，add(fragB)；再次切换时，只需hide(fragB)（或者remove(fragB）），show(fragA)

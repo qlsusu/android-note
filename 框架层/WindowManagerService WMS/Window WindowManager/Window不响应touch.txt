@@ -1,0 +1,1 @@
+为WindowManager.LayoutParams添加flag：WindowManager.LayoutParams#FLAG_NOT_TOUCHABLE

@@ -1,3 +1,4 @@
-使用viewgroup中定义的attr
-clipchildren=true
-cliptopadding=true
+layout.xml中
+为RecyclerView 设置padding，并定义如下：
+// android:clipChildren="false"
+android:clipToPadding="false"

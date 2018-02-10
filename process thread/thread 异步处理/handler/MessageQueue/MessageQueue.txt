@@ -1,0 +1,49 @@
+消息链表：
+以消息头（MessageQueue#mMessages（Message类型））来表示一个链表
+
+------------------------------------------------入链表 出链表
+入链表MessageQueue#enqueueMessage(Message msg, long when)
+规则：按照Message#when的 ↑序 进行排序（越早的消息 越排在 链表前部）
+	一般Message 和 异步Message 和 sync barrier消息 在入链表时，都采用上述策略，没什么不同
+		什么是 异步消息 和 sync barrier消息，参见：sync barrier 异步消息/
+当入链表 而改变了表头时，需要调整唤醒时间：如果 在执行next时 线程是否被阻塞了（MessageQueue#mBlocked表示），则唤醒线程（之后其会走MessageQueue#next中的for循环，返回消息，或者，确定新的阻塞时间）
+
+出链表MessageQueue#next：
+	返回的消息 满足了：
+		. when<now
+		. 异步性（如果表头为sync barrier，则其必须要求为异步消息；否则，不做要求）
+	调整mBlocked：在执行next时，线程是否被阻塞了
+		如果返回了消息，那么没有被阻塞
+		否则，被阻塞了
+		有什么用：在入链表时，根据mBlocked来有选择的唤醒 被阻塞线程
+	--
+	流程：
+	quit检查：如果还没有 退出，那么继续后续流程
+		如果退出，返回null
+	for循环如下：
+	阻塞 一段时间
+		第一次为0，后续为 下次应该被阻塞多久
+		阻塞：MessageQueue#nativePollOnce(long ptr, int timeoutMillis) 来阻塞当前线程
+			-1代表无限等待下去
+			mPtr = nativeInit()
+		唤醒：MessageQueue#nativeWake(long ptr)
+			在MessageQueue#enqueueMessage(Message msg, long when)中
+	找到候选消息（初始为 链表头）
+		如果链表头为sync barrier消息，那么往后找到一个 异步消息，并将其设置为 候选消息（如果找不到异步消息，则候选消息为 null）			
+	判断候选消息 是否为null
+		如果不为null
+			判断其是否到when
+			如果到了，返回该消息 -> 流程结束
+			如果没到，计算 下次应该被阻塞多久
+		如果为null（链表头为null，或者，链表头为sync barrier 但 没有异步消息），则 下次被阻塞时间=-1（永久阻塞）
+	quit检查：如果已经退出，那么返回null
+		说明：如果能进行到这一步，说明，当前还没有 消息返回（没有找到候选消息，或，候选消息when没到）
+		当返回null时，loop()会返回，则执行loop()的线程会正常结束，则对于HandlerThread等第三方线程来关联Looper的，我们应该在合适的时间将该线程释放掉（正常结束） 来避免性能浪费
+	执行IdleHandle
+		执行条件：存在IdleHandle，且，链表头为null（链表为空）或 链表头是sync barrier且 其when还没到，且 本next中 还没有执行过 IdleHandler			
+		注意：如果能执行到这一步，肯定是没有 候选消息来返回的（为空，或者，其when没到）
+	下次应该被阻塞多久=0
+		为什么为0：
+		因为执行IdleHandler时，并未采用了synchronized，则有可能改变了 链表结构
+		则之后应该立刻检查链表，看是否能返回消息
+	再次for循环

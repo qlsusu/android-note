@@ -5,19 +5,25 @@ Android ViewPager + Fragment 懒加载实现
 	http://mp.weixin.qq.com/s?__biz=MzI4MTQyNDg3Mg==&mid=2247483988&idx=1&sn=357a16c869a9bab813a0b343c06e00c9&chksm=eba824d3dcdfadc5d6af39f8ca6de985686eda001f80b74be105b2f3e552751b4eab358f6860#rd
 
 什么是懒加载：
-当Fragment（在adapter中的index为index1）呈现在用户面前时（如同：ViewPager.OnPageChangeListener#onPageSelected(index1)被调用），才去加载真实的数据
-而在这之前，显示一个 数据加载前的ui（如：progressbar）
+ViewPager中，在当前Fragment呈现在用户面前时，才去加载该Fragment需要的底层数据
+而在这之前，并未真实的加载数据，而是显示一个 数据加载前的ui（如：progressbar）
 
 有什么好处：
 . 数据未加载前 的ui简单，绘制速度快
 . 不需要数据获取（减少网络访问消耗：性能，流量）
 
-如何实现：
-setUserVisibleHint(boolean isVisibleToUser)
-	当fragment可见状态发生改变时，该方法就会被调用
-		即是：左右滑动viewpager时，中心frag以及其相邻的frag 的该方法均会被调用
-	isVisibleToUser为true时，表示当前fragment位于 正中显示
-	该方法早于onattach
-	缺点：该方法是属于Fragment的，则需要自定义Fragment
-则，在setUserVisibleHint中判断frag是否要进行 中心显示
-	如果要进行中心显示，且还没有load数据，那么load数据
+----------------------------如何判断Fragment是否中心显示：
+>>> Fragment#setUserVisibleHint(boolean isVisibleToUser)
+当fragment可见状态发生改变时，该方法就会被调用
+	即是：左右滑动viewpager时，中心frag以及其相邻的frag 的该方法均会被调用，只是提供的实参不同
+isVisibleToUser为true时，表示当前fragment位于 正中显示
+该方法早于onattach
+
+缺点：该方法是属于Fragment的，则需要自定义Fragment
+
+>>> ViewPager.OnPageChangeListener#onPageSelected
+当一个Fragment被切换到中心显示时，onPageSelected回调会被调用
+
+缺点：
+只有切换时，才会调用onPageSelected回调
+则，初始情况下，我们无法得知Fragment是否中心显示

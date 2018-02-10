@@ -1,0 +1,2 @@
+AsyncTask.execute需要在ui线程上运行，为什么：
+其中会执行AsyncTask.onPreExecute()，而onPreExecute要求在ui线程上运行

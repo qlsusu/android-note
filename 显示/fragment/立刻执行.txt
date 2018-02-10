@@ -4,7 +4,7 @@
 当commit一个transaction，或，popbackstack，仅仅是往mainlooper.queue中提交一个任务，并不是立刻执行
 
 立刻执行的方式：
-fragmenttransaction.commitnow
+fragmenttransaction.commitnow 或 FragmentTransaction#commitNowAllowingStateLoss
 	立刻执行 当前提交的transaction
 fragmentmanager.popbackstackImmediate
 fragmentmanager.executependingactions

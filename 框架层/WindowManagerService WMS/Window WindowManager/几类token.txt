@@ -1,6 +1,8 @@
 Activity#mToken
 	为：android.os.BinderProxy对象
 Window#mAppToken
+	可以为 Activity#mToken（当Window.type为 application时）
+	可以为 DecorView.getWindowToken（当Window.type为 sub window时）
 WindowManager.LayoutParams#token
 	该token 和Window#mAppToken 相同
 DecorView.getWindowToken

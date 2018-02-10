@@ -1,0 +1,10 @@
+canvas.save();   
+mPaint.setColor(Color.BLUE);   
+canvas.drawRect(0, 0, mBmp.getWidth(), mBmp.getHeight(), mPaint);   
+
+canvas.restore();   
+canvas.save();   
+canvas.clipRect(0, 0, getWidth()/2, getHeight()/2);   
+canvas.drawBitmap(mBmp, mBmp.getWidth(), mBmp.getHeight(), mPaint);   
+
+canvas.restore();

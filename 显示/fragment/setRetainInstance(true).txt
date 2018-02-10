@@ -4,16 +4,18 @@ Activity与Fragment生命周期探讨
 Understanding Fragment's setRetainInstance(boolean)
 	http://stackoverflow.com/questions/11182180/understanding-fragments-setretaininstanceboolean
 
-如果fragment.setRetainInstance(true)（在fragment.oncreate中设置）了，那么即便宿主activity重新创建了（如：因为横竖屏切换，导致activity被重建），该fragment仍然被保存
+设：在activityA中，被add了fragment1，fragment1.setRetainInstance(true)
+那么当宿主Activity需要重建时（如：往往因为config change（如：横竖屏切换））
+	activityA将执行销毁，fragment1会走到onDetach，但并不会执行onDestroy（仅仅）
+	activityB会被构建，并执行onCreate，则需要恢复Fragment（如果之前，activityA.onSaveInstanceState中对Fragment进行了state save）
+		此时，仍然使用fragment1（而非新建一个fragment2）来执行onAttach, onCreateView等，但，不会执行onCreate（仅仅）
 
-其生命周期被调整为：
-当activity被销毁时，fragment.ondestory不会被调用，但是其他的诸如ondestroyview,ondetach等，仍然被调用
-当activity重建时，fragment.oncreate不会被调用，但是其他的诸如onattach, oncreateview等，仍然被调用
+Activity重建的原因 vs retain是否有效：
+. 因为config change（有效）
+. 正常杀死（finish）/被系统杀死（low memory）（无效）
+. 不保留后台（无效）
 
-当宿主activity正常杀死（finish）/被系统杀死（low memory）时：
-fragment也是 会不存在的
-
-例子:
+--------------------------------------------------例子:
 class RetainFragment extends Fragment {
 	private static final String TAG = "RetainFragment";
 	public LruCache<String, Bitmap> mRetainedCache;

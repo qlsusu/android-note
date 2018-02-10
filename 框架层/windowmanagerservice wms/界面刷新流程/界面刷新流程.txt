@@ -10,9 +10,14 @@ ViewRootImpl#scheduleTraversals
 			action为：ViewRootImpl.TraversalRunnable
 				ViewRootImpl#doTraversal
 					ViewRootImpl#performTraversals
-						DecorView.performMeasure
-						DecorView.performLayout
-						DecorView.performDraw
+						ViewRootImpl.performMeasure
+						ViewRootImpl.performLayout
+						ViewRootImpl.performDraw
+							ViewRootImpl#draw
+								ViewRootImpl#drawSoftware
+									View#draw
+										绘制自身：View#onDraw(Canvas canvas)
+										绘制孩子：View#dispatchDraw(Canvas canvas)
 		添加一个Choreographer.CallbackRecord
 			一个callbackType  对应了 一个List的CallbackRecord
 		通过Choreographer.FrameHandler发送并处理消息（MSG_DO_SCHEDULE_VSYNC）

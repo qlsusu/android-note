@@ -1,0 +1,2 @@
+在View被clip后，无论通过 自身（View.setClipBounds），还是通过 父亲clipChildren
+其dimen未发生变化，则点击区域也未发生变化（在View被裁剪掉的区域进行touch，View还是可以进行响应）

@@ -18,8 +18,13 @@ Android Activity应用窗口的创建过程分析
 	http://blog.csdn.net/feiduclear_up/article/details/49201357
  Android 从0开始自定义控件之 ViewRoot 与 DecorView （五）	
 	 http://blog.csdn.net/airsaid/article/details/53525335
+《Android 开发艺术探索》 08-理解Window和WindowManager - 筑梦 suzeyu`苏泽钰
+	http://szysky.com/2016/08/15/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B-08-%E7%90%86%E8%A7%A3Window%E5%92%8CWindowManager/
+深入WindowManager - 筑梦 suzeyu`苏泽钰
+	http://szysky.com/2016/11/28/%E6%B7%B1%E5%85%A5WindowManager/
 
-Window是对 mView（View类型）和 mWindowAttributes（WindowManager.LayoutParams类型）的一层封装
+Window是对 mView（View类型，对于Activity 是DecorView）和 mWindowAttributes（WindowManager.LayoutParams类型）的一层封装
+mView.mLayoutParams 为 mWindowAttributes
 
 WindowManager.addView(View view, ViewGroup.LayoutParams params)
 用于：展示Window
@@ -33,7 +38,7 @@ Window - Activity - WindowManager 的关联：
 			WindowManagerImpl.mContext = wm.mContext
 			WindowManagerImpl.mParentWindow = this Window			
 		在其中，也确定了Window-Activity的关联：Window.mApptoken为 Activity.mToken（ActivityClientRecord.token）
-	
+
 WindowManager - IWindowManager的关联：
 WindowManager
 WindowManagerImpl

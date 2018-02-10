@@ -1,0 +1,10 @@
+获取Message：Handler#obtainMessage
+	Message#obtain
+		static Message#sPool（Message类型，链表头）代表了链表
+		取出链表头来返回给客户
+在使用完毕后，归还：Message#recycle
+	Message#recycleUnchecked
+		归还的Message成为新链表头
+
+辅助参数：
+static Message#sPoolSize：缓存有限个Message

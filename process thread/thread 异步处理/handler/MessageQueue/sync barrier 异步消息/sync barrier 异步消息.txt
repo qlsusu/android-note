@@ -1,0 +1,26 @@
+一般消息（同步消息） vs 异步消息
+异步消息：如何设置：Message#setAsynchronous
+有何不同：MessageQueue#next时
+	当消息链头 不是sync barrier消息时，二者没什么不同
+	当消息链头 是sync barrier消息时，在MessageQueue#next时，
+		会返回 sync barrier消息之后的 第一个异步消息
+		而同步消息只有在 sync barrier消息被remove掉时，才会得以返回
+
+sync barrier消息：
+如何入链表：通过MessageQueue#postSyncBarrier(long when)来向 消息链添加 sync barrier消息
+其target为 null（也只有该类消息的target为null）
+其arg1为 token（来自MessageQueue#mNextBarrierToken：mNextBarrierToken++）
+	客户方需要保存该token，因为：在出链表MessageQueue#removeSyncBarrier(int token)时，需要提供该token
+	
+sync barrier有什么用：
+在向Handler.Looper.MessageQueue上post了sync barrier消息后，
+再向其post一般的message，这些message不会得到处理
+直到：该sync barrier被remove掉
+可用于：线程1 来控制 线程2（在其上执行Looper.loop），例子：
+	线程1要执行任务1，发送sync barrier消息 给线程2.MessageQueue
+	线程3 仍使用 线程2.Handler来发送一般消息3（同步消息）
+	线程1的任务1结束后，消息3才能执行
+	
+如何发送异步消息：
+Message#setAsynchronous(true)
+Handler#sendMessage

@@ -1,0 +1,12 @@
+参考：
+Android中ViewPager显示3个条目及滑动动画 - 简书
+	https://www.jianshu.com/p/232def1a892d
+	其中使用了clipChildren（并未使用clipToPadding），可以仅仅参考
+
+使用了clipChildren/clipToPadding的概念，参见：clipChildren clipToPadding/
+
+如何实现：
+在layout.xml中，为ViewPager设置
+paddingStart,paddingEnd
+	该padding值，为 居中page的相邻page的 展示宽度
+clipToPadding=false
