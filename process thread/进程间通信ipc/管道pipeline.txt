@@ -1,0 +1,19 @@
+参见：
+android 中通过AIDL传输流文件 - 简书
+	https://www.jianshu.com/p/4e8b11833d67
+
+>>> 在client
+. 创建管道
+	ParcelFileDescriptor[] fds = ParcelFileDescriptor.createPipe();
+. 根据管道创建 输出流
+	//注意索引：fds[1]
+	ParcelFileDescriptor.AutoCloseOutputStream os = new ParcelFileDescriptor.AutoCloseOutputStream(fds[1]);
+. 往输出流中写数据
+. 传递ParcelFileDescriptor
+	//注意索引：fds[0]
+	iService.toldPFD(fds[0]);
+	
+>>> 在service
+. 根据管道创建 输入流
+	ParcelFileDescriptor.AutoCloseInputStream is = new ParcelFileDescriptor.AutoCloseInputStream(fd);
+. 读取输入流中的数据

@@ -1,0 +1,517 @@
+知识大纲
+	fragment
+		backstack
+			立刻执行
+				两种方式
+			pop时，会恢复到commit之前的状态
+		常见操作
+			add remove replace show hide
+				当在一个container中添加两个frag时 后后退到上一个frag时
+		fragmenttransaction
+			立刻执行提交
+				两种方式
+		状态保存与恢复
+			3种方式
+				伴随着activity的save restore
+				手动调用来进行save setinit
+				当activity处于resume状态时，通过transaction来操作frag
+			fragmentactivity中的bundle图示
+		生命周期方法
+			当backstack时
+				当fragment被remove时，不会执行到destroy
+			当在不同的pageradapter中时
+				state不会执行到ondestroy
+				另外一个会执行到ondestroy
+		retain
+			哪些生命周期方法没有执行
+				oncreate ondestroy
+			适用于什么场景
+		参数的设置
+		allowstateloss
+			当fragment的state已经被保存了之后 再添加别的fragment 如activity已经到后台
+	launchmode intent flag
+	jvm
+		内存模型
+			栈
+				栈帧
+					操作数栈
+						常见的操作数
+			堆
+			非堆 方法区
+		gc
+			gcroot
+			算法
+				标记复制
+				标记整理
+				标记清除
+			串行 并行
+				多个线程来进行垃圾清理
+			内存分代
+				年轻代
+					清理时间短
+				年老代
+					放入时机
+						对象需要大的空间，即使进行了minor gc后还是不能存放，则放入到年老代中
+						当在年轻代中存活过几次后，被移入到年老代中
+					大小很大 存活时间长 清理时间长
+					触发时机
+						当年轻代中，eden survivor1总和大于 年老代的剩余空间时
+			资源 m.blog.csdn.net/lantian0802/article/details/39226525
+			类型
+				min
+				major
+		类的加载
+		CPU高速缓存
+		4种引用
+			引用类型
+				弱引用
+				软引用
+				虚引用
+				强引用
+			含有finalize方法的
+				finalizer 一种Reference
+			引用队列
+			Reference处理线程
+	进程
+		多进程
+			为什么用
+				更大的内存
+					按进程被分配内存
+					减少被杀掉的风险
+				业务逻辑彼此独立
+			有什么需要注意的地方
+				单例并不再是
+		进程间通信ipc
+			binder
+				proxy stub内部过程
+					proxy方
+						要使用I接口
+						输入参数到parcel
+							对于parcelable，先写入1，再parcelable.writeToParcel
+						请求local方
+指明 方法code
+					stub方
+						确定就是使用I接口
+						读取参数
+							对于parcelable，先读取 是否不为0，后creator.createFromParcel
+						运行逻辑
+						写入 未发生异常
+						写入 结果
+						对于out/inout，写入parcelable
+					proxy方
+						是否发生异常
+						读取结果
+						对于out/inout，parcelable.readFromParcel
+				自动生成了什么
+					自动生成了什么类
+					proxy和native都继承binder? 和对应的业务接口
+					stub
+						stub.asInterface
+stub.onTransact
+					stub.proxy
+						proxy.transact
+				stub.asInterface
+					binder.queryLocalInterface
+				能传递什么参数
+					基本数据类型
+list, map
+					in out inout
+						parcelable.writeToParcel
+						Creator.createFromParcel
+						parcelable.readFromParcel
+				为什么使用
+					性能
+client拷贝一次数据到 内核空间
+					可校验 调用方
+				限制
+					1m内存
+					16个线程
+		杀进程lowmemorykiller
+			进程优先级
+			adj score processlist中定义 minimemory adj adjscore阀值
+	并发
+		线程池
+			参数
+				核心线程数
+				最大线程数
+				任务队列
+				等待时间 和单位
+			submit(runnable/callable)
+execute(runnable)
+		futuretask
+			结构
+				实现接口 runnable, future
+				内部含有callable
+					一种形式：runnableadapter
+						runnable
+						result
+			工作流程
+				有哪些状态
+				setresult
+					针对于new状态
+二次state变换
+					成功 失败
+						executeexception
+inner exception
+				取消
+					针对于new状态
+					方式
+						cancel
+						interrupt
+							如何获得执行线程
+								在run方法中
+					对正常执行的影响
+			获取结果
+				如何阻塞
+					条件：如果state<=completing
+					步骤
+						若干步 生成waitnode，成为链表头
+						最终locksupport.park
+				唤醒
+					唤醒时机
+						setresult后
+						cancel后
+					唤醒方式
+						locksupport.unpark 链表的waitnode.thread
+						表头设置为null
+					边唤醒 边加入时？
+						不会存在该情况，根据state，当满足唤醒条件时，state肯定>completing
+				获得结果
+					如果成功，给结果
+					如果执行异常，给出executeexception
+					如果取消，给cancelexception
+		countdownlatch
+		callable future futuretask
+		cyclicbarrier
+		aqs
+		blockqueue
+		threadlocal
+			内部采用的数据结构
+				hash值
+					在创建对象时提供
+				解决冲突
+					数组的下一个null位置
+			set过程
+				getmap
+				threadlocalmap.set(threadlocal, value)
+		synchronize
+			偏向锁
+				对象头
+					mask
+			轻量级锁
+			优化
+				锁粗化
+				锁消除
+		特性
+			原子性
+			可见性
+			有序性
+		volatile
+			可见性
+			有序性
+				内存屏障
+					store
+					load
+		cas
+			操作数
+				对象，fieldoffset，期待值，目标值
+			atomicinteger
+				addandget时，进行了unsafe.compareandswap循环
+				compareandset
+		asynctask
+			futuretask
+				workcallable
+					doinbackground
+					postresult
+			execute
+				状态判定
+				executor.execute
+					serialexecutor
+						execute方法
+							实参runnable被封装到到自定义runnable中
+								run方法中，实参runnable执行完毕后，nextwork
+							自定义runnable被放入到队列中
+							nextwork
+								使用 threadpoolexecutor来执行
+				需要在ui线程上执行，为了preexecute在ui线程上进行
+			cancel
+				futuretask.cancel
+	数据结构
+		hashmap
+			concurrenthashmap
+			内部结构
+	数据存储
+		db
+			优化方式
+				采用事务
+				读写并发控制
+					读写锁
+				wal
+				sqlitestatement
+		contentprovider
+			authority
+			urimatch
+	service
+		intentservice
+			被外部启动时，onstartcommand
+				构建message
+					提供intent和startid
+				通过handler进行发送
+					handler的looper来自handlerthread.looper
+				handler.handlermessage内部
+					取出intent，调用回调，onhandlemessage(intent)
+					之后，stopself(startid)
+			ondestroy中
+				looper.quit
+					messagequeue.quit
+						唤醒线程，messagequeue.next返回null
+							looper.loop返回
+								looper.thread工作完成
+	handler
+		looper
+			prepare
+				threadlocal<looper>
+			loop
+				messagequeue.next得到消息
+				msg.target.dispatchmessage
+			quit
+		messgequeue
+			入队
+				按照时间排好序
+最早时间的 排在最头
+			出队
+				取出策略
+					根据时间
+					头是否是sync barrier
+						sync barrier消息特点
+						异步消息
+					候选message
+						有
+							其when 和 now的关系
+								等待 when-now的时间
+						无
+							等待永久
+					阻塞方式
+						类似locksupport.park/unpark
+					idlehandler
+						在取出消息时
+						当没有msg返回时
+				唤醒时机
+					当插入了一个消息，改变了头部时
+					或，头部是sync barrier，插入了一个异步消息
+且该异步消息在头部之后
+						因为，sync barrier一直没有被remove
+导致其when<now
+					且，之前next线程处于 阻塞状态
+			quit
+				quit vs quitsafely
+					删除哪些消息
+						根据msg.when vs now
+				唤醒 来再次next
+				取出时，如果没有msg返回，判断是否quit
+					是，则销毁
+		引发内存泄露
+			looper messagequeue msg target activity
+	广播
+		动态 静态注册
+		本地广播
+			handler
+		有序广播
+			广播是否再传递到后续receiver
+			添加中间处理结果
+	handlerthread
+		其中的run方法
+	io
+		共享内存
+			binder的16m内存的限制 16个线程来处理客户请求的限制
+			原理
+				memoryfile
+				filedescription
+		okio
+			sink.write, souce.read
+buffer.write, buffer.read
+		nio
+			socket的例子
+			bytebuffer
+				直接内存
+			selector
+			channel
+				非阻塞
+	图片显示
+		缓存
+			fresco三级缓存
+			直接在堆中
+			用共享内存
+	网络
+		tls ssl
+			握手过程
+				我要和你建立连接 发送随机数 加解密套件
+				发送证书 随机数 用私钥加密
+				检验证书是否有效 解析出随机数 再生成随机数并发送 生成对称密钥
+					有效性检查
+						证书合法
+							用hash算法针对于证书产生摘要 用根证书的公钥对签名进行解密 得到摘要 两个摘要相同
+						根证书机构
+				得到随机数 产生对称密钥
+				开始通信
+		okhttp原理
+			设计
+			拦截器
+				缓存
+					有没有缓存 要不要使用缓存 缓存是否还有效
+					问题
+						缓存什么时候被清除
+				重试
+				网络连接 streamallocation
+				请求响应
+				bridge
+					添加请求响应头信息
+		tcp
+			3次握手
+			4次握手
+		优化
+			不使用dns解析
+			使用长连接
+			复用连接
+			使用缓存
+	bundle arraymap 内部数据结构
+		sparsearray
+			二分查找
+	hashcode equals
+		为什么key要求不可变
+		应用在hashmap等
+	属性动画
+		interceptor
+		evaluate
+		objectanimator
+	context
+		有没有主题信息
+		有没有task信息
+	框架层
+		ams
+		wms
+			绘制流程
+			按键处理
+				事件如何被传送到activity.dispatchtouch
+				decorview.dispatchtouch处理
+		todo 绘制流程细节填充
+		activity的启动
+			activitythread.main的执行
+			ApplicationThread的构建，并通知AMS
+			ams要求其创建application，并执行attach
+			activity的创建
+			attach
+				window的创建
+				关联wm
+			setcontentview
+				window.setcontentview
+					根据feature来选择布局文件 并放入到decorview中 将界面对应的布局放入到contentparent中
+					设置wlp.flag
+			真实要显示时 wm.addview
+				viewroot的构建
+					windowsession的构建
+				viewroot view wlp之间的关系
+				viewroot.setview
+					将w添加到display上
+						wms创建 windowstate windowtoken
+	性能优化
+		数据库
+			wal
+				和一般journal的区别
+			读写并发
+				读写锁
+			采用sqlitestatement
+			使用事务
+				保证原子性
+				效率 因为一秒中只能执行有限个事务
+					加入到笔记中，有重点
+		显示
+			布局 扁平
+			过度绘制
+			merge viewstub
+		良好的设计
+		内存泄露
+			leakcanary
+				原理
+					为对象生成弱引用 指定引用队列 观察该队列中是否存在该引用 有的话，就代表没有内存泄露 否则，生成dump，找到最短路径
+					todo 弱引用的处理 referencethread等 finalizer的处理
+		不要在ui线程上执行耗时操作
+			blockcanary
+	viewpager
+		两类adapter
+		懒加载
+	jvm
+		内存分类
+			栈 针对于线程
+				栈帧
+					局部变量 返回地址 操作数栈
+				程序计数器
+			堆
+				年轻代
+					对象被放入到eden中
+				年老代
+					什么时候对象放入到年老代中
+						年龄够大 经历了几次gc
+						要分配的空间超过了阀值
+							避免在survivor区中来回移动
+						在gc后，无法放入
+							存活对象不能放入到survivor
+							对象不能放入到eden
+				gc
+					区域
+						年老代
+							在执行minor gc前 当剩余空间未满足下述条件 大于 年轻代的对象总和 大于 历次晋升所需空间得平均值
+							手动执行
+						年轻代
+							当eden不够用时
+							手动执行时
+					算法
+			方法区
+				类的字节码
+					常用的操作数图示
+					存储了什么
+						常量
+							字符串 数值
+							符号
+						字段数据
+						方法数据
+						静态代码块
+					类如何被加载
+						加载过程
+							加载
+							检验
+							准备
+								赋予初值
+							连接resolve
+							初始化
+								赋予正确的值
+						双亲委派
+		对象在内存中的表示
+			对象头
+				mark word class对象的引用
+			对象实体
+			填充区域
+				8的倍数
+		gc
+			哪些算法
+			哪些收集器
+			针对于 年轻代 年老代
+		CPU缓存
+			线程的工作空间
+			缓存行
+			缓存一致性问题
+	lowmemorykiller
+		当内存小于某个值时，会杀对应adj的进程 会产生minadjscore 而每个进程会对应一个adjscore 大于mini的进程被杀掉
+		避免被杀
+			黑科技
+				一个像素的activity
+				前台服务 但是通知栏没有通知
+			占用少的内存
+				资源及时被释放
+				避免内存泄露
+				多进程
+					内存是按照进程来分配的 则一个应用可以被分得多一些内存 此外，多进程的另外一个目的时 进程间没有共存亡的关系
+						一个app可以被分配多少内存
+							build.prop中 一开始被分配 最大时 largeheap最大时
+						todo 多进程开单独条目
+				基本的编程规则

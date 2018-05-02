@@ -1,0 +1,111 @@
+中心主题
+	知识点
+		正在
+			unsafe
+				lazyset
+				常见操作
+				putorderint
+					延迟操作，其他线程可能并不可见
+				内存屏障
+			关闭浏览器标签
+			window
+				window的token在哪里赋值
+				window的父window的绑定
+				window的类型
+			activity的启动
+			abs内部原理
+			clipchildren
+				不能超过自己的dimen
+				不能超过父亲的dimen
+				子主题 3
+			堆外内存可以分配多少空间
+	非知识点
+		编写程序，将拷贝的文本内容的 回车符 所在内容 加上正确个tab
+		将知识大纲 放入到ithoughts中
+		哪些文件还意外存在着
+			待入mac后，跑完更新程序，还存在？：
+thread\并发\CAS-compare and set-swap\ABA问题\aba示例代码.txt
+		=================================================
+		查看boss直聘
+		查看小米等所需要的技术点
+	进度
+		内容
+			不要：知识点单独出现在 ithoughts.持续学习 中
+			今天打开的tab要关掉
+			内容点
+多项时平分
+或完成单项内容
+				10知识点
+				10个待整理页面
+		完成结果
+			完成
+				持续时间
+					1天
+到180224之前
+			未完成
+				持续时间
+					1天
+到180223
+	完成
+		上次5
+		handlerthread的退出
+			让一个线程死亡，避免线程消耗
+			message的缓存机制
+			quit
+			quitsafly
+				对于一个任务，当其when<now时，但是其还没有得到执行，就还保留着？只移除哪些when>now的任务？
+			handler.dispatchmessage内部流程
+				message本身有没有callback
+				handler本身有没有callback
+				handlemessage
+			handler.obtainmessage方法
+				messagequeue.obtain
+		小知识点
+			parcel
+				其obtain和message中的obtain，有什么相似点和区别
+			okio的回忆
+				sink.write(source)，source.read(sink)
+			executor的shutdownnow都调用了什么
+			atomicinteger除了++之外 还有什么操作
+				基本
+				atomicreference
+			service.onstart 和 onstartcommand都会调用吗
+		asynctask回忆
+			futuretask
+				workcallable
+					doinbackground
+					postresult
+			execute
+				状态判定
+				executor.execute
+					serialexecutor
+						execute方法
+							实参runnable被封装到到自定义runnable中
+								run方法中，实参runnable执行完毕后，nextwork
+							自定义runnable被放入到队列中
+							nextwork
+								使用 threadpoolexecutor来执行
+				需要在ui线程上执行，为了preexecute在ui线程上进行
+			cancel
+				futuretask.cancel
+		intentservice
+			被外部启动时，onstartcommand
+				构建message
+					提供intent和startid
+				通过handler进行发送
+					handler的looper来自handlerthread.looper
+				handler.handlermessage内部
+					取出intent，调用回调，onhandlemessage(intent)
+					之后，stopself(startid)
+			ondestroy中
+				looper.quit
+					messagequeue.quit
+						唤醒线程，messagequeue.next返回null
+							looper.loop返回
+								looper.thread工作完成
+		process
+			process.tid是什么
+				thread有id？
+			uid, pid
+			不同的app可以运行在同一个进程中吗？
+				需要shareuserid和签名？

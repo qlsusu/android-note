@@ -1,1 +1,9 @@
-UID一般表示进程的创建者（属于哪个用户创建）
+参见：
+android 中UID与PID的作用与区别 - 灵聚 - 博客园
+	http://www.cnblogs.com/perseus/articles/2354173.html
+Android: Process.myTid() VS Thread.currentThread().getId() - Stack Overflow
+	https://stackoverflow.com/questions/33171734/android-process-mytid-vs-thread-currentthread-getid
+
+PID用于表示进程
+UID 在传统的linux上，用于表示哪个用户在使用该进程，但Android被设计成单用户，则UID使用在 数据共享方面：防止 app1的数据（文件，内存） 被app2访问	
+	哪些进程可以共享数据，参见：进程间共享数据 sharedUserId 相同签名.txt

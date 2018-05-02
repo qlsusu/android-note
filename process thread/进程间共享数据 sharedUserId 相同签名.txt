@@ -5,4 +5,4 @@
 
 需要具备以下条件：
 . 这个应用使用同样的签名
-. 两个应用指定同一个android:sharedUserId的值
+. 两个应用指定同一个android:sharedUserId的值（不仅仅局限于数字）

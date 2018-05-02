@@ -26,3 +26,10 @@ background group
 executeOnExecutor(Executor, Object...)
 
 可能会内存泄漏
+本质上，AsyncTask的执行为Executor#execute(Runnable)
+在还未执行时，该Runnable会一直缓存于某个Executor中（如：ThreadPoolExecutor）
+而该Runnable为AsyncTask#mWorker，而如果AsyncTask为Activity的内部类
+则导致内存泄漏
+
+cancel操作：
+本质上：FutureTask#cancel(boolean mayInterruptIfRunning)

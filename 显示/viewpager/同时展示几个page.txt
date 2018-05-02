@@ -10,3 +10,5 @@ Android中ViewPager显示3个条目及滑动动画 - 简书
 paddingStart,paddingEnd
 	该padding值，为 居中page的相邻page的 展示宽度
 clipToPadding=false
+
+该方式对于page的touch响应 无影响

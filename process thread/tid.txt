@@ -1,0 +1,2 @@
+Process.myTid：调用该语句的线程 在linux层面的 id
+Thread.tid：在java层面的 id

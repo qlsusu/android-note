@@ -1,0 +1,6 @@
+在Stub#onTransact中，会执行了自定义Stub的I接口方法
+当其抛出了异常，那么后续流程不再走（往Parcel reply中写入 未异常 和 结果）
+
+有什么影响：
+. server方 并不会抛出异常给 client方
+. 用于Stub执行的 binder线程 还能继续供 后续的Stub执行 来使用

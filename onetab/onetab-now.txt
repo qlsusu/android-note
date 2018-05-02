@@ -1,5 +1,4 @@
 https://mp.weixin.qq.com/s?__biz=MzI0MjE3OTYwMg==&mid=2649550710&idx=1&sn=a39775baa4e7a71bd8493fb9cdfb6702&chksm=f118040bc66f8d1de418bdd36d482828f4c0afe6e22e4064a8f32a09c3c72a162af229b34def&scene=21 | 2018年快来了，BAT等一二线互联网公司Android面试题汇总
-https://www.jianshu.com/p/4e8b11833d67 | android 中通过AIDL传输流文件 - 简书
 http://blog.csdn.net/eric_sunah/article/details/8001866 | JVM学习之：虚拟机中的运行时栈帧总结（一） - CSDN博客
 http://szysky.com/2016/08/16/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B-09-%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B/ | 《Android 开发艺术探索》 09-四大组件的工作过程 - 筑梦 suzeyu`苏泽钰
 http://blog.csdn.net/luoshengyang/article/details/8303098 | Android应用程序窗口（Activity）的绘图表面（Surface）的创建过程分析 - CSDN博客
@@ -9,11 +8,9 @@ https://my.oschina.net/youranhongcha/blog/492591 | 聊一聊Android的消息机�
 http://blog.csdn.net/sgwhp/article/details/49640611 | 浅析fresco - sgwhp的专栏 - CSDN博客
 http://blog.csdn.net/luckchoudog/article/details/42234801 | 如何让Dialog在用户按下返回键也不消失 - - CSDN博客
 https://stackoverflow.com/questions/1468007/atomicinteger-lazyset-vs-set | java - AtomicInteger lazySet vs. set - Stack Overflow
-https://g.codery.ga/search?source=hp&ei=ar97WufzFsrsvgSqhJLICQ&q=pager%E6%98%BE%E7%A4%BA%E4%B8%80%E9%83%A8%E5%88%86item&btnK=Google+%E6%90%9C%E7%B4%A2 | pager显示一部分item - Google 搜索
-http://blog.csdn.net/jm_beizi/article/details/51297605 | ViewPager系列之ViewPager一屏显示多个子页面 - CSDN博客
-http://blog.csdn.net/d19901217/article/details/17114247 | (笔记)viewpager显示同时显示多页 - CSDN博客
-http://blog.csdn.net/xiaoy24charles/article/details/23307709 | Multiple-View ViewPager-如何实现Viewpager控件的一个页面展示多个page以及回弹效果 - CSDN博客
-http://blog.csdn.net/jm_beizi/article/details/51297605 | ViewPager系列之ViewPager一屏显示多个子页面 - CSDN博客
-https://g.codery.ga/search?source=hp&ei=U0t-WrGAPISEvQSkvI2QCw&q=android+listview%E5%9B%9E%E5%BC%B9%E6%95%88%E6%9E%9C&oq=listview%E5%9B%9E%E5%BC%B9%E6%95%88%E6%9E%9C&gs_l=psy-ab.3.0.0i5i30k1.111320.116054.0.118018.23.19.0.0.0.0.230.2173.0j14j1.15.0..2..0...1.1j4.64.psy-ab..8.11.1447...0j0i131k1j0i10k1j0i13i5i30k1.0.lf1iM4eoGgM | android listview回弹效果 - Google 搜索
-http://blog.csdn.net/androiddevelop/article/details/8155350 | ListView 拉出回弹效果 overscroll，阻尼效果 - CSDN博客
-https://www.jianshu.com/p/95f416cfb09f | Android ListView实现阻尼回弹效果 并去除边缘阴影 - 简书
+https://g.codery.ga/search?q=volatile+%C4%DA%B4%E6%C6%C1%D5%CF&oq=volatile+%C4%DA%B4%E6%C6%C1%D5%CF&gs_l=heirloom-serp.3...719435.724160.0.724416.28.14.0.0.0.0.0.0..0.0....0...1ac.1j4.34.heirloom-serp..28.0.0.O0nSp3s0cfw | volatile 内存屏障 - Google 搜索
+http://www.cnblogs.com/mickole/articles/3757278.html | Java中Unsafe类详解 - mickole - 博客园
+http://blog.csdn.net/iter_zc/article/details/40744485###; | 聊聊高并发（十八）理解AtomicXXX.lazySet方法 - CSDN博客
+https://www.jianshu.com/p/a223f190708b | volatile、内存屏障、内存乱序小结 - 简书
+https://www.jianshu.com/p/2ab5e3d7e510 | 内存屏障 - 简书
+https://monkeysayhi.github.io/2017/12/28/%E4%B8%80%E6%96%87%E8%A7%A3%E5%86%B3%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C/ | 一文解决内存屏障 | 程序猿说你好

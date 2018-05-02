@@ -176,7 +176,9 @@ public interface IMyLogic extends android.os.IInterface {
                     //执行方法，stub的子类需要实现该 add本地方法
                     int _result = this.add(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5);
 
-                    //没有产生异常
+                    //即使在Stub子类的add方法中，的确抛出了异常（如：int a=1/0）
+					//也仅仅是之下的语句不再执行
+					//且，该binder线程还是用来执行 后续的binder请求
                     reply.writeNoException();
                     
                     //写入结果

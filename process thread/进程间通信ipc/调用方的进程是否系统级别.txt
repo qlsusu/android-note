@@ -1,2 +1,2 @@
-packageManager().checkSignatures(Binder.getCallingUid(), Process.SYSTEM_UID) == 
+PackageManager.checkSignatures(Binder.getCallingUid(), Process.SYSTEM_UID) == 
 	PackageManager.SIGNATURE_MATCH;

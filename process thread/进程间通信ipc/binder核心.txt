@@ -25,15 +25,6 @@ binder机制的角色：
 	传递 binder
 	传递 通信的数据
 	binder的引用计数（作用是什么？）
-	
-为什么采用binder来实现IPC：
-. 效率
-	数据需要拷贝1次
-	普通client-server传递数据时，client将数据拷贝给内核，后再从内核拷贝数据到server
-	binder机制采用 进程虚拟地址空间和内核虚拟地址空间，则一个物理内存页面，被映射到 上述2个虚拟空间
-	则client拷贝数据到内核空间，后server和内核共享这部分数据（这就减少了 内核-server间的数据拷贝）
-. 通信双方的身份校验
-	参见：binder身份校验.txt
 
 底层源码流程：
 service 向ams提供binder（通过service.onbind()返回）
@@ -77,8 +68,3 @@ aidl的通信：
 				}
 			调用 接口方法（抽象的Stub声明其implements了IMyLogic，则Stub的实现子类 拥有IMyLogic的该方法的实现）
 			将结果写入到 reply parcel中
-		
-有什么限制：
-一个进程中，binder线程池中的线程个数为16个（16个remote binder的请求 并发执行）
-	当第17个remote binder的请求来时，该请求将被阻塞，直到之前的请求被处理完毕，将线程分配给了第17个请求来执行
-且，binder通信过程中，所使用的内存<1M

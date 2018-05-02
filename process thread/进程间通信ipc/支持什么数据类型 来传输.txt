@@ -14,5 +14,8 @@ CharSequence
 			package com.ryg.sayhi.aidl;
 			parcelable Student;
 	I接口
+	--
+	说明：如果要使用 上述类（Parcelable I接口），必须import（无论 是否同包）
 List, Map
-	list的元素 Map的entry.key和value 也必须是上述类型之一
+	list的元素
+	Map的entry.key和value 也必须是上述类型之一
