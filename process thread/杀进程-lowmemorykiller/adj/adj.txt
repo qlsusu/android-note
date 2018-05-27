@@ -1,3 +1,0 @@
-参见：
-Android平台App进程优先级
-	http://www.jianshu.com/p/6201dc3a447a

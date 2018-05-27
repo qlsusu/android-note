@@ -5,8 +5,8 @@ Andoird优化(二)_内存优化_点进来看看不会后悔的
 Android定义了几个API，你可以用他们来了解系统当前中还剩多少可用内存和用了多少内存
 ActivityManager的：
 	getMomoryInfo(MemoryInfo)     
-	getMomoryClass()     
-	getLargeMeoryClass()
+	getMomoryClass() // 告诉app：如果其manifest.xml中没有标明largeheap时，其最多可用多少内存
+	getLargeMeoryClass() // 告诉app：如果其manifest.xml中标明了largeheap时，其最多可用多少内存
 Debug的
 	dumpHprofData()
 	getNativeHeapAllocatedSize()

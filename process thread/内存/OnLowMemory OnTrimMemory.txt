@@ -1,23 +1,26 @@
 参见：
-从OnTrimMemory视角谈Android代码内存优化
+Android 性能优化之内存优化
+	https://juejin.im/post/5b023ca86fb9a07aa6320f8a
+从onTrimMemory视角谈Android代码内存优化
     http://www.myexception.cn/android/2016638.html
 Android 内存相关 onTrimMemory，onLowMemory，MemoryInfo()
 	http://www.cnblogs.com/sudawei/p/3527145.html
 Android 应用内存优化 之 onLowMemory & onTrimMemory
     http://www.cnblogs.com/CharlesGrant/p/5112438.html
 
-----------------------------------------------------OnLowMemory
-OnLowMemory的调用时机：
+----------------------------------------------------onLowMemory
+onLowMemory的调用时机：
 当后台程序都被杀死了，但资源还匮乏时的回调
 需要在该方法中，释放一些不必要的资源
 
 形式：
 Application.onLowMemory()
-Activity.OnLowMemory()
-Fragement.OnLowMemory()
-Service.OnLowMemory()
-ContentProvider.OnLowMemory()
+Activity.onLowMemory()
+Fragement.onLowMemory()
+Service.onLowMemory()
+ContentProvider.onLowMemory()
 --
+//说明：提供参数时，请提供ComponentCallbacks2对象
 Context.registerComponentCallbacks(new ComponentCallbacks() {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -30,39 +33,39 @@ Context.registerComponentCallbacks(new ComponentCallbacks() {
     }
 });
 
-----------------------------------------------------OnTrimMemory
-和OnLowMemory相比：
-. OnLowMemory大概和 OnTrimMemory中的TRIM_MEMORY_COMPLETE级别相同
-. OnLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。
+----------------------------------------------------onTrimMemory
+和onLowMemory相比：
+. onLowMemory大概和 onTrimMemory中的TRIM_MEMORY_COMPLETE级别相同
+. onLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。
 
-OnTrimMemory的参数值类型（定义在：ComponentCallbacks2.java中）：
+onTrimMemory的参数值类型（定义在：ComponentCallbacks2.java中）：
 TRIM_MEMORY_RUNNING_MODERATE：
-    表示应用程序正常运行，并且不会被杀掉。但是目前手机的内存已经有点低了，系统可能会开始根据LRU缓存规则来去杀死进程了
+    表示我们的进程还安全不会被杀。但是目前手机的内存已经有点低了，系统可能会开始根据LRU缓存规则来去杀死进程了
     内存不足(后台进程超过5个)
 TRIM_MEMORY_RUNNING_LOW：
-    表示应用程序正常运行，并且不会被杀掉。但是目前手机的内存已经非常低了
+    表示我们的进程还安全不会被杀。但是目前手机的内存已经非常低了
     内存不足(后台进程不足5个)
 TRIM_MEMORY_RUNNING_CRITICAL：
-    表示应用程序仍然正常运行，但是系统已经根据LRU缓存规则杀掉了大部分缓存的进程了
+    表示我们的进程还安全不会被杀，但是系统已经根据LRU缓存规来杀进程了
     内存不足(后台进程不足3个)
 TRIM_MEMORY_BACKGROUND：
-    表示手机目前内存已经很低了，系统准备开始根据LRU缓存来清理进程。这个时候我们的程序在LRU缓存列表的最近位置，是不太可能被清理掉的
+    表示手机目前内存已经很低了，系统准备开始根据LRU缓存来清理进程。这时我们的程序处于LRU列表的头部（比较安全）
 TRIM_MEMORY_MODERATE：
-    表示手机目前内存已经很低了，并且我们的程序处于LRU缓存列表的中间位置，如果手机内存还得不到进一步释放的话，那么我们的程序就有被系统杀掉的风险了。
+    表示手机目前内存已经很低了，并且我们的程序处于LRU列表的中部（危险），如果手机内存还得不到进一步释放的话，那么我们的程序就有被系统杀掉的风险了。
 TRIM_MEMORY_COMPLETE 
-    表示手机目前内存已经很低了，并且我们的程序处于LRU缓存列表的最边缘位置，系统会最优先考虑杀掉我们的应用程序
+    表示手机目前内存已经很低了，并且我们的程序处于LRU列表的尾部（最危险），系统会最优先考虑杀掉我们的应用程序
 --
 TRIM_MEMORY_UI_HIDDEN：
-    表示应用程序的 “所有”UI界面 被隐藏了，即用户点击了Home键或者Back键导致应用的UI界面不可见．这时候应该释放一些资源
-    和activity.onstop的相比
+    表示应用程序的 “所有”UI界面 被隐藏了，即用户点击了Home键或者Back键导致应用的UI界面不可见．这时候应该释放一些UI资源
+    和activity.onstop的相比：
         onstop仅仅代表 我们app的某个activity不可见了
-        OnTrimMemory(TRIM_MEMORY_UI_HIDDEN)是在onstop之前被调用
+        onTrimMemory(TRIM_MEMORY_UI_HIDDEN)是在onstop之前被调用
     内存不足，并且该进程的UI已经不可见了
 
 形式：
 Application.onTrimMemory()
 Activity.onTrimMemory()
-Fragement.OnTrimMemory()
+Fragement.onTrimMemory()
 Service.onTrimMemory()
 ContentProvider.onTrimMemory()
 --

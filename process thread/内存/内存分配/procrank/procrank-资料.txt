@@ -1,0 +1,3 @@
+参见：
+android应用内存占用测试（每隔一秒打印procrank的信息） - 子信风蓝蓝 - 博客园
+	https://www.cnblogs.com/chengchengla1990/p/5984084.html

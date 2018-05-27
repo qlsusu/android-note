@@ -24,6 +24,7 @@ Parcelable是通过IBinder通信的消息的载体。
 Parcel p=Parcel.obtain();
 p.writeXXX();
 p.recycle();
+
 ------------------------------------Parcelable一个例子
 public class MyParcelable implements Parcelable {
     private int mData;
