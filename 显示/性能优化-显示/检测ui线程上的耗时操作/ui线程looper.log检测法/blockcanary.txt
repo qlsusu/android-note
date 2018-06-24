@@ -25,3 +25,8 @@ blockcanary
 public int provideBlockThreshold() {
     return 1000;
 }
+
+日志存放在哪里：
+每个item一个文件
+默认位置：/sdcard/blockcanary/
+参见：BlockCanaryInternals#getPath

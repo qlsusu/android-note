@@ -1,0 +1,3 @@
+Thread.sleep
+LockSupport.park
+MessageQueue#nativePollOnce(long ptr, int timeoutMillis) 
