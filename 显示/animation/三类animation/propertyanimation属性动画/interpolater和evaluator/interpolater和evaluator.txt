@@ -1,3 +1,5 @@
+interpolator的实时效果：https://github.com/inloop/interpolator
+
 timeinterpolator时间插值器：
 	根据时间流逝的百分比(elapsed fraction) 来计算出 当前属性值改变的百分比(interpolated fraction)
 	有哪些interpolator，如：linear, acceleratedecelerate, decelerate 等

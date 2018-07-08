@@ -1,0 +1,5 @@
+adb shell am dumpheap 包名 /data/local/tmp/1.hprof
+adb pull /data/local/tmp/1.hprof ./
+hprof-conv 1.hprof 1.2.hprof
+
+select * from instanceof 完全限定类名
