@@ -1,0 +1,7 @@
+库在本地的位置：/Users/qlong/.gradle/caches/modules-2/files-2.1/
+
+依赖示例：
+compile 'com.squareup.okio:okio:1.13.0'
+
+本地目录结构：
+files-2.1/com.squareup.okio/okio/1.13.0

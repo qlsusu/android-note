@@ -1,0 +1,3 @@
+show history
+进入到某个文件，show history来查看针对于该文件的提交记录
+选择某个记录，右键show all affected files 来查看所涉及的所有文件

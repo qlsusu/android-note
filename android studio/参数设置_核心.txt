@@ -70,6 +70,12 @@ auto import
 	Editor->General-Show quick doc on mouse move
 open source in new window
 ------------工具设置
+关联beyond compare
+	tools-diff&merge-external diff tools
+		勾选 use external diff tool 和 use by default
+		设置.exe的路径
+		--
+		针对于external merge tool进行上述设置
 隐藏所有的tab
 	hide all windows
 护眼模式
