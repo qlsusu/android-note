@@ -7,8 +7,8 @@ ContextImpl中有XXService的缓存列表mServiceCache，在通过ContextImpl来
 Context#getSystemService(java.lang.String)
 ContextImpl#getSystemService
 	SystemServiceRegistry#getSystemService
-		SYSTEM_SERVICE_FETCHERS.get(name)#getSystemService
-			SYSTEM_SERVICE_FETCHERS.get(name)返回的是：CachedServiceFetcher
+		SYSTEM_SERVICE_FETCHERS.get(name)得到 CachedServiceFetcher
+			CachedServiceFetcher#getSystemService			
 				在SystemServiceRegistry的static中，执行了registerService(String serviceName, Class<T> serviceClass, ServiceFetcher<T> serviceFetcher)，如：
 					registerService(Context.ACCOUNT_SERVICE, AccountManager.class,
 						new CachedServiceFetcher<AccountManager>() {
@@ -61,4 +61,4 @@ ContextImpl#getSystemService
 					}
 				}
 				即是：针对于每个ContextImpl，均有service的缓存列表（采用Object[]形式）
-					先从该缓存列表中取，如果没有取到，再去创建（SystemServiceRegistry.CachedServiceFetcher#createService）
+					先从该缓存列表中取，如果没有取到，再去创建（SystemServiceRegistry.CachedServiceFetcher#createService），并加入到缓存中

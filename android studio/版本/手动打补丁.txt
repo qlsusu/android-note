@@ -11,7 +11,7 @@ https://dl.google.com/android/studio/patches/AI-143.2739321-143.2783836-patch-ma
 
 . 应用 补丁.jar
 对于mac系统
-	将该jar应用到android studio.app/Contents下，运行：
+	将该jar放置到android studio.app/Contents下，运行：
 	java -classpath ../patch/AI-143.2739321-143.2783836-patch-mac.jar com.intellij.updater.Runner install Contents/
 对于win系统	
 	将该jar放置到 D:\_study\android_studio\Android Studio 的 同级目录patch/下

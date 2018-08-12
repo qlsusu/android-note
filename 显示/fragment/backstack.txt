@@ -7,6 +7,9 @@ and will REVERSE its operation WHEN later POPPED OFF the stack（当用户点击
 加入到back stack中去的时候, 是把transaction中的那一系列操作作为一个整体, 加入到back stack中.
 需要在commit之前
 用户按Back键, 从栈中pop出一个transaction, 对其中的每项操作进行 逆转 操作，从而达到commit之前的状态
+	涉及哪些fragment，如：fragB要 replace fragA，那么该涉及的frag有 fragB和fragA（而不仅仅是fragB）
+	逆操作：add->remove, hide->show, replace->replace（因为replace=remove+add）
+	这也是frag为什么会进行状态保存的原因：逆反操作后，该frag可能需要再次展示在用户面前，则需要恢复该frag为 被remove之前的状态
 
 当transaction中包含了replace操作，且该transaction被添加到back stack中，那么旧的fragment将会 最底执行到ondestroyedview（并不会执行ondestroy, ondetach）
 当transaction中包含了replace操作，但是该transaction并未添加到back stack中，那么旧的fragment将会 最底执行到ondetach

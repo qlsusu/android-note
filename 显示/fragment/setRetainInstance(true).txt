@@ -4,8 +4,8 @@ Activity与Fragment生命周期探讨
 Understanding Fragment's setRetainInstance(boolean)
 	http://stackoverflow.com/questions/11182180/understanding-fragments-setretaininstanceboolean
 
-设：在activityA中，被add了fragment1，fragment1.setRetainInstance(true)
-那么当宿主Activity需要重建时（如：往往因为config change（如：横竖屏切换））
+设：在activityA中，add了fragment1，fragment1.setRetainInstance(true)
+那么当宿主Activity需要重建时（如：往往因为config change（如：横竖屏切换），但activity又不能处理该config change时）
 	activityA将执行销毁，fragment1会走到onDetach，但并不会执行onDestroy（仅仅）
 	activityB会被构建，并执行onCreate，则需要恢复Fragment（如果之前，activityA.onSaveInstanceState中对Fragment进行了state save）
 		此时，仍然使用fragment1（而非新建一个fragment2）来执行onAttach, onCreateView等，但，不会执行onCreate（仅仅）

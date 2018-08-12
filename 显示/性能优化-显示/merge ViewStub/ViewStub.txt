@@ -11,7 +11,8 @@ View.GONE在布局加载的时候，就已经添加到布局树上了，而ViewS
 一个例子：
 <ViewStub  
     android:id="@+id/stub_import"  
-    android:inflatedId="@+id/stub_comm_lv"  
+    android:inflatedId="@+id/stub_comm_lv"
+	<!-- 指定该ViewStub对应的layout -->
     android:layout="@layout/my_comment_layout"  
     android:layout_width="fill_parent"  
     android:layout_height="wrap_content"  
@@ -32,8 +33,10 @@ ViewStub listStub2 = (ViewStub) findViewById(R.id.stub_import) ;
 if ( commLv2 == null ) {  
 // 加载评论列表布局, 并且获取评论ListView,inflate函数直接返回ListView对象  
   commLv2 = (ListView)listStub2.inflate();  
-} else {  
-// ViewStub已经加载  
+}
+// 如果找不到commLv2，则代表ViewStub已经加载
+else {  
+
 }  
 --
 方式2（通过setvisibility）：

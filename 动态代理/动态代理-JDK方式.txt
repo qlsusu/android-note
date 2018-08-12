@@ -1,6 +1,7 @@
-//构建代理对象（Logic是一个接口，产生的代理类是Logic的实现类）
-//调用该代理类的任何方法时，InvocationHandler#invoke会被调用
-//往往需要一个Logic src，来执行真实的业务逻辑
+//构建代理对象
+//Logic是一个接口，产生的代理类 是Logic的子类，类型：如：com.sun.proxy.$Proxy4
+//src是目标对象，是Logic接口的 实现类的 对象
+//通过该 产生的代理对象，调用Logic的任何方法时，InvocationHandler#invoke会被调用
 public Logic make(final Logic src)
 {
 	return (Logic) java.lang.reflect.Proxy.newProxyInstance(Logic.class.getClassLoader(),

@@ -1,0 +1,4 @@
+参见：
+关于 Spring AOP (AspectJ) 你该知晓的一切 - CSDN博客
+	https://blog.csdn.net/javazejian/article/details/56267036
+	中的 CGLIB动态代理 和 JDK动态代理

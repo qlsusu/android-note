@@ -13,10 +13,12 @@ Android性能优化第（十）篇---布局优化
 限制：
 Merge只能作为XML布局的根标签使用，
 当Inflate以merge开头的布局文件时，必须指定一个父ViewGroup，并且必须设定attachToRoot为true。
-	方法签名：inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot)
+	方法签名：LayoutInflater#inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot)
 merge不能作为fragment的layout，因为：
-	when you inflate a layout file which has the merge tag as its root you must attach it to a valid parent ViewGroup. 
-	Attaching it to the container in the onCreateView is incorrect as the View returned by that method will be added by the framework.
+	when you inflate a layout file which has the merge tag as its root 
+	you must attach it to a valid parent ViewGroup. 
+	Attaching it to the container in the onCreateView is incorrect 
+		as the View returned by that method will be added by the framework.
 	则：上述做法是矛盾的
 	参见：Can you use the merge tag with fragments?
 		http://stackoverflow.com/questions/13348455/can-you-use-the-merge-tag-with-fragments

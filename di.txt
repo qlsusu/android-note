@@ -1,4 +1,0 @@
-dragger2
-	google出品
-butterknife
-	https://github.com/JakeWharton/butterknife

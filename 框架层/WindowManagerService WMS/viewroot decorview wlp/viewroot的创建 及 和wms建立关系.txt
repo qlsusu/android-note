@@ -43,13 +43,12 @@ AMS->ApplicationThread.scheduleLaunchActivity->ActivityThread.handleLaunchActivi
 					如果params.type是 sub window，params.token=parentWindow.mView.getWindowToken
 					如果params.type是 application类型，且params.token为null，则params.token=parentWindow.mAppToken
 					为什么调整params.token：如果为null，很可能在IWindowSession.addToDisplay时抛出异常	
-				构建ViewRootImpl
-					其负责：
-						绘制绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
-							performMeasure
-							performLayout
-							performDraw
-						输入事件的处理：dispatchInputEvent			
+				构建ViewRootImpl其负责
+					绘制（到ViewRootImpl.mSurface.Canvas上）：performTraversals->
+						performMeasure
+						performLayout
+						performDraw
+					输入事件的处理：dispatchInputEvent
 					和WMS确认关系：
 						ViewRootImpl在 初始化 的时候，会为整个app申请一个IWindowSession.Proxy
 						方式：WindowManagerGlobal（其持有IWindowManager.Proxy）.openSession()
@@ -57,9 +56,10 @@ AMS->ApplicationThread.scheduleLaunchActivity->ActivityThread.handleLaunchActivi
 						app可通过该IWindowSession 来和 WMS的通信，如：
 							添加删除window
 							对窗口（DecorView）进行relayout以 显示在屏幕上
-					ViewRoot也有window的概念：W mWindow（IWindow.Stub，窗口级别）
-						注意：其并不关心：Window/PhoneWindow对象
-				存储 ViewRoot-view-wlp 于：[] ViewRoot, [] DecorView, [] wlp，index一致
+						--
+						ViewRoot也有window的概念：W mWindow（IWindow.Stub，窗口级别）
+							注意：ViewRoot并不关心：Window/PhoneWindow对象（其对应了decorView, wlp），其有自己的W
+				确定 ViewRoot-view-wlp 的关系，三者分别存储于：[] ViewRoot, [] DecorView, [] wlp，index一致
 				调用ViewRoot.setView(view, wlp)来确定 和WMS 的ipc关系				
 					requestLayout来请求一个垂直同步信号
 						mChoreographer.postCallback(Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, null);
@@ -69,7 +69,7 @@ AMS->ApplicationThread.scheduleLaunchActivity->ActivityThread.handleLaunchActivi
 					将W对象传递给WMS
 						W对象在ViewRootImpl初始化时被构建
 						通过IWindowSession.Proxy#addDisplay来传递W
-							WMS端，session为其IWindowSession.stub，最终会调用WindowManagerService.addWindow
+							WMS端，session为其IWindowSession.Stub，最终会调用WindowManagerService.addWindow
 							其中，会创建 WindowState和WindowToken 来对应该IWindow
 								mwindowmap：<IWindow.asbinder, WindowState>
 								mtokenmap：<IWindow.asbinder, WindowToken>

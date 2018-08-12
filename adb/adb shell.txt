@@ -1,0 +1,2 @@
+﻿进入到adb shell下，可以执行 诸如dumpsys activity等命令
+将这些命令输出为文件的方法：adb shell dumpsys activity > activityInfo.txt

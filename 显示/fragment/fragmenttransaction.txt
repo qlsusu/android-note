@@ -1,9 +1,4 @@
 fragmenttransaction代表了 一组 针对于不同frag的操作
-可以将该transaction放入到back stack中（在commit之前）
-	当popbackstack时，将会执行 针对于 transaction所涉及的frag的 逆操作（如：add->remove, hide->show, replace->replace）
-		涉及哪些fragment，如fragB要 replace fragA，那么该涉及的frag是 fragB和fragA（而不仅仅是fragB）
-		逆操作：add->remove, hide->show, replace->replace
-		这也是frag为什么会进行状态保存的原因：逆反操作后，该frag可能需要再次展示在用户面前，则需要恢复该frag为 被remove之前的状态
 
 当在fragA内部 再添加一个fragB，需要使用childfragmentmanager
 
@@ -29,5 +24,5 @@ replace()
 	replace() = remove(旧的) + add(新的)
 
 ------------------------------frag切换的方式（花开中的 设计情景）
-一开始add(fragA)，切换时hide(fragA)，add(fragB)；再次切换时，只需hide(fragB)（或者remove(fragB）），show(fragA)
+一开始add(fragA)，切换时hide(fragA)，add(fragB)；再切换回来时，只需hide(fragB)（或者remove(fragB）），show(fragA)
 这样就能做到多个Fragment切换不重新实例化，而不是使用replace：replace()这个方法只是在上一个Fragment不再需要时采用的简便方法。

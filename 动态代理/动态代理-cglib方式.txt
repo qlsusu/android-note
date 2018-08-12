@@ -1,0 +1,28 @@
+public class CglibPorxyMaker {
+	//方法拦截
+    private static class Interceptor implements Callback, MethodInterceptor {
+        @Override
+        public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+            //方法拦截
+            System.out.println("before invoke");
+            //目标对象的 方法调用
+            Object result = proxy.invokeSuper(obj, args);
+            System.out.println("after invoke");
+            return result;
+        }
+    }
+
+    /**
+     * 产生代理
+     *
+     * @param src 目标对象（该对象不需要实现特定接口）
+     * @param <T>
+     * @return
+     */
+    public static <T> T makeProxy(T src) {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(src.getClass());
+        enhancer.setCallback(new Interceptor());
+        return (T) enhancer.create();
+    }
+}
