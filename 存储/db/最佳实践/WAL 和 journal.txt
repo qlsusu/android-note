@@ -10,7 +10,9 @@ WAL: write-ahead log
 The original content is preserved in the database file and 
 	the CHANGES are appended into a separate WAL file. 
 A COMMIT occurs when a special record indicating a commit is appended to the WAL. 
-	注意：commit 不会使得 WAL文件和.db 进行合并
+	注意：
+	commit 会将修改写入到wal文件中
+	commit 不会使得 WAL文件和.db 进行合并
 Thus a COMMIT can happen 
 	without 
 	ever writing to the original database, 

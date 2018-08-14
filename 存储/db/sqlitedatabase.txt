@@ -3,6 +3,3 @@
 	http://blog.csdn.net/zgljl2012/article/details/44769043
 
 其拥有增删改查的方法
-
-一个sqliteopenhelper对象 对应了一个db连接
-	通过sqliteopenhelper.getXXXDatabase

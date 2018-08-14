@@ -10,3 +10,27 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 状态栏的高度：
 读取attr的值：@android:dimen/status_bar_height
+
+设置状态栏的前景色（状态栏上 文字/图标的颜色）（本质上，通过设置状态栏的背景色，从而影响到前景色）
+public static void setStatusBarColor(Window window, int color)
+{	
+	if (Build.VERSION.SDK_INT >= 23)
+	{
+		// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+		if ((window.getAttributes().flags & WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) == 0)
+		{
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		}
+		// finally change the color
+		window.setStatusBarColor(color);
+
+		if (Build.VERSION.SDK_INT < 26)
+		{
+			View decorView = window.getDecorView();
+			int flag = ColorUtils.isLightColor(color)
+				? decorView.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+				: decorView.getSystemUiVisibility() & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+			decorView.setSystemUiVisibility(flag);
+		}
+	}
+}

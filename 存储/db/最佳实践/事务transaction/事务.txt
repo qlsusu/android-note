@@ -1,6 +1,14 @@
+为什么使用事务：
+1. 原子性
+	事务中包含了对数据库的多个修改，这些修改要么都成功，要么都不成功
+2. 性能提升
+	当提交事务时，会发生io操作（如：将修改写入到WAL文件）
+		该操作是比较耗时的，如：sqlite虽然1秒可以插入50000条数据，但是1s内只能支持 十几次 事务
+	开启事务 + 100次插入 + 提交事务，该操作组合 执行1遍 vs
+		开启事务 + 一次插入 + 提交事务，该操作组合 执行100遍
+	性能会提升很多
+
 默认下，一个statement在执行时，会自动添加一个事务
-事务的执行 是比较耗时的
-	如：sqlite虽然1秒可以插入50000条数据，但是1s内只能支持 十几次 事务
 
 两种事务模式：
 . SQLiteSession#TRANSACTION_MODE_IMMEDIATE
@@ -13,10 +21,7 @@
 
 事务的正确使用方式：
 将一组修改的statement放入到一个事务中，
-好处：
-	性能提升：多次修改 只用操作1次数据库文件（在提交事务之前，修改都在内存中）
-	原子性：一组操作同时成功，或同时失败
-编码：
+示例：
 	SQLiteDatabase#beginTransactionNonExclusive 或者 SQLiteDatabase#beginTransaction
 	try{
 		//执行 增删改
@@ -25,4 +30,3 @@
 	}finally{
 		SQLiteDatabase#endTransaction
 	}
-		

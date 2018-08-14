@@ -1,4 +1,5 @@
 . 我们使用一个SQLiteDatabase，存活周期 同于app的，不要close
+	使用全局的SQLiteOpenHelper来进行getXXXDatabase
 . 开启WAL：
 	如果开启，意味着：读-读 读-写 可以并发，且写入的速度会快
 	如果不开启，意味着：读-读 可以并发，但是 读-写 不能并发
@@ -6,4 +7,6 @@
 	参见：并发实践.txt
 . 使用事务
 	参见：事务transaction/
-. 使用SQLiteStatement 来执行更新操作
+. 操作
+	使用SQLiteStatement 来执行更新操作
+	query时，不使用column index
