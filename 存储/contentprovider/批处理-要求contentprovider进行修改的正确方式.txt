@@ -27,7 +27,7 @@ public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation>ope
 	}
 }
 
-//contentprovider中，原生的applybatch为：
+//原生的ContentProvider.java中
 public @NonNull ContentProviderResult[] applyBatch(
         @NonNull ArrayList<ContentProviderOperation> operations)
                 throws OperationApplicationException {

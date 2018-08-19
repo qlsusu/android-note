@@ -1,6 +1,10 @@
 参见：
+深入剖析 Android中的 ArrayMap - 技术小黑屋
+	https://droidyue.com/blog/2017/02/12/dive-into-arraymap-in-android/
 Android内存优化（使用SparseArray和ArrayMap代替HashMap）
 	http://blog.csdn.net/u010687392/article/details/47809295
+SparseArray和ArrayMap的优缺点和使用场景 | Quinn Note
+	http://quinnchen.me/2017/07/01/2017-07-01-sparsearray-arraymap/
 SimpleArrayMap源码(你还是只会用HashMap么？)
 	http://www.jianshu.com/p/dfa75d3ba1d3
 
@@ -9,12 +13,13 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 ------------------------SparseArray
 内部数据结构：
 	private int[] mKeys;
-    private Object[] mValues;
+	private Object[] mValues;
 在进行存储时，key和value被放入到 各自对应的数组中
 如何确定 放入的位置：
 	key被放入到mkeys，放入后，整个mkeys要保持有序
 		为了：后续查找key时，能快速定位
 		采用了 二分查找来进行 插入和查找
+			二分查找的 时间复杂度为：O(logn)
 当key确定了被插入的位置index，则 mValues[index]=value
 
 例子：
@@ -24,18 +29,24 @@ SimpleArrayMap源码(你还是只会用HashMap么？)
 
 什么时候使用
 1. 数据量不大，最好在千级以内
-	为什么要求数据量不大，因为 插入和删除都涉及到 数组元素的移动（复制）
+	为什么要求数据量不大：
+		插入/查找 时都要使用二分查找法，则需要时间
+		而插入等修改操作 都涉及到 数组元素的移动（复制）
 2. key是int类型（非integer类型，对于hashmap来说）
 	则省去了int->integer的自动装箱
 
-如果key是long类型，那么使用 longSparseArray
+XXXSparseXXXArray：
+SparseArray          <int, Object>
+SparseBooleanArray   <int, boolean>
+SparseIntArray       <int, int>
+SparseLongArray      <int, long>
+LongSparseArray      <long, Object>
 
 ------------------------ArrayMap
 和SparseArray不同的地方：
 key可以是任何类型（而SparseArray要求key为int类型）
 
-其内部数据结构和 SparseArray类似
-也提供了两个数组 来存储key和value
-且key数组是排好序的，根据:key.hashcode
+其和SparseArray的不同：
+参见：ArrayMap结构-图示.png
 
 其是Bundle内部的 数据存储基础：BaseBundle中含有 ArrayMap类型的mMap

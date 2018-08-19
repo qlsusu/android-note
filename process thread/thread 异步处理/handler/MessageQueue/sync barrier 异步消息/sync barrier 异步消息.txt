@@ -1,26 +1,26 @@
-Ò»°ãÏûÏ¢£¨Í¬²½ÏûÏ¢£© vs Òì²½ÏûÏ¢
-Òì²½ÏûÏ¢£ºÈçºÎÉèÖÃ£ºMessage#setAsynchronous
-ÓĞºÎ²»Í¬£ºMessageQueue#nextÊ±
-	µ±ÏûÏ¢Á´Í· ²»ÊÇsync barrierÏûÏ¢Ê±£¬¶şÕßÃ»Ê²Ã´²»Í¬
-	µ±ÏûÏ¢Á´Í· ÊÇsync barrierÏûÏ¢Ê±£¬ÔÚMessageQueue#nextÊ±£¬
-		»á·µ»Ø sync barrierÏûÏ¢Ö®ºóµÄ µÚÒ»¸öÒì²½ÏûÏ¢
-		¶øÍ¬²½ÏûÏ¢Ö»ÓĞÔÚ sync barrierÏûÏ¢±»removeµôÊ±£¬²Å»áµÃÒÔ·µ»Ø
+ä¸€èˆ¬æ¶ˆæ¯ï¼ˆåŒæ­¥æ¶ˆæ¯ï¼‰ vs å¼‚æ­¥æ¶ˆæ¯
+å¼‚æ­¥æ¶ˆæ¯ï¼šå¦‚ä½•è®¾ç½®ï¼šMessage#setAsynchronous
+æœ‰ä½•ä¸åŒï¼šMessageQueue#nextæ—¶
+	å½“æ¶ˆæ¯é“¾å¤´ ä¸æ˜¯sync barrieræ¶ˆæ¯æ—¶ï¼ŒäºŒè€…æ²¡ä»€ä¹ˆä¸åŒ
+	å½“æ¶ˆæ¯é“¾å¤´ æ˜¯sync barrieræ¶ˆæ¯æ—¶ï¼Œåœ¨MessageQueue#nextæ—¶ï¼Œ
+		ä¼šè¿”å› sync barrieræ¶ˆæ¯ä¹‹åçš„ ç¬¬ä¸€ä¸ªå¼‚æ­¥æ¶ˆæ¯
+		è€ŒåŒæ­¥æ¶ˆæ¯åªæœ‰åœ¨ sync barrieræ¶ˆæ¯è¢«removeæ‰æ—¶ï¼Œæ‰ä¼šå¾—ä»¥è¿”å›
 
-sync barrierÏûÏ¢£º
-ÈçºÎÈëÁ´±í£ºÍ¨¹ıMessageQueue#postSyncBarrier(long when)À´Ïò ÏûÏ¢Á´Ìí¼Ó sync barrierÏûÏ¢
-ÆätargetÎª null£¨Ò²Ö»ÓĞ¸ÃÀàÏûÏ¢µÄtargetÎªnull£©
-Æäarg1Îª token£¨À´×ÔMessageQueue#mNextBarrierToken£ºmNextBarrierToken++£©
-	¿Í»§·½ĞèÒª±£´æ¸Ãtoken£¬ÒòÎª£ºÔÚ³öÁ´±íMessageQueue#removeSyncBarrier(int token)Ê±£¬ĞèÒªÌá¹©¸Ãtoken
+sync barrieræ¶ˆæ¯ï¼š
+å¦‚ä½•å…¥é“¾è¡¨ï¼šé€šè¿‡MessageQueue#postSyncBarrier(long when)æ¥å‘ æ¶ˆæ¯é“¾æ·»åŠ  sync barrieræ¶ˆæ¯
+è¯¥Messageä¸­ï¼Œtargetä¸º nullï¼ˆä¹Ÿåªæœ‰è¯¥ç±»æ¶ˆæ¯çš„targetä¸ºnullï¼‰
+å…¶arg1ä¸º tokenï¼ˆæ¥è‡ªMessageQueue#mNextBarrierTokenï¼šmNextBarrierToken++ï¼‰
+	å®¢æˆ·æ–¹éœ€è¦ä¿å­˜è¯¥tokenï¼Œå› ä¸ºï¼šåœ¨å‡ºé“¾è¡¨MessageQueue#removeSyncBarrier(int token)æ—¶ï¼Œéœ€è¦æä¾›è¯¥token
 	
-sync barrierÓĞÊ²Ã´ÓÃ£º
-ÔÚÏòHandler.Looper.MessageQueueÉÏpostÁËsync barrierÏûÏ¢ºó£¬
-ÔÙÏòÆäpostÒ»°ãµÄmessage£¬ÕâĞ©message²»»áµÃµ½´¦Àí
-Ö±µ½£º¸Ãsync barrier±»removeµô
-¿ÉÓÃÓÚ£ºÏß³Ì1 À´¿ØÖÆ Ïß³Ì2£¨ÔÚÆäÉÏÖ´ĞĞLooper.loop£©£¬Àı×Ó£º
-	Ïß³Ì1ÒªÖ´ĞĞÈÎÎñ1£¬·¢ËÍsync barrierÏûÏ¢ ¸øÏß³Ì2.MessageQueue
-	Ïß³Ì3 ÈÔÊ¹ÓÃ Ïß³Ì2.HandlerÀ´·¢ËÍÒ»°ãÏûÏ¢3£¨Í¬²½ÏûÏ¢£©
-	Ïß³Ì1µÄÈÎÎñ1½áÊøºó£¬ÏûÏ¢3²ÅÄÜÖ´ĞĞ
+sync barrieræœ‰ä»€ä¹ˆç”¨ï¼š
+åœ¨å‘Handler.Looper.MessageQueueä¸Špostäº†sync barrieræ¶ˆæ¯åï¼Œ
+å†å‘å…¶postä¸€èˆ¬çš„messageï¼Œè¿™äº›messageä¸ä¼šå¾—åˆ°å¤„ç†
+ç›´åˆ°ï¼šè¯¥sync barrierè¢«removeæ‰
+å¯ç”¨äºï¼šçº¿ç¨‹1 æ¥æ§åˆ¶ çº¿ç¨‹2ï¼ˆåœ¨å…¶ä¸Šæ‰§è¡ŒLooper.loopï¼‰ï¼Œä¾‹å­ï¼š
+	çº¿ç¨‹1è¦æ‰§è¡Œä»»åŠ¡1ï¼Œå‘é€sync barrieræ¶ˆæ¯ ç»™çº¿ç¨‹2.MessageQueue
+	çº¿ç¨‹3 ä»ä½¿ç”¨ çº¿ç¨‹2.Handleræ¥å‘é€ä¸€èˆ¬æ¶ˆæ¯3ï¼ˆåŒæ­¥æ¶ˆæ¯ï¼‰
+	çº¿ç¨‹1çš„ä»»åŠ¡1ç»“æŸåï¼Œæ¶ˆæ¯3æ‰èƒ½æ‰§è¡Œ
 	
-ÈçºÎ·¢ËÍÒì²½ÏûÏ¢£º
+å¦‚ä½•å‘é€å¼‚æ­¥æ¶ˆæ¯ï¼š
 Message#setAsynchronous(true)
 Handler#sendMessage

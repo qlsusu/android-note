@@ -7,10 +7,14 @@ Ixxx service = Ixxx.Stub.asInterface(ServiceManager.getService("xxx"))，如
 
 代码中，ServiceManager.class仅仅是一个wrapper
 其I接口相关的 为：IServiceManager, ServiceManagerNative, ServiceManagerProxy
-	上述3个类，定义在ServiceManagerNative.java 和 IServiceManager.java中
+	上述3个类，定义在 IServiceManager.java 和 ServiceManagerNative.java 中
 ServiceManager.class向开发者屏蔽了 IServiceManager相关的细节：
-	我们通过#getService("xxx")来找到 框架层服务
+	通过#getService("xxx")来找到 框架层服务
 		内部通过IServiceManager的remote binder 转发请求至 local binder
+	通过#addService("xxx", Stub的子类) 来添加一个服务
+		注意：需要相关的权限，如：android:sharedUserId="android.uid.system"
+			参见：Android系统匿名共享内存Ashmem（Anonymous Shared Memory）简要介绍和学习计划 - CSDN博客
+				https://blog.csdn.net/Luoshengyang/article/details/6651971
 
 IServiceManager运行于 系统级进程中
 如何获得IServiceManager的remote binder：

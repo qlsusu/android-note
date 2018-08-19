@@ -14,6 +14,3 @@ handler.postXXX
 适合什么任务：
 因为其内部对应的是一个操作，那么 多任务并发的场景并不适合（如：网络请求场景）
 适合的场景为：本地IO操作
-
-quitSafely()
-Causes the handler thread's looper to terminate as soon as all remaining messages in the message queue that are already due to be delivered have been handled

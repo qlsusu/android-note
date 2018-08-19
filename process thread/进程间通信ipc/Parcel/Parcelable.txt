@@ -21,7 +21,7 @@ Parcelable是通过IBinder通信的消息的载体。
     为什么：android版本不同而导致Parcelable可能不同
 
 >>>Parcel的使用：
-Parcel p=Parcel.obtain();
+Parcel p = Parcel.obtain();
 p.writeXXX();
 p.recycle();
 
@@ -46,7 +46,7 @@ public class MyParcelable implements Parcelable {
     }
 
     // 将该bean写入到parcel中
-    // 什么场景需要：ipc通信时，client提供输入参数，binder需要将该输入实体 序列化到 parcel中
+    // 什么场景需要：ipc通信时，client提供 in/inout类型的Parcelable时，需要将该Parcelable 序列化到 parcel中
     // 注意：写入和读取的类型及顺序一致
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(mData);
@@ -57,7 +57,7 @@ public class MyParcelable implements Parcelable {
     //从parcel中提取信息，赋予给变量
     //什么场景下用到：
     //. 构造函数中
-    //. 在aidl中，对于out/inout类型的参数，需要从reply parcel中提取信息
+    //. 在aidl中，对于out/inout类型的参数，客户方需要从reply parcel中提取信息
     public void readFromParcel(Parcel in) {
     	mData = in.readInt();
         mStr = in.readString();
@@ -66,6 +66,7 @@ public class MyParcelable implements Parcelable {
     }
 
     // 用来创建自定义的Parcelable的对象
+    // 注意该对象为static final，且名称一定为CREATOR
     public static final Parcelable.Creator<MyParcelable> CREATOR = new Parcelable.Creator<MyParcelable>() {
         public MyParcelable createFromParcel(Parcel in) {
             return new MyParcelable(in);

@@ -1,3 +1,0 @@
-如果contentprovider的内部数据存储采用了 sqlitedatabase，
-那么 对于contentprovider增删改方法的内部实现，一律采用sqlitestatement方式
-	参见：存储/db/使用sqlitestate来批量 插入 更新 删除.txt

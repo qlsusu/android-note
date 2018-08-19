@@ -1,10 +1,10 @@
-»ñÈ¡Message£ºHandler#obtainMessage
+è·å–Messageï¼šHandler#obtainMessage
 	Message#obtain
-		static Message#sPool£¨MessageÀàĞÍ£¬Á´±íÍ·£©´ú±íÁËÁ´±í
-		È¡³öÁ´±íÍ·À´·µ»Ø¸ø¿Í»§
-ÔÚÊ¹ÓÃÍê±Ïºó£¬¹é»¹£ºMessage#recycle
+		static Message#sPoolï¼ˆMessageç±»å‹ï¼Œé“¾è¡¨å¤´ï¼‰ä»£è¡¨äº†é“¾è¡¨
+		å–å‡ºé“¾è¡¨å¤´æ¥è¿”å›ç»™å®¢æˆ·
+åœ¨ä½¿ç”¨å®Œæ¯•åï¼Œå½’è¿˜ï¼šMessage#recycle
 	Message#recycleUnchecked
-		¹é»¹µÄMessage³ÉÎªĞÂÁ´±íÍ·
+		å½’è¿˜çš„Messageæˆä¸ºæ–°é“¾è¡¨å¤´
 
-¸¨Öú²ÎÊı£º
-static Message#sPoolSize£º»º´æÓĞÏŞ¸öMessage
+è¾…åŠ©å‚æ•°ï¼š
+static Message#sPoolSizeï¼šç¼“å­˜æœ‰é™ä¸ªMessage

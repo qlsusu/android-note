@@ -5,11 +5,11 @@ http://hukai.me/android-performance-oom/
 ----------------------IntentService特征
 以Service的形态，使用Handler（其Looper来自HandlerThread）来处理Intent
 
-onstartcommand中，会向handler发送消息
+onStart/onStartCommand中，会向handler发送消息
 	而该handler的looper来自 HandlerThread.looper
 	而对于消息
 		msg.arg1=startid
-			该startId来自 onStart(Intent intent, int startId)
+			该startId来自 onStart(Intent intent, int startId)/onStartCommand(Intent intent, int flags, int startId)
 		msg.obj=intent
 	由于采用了handler，那么也就意味着：一次只能处理一个msg，也即是：当多次start该service时，这些请求将被排队，进而一个个处理
 handler.handlemessage最终被调用 来处理message
