@@ -34,4 +34,4 @@ Receiver只能接收来自具有该SEND_XXX权限的应用发出的广播
 
 .在sender app中
 1. 在AndroidManifest.xml中，声明使用该权限，如：
-<uses-permission android:name="com.android.permission.SEND_XXX"></uses-permission>  
+<uses-permission android:name="com.android.permission.SEND_XXX"></uses-permission>

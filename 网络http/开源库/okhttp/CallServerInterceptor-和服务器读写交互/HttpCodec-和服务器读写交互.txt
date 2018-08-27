@@ -7,17 +7,44 @@ HttpCodec（Encodes HTTP requests and decodes HTTP responses）
 Http1Codec
 Http2Codec
 
-客户-服务器 交互过程（参见：CallServerInterceptor#intercept）：
-STATE_IDLE = 0; // Idle connections are ready to write request headers.
-STATE_OPEN_REQUEST_BODY = 1; //在写完请求头信息后，进入该状态
-STATE_WRITING_REQUEST_BODY = 2;//当构建了 再封装的Sink（对Http1Codec#sink的一层封装）后，进入该状态
-	封装的Sink：FixedLengthSink, ChunkedSink
-客户写入请求数据：RequestBody#writeTo(BufferedSink)
-STATE_READ_RESPONSE_HEADERS = 3;//写入数据后 会执行Sink#close，进入该状态
-执行HttpCodec#finishRequest，会执行Http1Codec.sink#flush
---
-STATE_OPEN_RESPONSE_BODY = 4;//当读取了响应头后，进入该状态，之后也设置了Response#receivedResponseAtMillis
-STATE_READING_RESPONSE_BODY = 5;//当构建了 再封装的Source（对Http1Codec#source的一层封装，再封装的Source用于构建RealResponseBody）后，进入到该状态
-	封装的Source：FixedLengthSource, ChunkedSource 等
-客户读取响应数据：从ResponseBody.Source中
-STATE_CLOSED = 6;//读取完数据后 会执行Http1Codec.AbstractSource#endOfInput，将进入该状态
+以Http1Codec为例 来描述 客户端-服务器的数据传输过程：
+. STATE_IDLE = 0;
+	写请求头信息 HttpCodec#writeRequestHeaders
+		写request line，如：GET / HTTP/1.1
+		写request header
+		进入下一状态
+. STATE_OPEN_REQUEST_BODY
+	构建再封装的Sink来（Http1Codec#createRequestBody） 来将 客户方提供的RequestBody 写入到该Sink中
+		如：Http1Codec.FixedLengthSink
+			在Http1Codec.FixedLengthSink#write中，会委派Http1Codec#sink来写入
+		进入下一状态
+. STATE_WRITING_REQUEST_BODY
+	将RequestBody写入到 再封装的sink：RequestBody#writeTo(BufferedSink sink)
+		这个需要客户方在提供RequestBody时 实现该writeTo方法
+	再封装的Sink执行close
+		在Http1Codec.FixedLengthSink#close中，并不会真实的关闭Http1Codec#sink
+		进入下一状态
+	HttpCodec#finishRequest
+		执行Http1Codec#sink.flush
+. STATE_READ_RESPONSE_HEADERS
+	读取响应头：Http1Codec#readResponseHeaders
+		读取status line，其中包含了response code
+		进入到下一状态
+	为Response设置：request, handshake, 发送请求时间, 收到响应时间 等
+. STATE_OPEN_RESPONSE_BODY
+	构建ResponseBody：HttpCodec#openResponseBody
+		构建再封装的Source 来让客户方 从ResponseBody中得到该Source 进而读取服务器的响应
+			如：Http1Codec.FixedLengthSource
+				其内部拥有Http1Codec#source
+					参见：Http1Codec.AbstractSource
+				其Http1Codec.FixedLengthSource#close并不会关闭Http1Codec#source
+				Http1Codec.AbstractSource#endOfInput
+					何时触发：在Http1Codec.FixedLengthSource#read的过程，当读取完数据时
+						进入到结束状态
+						StreamAllocation#streamFinished
+							在某些条件下（如：StreamAllocation.connection已经没人使用了，且存活了指定时间），关闭RealConnection.socket
+			进入下一状态
+. STATE_READING_RESPONSE_BODY
+	客户方得到Response，来读取服务器响应
+. STATE_CLOSED
+	通信结束

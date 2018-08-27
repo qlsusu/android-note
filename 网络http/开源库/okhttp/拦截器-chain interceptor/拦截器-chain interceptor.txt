@@ -6,6 +6,8 @@ Chain封装了一个流程：RealInterceptorChain#proceed(Request, StreamAllocat
 	newChain.index = index+1
 	相同的streamAllocation, connection, httpCodec 等
 . 执行intercept：Interceptor#intercept(newChain)
+	为什么传递newChain：
+	当Interceptor执行完pre后，调用newChain.proceed来 nextInterceptor.intercept
 
 则拦截器的执行过程 可被描述为：
 	interceptor1-pre interceptor2-pre interceptor3-pre ----
@@ -29,7 +31,7 @@ class LoggingInterceptor implements Interceptor {
 	    logger.info(String.format("Sending request %s on %s%n%s",
 	        request.url(), chain.connection(), request.headers()));
 
-	    //要求chain上的下一个interceptor来进行拦截
+	    //需要在Interceptor中手动来调用chain.proceed要求chain上的下一个interceptor来进行拦截
 	    Response response = chain.proceed(request);
 
 		//执行自身的逻辑：日志打印

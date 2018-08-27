@@ -1,0 +1,18 @@
+参见：
+OKHttp源码解析(一)--初阶 - 简书
+	https://www.jianshu.com/p/82f74db14a18
+	其中包含了系列教程
+	
+阅读顺序：
+背景知识
+	Route-Address Proxy InetSocketAddress
+基本流程
+	RealCall-请求的执行/
+	拦截器-chain interceptor/
+具体过程
+	建立连接，发送数据
+		StreamAllocation RealConnection/
+			StreamAllocation-找到RealConnection
+		CallServerInterceptor-和服务器读写交互/
+	读取缓存：
+		缓存cache/

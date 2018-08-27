@@ -1,6 +1,6 @@
-¹ÜµÀ£¨Pipe£©¡¢
-ĞÅºÅ£¨Signal£©ºÍ¸ú×Ù£¨Trace£©¡¢
-Socket¡¢
-±¨ÎÄ¶ÓÁĞ£¨Message£©¡¢
-¹²ÏíÄÚ´æ£¨Shared Memory£©¡¢
-ĞÅºÅÁ¿£¨Semaphore£©
+ç®¡é“ï¼ˆPipeï¼‰ã€
+ä¿¡å·ï¼ˆSignalï¼‰å’Œè·Ÿè¸ªï¼ˆTraceï¼‰ã€
+Socketã€
+æŠ¥æ–‡é˜Ÿåˆ—ï¼ˆMessageï¼‰ã€
+å…±äº«å†…å­˜ï¼ˆShared Memoryï¼‰ã€
+ä¿¡å·é‡ï¼ˆSemaphoreï¼‰

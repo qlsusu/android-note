@@ -19,7 +19,7 @@ RealCall#enqueue
 			runningCallsForHost(call) < Dispatcher#maxRequestsPerHost（默认：5）
 		通过条件 则在线程池上（类似：Executors#newCachedThreadPool()）执行任务：
 			放入到runningAsyncCalls中
-    		java.util.concurrent.Executor#execute			
+    		java.util.concurrent.Executor#execute
 				RealCall.AsyncCall#execute（AsyncCall是一个NamedRunnable，其run()会调用execute）
 					RealCall#getResponseWithInterceptorChain
 					Dispatcher#finished(RealCall.AsyncCall)
@@ -44,11 +44,11 @@ Response getResponseWithInterceptorChain() throws IOException {
     //响应处理，如：响应的Content-Encoding如果是gzip，则解压该response.body，并移除Content-Encoding, Content-Length
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
 
-    //是否读取缓存：有可能直接读取缓存，而不进行真实的联网
-	//将响应进行缓存
+    //请求处理：有可能直接读取缓存，而不进行真实的联网
+	//响应处理：如果响应能够缓存，则对其进行缓存
     interceptors.add(new CacheInterceptor(client.internalCache()));
 
-	//建立 客户端-服务器 连接
+	//建立 客户端-服务器 连接的 Socket/SSLSocket连接
     //通过StreamAllocation#newStream的方式，为该StreamAllocation找到RealConnection（来自连接池，或者，新建一个），得到HttpCodec
     interceptors.add(new ConnectInterceptor(client));
     

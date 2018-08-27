@@ -9,8 +9,11 @@ Route核心数据：
 
 使用RouteSelector来得到 Address对应的 Route（需要参考于 Proxy）：
 	本质上，通过RouteSelector得到的是一个Selection
-		（其包含了一个List的Route（为什么是一个list：通过dns查询，string host对应了一个list的int address），
-		对应于一个Proxy）
+		其包含了一个List的Route 对应于一个Proxy
+			为什么是一个list：通过dns查询，string host对应了一个list的int address
+				参见：Dns#List<InetAddress> lookup(String hostname)
+				Address.dns来自OkHttpClient#dns
+				默认为：Dns#SYSTEM
 	什么时候被构建：构建StreamAllocation时，其作为 成员变量
 		其需要预先被提供Proxy，而Proxy由Address提供（Proxy（一个proxy（其中也包含了无代理的形式：Proxy.NO_PROXY）），或，ProxySelector（一些proxy））
 			获取方式：RouteSelector#resetNextProxy
@@ -27,9 +30,9 @@ Route核心数据：
 
 -------------------------Address
 HttpUrl
-要请求的地址，包含了：host port path query
+要请求的地址，包含了：schema host port path query
 	port的取值范围为：1 ~ 0xFFFF
-在哪里被构建：通过Builder来构建Request时，指定了url
+在哪里被构建：Address的构造函数中，通过Builder来构建Request时，指定了url
 
 Address：
 在哪里被构建：
@@ -41,6 +44,7 @@ Address：
 		参见：Address的构造函数
 	代理
 		Proxy, ProxySelector
+		具有OkHttpClient提供，参见：Address构造函数
 	https相关
 		SSLSocketFactory
 		HostnameVerifier
@@ -51,7 +55,7 @@ Address：
 -------------------------InetSocketAddress
 InetSocketAddress核心数据：
 	ip
-		InetAddress类型（包含了int类型的address 和 hostName) 
+		InetAddress类型（包含了 int类型的address 和 hostName) 
 			通过DNS来查询到 string类型的host 对应的ip：InetAddress#getByName(String)
 	port
 		范围：(0 - 0xFFFF)

@@ -1,4 +1,4 @@
--------------客户端
+-------------客户方
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
--------------服务器
+-------------服务方
 public class MessengerService extends Service {
 
     private static final String TAG = "MessengerService";

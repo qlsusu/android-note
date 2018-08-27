@@ -4,11 +4,15 @@ OkHttp3源码分析[缓存策略]
 OKHttp源码解析(六)--中阶之缓存基础 - 简书
 	http://www.jianshu.com/p/b32d13655be7
 
+基础知识，参见：
+CacheStrategy-cache策略.png
+http缓存cache/
+
 获得request的candidate cache：
 okhttp3.Cache#get
 	得到key: okhttp3.Cache#key
 		ByteString.encodeUtf8(request.url.toString()).md5().hex();
-	okhttp3.internal.cache.DiskLruCache#get
+	DiskLruCache#get
 
 CacheControl对应着 header中的cache-control
 如何构建：CacheControl#parse(Headers headers)
@@ -34,32 +38,43 @@ CacheInterceptor#intercept
 						当etag存在时，If-None-Match: ETag
 						当etag不存在时，If-Modified-Since: Last_Modified 或 Date
 				什么情况下cacheResponse为空：
+					cacheCandidate为null时
 					request.isHttps() && cacheResponse.handshake() == null
 					CacheStrategy#isCacheable(cacheResponse, request)为false时
 						为true的条件：response的响应码（HttpURLConnection#HTTP_OK等） + 客户端/服务器都不拒绝缓存（!CacheControl#noStore）
 					当request.cacheControl().noCache()时（客户端要求不使用缓存）
-					当request中已经含有了If-None-Match/If-Modified-Since时
-						认为有问题：此刻cacheCandidate不为null，但cacheResponse为null，当服务器返回了HTTP_NOT_MODIFIED时，并不会更新cacheResponse
+					当request中已经含有了If-None-Match/If-Modified-Since时（在okhttp来自动添加If-None-Match/If-Modified-Since之前，request已经有了这些head）
+						我认为有问题：此刻cacheCandidate不为null，但cacheResponse为null，当服务器返回了HTTP_NOT_MODIFIED时，并不会更新cacheResponse
 					等
 			如果request要求onlyIfCache（只从缓存中读取数据） 且 得到的CacheStrategy又要求访问网络，则返回 CacheStrategy(null,null)
-	根据CacheStrategy#networkRequest和CacheStrategy#cacheResponse来决定：是否只读取缓存，是否联网请求 等
+	根据CacheStrategy#networkRequest和CacheStrategy#cacheResponse来决定：是否只读取缓存，或，是否联网请求 等
 	如果要进行联网请求，在响应获得后，
-		如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），且则更新缓存CacheStrategy#cacheResponse（通过：Cache#update(Response cached, Response network)）：
-			headers
-			sentRequestAtMillis
-			receivedResponseAtMillis
+		如果之前CacheStrategy#cacheResponse!=null 且 如果是缓存未发生变化（304：HttpURLConnection#HTTP_NOT_MODIFIED），则更新缓存CacheStrategy#cacheResponse
+			通过：Cache#update(Response cached, Response network)，其会写入到 DiskLruCache.Editor的ENTRY_METADATA这个sink
+			都更新什么内容：
+				headers
+				sentRequestAtMillis
+				receivedResponseAtMillis
+				等
+			之后，返回响应，结束
 		否则，有条件的 将响应放入到缓存中
-			是否可缓存：CacheStrategy#isCacheable				
-			对响应进行缓存：Cache#put(Response response)
-				先判断Request.method是否 不可缓存：HttpMethod#invalidatesCache
-					return method.equals("POST")
-						|| method.equals("PATCH")
-						|| method.equals("PUT")
-						|| method.equals("DELETE")
-						|| method.equals("MOVE");     // WebDAV
-				缓存方式：DiskLruCache.Entry.key为：ByteString.encodeUtf8(response.request.url.toString()).md5().hex()
-					参见：okhttp3.Cache#key
-			CacheInterceptor#cacheWritingResponse
+			是否可缓存：
+				从response code角度来判断：CacheStrategy#isCacheable
+				从request http method角度来判断：HttpMethod#invalidatesCache
+			缓存方式：采用DiskLruCache
+				DiskLruCache.Entry.key为：ByteString.encodeUtf8(response.request.url.toString()).md5().hex()
+				参见：okhttp3.Cache#key
+			对响应进行缓存：
+				写入响应的metadata（如：sentRequestMillis, receivedResponseMillis, handshake等）
+					Cache#put(Response response)
+						生成Entry
+						Cache.Entry#writeTo
+				写入响应的body
+					CacheInterceptor#cacheWritingResponse(CacheRequest cacheRequest, Response response)
+						实参cacheRequest由Cache#put生成，其CacheRequestImpl#cacheOut为 DiskLruCache.Editor的ENTRY_BODY这个sink，CacheRequestImpl#body为CacheRequestImpl#cacheOut的再包装
+						其获取response.body().source()，并构建包装Source 来返回给 客户方：
+							当客户方读取该Source时，会将读取的数据 写入到 CacheRequestImpl#body中（则写入到了DiskLruCache.Editor的ENTRY_BODY）
+							当CacheRequestImpl#body被close时，DiskLruCache.Editor#commit
 
 --------------------------------问题：
 如何判断 结果来自缓存 还是 来自网络

@@ -2,12 +2,19 @@
 LocalBroadcastManager 的实现原理，还是 Binder？
 	http://www.trinea.cn/android/localbroadcastmanager-impl/
 
-目的：
-发送方 和 接收方 在同一个进程中，只有本app的receiver才能收到该通知
+优点：
+. 效率高效
+. 只有 和发送方同进程的 接收方，才能收到消息
 
+缺点：
+. 接收方 和 发送方必须在同一进程中，如果app本身是多进程的，而接收方和发送方不在同一个进程中，则接收方接收不到消息
+. 只能动态的注册和取消注册	
+	
 使用：
+注册/反注册：
 LocalBroadcastManager#registerReceiver(BroadcastReceiver receiver, IntentFilter filter)
 LocalBroadcastManager#unregisterReceiver(BroadcastReceiver receiver)
+发送：
 LocalBroadcastManager#sendBroadcast(Intent intent)
 
 原理：

@@ -6,4 +6,5 @@ Android中的权限管理（基于Permission ProtectionLevel） - CSDN博客
 
 protectionLevel
 <permission android:name="XXX" android:protectionLevel="signatureOrSystem" />
+当客户方申请 使用该权限，且，客户方的签名 和 本app的签名相同时，才认为客户方 真正拥有了该permission
 参见：Android中的权限管理（基于Permission ProtectionLevel） - CSDN博客
