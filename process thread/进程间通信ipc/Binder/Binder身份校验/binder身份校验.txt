@@ -2,9 +2,13 @@
 Android-IPC进程间通信机制 - CSDN博客
 	http://blog.csdn.net/rozol/article/details/75451825
 
-当client请求server时，server可以确保client符合某些条件，如：
+当client请求server时，server也许需要 先检查client是否符合了某些条件后，才提供服务，如：
 . client需要具备指定权限
 . client为指定包名
+
+而binder机制会自动为 客户方 添加了UID/PID
+	Binder.getCallingUid()
+	Binder.getCallingPid()
 
 ------------------------------------例子
 //XXXService.java中

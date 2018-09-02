@@ -1,0 +1,7 @@
+该组件是否能处理该Intent（在manifest.xml中声明了IntentFilter）：
+android.content.IntentFilter#match(
+	String action, 
+	String type, 
+	String scheme, Uri data, 
+	Set<String> categories, 
+	String logTag)

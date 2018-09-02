@@ -13,7 +13,7 @@ Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
 	而该savestate可以作为另一个fragment对象的 初始化参数
 	如：先显示fragment1，再用fragment2来replace，再用fragment3来replace
 		其中，fragment1和fragment3属于同一class
-		那么可以将 fragment1中的state 传递给 fragment3 来使用(则fragment3拥有 fragment1的状态)
+		那么可以将 fragment1中的state 传递给 fragment3 来使用(则，fragment3拥有 fragment1的状态)
 
 恢复时机：
 1. 之前被销毁而现在被重建的FragmentActivity，在执行onCreate时，
@@ -21,7 +21,7 @@ Android Fragment使用(三) Activity, Fragment, WebView的状态保存和恢复
 	后传递给fragment.onCreate等
 2. FragmentManager.moveToState时，当自身的状态>CREATED时，view state会被恢复
 	当fragment1又重新填充到container中时
-3. 新建fragment对象，调用fragment.setInitialSavedState(SaveState)（传递之前saveFragmentInstanceState产生的state）
+3. 新建fragment对象，调用fragment.setInitialSavedState(SaveState)（入参为：之前saveFragmentInstanceState时产生的state）
 	该SaveState进而会被传递到fragment.onCreate
 	该方法需要在 执行transaction操作（如replace） 之前
 

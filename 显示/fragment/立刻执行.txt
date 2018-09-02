@@ -1,9 +1,9 @@
-当立刻执行一个transaction时
-如该transaction包含了 add fragment，那么此刻 该fragment将立刻执行oncreate,oncreateview等一系列生命周期回调
-
 当commit一个transaction，或，popbackstack，仅仅是往mainlooper.queue中提交一个任务，并不是立刻执行
 
-立刻执行的方式：
+为什么我们需要立刻执行：
+当commit立一个transaction后（该transaction包含了 add fragment），该fragment将立刻执行oncreate, oncreateview等一系列生命周期回调
+
+如何立刻执行：
 fragmenttransaction.commitnow 或 FragmentTransaction#commitNowAllowingStateLoss
 	立刻执行 当前提交的transaction
 fragmentmanager.popbackstackImmediate

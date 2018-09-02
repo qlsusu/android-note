@@ -10,16 +10,22 @@ private void addFragmentB() {
     Fragment fragment = fragmentManager.findFragmentByTag(FragmentB.TAG);
 	// 或者通过Fragment对应的container id来找到
 	// fragment = fragmentManager.findFragmentById(R.id.frag_container);
+	
+	//当没有找到fragment时，新建
     if (null == fragment) {
-        FragmentB fragmentB = new FragmentB();
+        fragment = new FragmentB();
         Log.i(LOG_TAG, "do add fragmentB action");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		//在add Fragment时，提供tag
-        fragmentTransaction.add(R.id.fragment_container, fragmentB, FragmentB.TAG);
+        fragmentTransaction.add(R.id.fragment_container, fragment, FragmentB.TAG);
         fragmentTransaction.commit();
+    }
+    //找到fragment了
+    else{
     }
 }
 private void removeFragmentB() {
+	//在remove之前，也是先进行fragment的查找，当找到了，执行remove
     FragmentManager fragmentManager = getFragmentManager();
     Fragment fragment = fragmentManager.findFragmentByTag(FragmentB.TAG);
     if (null != fragment) {

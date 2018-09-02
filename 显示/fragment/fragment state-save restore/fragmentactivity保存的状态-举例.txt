@@ -6,6 +6,10 @@ Bundle[{
 			16908290=android.view.AbsSavedState$1@bc382e7, 
 			2131492950=CompoundButton.SavedState{4034f96 checked=true}, 
 			2131492951=android.view.AbsSavedState$1@bc382e7}}], 
-	//android:fragments 为 FragmentActivity#FRAGMENTS_TAG
+	//fragments的状态保存
+	//key为：'android:fragments'，为：FragmentActivity#FRAGMENTS_TAG
+	//而单个fragment的state对应的为：FragmentState
+	//内部保存view的key为：'android:view_state'，为：FragmentManagerImpl#VIEW_STATE_TAG
 	android:fragments=android.app.FragmentManagerState@bacc717,
+	//自定义的 属性
 	customActivityState=xxx}]

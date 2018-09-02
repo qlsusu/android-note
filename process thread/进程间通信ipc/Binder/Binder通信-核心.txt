@@ -1,0 +1,43 @@
+参见：
+关于Binder，作为应用开发者你需要知道的全部
+	https://mp.weixin.qq.com/s/EE8H7Q3Dysas5kLs-jN-vg
+Android Binder设计与实现 - 设计篇
+	https://blog.csdn.net/universus/article/details/6211589
+写给 Android 应用工程师的 Binder 原理剖析
+	https://zhuanlan.zhihu.com/p/35519585
+
+角色：
+. binder驱动
+	角色：路由器，位于内核空间
+	传输数据：client进程<->server进程
+	过程：client进程中binder引用 <-> 内核中binder引用 <-> 内核中binder实体 <-> server进程中binder实体
+. ServiceManager
+	角色：DNS（查找服务（为客户端），注册服务（为服务器）），位于用户空间
+	如何成为ServcieManager：
+		进程1使用 binder_SET_CONTEXT_MGR命令 将自己注册成ServiceManager		
+	客户方（client/server对于ServiceManager来讲 都算是客户方） 如何访问ServiceManager：
+		ServiceManager的binder实体对应的binder引用 在所有客户方中 都固定为0（则客户方可通过 引用0 来找到ServiceManager，进行 查找服务 注册服务）
+. server	
+	角色：服务器（提供服务），位于用户空间
+	拥有binder实体
+	其在本地进程中 拥有ServiceManager的binder引用，向ServiceManager注册所提供的服务（提供：字符串描述+binder实体）	
+. client
+	角色：客户端（请求服务），位于用户空间
+	其在本地进程中 拥有ServiceManager的binder引用，向ServiceManager请求某一服务（提供：字符串描述），得到binder引用
+	拿到该binder引用后，和binder实体进行通信
+
+编程中，存在着什么样的类：
+IBinder
+Binder
+	binder实体
+BinderProxy
+	binder引用
+	在ServiceConnection#onServiceConnected(ComponentName name, IBinder service)中的 参数IBinder 就是该BinderProxy对象
+	BinderProxy#transact
+		通过binder驱动来发送数据：BinderProxy#transactNative		
+IInterface
+	服务接口
+Stub
+	继承自Binder，实现了服务接口（需要Stub的子类 来实现 这些服务接口）
+Proxy
+	实现了服务接口

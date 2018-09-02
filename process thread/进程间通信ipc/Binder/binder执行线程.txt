@@ -1,5 +1,5 @@
 server中
-I接口方法调用在新线程上（binder线程池）
+I接口方法调用在 binder线程池上
 该线程池上，只能有16个线程
 
 client中

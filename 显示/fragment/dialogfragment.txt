@@ -1,1 +1,1 @@
-oncreatedialog会返回一个dialog
+DialogFragment#onCreateDialog中，要返回一个dialog
