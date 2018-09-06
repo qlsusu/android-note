@@ -76,7 +76,7 @@ CacheInterceptor#intercept
 					CacheInterceptor#cacheWritingResponse(CacheRequest cacheRequest, Response response)
 						实参cacheRequest由Cache#put生成，其CacheRequestImpl#cacheOut为 DiskLruCache.Editor的ENTRY_BODY这个sink，CacheRequestImpl#body 为CacheRequestImpl#cacheOut的再包装
 						其获取response.body().source()，并构建包装Source 来返回给 客户方：
-							当客户方读取该Source时，会将读取的数据 写入到 CacheRequestImpl#body中（则写入到了DiskLruCache.Editor的ENTRY_BODY）
+							当客户方读取该Source时，会将读取的数据 写入到 CacheRequestImpl#body中（则写入到了DiskLruCache.Editor的ENTRY_BODY）：
 								BufferedSource source = response.body().source();
 								bytesRead = source.read(sink, byteCount)
 								//其中

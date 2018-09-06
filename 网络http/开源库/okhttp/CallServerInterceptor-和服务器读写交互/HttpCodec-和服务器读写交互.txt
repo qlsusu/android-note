@@ -40,9 +40,9 @@ Http2Codec
 				其Http1Codec.FixedLengthSource#close并不会关闭Http1Codec#source
 				Http1Codec.AbstractSource#endOfInput
 					何时触发：在Http1Codec.FixedLengthSource#read的过程，当读取完数据时
-						进入到结束状态
-						StreamAllocation#streamFinished
-							在某些条件下（如：StreamAllocation.connection已经没人使用了，且存活了指定时间），关闭RealConnection.socket
+					进入到结束状态
+					StreamAllocation#streamFinished
+						在某些条件下（如：StreamAllocation.connection已经没人使用了，且存活了指定时间），关闭RealConnection.socket
 			进入下一状态
 . STATE_READING_RESPONSE_BODY
 	客户方得到Response，来读取服务器响应

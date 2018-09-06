@@ -2,13 +2,19 @@
 Android布局优化之ViewStub、include、merge使用与源码分析
 	http://blog.csdn.net/bboyfeiyu/article/details/45869393
 
-ViewStub就是一个宽高都为0的一个View，它默认是不可见的，只有通过调用setVisibility函数或者Inflate函数才会将其要装载的目标布局给加载出来，从而达到延迟加载的效果
-加载结果：ViewStub从parent中移除、把目标布局的根元素添加到parent中
+ViewStub就是一个宽高都为0的一个View，它默认是不可见的
+只有通过调用setVisibility函数或者Inflate函数才会将其要装载的目标布局给加载出来，从而达到延迟加载的效果
+加载后的结果：ViewStub从parent中移除，把目标布局的根元素添加到parent中
 
-和view.gone的区别：
-View.GONE在布局加载的时候，就已经添加到布局树上了，而ViewStub只会在显示的时候才会渲染布局
-
-一个例子：
+----------------------------------------------------------------------vs View.GONE：
+相同点：ViewStub和View.GONE都不会涉及到 measure/layout/draw
+不同点：
+View.GONE：
+	在父布局加载的时候，View本身和其孩子对象 都会被构建，而View所涉及的资源（如：孩子ImageView对应的Drawable资源）也会被加载
+ViewStub：
+	在父布局加载的时候，ViewStub对象会被构建，但不会再构建其他对象 和 加载其他资源了
+	
+----------------------------------------------------------------------一个例子
 <ViewStub  
     android:id="@+id/stub_import"  
     android:inflatedId="@+id/stub_comm_lv"
@@ -26,7 +32,7 @@ View.GONE在布局加载的时候，就已经添加到布局树上了，而ViewS
     android:layout_height="match_parent" >  
 </ListView>  
 
-如果加载：
+如何加载：
 方式1（通过inflate）
 ViewStub listStub2 = (ViewStub) findViewById(R.id.stub_import) ;  
 // 成员变量commLv2为空则代表未加载  

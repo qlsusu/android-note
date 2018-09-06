@@ -9,8 +9,8 @@
 规则：按照Message#when的 ↑序 进行排序（越早的消息 越排在 链表前部）（如果两个消息的when相同，那么后来的Message 被放入到 后面）
 	一般Message 和 异步Message 和 sync barrier消息 在入链表时，都采用上述策略，没什么不同
 		什么是 异步消息 和 sync barrier消息，参见：sync barrier 异步消息/
-当入链表 而改变了表头时，或者，插入了一个异步消息（表头为sync barrier，且，该消息的前继并不是一个异步消息）时
-	代表着：有可能需要调整 取消息（调用MessageQueue#next）线程的阻塞时长（阻塞时长：取消息线程要被阻塞多久，等被唤醒时，其有可能会取到一条消息）		
+当入链表 而改变了表头时，或者，插入了一个异步消息（表头为sync barrier，且，该异步消息之前，未有其他的异步消息）时
+	代表着：有可能需要调整 取消息（调用MessageQueue#next）线程的阻塞时长（阻塞时长：取消息线程要被阻塞多久，而等其被唤醒时，其有可能会取到一条消息）		
 	如果其之前在取消息时被阻塞了（由MessageQueue#mBlocked表示），则唤醒它（之后其会走MessageQueue#next中的for循环，返回消息，或者，确定新的阻塞时间）
 
 出链表MessageQueue#next：

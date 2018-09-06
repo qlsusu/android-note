@@ -21,4 +21,4 @@ git stash apply
 git push origin 本地分支:refs/for/远程分支
 
 查看本次commit都更新了哪些文件：
-	git show --name-only SHA1
+git show --name-only SHA1
