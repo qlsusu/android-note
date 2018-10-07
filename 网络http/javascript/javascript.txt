@@ -1,4 +1,0 @@
-java和javascript相互调用
-参见：
-【Android】如何写一个JsBridge
-	http://xesam.github.io/android/2016/04/11/Android-%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AAJsBridge.html
