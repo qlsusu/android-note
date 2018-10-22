@@ -1,2 +1,0 @@
-RecyclerView#computeHorizontalScrollOffset
-RecyclerView#computeVerticalScrollOffset

@@ -20,5 +20,12 @@ git stash apply
 
 git push origin 本地分支:refs/for/远程分支
 
+回退到commit之前的状态（就当commit从来没发生过，但是之前commit的代码修改 还在）
+（设：当前只有一笔commit）：
+git reset --soft HEAD~1
+
 查看本次commit都更新了哪些文件：
 git show --name-only SHA1
+
+查看日志：
+git log
